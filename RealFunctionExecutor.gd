@@ -1,4 +1,4 @@
-extends Node2D
+extends Node
 
 
 func _ready() -> void:
@@ -24,8 +24,8 @@ func tests_all_functions() -> void:
 #			continue
 		# Instance object to be able to execute on it specific functions and later delete to prevent memory leak if it is a Node
 		var object : Object = ClassDB.instance(name_of_class)
-		if object is Node:
-			add_child(object)
+#		if object is Node:
+#			add_child(object)
 		assert(object != null) # This should be checked before when collectiong functions
 		var method_list : Array = ClassDB.class_get_method_list(name_of_class, !use_parent_methods)
 		for exception in Autoload.function_exceptions:

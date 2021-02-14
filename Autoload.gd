@@ -108,16 +108,12 @@ func get_list_of_available_classes() -> Array:
 		if name_of_class == "NetworkedMultiplayerENet": # TODO - create leaked reference instance, look at it later
 			continue
 		
-		
 		if ClassDB.is_parent_class(name_of_class,"Node") or ClassDB.is_parent_class(name_of_class,"Reference"): # Only instance childrens of this 
 			if debug_print:
 				print(name_of_class)
 			if ClassDB.can_instance(name_of_class):
 				classes.push_back(name_of_class)
 				c+= 1
-				var q = ClassDB.instance(name_of_class)
-				if q is Node:
-					q.queue_free()
 		else:
 			if debug_print:
 				push_error("Failed to instance " + str(name_of_class) )
