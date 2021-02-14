@@ -27,11 +27,42 @@ var function_exceptions = [
 "_unhandled_input", # TODO
 "_input", # TODO
 "lightmap_unwrap", #GH 46007 - memory leak
+"_input_type_changed", #GH 46011
+"add_node", #GH 46012
+"play", #GH 46013
+"connect_nodes_forced", #GH 46014
+"_set_tile_data", #GH 46015
+"add_image", #GH 46016
+"_edit_set_state", #GH 46017
+"_edit_set_position", #GH 46018
+"_edit_set_rect", #GH 46018
+"get", #GH 46019
+"instance_has", #GH 
+"", #GH 
+"", #GH 
+"", #GH 
 "", #GH 
 "", #GH 
 "", #GH 
 
 	
+# TODO is workaround for removing memory leak in Thread::start, should be fixed by GH 45618
+"start",
+
+# TODO Adds big spam when i>100
+"add_sphere",
+
+# Do not save files and create files and folders
+"save",
+"save_to_wav",
+"save_to_file",
+"make_dir",
+"make_dir_recursive",
+
+# Do not warp mouse
+"warp_mouse",
+"warp_mouse_position",
+
 # Looks like a bug in FuncRef, probably but not needed
 "call_func",
 
@@ -39,11 +70,10 @@ var function_exceptions = [
 "discover",
 "wait",
 
-# TODO check if really produce spam
-#"get",
-#"_get",
-#"set",
-#"_set",
+# Do not call other functions
+"_call_function",
+"call",
+"call_deferred",
 
 # Too dangerous, because add, mix and remove randomly nodes and objects
 "init_ref",
