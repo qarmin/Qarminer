@@ -10,4 +10,8 @@ config_version=4
 
 [application]
 
-run/main_scene="res://Node2D.tscn"
+run/main_scene="res://RealFunctionExecutor.tscn"
+
+[autoload]
+
+Autoload="*res://Autoload.gd"
