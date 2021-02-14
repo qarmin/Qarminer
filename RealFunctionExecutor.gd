@@ -40,29 +40,27 @@ func tests_all_functions() -> void:
 		
 		for _i in range(number_of_loops):
 			for method_data in method_list:
-				if true:#method_data["args"].size() != 0: # Todo remove this, for now is used to execute non zero len functiions which were tested, later it can be renamed instead removing to use zero len 
-					# Function is virtual, so we just skip it
-					if method_data["flags"] == method_data["flags"] | METHOD_FLAG_VIRTUAL:
-						continue 
-					
-					if debug_print:
-						print("##### - " + name_of_class)
-	#					print(method_data)
-						print(method_data["name"])
+				# Function is virtual, so we just skip it
+				if method_data["flags"] == method_data["flags"] | METHOD_FLAG_VIRTUAL:
+					continue 
+				
+				if debug_print:
+					print("##### - " + name_of_class)
+#					print(method_data)
+					print(method_data["name"])
 #						print(method_data["args"])
-						
-					var arguments : Array = return_for_all(method_data)
-					object.callv(method_data["name"], arguments)
 					
-					for argument in arguments:
-						if argument is Node:
-							argument.queue_free()
-					
-					if use_always_new_object:
-						if object is Node:
-							object.queue_free()
-						object = ClassDB.instance(name_of_class)
-					
+				var arguments : Array = return_for_all(method_data)
+				object.callv(method_data["name"], arguments)
+				
+				for argument in arguments:
+					if argument is Node:
+						argument.queue_free()
+				
+				if use_always_new_object:
+					if object is Node:
+						object.queue_free()
+					object = ClassDB.instance(name_of_class)
 		if object is Node: # Just prevent memory leak
 			object.queue_free()
 
@@ -71,7 +69,7 @@ func return_for_all(method_data : Dictionary) -> Array:
 	var arguments_array : Array = []
 	
 	ValueCreator.number = 10
-	ValueCreator.random = true
+	ValueCreator.random = false
 	
 	for argument in method_data["args"]:
 #		print(argument)

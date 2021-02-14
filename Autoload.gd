@@ -69,6 +69,7 @@ var function_exceptions = [
 # Godot Freeze
 "discover",
 "wait",
+"register_text_enter",
 
 # Do not call other functions
 "_call_function",
