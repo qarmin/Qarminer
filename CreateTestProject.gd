@@ -30,7 +30,7 @@ func collect_data() -> void:
 		for exception in Autoload.function_exceptions:
 			var index : int = -1
 			for method_index in range(method_list.size()):
-				if method_list[method_index]["name"] == exception:
+				if method_list[method_index].get("name") == exception:
 					index = method_index
 					break
 			if index != -1:
@@ -39,24 +39,24 @@ func collect_data() -> void:
 		
 		for method_data in method_list:
 			# Function is virtual, so we just skip it
-			if method_data["flags"] == method_data["flags"] | METHOD_FLAG_VIRTUAL:
+			if method_data.get("flags") == method_data.get("flags") | METHOD_FLAG_VIRTUAL:
 				continue 
 			
 			var arguments : Array = []
 			
 			# TODO - Currently objects are not supported, because they must have exactly same type as expected by function
 			var found_object : bool = false
-			for i in method_data["args"]:
-				if i["type"] == TYPE_OBJECT:
+			for i in method_data.get("args"):
+				if i.get("type") == TYPE_OBJECT:
 					found_object = true
 					break
-				arguments.push_back(i["type"])
+				arguments.push_back(i.get("type"))
 				
 			if found_object:
 				continue
 			class_data.arguments.append(arguments)
 			
-			class_data.function_names.append(method_data["name"])
+			class_data.function_names.append(method_data.get("name"))
 			
 		classes.append(class_data)
 	
@@ -110,25 +110,25 @@ func create_basic_files() -> void:
 		
 		if ClassDB.is_parent_class(class_data.name,"Spatial"): # TODO Fix in Godot 4.0
 			file_name += "3D" + "/" + class_data.name + ".gd"
-			list_of_all_files["3D"].append(file_name)
+			list_of_all_files.get("3D").append(file_name)
 		elif ClassDB.is_parent_class(class_data.name,"Node2D"):
 			file_name += "2D" + "/" + class_data.name + ".gd"
-			list_of_all_files["2D"].append(file_name)
+			list_of_all_files.get("2D").append(file_name)
 		elif ClassDB.is_parent_class(class_data.name,"Control"):
 			file_name += "Control" + "/" + class_data.name + ".gd"
-			list_of_all_files["Control"].append(file_name)
+			list_of_all_files.get("Control").append(file_name)
 		elif ClassDB.is_parent_class(class_data.name,"Node"):
 			file_name += "Node" + "/" + class_data.name + ".gd"
-			list_of_all_files["Node"].append(file_name)
+			list_of_all_files.get("Node").append(file_name)
 		elif ClassDB.is_parent_class(class_data.name,"Resource"):
 			file_name += "Resource" + "/" + class_data.name + ".gd"
-			list_of_all_files["Resource"].append(file_name)
+			list_of_all_files.get("Resource").append(file_name)
 		elif ClassDB.is_parent_class(class_data.name,"Reference"):
 			file_name += "Reference" + "/" + class_data.name + ".gd"
-			list_of_all_files["Reference"].append(file_name)
+			list_of_all_files.get("Reference").append(file_name)
 		else:
 			file_name += "Other" + "/" + class_data.name + ".gd"
-			list_of_all_files["Other"].append(file_name)
+			list_of_all_files.get("Other").append(file_name)
 		
 		
 		var object_name = "q_" + class_data.name

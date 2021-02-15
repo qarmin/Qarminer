@@ -1,5 +1,6 @@
 extends Node
 
+# TODO 4.0 - Change .get() after fixing [""] in Godot 4.0
 
 func _ready() -> void:
 #	NoiseTexture::_thread_done
@@ -33,7 +34,7 @@ func tests_all_functions() -> void:
 		for exception in Autoload.function_exceptions:
 			var index : int = -1
 			for method_index in range(method_list.size()):
-				if method_list[method_index]["name"] == exception:
+				if method_list[method_index].get("name") == exception:
 					index = method_index
 					break
 			if index != -1:
@@ -43,17 +44,17 @@ func tests_all_functions() -> void:
 		for _i in range(number_of_loops):
 			for method_data in method_list:
 				# Function is virtual, so we just skip it
-				if method_data["flags"] == method_data["flags"] | METHOD_FLAG_VIRTUAL:
+				if method_data.get("flags") == method_data.get("flags") | METHOD_FLAG_VIRTUAL:
 					continue 
 				
 				if debug_print:
 					print("##### - " + name_of_class)
 #					print(method_data)
-					print(method_data["name"])
-#						print(method_data["args"])
+					print(method_data.get("name"))
+#						print(method_data.get("args"])
 					
 				var arguments : Array = return_for_all(method_data)
-				object.callv(method_data["name"], arguments)
+				object.callv(method_data.get("name"), arguments)
 				
 				for argument in arguments:
 					if argument is Node:
@@ -73,7 +74,7 @@ func return_for_all(method_data : Dictionary) -> Array:
 	ValueCreator.number = 10
 	ValueCreator.random = false
 	
-	for argument in method_data["args"]:
+	for argument in method_data.get("args"):
 #		print(argument)
 		match argument.type:
 			TYPE_NIL: # Looks that this means VARIANT not null
