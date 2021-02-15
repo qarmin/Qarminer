@@ -101,7 +101,7 @@ func create_basic_files() -> void:
 	assert(file.open(base_dir + "project.godot",File.WRITE) == OK)
 	file.store_string("config_version=4\n")
 	file.store_string("[application]\n")
-	file.store_string("run/main_scene=\"res://2D.tscn\"\n")
+	file.store_string("run/main_scene=\"res://All.tscn\"\n")
 	
 
 	for class_data in classes:
@@ -137,7 +137,11 @@ func create_basic_files() -> void:
 		data_to_save += "var ||| : {} = {}.new()\n\n".replace("{}",class_data.name).replace("|||",object_name)
 		data_to_save += "func _ready() -> void:\n"
 		data_to_save += "\tif !is_visible():\n"
-		data_to_save += "\t\tset_process(false)\n\n"
+		data_to_save += "\t\tset_process(false)\n"
+		data_to_save += "\t\t" + object_name + ".queue_free()\n"
+		data_to_save += "\t\treturn\n\n"
+		if ClassDB.is_parent_class(class_data.name, "Node"):
+			data_to_save += "\tadd_child(REPLACE)\n\n".replace("REPLACE",object_name)
 		data_to_save += "func _process(_delta : float) -> void:\n"
 		for i in range(class_data.function_names.size()):
 			data_to_save += "\tif randi() % 2 == 0:\n"
@@ -227,7 +231,6 @@ func convert_arguments_to_string(arguments : Array) -> String:
 	return return_string
 
 func create_scene_files() -> void:
-	var directory : Directory = Directory.new()
 	var file : File = File.new()
 	
 	for type in ["2D", "3D", "Node", "Control", "Resource", "Reference"]:
@@ -249,10 +252,33 @@ func create_scene_files() -> void:
 		
 		file.store_string(external_dependiences)
 		file.store_string("\n")
-		file.store_string("[node name=\"Root\" type=\"Node2D\"]")
+		file.store_string("[node name=\"Root\" type=\"Node2D\"]".replace("Root",type))
 		file.store_string("\n\n")
 		file.store_string(node_data)
-		
+	
+		assert(file.open(base_dir + "All.tscn",File.WRITE) == OK)
+		file.store_string("""[gd_scene load_steps=7 format=2]
+
+[ext_resource path=\"res://Resource.tscn\" type=\"PackedScene\" id=1]
+[ext_resource path=\"res://Reference.tscn\" type=\"PackedScene\" id=2]
+[ext_resource path=\"res://Node.tscn\" type=\"PackedScene\" id=3]
+[ext_resource path=\"res://Control.tscn\" type=\"PackedScene\" id=4]
+[ext_resource path=\"res://3D.tscn\" type=\"PackedScene\" id=5]
+[ext_resource path=\"res://2D.tscn\" type=\"PackedScene\" id=6]
+
+[node name=\"Node2D\" type=\"Node2D\"]
+
+[node name=\"2D\" parent=\".\" instance=ExtResource( 6 )]
+
+[node name=\"3D\" parent=\".\" instance=ExtResource( 5 )]
+
+[node name=\"Control\" parent=\".\" instance=ExtResource( 4 )]
+
+[node name=\"Node\" parent=\".\" instance=ExtResource( 3 )]
+
+[node name=\"Reference\" parent=\".\" instance=ExtResource( 2 )]
+
+[node name=\"Resource\" parent=\".\" instance=ExtResource( 1 )]""")
 	
 
 func _ready() -> void:

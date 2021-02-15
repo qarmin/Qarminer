@@ -19,6 +19,8 @@ func tests_all_functions() -> void:
 	
 #	var sss = 0
 	for name_of_class in Autoload.get_list_of_available_classes():
+		if name_of_class.begins_with("_"): # TODO builtin classes like _Dictionary doesn't work properly in GDScript
+			continue
 #		sss += 1
 #		if sss != 220:
 #			continue

@@ -54,6 +54,7 @@ var function_exceptions = [
 
 # Do not save files and create files and folders
 "save",
+"save_png",
 "save_to_wav",
 "save_to_file",
 "make_dir",
