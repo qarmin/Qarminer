@@ -75,7 +75,7 @@ func return_for_all(method_data : Dictionary) -> Array:
 #		print(argument)
 		match argument.type:
 			TYPE_NIL: # Looks that this means VARIANT not null
-				arguments_array.push_back(false)
+				arguments_array.push_back(false) # TODO Add some randomization
 #				assert(false)
 			TYPE_MAX:
 				assert(false)
