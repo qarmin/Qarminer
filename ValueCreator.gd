@@ -5,6 +5,8 @@ var random: bool = false
 
 var max_array_size: int = 15
 
+func _ready() -> void:
+	randomize()
 
 func get_int() -> int:
 	if random:
@@ -151,7 +153,7 @@ func get_string_string() -> String:
 		if randi() % 2 == 0:
 			return "\".\""
 		else:
-			return "\"randi())\""
+			return "\"randi())\","
 	return "\"\""
 
 
@@ -223,16 +225,55 @@ func get_pool_color_array() -> PoolColorArray:
 
 
 func get_object(object_name: String) -> Object:
+	assert(ClassDB.class_exists(object_name))
+	
+	var a = 0
 	if random:
-		var classes = ClassDB.get_class_list()
-		while true:
-			var choosen_class: String = classes[randi() % classes.size()]
-			if ClassDB.is_class(choosen_class) && ClassDB.can_instance(choosen_class) && (ClassDB.is_parent_class(choosen_class, "Node") || (ClassDB.is_parent_class(choosen_class, "Reference"))):
-				return ClassDB.instance(choosen_class)
+		var classes = ClassDB.get_inheriters_from_class("Node") + ClassDB.get_inheriters_from_class("Reference")
+		var should_be_valid : bool = randi() %2
+		
+		if object_name == "Object":
+			while true:
+				var choosen_class: String = classes[randi() % classes.size()]
+				if ClassDB.can_instance(choosen_class) && (ClassDB.is_parent_class(choosen_class,"Node") || ClassDB.is_parent_class(choosen_class,"Reference")):
+					return ClassDB.instance(choosen_class)
+					
+		if ClassDB.is_parent_class(object_name,"Node") || ClassDB.is_parent_class(object_name,"Reference"): 
+			if should_be_valid:
+				var to_use_classes = ClassDB.get_inheriters_from_class(object_name)
+				to_use_classes.append(object_name)
+				if !ClassDB.can_instance(object_name):
+					assert(to_use_classes.size() > 0)
+				
+				while true:
+					a+= 1
+					if a > 50:
+						# Object doesn't have children which can be instanced
+						# This shouldn't happens, but sadly happen with e.g. SpatialGizmo
+						assert(false)
+					var choosen_class: String = to_use_classes[randi() % to_use_classes.size()]
+					if ClassDB.can_instance(choosen_class):
+						return ClassDB.instance(choosen_class)
+			else:
+				while true:
+					a+= 1
+					if a > 50:
+						assert(false)
+					var choosen_class: String = classes[randi() % classes.size()]
+					if !ClassDB.is_parent_class(choosen_class,object_name):
+						return ClassDB.instance(choosen_class)
+						
+		assert(false) # Other argument types are not supported
+		
 	else:
-		if ClassDB.is_class(object_name) && ClassDB.can_instance(object_name):
+		if ClassDB.can_instance(object_name): # E.g. Texture is not instantable or shouldn't be, but LargeTexture is
+			if object_name == "Object":
+				return ClassDB.instance("Node") # To prevent memory leak, because Object needs different type of freeing
 			return ClassDB.instance(object_name)
-		else:
-			return BoxShape.new()
-
+		else: # Found child of non instantable object
+			var list_of_class  = ClassDB.get_inheriters_from_class(object_name)
+			assert(list_of_class.size() > 0) # Number of inherited class of non instantable class must be greater than 0, otherwise this function would be useless
+			return ClassDB.instance(list_of_class[0])
+	
+	assert(false)
 	return BoxShape.new()

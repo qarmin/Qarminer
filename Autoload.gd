@@ -41,7 +41,7 @@ var function_exceptions : Array = [
 "_update_shader", #GH 46062
 "generate_tangents", #GH 46059
 "get_var", #GH 46096
-"", #GH 
+"_screen_input", #GH 
 "", #GH 
 "", #GH 
 "", #GH 
@@ -76,7 +76,12 @@ var function_exceptions : Array = [
 # Godot Freeze
 "discover",
 "wait",
-"register_text_enter",
+"set_gizmo", # Stupid function, needs as parameter an object which can't be instanced
+
+"_create",
+"",
+"",
+"",
 
 # Do not call other functions
 "_call_function",

@@ -66,7 +66,7 @@ func return_for_all(method_data: Dictionary) -> Array:
 	var arguments_array: Array = []
 
 	ValueCreator.number = 100
-	ValueCreator.random = false
+	ValueCreator.random = true
 
 	for argument in method_data["args"]:
 #		print(argument)
@@ -97,7 +97,7 @@ func return_for_all(method_data: Dictionary) -> Array:
 			TYPE_NODE_PATH:
 				arguments_array.push_back(ValueCreator.get_nodepath())
 			TYPE_OBJECT:
-				arguments_array.push_back(ValueCreator.get_object("TODO"))  # Maybe add a proper type variable if needed
+				arguments_array.push_back(ValueCreator.get_object(argument["class_name"]))
 			TYPE_PLANE:
 				arguments_array.push_back(ValueCreator.get_plane())
 			TYPE_QUAT:
