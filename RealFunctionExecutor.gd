@@ -1,29 +1,21 @@
 extends Node
 
+var debug_print : bool = true
 
 func _ready() -> void:
-#	NoiseTexture::_thread_done
-#	var aa = BoxShape.new()
-#	SurfaceTool.new().create_from(aa,0)
-#	Tree.new().get_column_width(0)
 	tests_all_functions()
 
 
 # TODO - Think about adding 'add_child', to test nodes in scene tree
 # Test all functions which takes 0 arguments
 func tests_all_functions() -> void:
-	var debug_print : bool = true
 	var use_parent_methods : bool = false # Allows Node2D use Node methods etc. - it is a little slow option
 	var number_of_loops : int = 1 # Can be executed in multiple loops
 	var use_always_new_object : bool = true # Don't allow to "remeber" other function effects
 	
-#	var sss = 0
 	for name_of_class in Autoload.get_list_of_available_classes():
 		if name_of_class.begins_with("_"): # TODO builtin classes like _Dictionary doesn't work properly in GDScript
 			continue
-#		sss += 1
-#		if sss != 220:
-#			continue
 		# Instance object to be able to execute on it specific functions and later delete to prevent memory leak if it is a Node
 		var object : Object = ClassDB.instance(name_of_class)
 #		if object is Node:
@@ -39,6 +31,8 @@ func tests_all_functions() -> void:
 			if index != -1:
 				method_list.remove(index)
 		
+		if debug_print:
+			print("##### CLASS ##### - " + name_of_class)
 		
 		for _i in range(number_of_loops):
 			for method_data in method_list:
@@ -47,10 +41,9 @@ func tests_all_functions() -> void:
 					continue 
 				
 				if debug_print:
-					print("##### - " + name_of_class)
 #					print(method_data)
 					print(method_data["name"])
-#						print(method_data["args"])
+#					print(method_data["args"])
 					
 				var arguments : Array = return_for_all(method_data)
 				object.callv(method_data["name"], arguments)
@@ -70,7 +63,7 @@ func tests_all_functions() -> void:
 func return_for_all(method_data : Dictionary) -> Array:
 	var arguments_array : Array = []
 	
-	ValueCreator.number = 10
+	ValueCreator.number = 100
 	ValueCreator.random = false
 	
 	for argument in method_data["args"]:
@@ -136,6 +129,7 @@ func return_for_all(method_data : Dictionary) -> Array:
 			_:
 				assert(false) # Missed some types, add it
 	
-	print("Parameters " + str(arguments_array))
+	if debug_print:
+		print("Parameters " + str(arguments_array))
 	return arguments_array
 	
