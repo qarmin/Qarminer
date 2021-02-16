@@ -1,7 +1,8 @@
 extends Node
 
 var base_dir : String = "res://Project/"
-	
+var debug_in_runtime : bool = true # Allow to print info in runtime about currenty executed function
+
 class ClassData:
 	var name : String = ""
 	var function_names : Array = []
@@ -21,13 +22,16 @@ var list_of_all_files = {
 
 func collect_data() -> void:
 	var use_parent_methods : bool = false # Allows Node2D use Node methods etc. - it is a little slow option
-	
+		
 	for name_of_class in Autoload.get_list_of_available_classes():
+		if name_of_class == "Image": # TODO, Remove this when class will be stable enough
+			continue
+			
 		var class_data : ClassData = ClassData.new()
 		class_data.name = name_of_class
 		
 		var method_list : Array = ClassDB.class_get_method_list(name_of_class, !use_parent_methods)
-		for exception in Autoload.function_exceptions:
+		for exception in (Autoload.function_exceptions + Autoload.slow_functions):
 			var index : int = -1
 			for method_index in range(method_list.size()):
 				if method_list[method_index]["name"] == exception:
@@ -130,21 +134,24 @@ func create_basic_files() -> void:
 			file_name += "Other" + "/" + class_data.name + ".gd"
 			list_of_all_files["Other"].append(file_name)
 		
-		
-		var object_name = "q_" + class_data.name
+		var object_type = class_data.name.trim_prefix("_") # Change _Directory to Directory etc
+		var object_name = "q_" + object_type
 		
 		data_to_save += "extends Node2D\n\n"
-		data_to_save += "var ||| : {} = {}.new()\n\n".replace("{}",class_data.name).replace("|||",object_name)
+		data_to_save += "var ||| : {} = {}.new()\n\n".replace("{}",object_type).replace("|||",object_name)
 		data_to_save += "func _ready() -> void:\n"
 		data_to_save += "\tif !is_visible():\n"
 		data_to_save += "\t\tset_process(false)\n"
-		data_to_save += "\t\t" + object_name + ".queue_free()\n"
+		if ClassDB.is_parent_class(class_data.name, "Node"):
+			data_to_save += "\t\t" + object_name + ".queue_free()\n"
 		data_to_save += "\t\treturn\n\n"
 		if ClassDB.is_parent_class(class_data.name, "Node"):
 			data_to_save += "\tadd_child(REPLACE)\n\n".replace("REPLACE",object_name)
 		data_to_save += "func _process(_delta : float) -> void:\n"
 		for i in range(class_data.function_names.size()):
 			data_to_save += "\tif randi() % 2 == 0:\n"
+			if debug_in_runtime:
+				data_to_save += "\t\tprint(\"Executing " + object_type + "::" + class_data.function_names[i] + "\")\n" 
 			data_to_save += "\t\t" + object_name + "."+ class_data.function_names[i] + "(" + convert_arguments_to_string(class_data.arguments[i]) + ")\n"
 		data_to_save += "\tpass"
 		
@@ -256,8 +263,8 @@ func create_scene_files() -> void:
 		file.store_string("\n\n")
 		file.store_string(node_data)
 	
-		assert(file.open(base_dir + "All.tscn",File.WRITE) == OK)
-		file.store_string("""[gd_scene load_steps=7 format=2]
+	assert(file.open(base_dir + "All.tscn",File.WRITE) == OK)
+	file.store_string("""[gd_scene load_steps=7 format=2]
 
 [ext_resource path=\"res://Resource.tscn\" type=\"PackedScene\" id=1]
 [ext_resource path=\"res://Reference.tscn\" type=\"PackedScene\" id=2]

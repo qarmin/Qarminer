@@ -1,6 +1,6 @@
 extends Node
 
-var function_exceptions = [
+var function_exceptions : Array = [
 # They exists without assigment like Class.method, because they may be a parent of other objects and children also should have disabled child.method, its children also etc. which is too much to do
 "align",# GH 45976
 "_screen_pick_pressed",# GH 45977
@@ -94,6 +94,12 @@ var function_exceptions = [
 "raise",
 "add_child",
 "add_child_below_node",
+]
+
+# List of slow functions, which may frooze project
+var slow_functions : Array = [
+	"interpolate_baked",
+	"get_baked_length",
 ]
 
 # Return all available classes to instance and test

@@ -12,9 +12,13 @@ config_version=4
 
 config/name="Qarminer"
 config/description="Tool to automatically test Godot"
-run/main_scene="res://CreateTestProject.tscn"
+run/main_scene="res://RealFunctionExecutor.tscn"
 
 [autoload]
 
 Autoload="*res://Autoload.gd"
 ValueCreator="*res://ValueCreator.gd"
+
+[logging]
+
+file_logging/enable_file_logging.pc=false
