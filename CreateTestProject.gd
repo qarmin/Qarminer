@@ -2,6 +2,7 @@ extends Node
 
 var base_dir : String = "res://Project/"
 var debug_in_runtime : bool = true # Allow to print info in runtime about currenty executed function
+var use_parent_methods : bool = true # Allows Node2D use Node methods etc. - it is a little slow option
 
 class ClassData:
 	var name : String = ""
@@ -21,7 +22,6 @@ var list_of_all_files = {
 }
 
 func collect_data() -> void:
-	var use_parent_methods : bool = false # Allows Node2D use Node methods etc. - it is a little slow option
 		
 	for name_of_class in Autoload.get_list_of_available_classes():
 		if name_of_class == "Image": # TODO, Remove this when class will be stable enough
@@ -294,3 +294,4 @@ func _ready() -> void:
 		remove_files_recursivelly(base_dir)
 	create_basic_files()
 	create_scene_files()
+	print("Created test project")

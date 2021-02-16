@@ -37,15 +37,20 @@ var function_exceptions : Array = [
 "_edit_set_position", #GH 46018
 "_edit_set_rect", #GH 46018
 "get", #GH 46019
-"instance_has", #GH 
-"", #GH 
-"", #GH 
+"instance_has", #GH 46020
+"_update_shader", #GH 46062
+"generate_tangents", #GH 46059
+"get_var", #GH 46096
 "", #GH 
 "", #GH 
 "", #GH 
 "", #GH 
 
-	
+
+# TODO Check this later
+"propagate_notification",
+"notification",
+
 # TODO is workaround for removing memory leak in Thread::start, should be fixed by GH 45618
 "start",
 
@@ -53,6 +58,7 @@ var function_exceptions : Array = [
 "add_sphere",
 
 # Do not save files and create files and folders
+"pck_start",
 "save",
 "save_png",
 "save_to_wav",
@@ -100,6 +106,24 @@ var function_exceptions : Array = [
 var slow_functions : Array = [
 	"interpolate_baked",
 	"get_baked_length",
+	"get_baked_points",
+	"get_closest_offset",
+	"get_closest_point", # Only Curve, but looks that a lot of other classes uses this
+	"get_baked_up_vectors",
+	"interpolate_baked_up_vector",
+	"tessellate",
+	"get_baked_tilts",
+	"set_enabled_inputs",
+	"grow_mask",
+
+
+# Just a little slow functions
+	"is_enabler_enabled",
+	"set_enabler",
+	"get_aabb",
+	"set_aabb",
+	"is_on_screen"
+
 ]
 
 # Return all available classes to instance and test
