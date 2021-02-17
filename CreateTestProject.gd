@@ -2,7 +2,7 @@ extends Node
 
 var base_dir: String = "res://Project/"
 var debug_in_runtime: bool = true  # Allow to print info in runtime about currenty executed function
-var use_parent_methods: bool = true  # Allows Node2D use Node methods etc. - it is a little slow option
+var use_parent_methods: bool = false  # Allows Node2D use Node methods etc. - it is a little slow option
 
 
 class ClassData:
@@ -50,7 +50,7 @@ func collect_data() -> void:
 			var arguments: Array = []
 
 			for i in method_data["args"]:
-				arguments.push_back(i["type"])
+				arguments.push_back(i)
 
 			class_data.arguments.append(arguments)
 
@@ -154,34 +154,44 @@ func create_basic_files() -> void:
 			var arguments := convert_arguments_to_string(class_data.arguments[i])
 			var split_arguments := arguments.split(",")
 			
-			var list_of_new_arguments := [] # e.g. (variable1,0,0) instead (object.new(),0,0)
-			var variables_to_add := [] # e.g. var variable1 = Object.new()
+			var list_of_new_arguments :Array= [] # e.g. (variable1,0,0) instead (object.new(),0,0)
+			var variables_to_add : Array= [] # e.g. var variable1 = Object.new()
 			
 			var index = 0
 			for j in split_arguments:
 				if j.ends_with(".new()"):
 					# Means that argument is an object
-					var new_variable_name = "p_object_" + index
+					var new_variable_name = "p_object_" + str(index)
 					index += 1
 					list_of_new_arguments.append(new_variable_name)
-					variables_to_add.append(j)
+					variables_to_add.append(j.strip_edges())
 				else:
-					list_of_new_arguments.append(j)
+					list_of_new_arguments.append(j.strip_edges())
 					variables_to_add.append("")
 				
 			assert(list_of_new_arguments.size() == variables_to_add.size())
+			# Create temporary objects
 			for j in variables_to_add.size():
-				if !variables_to_add[j].is_empty():
-					data_to_save += "\t\t" + list_of_new_arguments[j] + " = " + variables_to_add[j]
+				if !variables_to_add[j].empty():
+					assert(ClassDB.class_exists(variables_to_add[j].trim_suffix(".new()")))
+					data_to_save += "\t\tvar " + list_of_new_arguments[j] + " = " + variables_to_add[j] + "\n"
 					
 			var string_new_arguments : String = ""
 			for j in range(variables_to_add.size()):
-				if !variables_to_add[j].is_empty():
-					assert(ClassDB.class_exists(variables_to_add[j].trim_suffix(".new()")))
-					if ClassDB.is_parent_class(variables_to_add[j].trim_suffix(".new()"),"Node"):
-						data_to_save += "\t\t" + variables_to_add[j].trim_suffix(".new()") + ".queue_free()"
+				string_new_arguments += list_of_new_arguments[j]
+				if j != (variables_to_add.size() - 1):
+					string_new_arguments += ", "
 				
-			data_to_save += "\t\t" + object_name + "." + class_data.function_names[i] + "(" + convert_arguments_to_string(class_data.arguments[i]) + ")\n"
+			data_to_save += "\t\t" + object_name + "." + class_data.function_names[i] + "(" + string_new_arguments + ")\n"
+			
+			# Delete all temporary objects
+			for j in range(variables_to_add.size()):
+				if !variables_to_add[j].empty():
+					if ClassDB.is_parent_class(variables_to_add[j].trim_suffix(".new()"),"Node"):
+						data_to_save += "\t\t" + list_of_new_arguments[j] + ".queue_free()\n"
+						
+			data_to_save += "\n"
+						
 		data_to_save += "\tpass"
 
 		assert(file.open(file_name, File.WRITE) == OK)
@@ -197,10 +207,9 @@ func convert_arguments_to_string(arguments: Array) -> String:
 	var argument_number: int = 0
 
 	for argument in arguments:
-#		print(argument)
 		if argument_number != 0:
 			return_string += ", "
-		match argument:
+		match argument["type"]:
 			TYPE_NIL:  # Looks that this means VARIANT not null
 				return_string += "false"  # TODO aadd some randomization
 #				assert(false)
@@ -213,7 +222,7 @@ func convert_arguments_to_string(arguments: Array) -> String:
 			TYPE_BASIS:
 				return_string += ValueCreator.get_basis_string()
 			TYPE_BOOL:
-				return_string += ValueCreator.get_bool_string()
+				return_string += ValueCreator.get_bool_string().to_lower()
 			TYPE_COLOR:
 				return_string += ValueCreator.get_color_string()
 			TYPE_COLOR_ARRAY:
@@ -227,7 +236,7 @@ func convert_arguments_to_string(arguments: Array) -> String:
 			TYPE_NODE_PATH:
 				return_string += "NodePath(\".\")"
 			TYPE_OBJECT:
-				return_string += ValueCreator.get_object_string() + ".new()" 
+				return_string += ValueCreator.get_object_string(argument["class_name"]) + ".new()" 
 			TYPE_PLANE:
 				return_string += ValueCreator.get_plane_string()
 			TYPE_QUAT:
