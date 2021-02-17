@@ -49,16 +49,9 @@ func collect_data() -> void:
 
 			var arguments: Array = []
 
-			# TODO - Currently objects are not supported, because they must have exactly same type as expected by function
-			var found_object: bool = false
 			for i in method_data["args"]:
-				if i["type"] == TYPE_OBJECT:
-					found_object = true
-					break
 				arguments.push_back(i["type"])
 
-			if found_object:
-				continue
 			class_data.arguments.append(arguments)
 
 			class_data.function_names.append(method_data["name"])
@@ -136,9 +129,12 @@ func create_basic_files() -> void:
 
 		var object_type = class_data.name.trim_prefix("_")  # Change _Directory to Directory etc
 		var object_name = "q_" + object_type
-
+		
+		### Global
 		data_to_save += "extends Node2D\n\n"
 		data_to_save += "var ||| : {} = {}.new()\n\n".replace("{}", object_type).replace("|||", object_name)
+		
+		### Ready function
 		data_to_save += "func _ready() -> void:\n"
 		data_to_save += "\tif !is_visible():\n"
 		data_to_save += "\t\tset_process(false)\n"
@@ -147,11 +143,44 @@ func create_basic_files() -> void:
 		data_to_save += "\t\treturn\n\n"
 		if ClassDB.is_parent_class(class_data.name, "Node"):
 			data_to_save += "\tadd_child(REPLACE)\n\n".replace("REPLACE", object_name)
+			
+		### Process Function
 		data_to_save += "func _process(_delta : float) -> void:\n"
 		for i in range(class_data.function_names.size()):
 			data_to_save += "\tif randi() % 2 == 0:\n"
 			if debug_in_runtime:
-				data_to_save += "\t\tprint(\"Executing " + object_type + "::" + class_data.function_names[i] + "\")\n"
+				data_to_save += "\t\tprint(\"Executing " + object_type + "::" + class_data.function_names[i] + "\")\n\n"
+				
+			var arguments := convert_arguments_to_string(class_data.arguments[i])
+			var split_arguments := arguments.split(",")
+			
+			var list_of_new_arguments := [] # e.g. (variable1,0,0) instead (object.new(),0,0)
+			var variables_to_add := [] # e.g. var variable1 = Object.new()
+			
+			var index = 0
+			for j in split_arguments:
+				if j.ends_with(".new()"):
+					# Means that argument is an object
+					var new_variable_name = "p_object_" + index
+					index += 1
+					list_of_new_arguments.append(new_variable_name)
+					variables_to_add.append(j)
+				else:
+					list_of_new_arguments.append(j)
+					variables_to_add.append("")
+				
+			assert(list_of_new_arguments.size() == variables_to_add.size())
+			for j in variables_to_add.size():
+				if !variables_to_add[j].is_empty():
+					data_to_save += "\t\t" + list_of_new_arguments[j] + " = " + variables_to_add[j]
+					
+			var string_new_arguments : String = ""
+			for j in range(variables_to_add.size()):
+				if !variables_to_add[j].is_empty():
+					assert(ClassDB.class_exists(variables_to_add[j].trim_suffix(".new()")))
+					if ClassDB.is_parent_class(variables_to_add[j].trim_suffix(".new()"),"Node"):
+						data_to_save += "\t\t" + variables_to_add[j].trim_suffix(".new()") + ".queue_free()"
+				
 			data_to_save += "\t\t" + object_name + "." + class_data.function_names[i] + "(" + convert_arguments_to_string(class_data.arguments[i]) + ")\n"
 		data_to_save += "\tpass"
 
@@ -198,7 +227,7 @@ func convert_arguments_to_string(arguments: Array) -> String:
 			TYPE_NODE_PATH:
 				return_string += "NodePath(\".\")"
 			TYPE_OBJECT:
-				return_string += "BoxShape.new()"
+				return_string += ValueCreator.get_object_string() + ".new()" 
 			TYPE_PLANE:
 				return_string += ValueCreator.get_plane_string()
 			TYPE_QUAT:
