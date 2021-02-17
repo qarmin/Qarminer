@@ -2,7 +2,7 @@ extends Node
 
 var base_dir: String = "res://Project/"
 var debug_in_runtime: bool = true  # Allow to print info in runtime about currenty executed function
-var use_parent_methods: bool = false  # Allows Node2D use Node methods etc. - it is a little slow option
+var use_parent_methods: bool = true  # Allows Node2D use Node methods etc. - it is a little slow option
 
 
 class ClassData:

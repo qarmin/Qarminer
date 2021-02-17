@@ -42,8 +42,8 @@ var function_exceptions : Array = [
 "generate_tangents", #GH 46059
 "get_var", #GH 46096
 "_screen_input", #GH 
-"", #GH 
-"", #GH 
+"force_drag", #GH 
+"set_script", #GH 
 "", #GH 
 
 
@@ -89,6 +89,9 @@ var function_exceptions : Array = [
 "call_deferred",
 
 # Too dangerous, because add, mix and remove randomly nodes and objects
+"set_owner",
+"set_root_node",
+"instance",
 "init_ref",
 "reference",
 "unreference",
