@@ -1,8 +1,8 @@
 extends Node
 
 var base_dir: String = "res://Project/"
-var debug_in_runtime: bool = true  # Allow to print info in runtime about currenty executed function
-var use_parent_methods: bool = true  # Allows Node2D use Node methods etc. - it is a little slow option
+var debug_in_runtime: bool = true  # Allow to print info in runtime about currenty executed function, it is very helpful, so I don't recommend to turn this off
+var use_parent_methods: bool = false  # Allows Node2D use Node methods etc. - it is a little slow option
 
 
 class ClassData:
@@ -202,7 +202,7 @@ func convert_arguments_to_string(arguments: Array) -> String:
 	var return_string: String = ""
 
 	ValueCreator.number = 100
-	ValueCreator.random = false
+	ValueCreator.random = true
 
 	var argument_number: int = 0
 

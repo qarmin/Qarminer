@@ -66,7 +66,7 @@ func return_for_all(method_data: Dictionary) -> Array:
 	var arguments_array: Array = []
 
 	ValueCreator.number = 100
-	ValueCreator.random = true
+	ValueCreator.random = false
 
 	for argument in method_data["args"]:
 #		print(argument)

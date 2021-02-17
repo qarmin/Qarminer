@@ -44,7 +44,20 @@ var function_exceptions : Array = [
 "_screen_input", #GH 
 "force_drag", #GH 
 "set_script", #GH 
+"getvar", #GH PackedDataContainer::getvar
+"_update_shader", #GH 
+"get_available_chars", #GH 
 "", #GH 
+"", #GH 
+"", #GH 
+"", #GH 
+"", #GH 
+"", #GH 
+
+"collide", #GH
+"collide_and_get_contacts", #GH
+"collide_with_motion", #GH
+"collide_with_motion_and_get_contacts", #GH
 
 
 # TODO Check this later
@@ -65,30 +78,33 @@ var function_exceptions : Array = [
 "save_to_file",
 "make_dir",
 "make_dir_recursive",
+"save_encrypted",
+"save_encrypted_pass",
+"open", # This also allow to save files
 
 # Do not warp mouse
 "warp_mouse",
 "warp_mouse_position",
 
-# Looks like a bug in FuncRef, probably but not needed
-"call_func",
 
 # Godot Freeze
 "discover",
 "wait",
-"set_gizmo", # Stupid function, needs as parameter an object which can't be instanced
+"set_gizmo", # Stupid function, needs as parameter an object which can't be instanced # TODO, create issue to hide it 
 
 "_create",
-"",
-"",
-"",
 
 # Do not call other functions
 "_call_function",
 "call",
 "call_deferred",
+"callv",
+# Looks like a bug in FuncRef, probably but not needed, because it call other functions
+"call_func",
 
 # Too dangerous, because add, mix and remove randomly nodes and objects
+"replace_by",
+"create_instance",
 "set_owner",
 "set_root_node",
 "instance",
@@ -123,6 +139,12 @@ var slow_functions : Array = [
 	"get_baked_tilts",
 	"set_enabled_inputs",
 	"grow_mask",
+	"force_update_transform",
+	
+	
+	# In 3d view some options are really slow
+	"set_rings",
+	"set_amount", # Particles
 
 
 # Just a little slow functions

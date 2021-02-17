@@ -150,10 +150,12 @@ func get_string() -> String:
 
 func get_string_string() -> String:
 	if random:
-		if randi() % 2 == 0:
+		if randi() % 3 == 0:
 			return "\".\""
+		elif randi() % 3 == 0:
+			return "\"\""
 		else:
-			return "\"randi())\","
+			return "str(randi() / 100)"
 	return "\"\""
 
 
@@ -284,7 +286,7 @@ func get_object_string(object_name: String) -> String:
 	var a = 0
 	if random:
 		var classes = ClassDB.get_inheriters_from_class("Node") + ClassDB.get_inheriters_from_class("Reference")
-		var should_be_valid : bool = randi() %2
+		var should_be_valid : bool = true # randi() %2 # TODO, non valid entries looks that are not allowed in outside callv
 		
 		if object_name == "Object":
 			while true:
