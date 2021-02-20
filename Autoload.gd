@@ -59,8 +59,8 @@ var function_exceptions : Array = [
 "get_latin_keyboard_variant", #GH  TODO Memory Leak
 "add_feed", #GH 
 "poll", #GH - HTTP CLIENT 
-"", #GH 
-"", #GH 
+"make_atlas", #GH 
+"set_editor_hint", #GH 
 "", #GH 
 
 "collide", #GH 46137
@@ -224,7 +224,6 @@ var disabled_classes : Array = [
 	"TranslationServer", # TODO Freeing instance, delete static object
 	"UndoRedo",  # TODO Looks that may cause crash, and this needs to be fixed
 	"CameraServer", # TODO - Some strange and random crash in contructor of CameraFeed, probably because CameraServer can be deleted
-	"_VisualScriptEditor", # Strange shows that this is not instatable
 ]
 
 # Return all available classes to instance and test
@@ -236,10 +235,6 @@ func get_list_of_available_classes() -> Array:
 	var c = 0
 	for name_of_class in full_class_list:
 		if name_of_class in disabled_classes:
-			continue
-			
-		# TODO Remove this when fixes all related crashes to different types of nodes
-		if !(ClassDB.is_parent_class(name_of_class,"Node") || ClassDB.is_parent_class(name_of_class,"Reference")):
 			continue
 			
 		if ClassDB.can_instance(name_of_class):

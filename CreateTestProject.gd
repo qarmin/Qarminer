@@ -107,6 +107,17 @@ func create_basic_files() -> void:
 	var file: File = File.new()
 
 	assert(file.open(base_dir + "project.godot", File.WRITE) == OK)
+	file.store_string(
+		"""
+config_version=4
+
+[application]
+run/main_scene="res://All.tscn"
+
+[memory]
+limits/message_queue/max_size_kb=65536
+limits/command_queue/multithreading_queue_size_kb=4096
+		""")
 	file.store_string("config_version=4\n")
 	file.store_string("[application]\n")
 	file.store_string("run/main_scene=\"res://All.tscn\"\n")
