@@ -3,6 +3,7 @@ extends Node
 var base_dir: String = "res://Project/"
 var debug_in_runtime: bool = true  # Allow to print info in runtime about currenty executed function, it is very helpful, so I don't recommend to turn this off
 var use_parent_methods: bool = false  # Allows Node2D use Node methods etc. - it is a little slow option
+var allow_to_replace_old_with_new_objects :bool = true # Allows to delete old object and use new
 
 
 class ClassData:
@@ -145,7 +146,7 @@ func create_basic_files() -> void:
 		
 		### Global
 		data_to_save += "extends Node2D\n\n"
-		if ClassDB.is_parent_class(class_data.name, "Node") || ClassDB.is_parent_class(class_data.name, "Reference"):
+		if ClassDB.is_parent_class(class_data.name, "Node") || ClassDB.is_parent_class(class_data.name, "Reference") || (ClassDB.is_parent_class(class_data.name,"Object") && ClassDB.class_has_method(class_data.name, "new")):
 			data_to_save += "var ||| : {} = {}.new()\n\n".replace("{}", object_type).replace("|||", object_name)
 		
 		### Ready function
@@ -156,14 +157,28 @@ func create_basic_files() -> void:
 			data_to_save += "\t\t" + object_name + ".queue_free()\n"
 		data_to_save += "\t\treturn\n\n"
 		if ClassDB.is_parent_class(class_data.name, "Node"):
-			data_to_save += "\tadd_child(REPLACE)\n\n".replace("REPLACE", object_name)
+			data_to_save += "\tadd_child(" + object_name + ")\n\n"
 			
 		### Process Function
 		data_to_save += "func _process(_delta : float) -> void:\n"
+		
+		if allow_to_replace_old_with_new_objects:
+			data_to_save += "\tif randi() % 10 == 0:\n"
+			if ClassDB.is_parent_class(class_data.name, "Node"):
+				data_to_save += "\t\t" + object_name + ".queue_free()\n"
+			if (ClassDB.is_parent_class(class_data.name,"Object") && !(ClassDB.is_parent_class(class_data.name,"Resource")) && !(ClassDB.is_parent_class(class_data.name,"Node")) && ClassDB.class_has_method(class_data.name, "new")):
+				data_to_save += "\t\t" + object_name + ".free()\n"
+			if ClassDB.is_parent_class(class_data.name, "Node") || ClassDB.is_parent_class(class_data.name, "Reference") || (ClassDB.is_parent_class(class_data.name,"Object") && ClassDB.class_has_method(class_data.name, "new")):
+				data_to_save +=  "\t\t" + object_name + " = " + object_type + ".new()\n"
+			if ClassDB.is_parent_class(class_data.name, "Node"):
+				data_to_save += "\t\tadd_child(" + object_name + ")\n"
+			data_to_save += "\t\tpass\n\n"
+			
+		
 		for i in range(class_data.function_names.size()):
 			data_to_save += "\tif randi() % 2 == 0:\n"
 			if debug_in_runtime:
-				data_to_save += "\t\tprint(\"Executing " + object_type + "::" + class_data.function_names[i] + "\")\n\n"
+				data_to_save += "\t\tprint(\"Executing " + object_type + "." + class_data.function_names[i] + "\")\n\n"
 				
 			var arguments := convert_arguments_to_string(class_data.arguments[i])
 			var split_arguments := arguments.split(",")
