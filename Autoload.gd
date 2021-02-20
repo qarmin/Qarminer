@@ -41,23 +41,32 @@ var function_exceptions : Array = [
 "_update_shader", #GH 46062
 "generate_tangents", #GH 46059
 "get_var", #GH 46096
-"_screen_input", #GH 
-"force_drag", #GH 
-"set_script", #GH 
-"getvar", #GH PackedDataContainer::getvar
-"_update_shader", #GH 
-"get_available_chars", #GH 
-"", #GH 
-"", #GH 
-"", #GH 
+"force_drag", #GH 46114
+"set_script", #GH 46120
+"getvar", #GH 46019
+"get_available_chars", #GH 46118
+"set_primary_interface", #GH 46180
+"add_feed", #GH 46181
+"open_midi_inputs", #GH 46183
+"get_unix_time_from_datetime", #GH 46188
+"set_icon", #GH 46189
+"set_window_size", #GH 46187
+"get_screen_size", #GH 46186
+"get_screen_position", #GH 46185
+"set_current_screen", #GH 46184
+"build_capsule_planes", #GH 
+"build_cylinder_planes", #GH 
+"get_latin_keyboard_variant", #GH  TODO Memory Leak
+"add_feed", #GH 
+"poll", #GH - HTTP CLIENT 
 "", #GH 
 "", #GH 
 "", #GH 
 
-"collide", #GH
-"collide_and_get_contacts", #GH
-"collide_with_motion", #GH
-"collide_with_motion_and_get_contacts", #GH
+"collide", #GH 46137
+"collide_and_get_contacts", #GH 46137
+"collide_with_motion", #GH 46137
+"collide_with_motion_and_get_contacts", #GH 46137
 
 
 # TODO Check this later
@@ -67,8 +76,17 @@ var function_exceptions : Array = [
 # TODO is workaround for removing memory leak in Thread::start, should be fixed by GH 45618
 "start",
 
-# TODO Adds big spam when i>100
+# TODO Adds big spam when i>100 - look for possiblity to 
 "add_sphere",
+# Spam when i~1000 - change to specific 
+"update_bitmask_region",
+
+# Slow Function
+"_update_sky",
+
+# Undo/Redo function which doesn't provide enough information about types of objects, probably due vararg(variable size argument)
+"add_do_method",
+"add_undo_method",
 
 # Do not save files and create files and folders
 "pck_start",
@@ -81,18 +99,38 @@ var function_exceptions : Array = [
 "save_encrypted",
 "save_encrypted_pass",
 "open", # This also allow to save files
+"dump_resources_to_file",
+"dump_memory_to_file",
 
 # Do not warp mouse
 "warp_mouse",
 "warp_mouse_position",
 
+# OS
+"kill",
+"shell_open",
+"execute",
+"delay_usec",
+"delay_msec",
+"alert", # Stupid alert window opens
 
 # Godot Freeze
+"wait_to_finish",
+"accept_stream",
+"connect_to_stream",
 "discover",
 "wait",
 "set_gizmo", # Stupid function, needs as parameter an object which can't be instanced # TODO, create issue to hide it 
 
 "_create",
+
+# Spams Output
+"print_tree",
+"print_stray_nodes",
+"print_tree_pretty",
+"print_all_textures_by_size",
+"print_all_resources",
+"print_resources_in_use",
 
 # Do not call other functions
 "_call_function",
@@ -115,15 +153,13 @@ var function_exceptions : Array = [
 "duplicate",
 "queue_free",
 "free",
-"print_tree",
-"print_stray_nodes",
-"print_tree_pretty",
 "remove_and_skip",
 "remove_child",
 "move_child",
 "raise",
 "add_child",
 "add_child_below_node",
+
 ]
 
 # List of slow functions, which may frooze project
@@ -153,7 +189,42 @@ var slow_functions : Array = [
 	"get_aabb",
 	"set_aabb",
 	"is_on_screen"
+]
+# Specific classes which are initialized in specific way e.g. var undo_redo = get_undo_redo() instead var undo_redo = UndoRedo.new()
+var only_instance : Array = [
+	"UndoRedo",
+	"Object",
+	"JSONRPC",
+	"MainLoop",
+	"SceneTree",
+	"ARVRPositionalTracker",
+]
+var invalid_signals : Array = [
+	"multi_selected",
+	"item_collapsed",
+	"button_pressed",
+	"",
+	"",
+	"",
+	
+	
+	# Probably Vararg
+	"tween_step",
+	"tween_completed",
+	"tween_started",
+	"data_channel_received",
+	"",
+]
 
+var disabled_classes : Array = [
+	"AudioServer", # Crash GH #45972
+	"ProjectSettings", # Don't mess with project settings, because they can broke entire your workflow
+	"EditorSettings",
+	"NetworkedMultiplayerENet", 
+	"TranslationServer", # TODO Freeing instance, delete static object
+	"UndoRedo",  # TODO Looks that may cause crash, and this needs to be fixed
+	"CameraServer", # TODO - Some strange and random crash in contructor of CameraFeed, probably because CameraServer can be deleted
+	"_VisualScriptEditor", # Strange shows that this is not instatable
 ]
 
 # Return all available classes to instance and test
@@ -164,20 +235,16 @@ func get_list_of_available_classes() -> Array:
 	full_class_list.sort()
 	var c = 0
 	for name_of_class in full_class_list:
-		if name_of_class == "AudioServer": # Crash GH #45972
+		if name_of_class in disabled_classes:
 			continue
-		if name_of_class == "NetworkedMultiplayerENet": # TODO - create leaked reference instance, look at it later
+			
+		# TODO Remove this when fixes all related crashes to different types of nodes
+		if !(ClassDB.is_parent_class(name_of_class,"Node") || ClassDB.is_parent_class(name_of_class,"Reference")):
 			continue
-		
-		if ClassDB.is_parent_class(name_of_class,"Node") or ClassDB.is_parent_class(name_of_class,"Reference"): # Only instance childrens of this 
-			if debug_print:
-				print(name_of_class)
-			if ClassDB.can_instance(name_of_class):
-				classes.push_back(name_of_class)
-				c+= 1
-		else:
-			if debug_print:
-				push_error("Failed to instance " + str(name_of_class) )
-
+			
+		if ClassDB.can_instance(name_of_class):
+			classes.push_back(name_of_class)
+			c+= 1
+			
 	print(str(c) + " choosen classes from all " + str(full_class_list.size()) + " classes.")
 	return classes

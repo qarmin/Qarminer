@@ -2,6 +2,8 @@ extends Node
 
 var number: float = 0.0
 var random: bool = false
+var should_be_always_valid : bool = true # Generate only valid values e.g. to Node generate Node2D instead 
+
 
 var max_array_size: int = 15
 
@@ -232,19 +234,18 @@ func get_object(object_name: String) -> Object:
 	var a = 0
 	if random:
 		var classes = ClassDB.get_inheriters_from_class("Node") + ClassDB.get_inheriters_from_class("Reference")
-		var should_be_valid : bool = randi() %2
 		
 		if object_name == "Object":
 			while true:
 				var choosen_class: String = classes[randi() % classes.size()]
-				if ClassDB.can_instance(choosen_class) && (ClassDB.is_parent_class(choosen_class,"Node") || ClassDB.is_parent_class(choosen_class,"Reference")):
+				if ClassDB.can_instance(choosen_class) && (ClassDB.is_parent_class(choosen_class,"Node") || ClassDB.is_parent_class(choosen_class,"Reference")) && !(choosen_class in Autoload.disabled_classes):
 					return ClassDB.instance(choosen_class)
 					
 		if ClassDB.is_parent_class(object_name,"Node") || ClassDB.is_parent_class(object_name,"Reference"): 
-			if should_be_valid:
+			if should_be_always_valid:
 				var to_use_classes = ClassDB.get_inheriters_from_class(object_name)
 				to_use_classes.append(object_name)
-				if !ClassDB.can_instance(object_name):
+				if !ClassDB.can_instance(object_name) &&  object_name in Autoload.disabled_classes:
 					assert(to_use_classes.size() > 0)
 				
 				while true:
@@ -254,7 +255,7 @@ func get_object(object_name: String) -> Object:
 						# This shouldn't happens, but sadly happen with e.g. SpatialGizmo
 						assert(false)
 					var choosen_class: String = to_use_classes[randi() % to_use_classes.size()]
-					if ClassDB.can_instance(choosen_class):
+					if ClassDB.can_instance(choosen_class)  && !(choosen_class in Autoload.disabled_classes):
 						return ClassDB.instance(choosen_class)
 			else:
 				while true:
@@ -262,31 +263,31 @@ func get_object(object_name: String) -> Object:
 					if a > 50:
 						assert(false)
 					var choosen_class: String = classes[randi() % classes.size()]
-					if !ClassDB.is_parent_class(choosen_class,object_name):
+					if ClassDB.can_instance(choosen_class) && !ClassDB.is_parent_class(choosen_class,object_name)  && !(choosen_class in Autoload.disabled_classes):
 						return ClassDB.instance(choosen_class)
-						
 		assert(false) # Other argument types are not supported
 		
 	else:
 		if ClassDB.can_instance(object_name): # E.g. Texture is not instantable or shouldn't be, but LargeTexture is
-			if object_name == "Object":
-				return ClassDB.instance("Node") # To prevent memory leak, because Object needs different type of freeing
 			return ClassDB.instance(object_name)
 		else: # Found child of non instantable object
 			var list_of_class  = ClassDB.get_inheriters_from_class(object_name)
 			assert(list_of_class.size() > 0) # Number of inherited class of non instantable class must be greater than 0, otherwise this function would be useless
-			return ClassDB.instance(list_of_class[0])
+			for i in list_of_class:
+				if ClassDB.can_instance(i) && (ClassDB.is_parent_class(i,"Node") || ClassDB.is_parent_class(i,"Reference")):
+					return ClassDB.instance(i)
+			assert(false)
 
 	assert(false)
 	return BoxShape.new()
 
+# TODO Update this with upper implementation
 func get_object_string(object_name: String) -> String:
 	assert(ClassDB.class_exists(object_name))
-	
+
 	var a = 0
 	if random:
 		var classes = ClassDB.get_inheriters_from_class("Node") + ClassDB.get_inheriters_from_class("Reference")
-		var should_be_valid : bool = true # randi() %2 # TODO, non valid entries looks that are not allowed in outside callv
 		
 		if object_name == "Object":
 			while true:
@@ -295,7 +296,7 @@ func get_object_string(object_name: String) -> String:
 					return choosen_class
 					
 		if ClassDB.is_parent_class(object_name,"Node") || ClassDB.is_parent_class(object_name,"Reference"): 
-			if should_be_valid:
+			if should_be_always_valid:
 				var to_use_classes = ClassDB.get_inheriters_from_class(object_name)
 				to_use_classes.append(object_name)
 				if !ClassDB.can_instance(object_name):
@@ -303,7 +304,7 @@ func get_object_string(object_name: String) -> String:
 				
 				while true:
 					a+= 1
-					if a > 50:
+					if a > 30:
 						# Object doesn't have children which can be instanced
 						# This shouldn't happens, but sadly happen with e.g. SpatialGizmo
 						assert(false)
@@ -313,7 +314,7 @@ func get_object_string(object_name: String) -> String:
 			else:
 				while true:
 					a+= 1
-					if a > 50:
+					if a > 30:
 						assert(false)
 					var choosen_class: String = classes[randi() % classes.size()]
 					if !ClassDB.is_parent_class(choosen_class,object_name):
@@ -323,13 +324,14 @@ func get_object_string(object_name: String) -> String:
 		
 	else:
 		if ClassDB.can_instance(object_name): # E.g. Texture is not instantable or shouldn't be, but LargeTexture is
-			if object_name == "Object":
-				return "Node" # To prevent memory leak, because Object needs different type of freeing
 			return object_name
 		else: # Found child of non instantable object
 			var list_of_class  = ClassDB.get_inheriters_from_class(object_name)
 			assert(list_of_class.size() > 0) # Number of inherited class of non instantable class must be greater than 0, otherwise this function would be useless
-			return list_of_class[0]
+			for i in list_of_class:
+				if ClassDB.can_instance(i) && (ClassDB.is_parent_class(i,"Node") || ClassDB.is_parent_class(i,"Reference")):
+					return i
+			assert(false)
 
 	assert(false)
 	return "BoxMesh"

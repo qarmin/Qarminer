@@ -21,12 +21,21 @@ var list_of_all_files = {
 	"Control": [],
 	"Resource": [],
 	"Reference": [],
+	"Object": []
 }
 
 
 func collect_data() -> void:
 	for name_of_class in Autoload.get_list_of_available_classes():
 		if name_of_class == "Image":  # TODO, Remove this when class will be stable enough
+			continue
+		
+		var found : bool = false
+		for exception in Autoload.only_instance:
+			if exception == name_of_class:
+				found = true
+				break
+		if found:
 			continue
 
 		var class_data: ClassData = ClassData.new()
@@ -89,7 +98,7 @@ func create_basic_files() -> void:
 	assert(directory.make_dir_recursive(base_dir + "2D/") == OK)
 	assert(directory.make_dir_recursive(base_dir + "3D/") == OK)
 	assert(directory.make_dir_recursive(base_dir + "Node/") == OK)
-	assert(directory.make_dir_recursive(base_dir + "Other/") == OK)
+	assert(directory.make_dir_recursive(base_dir + "Object/") == OK)
 	assert(directory.make_dir_recursive(base_dir + "Control/") == OK)
 	assert(directory.make_dir_recursive(base_dir + "Resource/") == OK)
 	assert(directory.make_dir_recursive(base_dir + "Reference/") == OK)
@@ -124,15 +133,20 @@ func create_basic_files() -> void:
 			file_name += "Reference" + "/" + class_data.name + ".gd"
 			list_of_all_files["Reference"].append(file_name)
 		else:
-			file_name += "Other" + "/" + class_data.name + ".gd"
-			list_of_all_files["Other"].append(file_name)
+			file_name += "Object" + "/" + class_data.name + ".gd"
+			list_of_all_files["Object"].append(file_name)
 
 		var object_type = class_data.name.trim_prefix("_")  # Change _Directory to Directory etc
-		var object_name = "q_" + object_type
+		var object_name
+		if ClassDB.is_parent_class(class_data.name, "Node") || ClassDB.is_parent_class(class_data.name, "Reference") || (ClassDB.is_parent_class(class_data.name,"Object") && ClassDB.class_has_method(class_data.name, "new")):
+			object_name = "q_" + object_type
+		else:
+			object_name = object_type
 		
 		### Global
 		data_to_save += "extends Node2D\n\n"
-		data_to_save += "var ||| : {} = {}.new()\n\n".replace("{}", object_type).replace("|||", object_name)
+		if ClassDB.is_parent_class(class_data.name, "Node") || ClassDB.is_parent_class(class_data.name, "Reference"):
+			data_to_save += "var ||| : {} = {}.new()\n\n".replace("{}", object_type).replace("|||", object_name)
 		
 		### Ready function
 		data_to_save += "func _ready() -> void:\n"
@@ -191,8 +205,12 @@ func create_basic_files() -> void:
 						data_to_save += "\t\t" + list_of_new_arguments[j] + ".queue_free()\n"
 						
 			data_to_save += "\n"
-						
-		data_to_save += "\tpass"
+		data_to_save += "\tpass\n\n"
+		
+		if (ClassDB.is_parent_class(class_data.name,"Object") && !(ClassDB.is_parent_class(class_data.name,"Resource")) && !(ClassDB.is_parent_class(class_data.name,"Node")) && ClassDB.class_has_method(class_data.name, "new")):
+			data_to_save += "func _exit_tree() -> void:\n"
+			data_to_save += "\t" + object_name  + ".free()\n"
+			
 
 		assert(file.open(file_name, File.WRITE) == OK)
 		file.store_string(data_to_save)
@@ -203,6 +221,7 @@ func convert_arguments_to_string(arguments: Array) -> String:
 
 	ValueCreator.number = 100
 	ValueCreator.random = true
+	ValueCreator.should_be_always_valid = true # DO NOT CHANGE, BECAUSE NON VALID VALUES WILL SHOW GDSCRIPT ERRORS!
 
 	var argument_number: int = 0
 
@@ -211,8 +230,7 @@ func convert_arguments_to_string(arguments: Array) -> String:
 			return_string += ", "
 		match argument["type"]:
 			TYPE_NIL:  # Looks that this means VARIANT not null
-				return_string += "false"  # TODO aadd some randomization
-#				assert(false)
+				return_string += "false"  # TODO add some randomization
 			TYPE_MAX:
 				assert(false)
 			TYPE_AABB:
@@ -278,7 +296,7 @@ func convert_arguments_to_string(arguments: Array) -> String:
 func create_scene_files() -> void:
 	var file: File = File.new()
 
-	for type in ["2D", "3D", "Node", "Control", "Resource", "Reference"]:
+	for type in ["2D", "3D", "Node", "Control", "Resource", "Reference", "Object"]:
 		var external_dependiences: String = ""
 		var node_data: String = ""
 
@@ -311,21 +329,17 @@ func create_scene_files() -> void:
 [ext_resource path=\"res://Control.tscn\" type=\"PackedScene\" id=4]
 [ext_resource path=\"res://3D.tscn\" type=\"PackedScene\" id=5]
 [ext_resource path=\"res://2D.tscn\" type=\"PackedScene\" id=6]
+[ext_resource path=\"res://Object.tscn\" type=\"PackedScene\" id=7]
 
 [node name=\"Node2D\" type=\"Node2D\"]
 
+[node name=\"Object\" parent=\".\" instance=ExtResource( 7 )]
 [node name=\"2D\" parent=\".\" instance=ExtResource( 6 )]
-
 [node name=\"3D\" parent=\".\" instance=ExtResource( 5 )]
-
 [node name=\"Control\" parent=\".\" instance=ExtResource( 4 )]
-
 [node name=\"Node\" parent=\".\" instance=ExtResource( 3 )]
-
 [node name=\"Reference\" parent=\".\" instance=ExtResource( 2 )]
-
-[node name=\"Resource\" parent=\".\" instance=ExtResource( 1 )]"""
-	)
+[node name=\"Resource\" parent=\".\" instance=ExtResource( 1 )]""")
 
 
 func _ready() -> void:

@@ -1,28 +1,29 @@
 extends Node
 
 var debug_print: bool = true
-
+var add_to_tree : bool = true # Adds nodes to tree
+var use_parent_methods: bool = false  # Allows Node2D use Node methods etc. - it is a little slow option which rarely shows
+var use_always_new_object: bool = true  # Don't allow to "remeber" other function effects
 
 func _ready() -> void:
 	tests_all_functions()
 
 
-# TODO - Think about adding 'add_child', to test nodes in scene tree
-# Test all functions which takes 0 arguments
+# Test all functions
 func tests_all_functions() -> void:
-	var use_parent_methods: bool = false  # Allows Node2D use Node methods etc. - it is a little slow option
-	var number_of_loops: int = 1  # Can be executed in multiple loops
-	var use_always_new_object: bool = true  # Don't allow to "remeber" other function effects
-
 	for name_of_class in Autoload.get_list_of_available_classes():
-		if name_of_class.begins_with("_"):  # TODO builtin classes like _Dictionary doesn't work properly in GDScript
+		if name_of_class == "_OS": # Do not change size of window
 			continue
+		
 		# Instance object to be able to execute on it specific functions and later delete to prevent memory leak if it is a Node
 		var object: Object = ClassDB.instance(name_of_class)
-		if object is Node:
-			add_child(object)
-		assert(object != null)  # This should be checked before when collectiong functions
+		if add_to_tree:
+			if object is Node:
+				add_child(object)
+		assert(object != null)  # This shxzould be checked before when collectiong functions
 		var method_list: Array = ClassDB.class_get_method_list(name_of_class, ! use_parent_methods)
+		
+		## Exception
 		for exception in Autoload.function_exceptions:
 			var index: int = -1
 			for method_index in range(method_list.size()):
@@ -33,49 +34,52 @@ func tests_all_functions() -> void:
 				method_list.remove(index)
 
 		if debug_print:
-			print("##### CLASS ##### - " + name_of_class)
+			print("############### CLASS ############### - " + name_of_class)
 
-		for _i in range(number_of_loops):
-			for method_data in method_list:
-				# Function is virtual, so we just skip it
-				if method_data["flags"] == method_data["flags"] | METHOD_FLAG_VIRTUAL:
-					continue
+		for method_data in method_list:
+			# Function is virtual, so we just skip it
+			if method_data["flags"] == method_data["flags"] | METHOD_FLAG_VIRTUAL:
+				continue
 
-				if debug_print:
-#					print(method_data)
-					print(method_data["name"])
-#					print(method_data["args"])
+			if debug_print:
+				print(method_data["name"])
 
-				var arguments: Array = return_for_all(method_data)
-				object.callv(method_data["name"], arguments)
+			var arguments: Array = return_for_all(method_data)
+			object.callv(method_data["name"], arguments)
 
-				for argument in arguments:
-					if argument is Node:
-						argument.queue_free()
+			for argument in arguments:
+				assert(argument != null)
+				if argument is Node:
+					argument.queue_free()
+				elif argument is Object && !(argument is Reference):
+					argument.free()
 
-				if use_always_new_object:
-					if object is Node:
-						object.queue_free()
-					object = ClassDB.instance(name_of_class)
+			if use_always_new_object:
+				assert(object != null)
+				if object is Node:
+					object.queue_free()
+				elif object is Object && !(object is Reference):
+					object.free()
+					
+				object = ClassDB.instance(name_of_class)
+				
 		if object is Node:  # Just prevent memory leak
 			object.queue_free()
+		elif object is Object && !(object is Reference):
+			object.free()
 
 
-# TODO add option to generate random data or only basic data e.g. Vector2() instead Vector(2.52,525.2)
 func return_for_all(method_data: Dictionary) -> Array:
 	var arguments_array: Array = []
 
-	ValueCreator.number = 100
-	ValueCreator.random = false
+	ValueCreator.number = 1000
+	ValueCreator.random = true
+	ValueCreator.should_be_always_valid = false
 
 	for argument in method_data["args"]:
-#		print(argument)
 		match argument.type:
 			TYPE_NIL:  # Looks that this means VARIANT not null
-				arguments_array.push_back(false)  # TODO Add some randomization
-#				assert(false)
-			TYPE_MAX:
-				assert(false)
+				arguments_array.push_back(false) # TODO randomize this
 			TYPE_AABB:
 				arguments_array.push_back(ValueCreator.get_aabb())
 			TYPE_ARRAY:
