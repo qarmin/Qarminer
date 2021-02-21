@@ -228,7 +228,6 @@ var disabled_classes : Array = [
 
 # Return all available classes to instance and test
 func get_list_of_available_classes() -> Array:
-	var debug_print : bool = false
 	var full_class_list : Array = Array(ClassDB.get_class_list())
 	var classes : Array = []
 	full_class_list.sort()

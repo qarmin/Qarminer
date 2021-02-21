@@ -1,12 +1,14 @@
 extends Node
 
-var base_path: String = "res://GDScript/"
-var base_dir: String = "GDScript"
+var base_path: String
+var base_dir: String
 
+var use_gdscript: bool
 
 var debug_in_runtime: bool = true  # Allow to print info in runtime about currenty executed function, it is very helpful, so I don't recommend to turn this off
 var use_parent_methods: bool = false  # Allows Node2D use Node methods etc. - it is a little slow option
-var allow_to_replace_old_with_new_objects :bool = true # Allows to delete old object and use new
+var allow_to_replace_old_with_new_objects: bool = true  # Allows to delete old object and use new
+
 
 class ClassData:
 	var name: String = ""
@@ -16,48 +18,42 @@ class ClassData:
 
 var classes: Array
 
-var list_of_all_files = {
-	"2D": [],
-	"3D": [],
-	"Node": [],
-	"Other": [],
-	"Control": [],
-	"Resource": [],
-	"Reference": [],
-	"Object": []
-}
+var list_of_all_files = {"2D": [], "3D": [], "Node": [], "Other": [], "Control": [], "Resource": [], "Reference": [], "Object": []}
+
+#func _init() -> void:
+#	test_normalize_function()
+#
+#func test_normalize_function():
+#	use_gdscript = false
+#	assert(normalize_function_names("node") == "Node")
+#	assert(normalize_function_names("get_methods") == "GetMethods")
+#	use_gdscript = true
+#	assert(normalize_function_names("node") == "node")
 
 
-func _ready() -> void:
-	test_normalize_function()
-
-func test_normalize_function():
-	assert(normalize_function_names("node",true) == "Node")
-	assert(normalize_function_names("get_methods",true) == "GetMethods")
-	assert(normalize_function_names("node",false) == "node")
-
-func normalize_function_names(function_name : String, used_csharp : bool) -> String:
-	if !used_csharp:
+func normalize_function_names(function_name: String) -> String:
+	if use_gdscript:
 		return function_name
-		
+
 	assert(function_name.length() > 1)
-	assert(!function_name.ends_with("_")) # There is i+1 expression which may be out of bounds
+	assert(! function_name.ends_with("_"))  # There is i+1 expression which may be out of bounds
 	function_name = function_name[0].to_upper() + function_name.substr(1)
-	
+
 	for i in function_name.length():
 		if function_name[i] == "_":
-			function_name[i+1] = function_name[i+1].to_upper()
-			
-	function_name = function_name.replace("_","")
-	
+			function_name[i + 1] = function_name[i + 1].to_upper()
+
+	function_name = function_name.replace("_", "")
+
 	return function_name
 
+
 func collect_data() -> void:
-	for name_of_class in Autoload.get_list_of_available_classes():
+	for name_of_class in ["Node2D"]:  # TODO TODOTODOTODOOTODOOTAutoload.get_list_of_available_classes():
 		if name_of_class == "Image":  # TODO, Remove this when class will be stable enough
 			continue
-		
-		var found : bool = false
+
+		var found: bool = false
 		for exception in Autoload.only_instance:
 			if exception == name_of_class:
 				found = true
@@ -90,7 +86,7 @@ func collect_data() -> void:
 
 			class_data.arguments.append(arguments)
 
-			class_data.function_names.append(method_data["name"])
+			class_data.function_names.append(normalize_function_names(method_data["name"]))
 
 		classes.append(class_data)
 
@@ -107,9 +103,13 @@ func create_scene_files() -> void:
 		var counter: int = 1
 		for file_name in list_of_all_files[type]:
 			var split: PoolStringArray = file_name.rsplit("/")
-			var latest_name: String = split[split.size() - 1].trim_suffix(".gd")
+			var latest_name: String
+			if use_gdscript:
+				latest_name = split[split.size() - 1].trim_suffix(".gd")
+			else:
+				latest_name = split[split.size() - 1].trim_suffix(".cs")
 
-			external_dependiences += "[ext_resource path=\"_PATH_\" type=\"Script\" id=COUNTER]\n".replace("COUNTER", str(counter)).replace("_PATH_", file_name.replace("GDScript/", ""))
+			external_dependiences += "[ext_resource path=\"_PATH_\" type=\"Script\" id=COUNTER]\n".replace("COUNTER", str(counter)).replace("_PATH_", file_name.replace(base_dir, ""))
 			node_data += "[node name=\"FILE_NAME\" type=\"Node2D\" parent=\".\"]\n".replace("FILE_NAME", latest_name)
 			node_data += "script = ExtResource( COUNTER )\n\n".replace("COUNTER", str(counter))
 
@@ -141,9 +141,8 @@ func create_scene_files() -> void:
 [node name=\"Control\" parent=\".\" instance=ExtResource( 4 )]
 [node name=\"Node\" parent=\".\" instance=ExtResource( 3 )]
 [node name=\"Reference\" parent=\".\" instance=ExtResource( 2 )]
-[node name=\"Resource\" parent=\".\" instance=ExtResource( 1 )]""")
-
-
+[node name=\"Resource\" parent=\".\" instance=ExtResource( 1 )]"""
+	)
 
 
 func remove_files_recursivelly(to_delete: String) -> void:
@@ -171,8 +170,6 @@ func remove_files_recursivelly(to_delete: String) -> void:
 	assert(directory.remove(to_delete) == OK)  # TODO, Test This
 
 
-
-
 func create_basic_structure() -> void:
 	var directory: Directory = Directory.new()
 	assert(directory.make_dir_recursive(CreateProjectBase.base_path + "2D/") == OK)
@@ -196,8 +193,8 @@ run/main_scene="res://All.tscn"
 [memory]
 limits/message_queue/max_size_kb=65536
 limits/command_queue/multithreading_queue_size_kb=4096
-		""")
+		"""
+	)
 	file.store_string("config_version=4\n")
 	file.store_string("[application]\n")
 	file.store_string("run/main_scene=\"res://All.tscn\"\n")
-

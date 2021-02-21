@@ -1,13 +1,9 @@
 extends Node
 
 
-		
-
-
-
 func create_basic_files() -> void:
 	var file: File = File.new()
-	
+
 	for class_data in CreateProjectBase.classes:
 		var data_to_save: String = ""
 		var file_name: String = CreateProjectBase.base_path
@@ -36,16 +32,24 @@ func create_basic_files() -> void:
 
 		var object_type = class_data.name.trim_prefix("_")  # Change _Directory to Directory etc
 		var object_name
-		if ClassDB.is_parent_class(class_data.name, "Node") || ClassDB.is_parent_class(class_data.name, "Reference") || (ClassDB.is_parent_class(class_data.name,"Object") && ClassDB.class_has_method(class_data.name, "new")):
+		if (
+			ClassDB.is_parent_class(class_data.name, "Node")
+			|| ClassDB.is_parent_class(class_data.name, "Reference")
+			|| (ClassDB.is_parent_class(class_data.name, "Object") && ClassDB.class_has_method(class_data.name, "new"))
+		):
 			object_name = "q_" + object_type
 		else:
 			object_name = object_type
-		
+
 		### Global
 		data_to_save += "extends Node2D\n\n"
-		if ClassDB.is_parent_class(class_data.name, "Node") || ClassDB.is_parent_class(class_data.name, "Reference") || (ClassDB.is_parent_class(class_data.name,"Object") && ClassDB.class_has_method(class_data.name, "new")):
+		if (
+			ClassDB.is_parent_class(class_data.name, "Node")
+			|| ClassDB.is_parent_class(class_data.name, "Reference")
+			|| (ClassDB.is_parent_class(class_data.name, "Object") && ClassDB.class_has_method(class_data.name, "new"))
+		):
 			data_to_save += "var ||| : {} = {}.new()\n\n".replace("{}", object_type).replace("|||", object_name)
-		
+
 		### Ready function
 		data_to_save += "func _ready() -> void:\n"
 		data_to_save += "\tif !is_visible():\n"
@@ -55,34 +59,42 @@ func create_basic_files() -> void:
 		data_to_save += "\t\treturn\n\n"
 		if ClassDB.is_parent_class(class_data.name, "Node"):
 			data_to_save += "\tadd_child(" + object_name + ")\n\n"
-			
+
 		### Process Function
 		data_to_save += "func _process(_delta : float) -> void:\n"
-		
+
 		if CreateProjectBase.allow_to_replace_old_with_new_objects:
 			data_to_save += "\tif randi() % 10 == 0:\n"
 			if ClassDB.is_parent_class(class_data.name, "Node"):
 				data_to_save += "\t\t" + object_name + ".queue_free()\n"
-			if (ClassDB.is_parent_class(class_data.name,"Object") && !(ClassDB.is_parent_class(class_data.name,"Resource")) && !(ClassDB.is_parent_class(class_data.name,"Node")) && ClassDB.class_has_method(class_data.name, "new")):
+			if (
+				ClassDB.is_parent_class(class_data.name, "Object")
+				&& ! (ClassDB.is_parent_class(class_data.name, "Resource"))
+				&& ! (ClassDB.is_parent_class(class_data.name, "Node"))
+				&& ClassDB.class_has_method(class_data.name, "new")
+			):
 				data_to_save += "\t\t" + object_name + ".free()\n"
-			if ClassDB.is_parent_class(class_data.name, "Node") || ClassDB.is_parent_class(class_data.name, "Reference") || (ClassDB.is_parent_class(class_data.name,"Object") && ClassDB.class_has_method(class_data.name, "new")):
-				data_to_save +=  "\t\t" + object_name + " = " + object_type + ".new()\n"
+			if (
+				ClassDB.is_parent_class(class_data.name, "Node")
+				|| ClassDB.is_parent_class(class_data.name, "Reference")
+				|| (ClassDB.is_parent_class(class_data.name, "Object") && ClassDB.class_has_method(class_data.name, "new"))
+			):
+				data_to_save += "\t\t" + object_name + " = " + object_type + ".new()\n"
 			if ClassDB.is_parent_class(class_data.name, "Node"):
 				data_to_save += "\t\tadd_child(" + object_name + ")\n"
 			data_to_save += "\t\tpass\n\n"
-			
-		
+
 		for i in range(class_data.function_names.size()):
 			data_to_save += "\tif randi() % 2 == 0:\n"
 			if CreateProjectBase.debug_in_runtime:
 				data_to_save += "\t\tprint(\"Executing " + object_type + "." + class_data.function_names[i] + "\")\n\n"
-				
+
 			var arguments := convert_arguments_to_string(class_data.arguments[i])
 			var split_arguments := arguments.split(",")
-			
-			var list_of_new_arguments :Array= [] # e.g. (variable1,0,0) instead (object.new(),0,0)
-			var variables_to_add : Array= [] # e.g. var variable1 = Object.new()
-			
+
+			var list_of_new_arguments: Array = []  # e.g. (variable1,0,0) instead (object.new(),0,0)
+			var variables_to_add: Array = []  # e.g. var variable1 = Object.new()
+
 			var index = 0
 			for j in split_arguments:
 				if j.ends_with(".new()"):
@@ -94,35 +106,39 @@ func create_basic_files() -> void:
 				else:
 					list_of_new_arguments.append(j.strip_edges())
 					variables_to_add.append("")
-				
+
 			assert(list_of_new_arguments.size() == variables_to_add.size())
 			# Create temporary objects
 			for j in variables_to_add.size():
-				if !variables_to_add[j].empty():
+				if ! variables_to_add[j].empty():
 					assert(ClassDB.class_exists(variables_to_add[j].trim_suffix(".new()")))
 					data_to_save += "\t\tvar " + list_of_new_arguments[j] + " = " + variables_to_add[j] + "\n"
-					
-			var string_new_arguments : String = ""
+
+			var string_new_arguments: String = ""
 			for j in range(variables_to_add.size()):
 				string_new_arguments += list_of_new_arguments[j]
 				if j != (variables_to_add.size() - 1):
 					string_new_arguments += ", "
-				
+
 			data_to_save += "\t\t" + object_name + "." + class_data.function_names[i] + "(" + string_new_arguments + ")\n"
-			
+
 			# Delete all temporary objects
 			for j in range(variables_to_add.size()):
-				if !variables_to_add[j].empty():
-					if ClassDB.is_parent_class(variables_to_add[j].trim_suffix(".new()"),"Node"):
+				if ! variables_to_add[j].empty():
+					if ClassDB.is_parent_class(variables_to_add[j].trim_suffix(".new()"), "Node"):
 						data_to_save += "\t\t" + list_of_new_arguments[j] + ".queue_free()\n"
-						
+
 			data_to_save += "\n"
 		data_to_save += "\tpass\n\n"
-		
-		if (ClassDB.is_parent_class(class_data.name,"Object") && !(ClassDB.is_parent_class(class_data.name,"Resource")) && !(ClassDB.is_parent_class(class_data.name,"Node")) && ClassDB.class_has_method(class_data.name, "new")):
+
+		if (
+			ClassDB.is_parent_class(class_data.name, "Object")
+			&& ! (ClassDB.is_parent_class(class_data.name, "Resource"))
+			&& ! (ClassDB.is_parent_class(class_data.name, "Node"))
+			&& ClassDB.class_has_method(class_data.name, "new")
+		):
 			data_to_save += "func _exit_tree() -> void:\n"
-			data_to_save += "\t" + object_name  + ".free()\n"
-			
+			data_to_save += "\t" + object_name + ".free()\n"
 
 		assert(file.open(file_name, File.WRITE) == OK)
 		file.store_string(data_to_save)
@@ -133,7 +149,7 @@ func convert_arguments_to_string(arguments: Array) -> String:
 
 	ValueCreator.number = 100
 	ValueCreator.random = true
-	ValueCreator.should_be_always_valid = true # DO NOT CHANGE, BECAUSE NON VALID VALUES WILL SHOW GDSCRIPT ERRORS!
+	ValueCreator.should_be_always_valid = true  # DO NOT CHANGE, BECAUSE NON VALID VALUES WILL SHOW GDSCRIPT ERRORS!
 
 	var argument_number: int = 0
 
@@ -166,7 +182,7 @@ func convert_arguments_to_string(arguments: Array) -> String:
 			TYPE_NODE_PATH:
 				return_string += "NodePath(\".\")"
 			TYPE_OBJECT:
-				return_string += ValueCreator.get_object_string(argument["class_name"]) + ".new()" 
+				return_string += ValueCreator.get_object_string(argument["class_name"]) + ".new()"
 			TYPE_PLANE:
 				return_string += ValueCreator.get_plane_string()
 			TYPE_QUAT:
@@ -205,9 +221,11 @@ func convert_arguments_to_string(arguments: Array) -> String:
 	return return_string
 
 
-
 func _ready() -> void:
-#	test_normalize_function()
+	CreateProjectBase.use_gdscript = true
+	CreateProjectBase.base_path = "res://GDScript/"
+	CreateProjectBase.base_dir = "GDScript/"
+
 	CreateProjectBase.collect_data()
 	if Directory.new().dir_exists(CreateProjectBase.base_path):
 		CreateProjectBase.remove_files_recursivelly(CreateProjectBase.base_path)

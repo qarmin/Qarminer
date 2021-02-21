@@ -4,7 +4,7 @@ Qarminer is simple tool(type of fuzzer) to find some types of bugs in Godot Engi
 Contains three scenes which:
 - Executes every single function
 - Creating test GDScript project
-- Creating test C# project
+- Creating test C# project(WIP, can't test because Mono Godot not working on my machine)
 
 Qarminer can test functions with random data(helpful with fuzzing) or always with same(helpful in CI)
 
@@ -25,9 +25,8 @@ Currently GDScript in Godot 4.0 is heavily broken, so it is not possible to get 
 Some basic port you can find in 4.0 branch(little striped and outdated)
 
 ## TODO
-- Mono Support - should be not so hard to do
 - Add signal checking - some basic progress I have done, but I don't know if it is possible(probably I will wait for Godot 4.0, which change most of things).
-- Support for more data - Currently only `Node` and `Reference` based nodes are supported
+- Add generating special projects - like for physics - Areas with CollisionsBody etc.
 
 ## Differences between projects in The-Worst-Godot-Test-Project and Qarminer
 ### Qarminer advantages

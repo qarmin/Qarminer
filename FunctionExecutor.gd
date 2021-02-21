@@ -1,9 +1,10 @@
 extends Node
 
 var debug_print: bool = true
-var add_to_tree : bool = true # Adds nodes to tree
+var add_to_tree: bool = true  # Adds nodes to tree
 var use_parent_methods: bool = false  # Allows Node2D use Node methods etc. - it is a little slow option which rarely shows
 var use_always_new_object: bool = true  # Don't allow to "remeber" other function effects
+
 
 func _ready() -> void:
 	tests_all_functions()
@@ -12,9 +13,9 @@ func _ready() -> void:
 # Test all functions
 func tests_all_functions() -> void:
 	for name_of_class in Autoload.get_list_of_available_classes():
-		if name_of_class == "_OS": # Do not change size of window
+		if name_of_class == "_OS":  # Do not change size of window
 			continue
-		
+
 		# Instance object to be able to execute on it specific functions and later delete to prevent memory leak if it is a Node
 		var object: Object = ClassDB.instance(name_of_class)
 		assert(object != null)  # This should be checked before when collectiong functions
@@ -22,7 +23,7 @@ func tests_all_functions() -> void:
 			if object is Node:
 				add_child(object)
 		var method_list: Array = ClassDB.class_get_method_list(name_of_class, ! use_parent_methods)
-		
+
 		## Exception
 		for exception in Autoload.function_exceptions:
 			var index: int = -1
@@ -51,21 +52,21 @@ func tests_all_functions() -> void:
 				assert(argument != null)
 				if argument is Node:
 					argument.queue_free()
-				elif argument is Object && !(argument is Reference):
+				elif argument is Object && ! (argument is Reference):
 					argument.free()
 
 			if use_always_new_object:
 				assert(object != null)
 				if object is Node:
 					object.queue_free()
-				elif object is Object && !(object is Reference):
+				elif object is Object && ! (object is Reference):
 					object.free()
-					
+
 				object = ClassDB.instance(name_of_class)
-				
+
 		if object is Node:  # Just prevent memory leak
 			object.queue_free()
-		elif object is Object && !(object is Reference):
+		elif object is Object && ! (object is Reference):
 			object.free()
 
 
@@ -79,7 +80,7 @@ func return_for_all(method_data: Dictionary) -> Array:
 	for argument in method_data["args"]:
 		match argument.type:
 			TYPE_NIL:  # Looks that this means VARIANT not null
-				arguments_array.push_back(false) # TODO randomize this
+				arguments_array.push_back(false)  # TODO randomize this
 			TYPE_AABB:
 				arguments_array.push_back(ValueCreator.get_aabb())
 			TYPE_ARRAY:
