@@ -49,7 +49,7 @@ func normalize_function_names(function_name: String) -> String:
 
 
 func collect_data() -> void:
-	for name_of_class in ["Node2D"]:  # TODO TODOTODOTODOOTODOOTAutoload.get_list_of_available_classes():
+	for name_of_class in Autoload.get_list_of_available_classes():
 		if name_of_class == "Image":  # TODO, Remove this when class will be stable enough
 			continue
 
