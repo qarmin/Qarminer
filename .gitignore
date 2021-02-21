@@ -9,4 +9,5 @@ TEMP/
 #export_presets.cfg
 logs/
 .godot/
-Project/
+CSharp/
+GDScript/

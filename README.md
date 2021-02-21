@@ -1,9 +1,10 @@
 ## Qarminer
 Qarminer is simple tool(type of fuzzer) to find some types of bugs in Godot Engine with help of automation.
 
-Contains two scenes which:
+Contains three scenes which:
 - Executes every single function
-- Creating test project
+- Creating test GDScript project
+- Creating test C# project
 
 Qarminer can test functions with random data(helpful with fuzzing) or always with same(helpful in CI)
 
@@ -14,9 +15,10 @@ To use it just execute `FunctionExecutor.tscn`.
 It will get list of all classes(minus some user exceptions) and all its functions(minus some functions which are known that cause crashes or do something strange).  
 Next object class is created and each available function is executed on it with random or not arguments
 
-### Create Test Project
-Executing `CreateTestProject.tscn` will allow to create test project in Project folder.  
-This project allow to check how project works when functions randomly are executed.
+### Creating Test Projects
+Executing `CreateGDScriptProject.tscn` will allow to create test project in `GDScript` folder.  
+Same `CreateCSharpProject.tscn` will create a new project in `CSharp` folder.  
+This projects allow to check how project works when functions randomly are executed and also allow to easy change/mix invidual classes and functions.
 
 ## 4.0 version
 Currently GDScript in Godot 4.0 is heavily broken, so it is not possible to get current newest version of Qarminer from master branch(with 3.2 Godot support) and easily update it to 4.0.  
