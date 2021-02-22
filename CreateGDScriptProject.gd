@@ -233,3 +233,4 @@ func _ready() -> void:
 	create_basic_files()
 	CreateProjectBase.create_scene_files()
 	print("Created test GDScript project")
+	get_tree().quit()

@@ -8,7 +8,7 @@ var use_always_new_object: bool = true  # Don't allow to "remeber" other functio
 
 func _ready() -> void:
 	tests_all_functions()
-
+	get_tree().quit()
 
 # Test all functions
 func tests_all_functions() -> void:

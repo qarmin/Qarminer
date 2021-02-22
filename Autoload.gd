@@ -217,13 +217,10 @@ var invalid_signals : Array = [
 ]
 
 var disabled_classes : Array = [
-	"AudioServer", # Crash GH #45972
 	"ProjectSettings", # Don't mess with project settings, because they can broke entire your workflow
-	"EditorSettings",
-	"NetworkedMultiplayerENet", 
-	"TranslationServer", # TODO Freeing instance, delete static object
-	"UndoRedo",  # TODO Looks that may cause crash, and this needs to be fixed
-	"CameraServer", # TODO - Some strange and random crash in contructor of CameraFeed, probably because CameraServer can be deleted
+	"EditorSettings", # Also don't mess with editor settings 
+#	"NetworkedMultiplayerENet", 
+#	"UndoRedo",  # TODO Looks that may cause crash, and this needs to be fixed
 ]
 
 # Return all available classes to instance and test
@@ -234,6 +231,9 @@ func get_list_of_available_classes() -> Array:
 	var c = 0
 	for name_of_class in full_class_list:
 		if name_of_class in disabled_classes:
+			continue
+		
+		if name_of_class.find("Server") != -1:
 			continue
 			
 		if ClassDB.can_instance(name_of_class):

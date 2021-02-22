@@ -45,9 +45,9 @@ func create_basic_files() -> void:
 		data_to_save += """using Godot;
 using System;
 
-public class CLASS_NAME : Godot.Node2D
+public class Node2D : Godot.Node2D
 {
-""".replace("CLASS_NAME", "My" + object_type)
+"""
 		if (
 			ClassDB.is_parent_class(class_data.name, "Node")
 			|| ClassDB.is_parent_class(class_data.name, "Reference")
@@ -117,7 +117,7 @@ public class CLASS_NAME : Godot.Node2D
 			# Create temporary objects
 			for j in variables_to_add.size():
 				if ! variables_to_add[j].empty():
-					if variables_to_add[j].find("Collections") == -1 && variables_to_add[j].find("[]") == -1:
+					if variables_to_add[j].find("Collections") == -1 && variables_to_add[j].find("[]") == -1 && variables_to_add[j].find("RID()") == -1:
 						assert(ClassDB.class_exists(variables_to_add[j].trim_suffix("()").trim_prefix("new Godot.")))
 						data_to_save += "\t\t\t" + variables_to_add[j].trim_suffix("()").trim_prefix("new ") + " " + list_of_new_arguments[j] + " = " + variables_to_add[j] + ";\n"
 
@@ -132,7 +132,7 @@ public class CLASS_NAME : Godot.Node2D
 			# Delete all temporary objects
 			for j in range(variables_to_add.size()):
 				if ! variables_to_add[j].empty():
-					if variables_to_add[j].find("Collections") == -1 && variables_to_add[j].find("[]") == -1:
+					if variables_to_add[j].find("Collections") == -1 && variables_to_add[j].find("[]") == -1 && variables_to_add[j].find("RID()") == -1:
 						if ClassDB.is_parent_class(variables_to_add[j].trim_suffix("()").trim_prefix("new Godot."), "Node"):
 							data_to_save += "\t\t\t" + list_of_new_arguments[j] + ".QueueFree();\n"
 
@@ -244,3 +244,4 @@ func _ready() -> void:
 	create_basic_files()
 	CreateProjectBase.create_scene_files()
 	print("Created test C# project")
+	get_tree().quit()
