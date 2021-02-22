@@ -63,6 +63,16 @@ var function_exceptions : Array = [
 "set_editor_hint", #GH 
 "", #GH 
 
+#GODOT 4.0
+"create_from_image",
+"set_point_position",
+"connect", # OTHER THINGS
+"set_base",
+"particles_collision_set_height_field_resolution",
+"set_deconstruct_type",
+"set_constant_type",
+"",
+
 "collide", #GH 46137
 "collide_and_get_contacts", #GH 46137
 "collide_with_motion", #GH 46137
@@ -224,6 +234,8 @@ var disabled_classes : Array = [
 	"TranslationServer", # TODO Freeing instance, delete static object
 	"UndoRedo",  # TODO Looks that may cause crash, and this needs to be fixed
 	"CameraServer", # TODO - Some strange and random crash in contructor of CameraFeed, probably because CameraServer can be deleted
+	"TextServerManager", # 4.0 Crash
+	"GdNavigationServer",
 ]
 
 # Return all available classes to instance and test
@@ -232,6 +244,7 @@ func get_list_of_available_classes() -> Array:
 	var classes : Array = []
 	full_class_list.sort()
 	var c = 0
+	var rr = 0
 	for name_of_class in full_class_list:
 		if name_of_class in disabled_classes:
 			continue

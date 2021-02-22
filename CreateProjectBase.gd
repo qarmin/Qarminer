@@ -1,9 +1,9 @@
 extends Node
 
-var base_path: String
-var base_dir: String
+var base_path: String = ""
+var base_dir: String = ""
 
-var use_gdscript: bool
+var use_gdscript: bool = false
 
 var debug_in_runtime: bool = true  # Allow to print info in runtime about currenty executed function, it is very helpful, so I don't recommend to turn this off
 var use_parent_methods: bool = false  # Allows Node2D use Node methods etc. - it is a little slow option
@@ -16,7 +16,7 @@ class ClassData:
 	var arguments: Array = []
 
 
-var classes: Array
+var classes: Array = []
 
 var list_of_all_files = {"2D": [], "3D": [], "Node": [], "Other": [], "Control": [], "Resource": [], "Reference": [], "Object": []}
 
@@ -49,7 +49,7 @@ func normalize_function_names(function_name: String) -> String:
 
 
 func collect_data() -> void:
-	for name_of_class in ["Node2D"]:  # TODO TODOTODOTODOOTODOOTAutoload.get_list_of_available_classes():
+	for name_of_class in Autoload.get_list_of_available_classes():
 		if name_of_class == "Image":  # TODO, Remove this when class will be stable enough
 			continue
 
@@ -68,7 +68,7 @@ func collect_data() -> void:
 		for exception in Autoload.function_exceptions + Autoload.slow_functions:
 			var index: int = -1
 			for method_index in range(method_list.size()):
-				if method_list[method_index]["name"] == exception:
+				if method_list[method_index].get("name") == exception:
 					index = method_index
 					break
 			if index != -1:
@@ -76,17 +76,25 @@ func collect_data() -> void:
 
 		for method_data in method_list:
 			# Function is virtual, so we just skip it
-			if method_data["flags"] == method_data["flags"] | METHOD_FLAG_VIRTUAL:
+			if method_data.get("flags") == method_data.get("flags") | METHOD_FLAG_VIRTUAL:
 				continue
 
 			var arguments: Array = []
 
-			for i in method_data["args"]:
+			var found_callable : bool = false
+			for i in method_data.get("args"):
+				if i.get("type") == TYPE_CALLABLE:
+					found_callable = true
+					break
 				arguments.push_back(i)
+
+			if found_callable:
+				continue
+
 
 			class_data.arguments.append(arguments)
 
-			class_data.function_names.append(normalize_function_names(method_data["name"]))
+			class_data.function_names.append(normalize_function_names(method_data.get("name")))
 
 		classes.append(class_data)
 
@@ -102,7 +110,7 @@ func create_scene_files() -> void:
 		file.store_string("[gd_scene load_steps=1000 format=2]\n\n")
 		var counter: int = 1
 		for file_name in list_of_all_files[type]:
-			var split: PoolStringArray = file_name.rsplit("/")
+			var split: PackedStringArray = file_name.rsplit("/")
 			var latest_name: String
 			if use_gdscript:
 				latest_name = split[split.size() - 1].trim_suffix(".gd")
@@ -185,16 +193,19 @@ func create_basic_structure() -> void:
 	assert(file.open(CreateProjectBase.base_path + "project.godot", File.WRITE) == OK)
 	file.store_string(
 		"""
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
 config_version=4
 
-[application]
-run/main_scene="res://All.tscn"
-
 [memory]
+
 limits/message_queue/max_size_kb=65536
 limits/command_queue/multithreading_queue_size_kb=4096
-		"""
+"""
 	)
-	file.store_string("config_version=4\n")
-	file.store_string("[application]\n")
-	file.store_string("run/main_scene=\"res://All.tscn\"\n")

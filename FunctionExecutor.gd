@@ -28,7 +28,7 @@ func tests_all_functions() -> void:
 		for exception in Autoload.function_exceptions:
 			var index: int = -1
 			for method_index in range(method_list.size()):
-				if method_list[method_index]["name"] == exception:
+				if method_list[method_index].get("name") == exception:
 					index = method_index
 					break
 			if index != -1:
@@ -39,24 +39,24 @@ func tests_all_functions() -> void:
 
 		for method_data in method_list:
 			# Function is virtual, so we just skip it
-			if method_data["flags"] == method_data["flags"] | METHOD_FLAG_VIRTUAL:
+			if method_data.get("flags") == method_data.get("flags") | METHOD_FLAG_VIRTUAL:
 				continue
 
 			if debug_print:
-				print(method_data["name"])
+				print(method_data.get("name"))
 
 			var arguments: Array = return_for_all(method_data)
-			object.callv(method_data["name"], arguments)
+			object.callv(method_data.get("name"), arguments)
 
 			for argument in arguments:
-				assert(argument != null)
+#				assert(argument != null)
 				if argument is Node:
 					argument.queue_free()
 				elif argument is Object && ! (argument is Reference):
 					argument.free()
 
 			if use_always_new_object:
-				assert(object != null)
+#				assert(object != null)
 				if object is Node:
 					object.queue_free()
 				elif object is Object && ! (object is Reference):
@@ -77,65 +77,84 @@ func return_for_all(method_data: Dictionary) -> Array:
 	ValueCreator.random = true
 	ValueCreator.should_be_always_valid = false
 
-	for argument in method_data["args"]:
-		match argument.type:
-			TYPE_NIL:  # Looks that this means VARIANT not null
-				arguments_array.push_back(false)  # TODO randomize this
-			TYPE_AABB:
+	for argument in method_data.get("args"):
+		print(argument)
+		var type = argument.get("type")
+		print(type)
+		if type == TYPE_NIL: # Looks that this means VARIANT not null
+				arguments_array.push_back(false) # TODO Add some randomization
+#				assert(false)
+		elif type == TYPE_MAX:
+				assert(false)
+		elif type == TYPE_AABB:
 				arguments_array.push_back(ValueCreator.get_aabb())
-			TYPE_ARRAY:
+		elif type == TYPE_ARRAY:
 				arguments_array.push_back(ValueCreator.get_array())
-			TYPE_BASIS:
+		elif type == TYPE_BASIS:
 				arguments_array.push_back(ValueCreator.get_basis())
-			TYPE_BOOL:
+		elif type == TYPE_BOOL:
 				arguments_array.push_back(ValueCreator.get_bool())
-			TYPE_COLOR:
+		elif type == TYPE_COLOR:
 				arguments_array.push_back(ValueCreator.get_color())
-			TYPE_COLOR_ARRAY:
-				arguments_array.push_back(ValueCreator.get_pool_color_array())
-			TYPE_DICTIONARY:
+		elif type == TYPE_COLOR_ARRAY:
+				arguments_array.push_back(PackedColorArray([]))
+		elif type == TYPE_DICTIONARY:
 				arguments_array.push_back(ValueCreator.get_dictionary())
-			TYPE_INT:
+		elif type == TYPE_INT:
 				arguments_array.push_back(ValueCreator.get_int())
-			TYPE_INT_ARRAY:
-				arguments_array.push_back(ValueCreator.get_pool_int_array())
-			TYPE_NODE_PATH:
+		elif type == TYPE_INT32_ARRAY:
+				arguments_array.push_back(PackedInt32Array([]))
+		elif type == TYPE_INT64_ARRAY:
+				arguments_array.push_back(PackedInt64Array([]))
+		elif type == TYPE_NODE_PATH:
 				arguments_array.push_back(ValueCreator.get_nodepath())
-			TYPE_OBJECT:
-				arguments_array.push_back(ValueCreator.get_object(argument["class_name"]))
-			TYPE_PLANE:
+		elif type == TYPE_OBJECT:
+				arguments_array.push_back(ValueCreator.get_object(argument.get("class_name")))
+		elif type == TYPE_PLANE:
 				arguments_array.push_back(ValueCreator.get_plane())
-			TYPE_QUAT:
+		elif type == TYPE_QUAT:
 				arguments_array.push_back(ValueCreator.get_quat())
-			TYPE_RAW_ARRAY:
-				arguments_array.push_back(ValueCreator.get_pool_byte_array())
-			TYPE_REAL:
+		elif type == TYPE_RAW_ARRAY:
+				arguments_array.push_back(PackedByteArray([]))
+		elif type == TYPE_FLOAT:
 				arguments_array.push_back(ValueCreator.get_float())
-			TYPE_REAL_ARRAY:
-				arguments_array.push_back(ValueCreator.get_pool_real_array())
-			TYPE_RECT2:
+		elif type == TYPE_FLOAT32_ARRAY:
+				arguments_array.push_back(PackedFloat32Array([]))
+		elif type == TYPE_FLOAT64_ARRAY:
+				arguments_array.push_back(PackedFloat32Array([]))
+		elif type == TYPE_RECT2:
 				arguments_array.push_back(ValueCreator.get_rect2())
-			TYPE_RID:
+		elif type == TYPE_RECT2I:
+				arguments_array.push_back(ValueCreator.get_rect2i())
+		elif type == TYPE_RID:
 				arguments_array.push_back(RID())
-			TYPE_STRING:
+		elif type == TYPE_STRING:
 				arguments_array.push_back(ValueCreator.get_string())
-			TYPE_STRING_ARRAY:
-				arguments_array.push_back(ValueCreator.get_pool_string_array())
-			TYPE_TRANSFORM:
+		elif type == TYPE_STRING_NAME:
+				arguments_array.push_back(StringName(ValueCreator.get_string()))
+		elif type == TYPE_STRING_ARRAY:
+				arguments_array.push_back(PackedStringArray([]))
+		elif type == TYPE_TRANSFORM:
 				arguments_array.push_back(ValueCreator.get_transform())
-			TYPE_TRANSFORM2D:
+		elif type == TYPE_TRANSFORM2D:
 				arguments_array.push_back(ValueCreator.get_transform2D())
-			TYPE_VECTOR2:
+		elif type == TYPE_VECTOR2:
 				arguments_array.push_back(ValueCreator.get_vector2())
-			TYPE_VECTOR2_ARRAY:
-				arguments_array.push_back(ValueCreator.get_pool_vector2_array())
-			TYPE_VECTOR3:
+		elif type == TYPE_VECTOR2I:
+				arguments_array.push_back(ValueCreator.get_vector2i())
+		elif type == TYPE_VECTOR2_ARRAY:
+				arguments_array.push_back(PackedVector2Array([]))
+		elif type == TYPE_VECTOR3:
 				arguments_array.push_back(ValueCreator.get_vector3())
-			TYPE_VECTOR3_ARRAY:
-				arguments_array.push_back(ValueCreator.get_pool_vector3_array())
-			_:
-				assert(false)  # Missed some types, add it
-
+		elif type == TYPE_VECTOR3I:
+				arguments_array.push_back(ValueCreator.get_vector3i())
+		elif type == TYPE_VECTOR3_ARRAY:
+				arguments_array.push_back(PackedVector3Array([]))
+		elif type== TYPE_CALLABLE:
+			arguments_array.push_back(Callable(BoxMesh.new(),"Rar"))
+		else:
+				assert(false) # Missed some types, add it
+				
 	if debug_print:
 		print("Parameters " + str(arguments_array))
 	return arguments_array
