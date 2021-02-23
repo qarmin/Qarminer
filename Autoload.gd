@@ -73,6 +73,12 @@ var function_exceptions : Array = [
 "set_constant_type",
 "",
 
+
+"add_string",
+"draw_string",
+"set_dropcap",
+"",
+
 "collide", #GH 46137
 "collide_and_get_contacts", #GH 46137
 "collide_with_motion", #GH 46137
