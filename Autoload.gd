@@ -68,13 +68,9 @@ var function_exceptions : Array = [
 "collide_with_motion", #GH 46137
 "collide_with_motion_and_get_contacts", #GH 46137
 
-
 # TODO Check this later
 "propagate_notification",
 "notification",
-
-# TODO is workaround for removing memory leak in Thread::start, should be fixed by GH 45618
-"start",
 
 # TODO Adds big spam when i>100 - look for possiblity to 
 "add_sphere",
@@ -98,9 +94,13 @@ var function_exceptions : Array = [
 "make_dir_recursive",
 "save_encrypted",
 "save_encrypted_pass",
-"open", # This also allow to save files
 "dump_resources_to_file",
 "dump_memory_to_file",
+# This also allow to save files
+"open",
+"open_encrypted",
+"open_encrypted_with_pass",
+"open_compressed",
 
 # Do not warp mouse
 "warp_mouse",
@@ -120,9 +120,11 @@ var function_exceptions : Array = [
 "connect_to_stream",
 "discover",
 "wait",
-"set_gizmo", # Stupid function, needs as parameter an object which can't be instanced # TODO, create issue to hide it 
 
-"_create",
+"_create", # TODO Check
+
+
+"set_gizmo", # Stupid function, needs as parameter an object which can't be instanced # TODO, create issue to hide it 
 
 # Spams Output
 "print_tree",
@@ -178,12 +180,12 @@ var slow_functions : Array = [
 	"force_update_transform",
 	
 	
-	# In 3d view some options are really slow
+	# In 3d view some options are really slow, needs to be limited
 	"set_rings",
 	"set_amount", # Particles
 
 
-# Just a little slow functions
+	# Just a little slow functions
 	"is_enabler_enabled",
 	"set_enabler",
 	"get_aabb",
@@ -218,9 +220,7 @@ var invalid_signals : Array = [
 
 var disabled_classes : Array = [
 	"ProjectSettings", # Don't mess with project settings, because they can broke entire your workflow
-	"EditorSettings", # Also don't mess with editor settings 
-#	"NetworkedMultiplayerENet", 
-#	"UndoRedo",  # TODO Looks that may cause crash, and this needs to be fixed
+	"EditorSettings", # Also don't mess with editor settings
 ]
 
 # Return all available classes to instance and test
