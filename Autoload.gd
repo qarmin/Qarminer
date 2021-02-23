@@ -235,6 +235,9 @@ func get_list_of_available_classes() -> Array:
 		
 		if name_of_class.find("Server") != -1:
 			continue
+#	Enable This for RegressionTestProject, to get visual info about what is going on the screen
+#		if !ClassDB.is_parent_class(name_of_class, "Node") && !ClassDB.is_parent_class(name_of_class, "Reference"):
+#			continue
 			
 		if ClassDB.can_instance(name_of_class):
 			classes.push_back(name_of_class)
