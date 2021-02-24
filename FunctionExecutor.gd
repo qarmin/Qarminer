@@ -74,9 +74,9 @@ func tests_all_functions() -> void:
 func return_for_all(method_data: Dictionary) -> Array:
 	var arguments_array: Array = []
 
-	ValueCreator.number = 1000
-	ValueCreator.random = true
-	ValueCreator.should_be_always_valid = false
+	ValueCreator.number = 10
+	ValueCreator.random = false
+	ValueCreator.should_be_always_valid = true
 
 	for argument in method_data.get("args"):
 		print(argument)
@@ -122,7 +122,7 @@ func return_for_all(method_data: Dictionary) -> Array:
 		elif type == TYPE_FLOAT32_ARRAY:
 				arguments_array.push_back(PackedFloat32Array([]))
 		elif type == TYPE_FLOAT64_ARRAY:
-				arguments_array.push_back(PackedFloat32Array([]))
+				arguments_array.push_back(PackedFloat64Array([]))
 		elif type == TYPE_RECT2:
 				arguments_array.push_back(ValueCreator.get_rect2())
 		elif type == TYPE_RECT2I:
