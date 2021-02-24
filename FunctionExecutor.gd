@@ -74,14 +74,12 @@ func tests_all_functions() -> void:
 func return_for_all(method_data: Dictionary) -> Array:
 	var arguments_array: Array = []
 
-	ValueCreator.number = 10
-	ValueCreator.random = false
-	ValueCreator.should_be_always_valid = true
+	ValueCreator.number = 100
+	ValueCreator.random = true
+	ValueCreator.should_be_always_valid = false
 
 	for argument in method_data.get("args"):
-		print(argument)
 		var type = argument.get("type")
-		print(type)
 		if type == TYPE_NIL: # Looks that this means VARIANT not null
 				arguments_array.push_back(false) # TODO Add some randomization
 #				assert(false)

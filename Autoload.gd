@@ -2,6 +2,10 @@ extends Node
 
 var function_exceptions : Array = [
 # They exists without assigment like Class.method, because they may be a parent of other objects and children also should have disabled child.method, its children also etc. which is too much to do
+
+"draw_multiline_string",
+"draw_font",
+
 "align",# GH 45976
 "_screen_pick_pressed",# GH 45977
 "debug_bake",# GH 45978
