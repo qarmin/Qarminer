@@ -11,3 +11,5 @@ logs/
 .godot/
 CSharp/
 GDScript/
+Node.gd
+Node.tscn

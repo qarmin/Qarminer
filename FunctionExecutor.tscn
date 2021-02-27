@@ -2,5 +2,5 @@
 
 [ext_resource path="res://FunctionExecutor.gd" type="Script" id=1]
 
-[node name="FunctionExecutor" type="Node2D"]
+[node name="FunctionExecutor" type="Node"]
 script = ExtResource( 1 )

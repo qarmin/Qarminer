@@ -1,169 +1,173 @@
 extends Node
 
-var function_exceptions : Array = [
-# They exists without assigment like Class.method, because they may be a parent of other objects and children also should have disabled child.method, its children also etc. which is too much to do
-"align",# GH 45976
-"_screen_pick_pressed",# GH 45977
-"debug_bake",# GH 45978
-"bake", # GH 45978
-"_editor_settings_changed",# GH 45979
-"_mesh_changed",# GH 45980
-"_submenu_timeout", # GH 45981
-"set_data", # GH 45995 - probably this will cause a lot of different errors in other classes
-"_set_user_data", # GH 45996
-"set_config_file", # GH 45997
-"_gui_input", # GH 45998
-"_unhandled_key_input", # GH 45998
-"navpoly_add", #GH 43288
-"create_from_mesh", #GH 45999
-"_thread_done", #GH 46000
-"generate", #GH 46001
-"_proximity_group_broadcast", #GH 46002
-"_direct_state_changed", #GH 46003
-"create_from", #GH 46004
-"create_from_blend_shape", #GH 46004
-"append_from", #GH 46004
-"get_column_width", #GH 46005
-"_unhandled_input", # TODO
-"_input", # TODO
-"lightmap_unwrap", #GH 46007 - memory leak
-"_input_type_changed", #GH 46011
-"add_node", #GH 46012
-"play", #GH 46013
-"connect_nodes_forced", #GH 46014
-"_set_tile_data", #GH 46015
-"add_image", #GH 46016
-"_edit_set_state", #GH 46017
-"_edit_set_position", #GH 46018
-"_edit_set_rect", #GH 46018
-"get", #GH 46019
-"instance_has", #GH 46020
-"_update_shader", #GH 46062
-"generate_tangents", #GH 46059
-"get_var", #GH 46096
-"force_drag", #GH 46114
-"set_script", #GH 46120
-"getvar", #GH 46019
-"get_available_chars", #GH 46118
-"set_primary_interface", #GH 46180
-"add_feed", #GH 46181
-"open_midi_inputs", #GH 46183
-"get_unix_time_from_datetime", #GH 46188
-"set_icon", #GH 46189
-"set_window_size", #GH 46187
-"get_screen_size", #GH 46186
-"get_screen_position", #GH 46185
-"set_current_screen", #GH 46184
-"build_capsule_planes", #GH 
-"build_cylinder_planes", #GH 
-"get_latin_keyboard_variant", #GH  TODO Memory Leak
-"add_feed", #GH 
-"poll", #GH - HTTP CLIENT 
-"make_atlas", #GH 
-"set_editor_hint", #GH 
-"", #GH 
-
-"collide", #GH 46137
-"collide_and_get_contacts", #GH 46137
-"collide_with_motion", #GH 46137
-"collide_with_motion_and_get_contacts", #GH 46137
-
-# TODO Check this later
-"propagate_notification",
-"notification",
-
-# TODO Adds big spam when i>100 - look for possiblity to 
-"add_sphere",
-# Spam when i~1000 - change to specific 
-"update_bitmask_region",
-
-# Slow Function
-"_update_sky",
-
-# Undo/Redo function which doesn't provide enough information about types of objects, probably due vararg(variable size argument)
-"add_do_method",
-"add_undo_method",
-
-# Do not save files and create files and folders
-"pck_start",
-"save",
-"save_png",
-"save_to_wav",
-"save_to_file",
-"make_dir",
-"make_dir_recursive",
-"save_encrypted",
-"save_encrypted_pass",
-"dump_resources_to_file",
-"dump_memory_to_file",
-# This also allow to save files
-"open",
-"open_encrypted",
-"open_encrypted_with_pass",
-"open_compressed",
-
-# Do not warp mouse
-"warp_mouse",
-"warp_mouse_position",
-
-# OS
-"kill",
-"shell_open",
-"execute",
-"delay_usec",
-"delay_msec",
-"alert", # Stupid alert window opens
-
-# Godot Freeze
-"wait_to_finish",
-"accept_stream",
-"connect_to_stream",
-"discover",
-"wait",
-
-"_create", # TODO Check
-
-
-"set_gizmo", # Stupid function, needs as parameter an object which can't be instanced # TODO, create issue to hide it 
-
-# Spams Output
-"print_tree",
-"print_stray_nodes",
-"print_tree_pretty",
-"print_all_textures_by_size",
-"print_all_resources",
-"print_resources_in_use",
-
-# Do not call other functions
-"_call_function",
-"call",
-"call_deferred",
-"callv",
-# Looks like a bug in FuncRef, probably but not needed, because it call other functions
-"call_func",
-
-# Too dangerous, because add, mix and remove randomly nodes and objects
-"replace_by",
-"create_instance",
-"set_owner",
-"set_root_node",
-"instance",
-"init_ref",
-"reference",
-"unreference",
-"new",
-"duplicate",
-"queue_free",
-"free",
-"remove_and_skip",
-"remove_child",
-"move_child",
-"raise",
-"add_child",
-"add_child_below_node",
-
+var properties_exceptions : Array = [
+	"user_data",
+	"config_file",
+	"",
+	"",
 ]
+var function_exceptions : Array = [
+	# They exists without assigment like Class.method, because they may be a parent of other objects and children also should have disabled child.method, its children also etc. which is too much to do
+	"align",# GH 45976
+	"_screen_pick_pressed",# GH 45977
+	"debug_bake",# GH 45978
+	"bake", # GH 45978
+	"_editor_settings_changed",# GH 45979
+	"_mesh_changed",# GH 45980
+	"_submenu_timeout", # GH 45981
+	"set_data", # GH 45995 - probably this will cause a lot of different errors in other classes
+	"_set_user_data", # GH 45996
+	"set_config_file", # GH 45997
+	"_gui_input", # GH 45998
+	"_unhandled_key_input", # GH 45998
+	"navpoly_add", #GH 43288
+	"create_from_mesh", #GH 45999
+	"_thread_done", #GH 46000
+	"generate", #GH 46001
+	"_proximity_group_broadcast", #GH 46002
+	"_direct_state_changed", #GH 46003
+	"create_from", #GH 46004
+	"create_from_blend_shape", #GH 46004
+	"append_from", #GH 46004
+	"get_column_width", #GH 46005
+	"_unhandled_input", # TODO
+	"_input", # TODO
+	"lightmap_unwrap", #GH 46007 - memory leak
+	"_input_type_changed", #GH 46011
+	"add_node", #GH 46012
+	"play", #GH 46013
+	"connect_nodes_forced", #GH 46014
+	"_set_tile_data", #GH 46015
+	"add_image", #GH 46016
+	"_edit_set_state", #GH 46017
+	"_edit_set_position", #GH 46018
+	"_edit_set_rect", #GH 46018
+	"get", #GH 46019
+	"instance_has", #GH 46020
+	"_update_shader", #GH 46062
+	"generate_tangents", #GH 46059
+	"get_var", #GH 46096
+	"force_drag", #GH 46114
+	"set_script", #GH 46120
+	"getvar", #GH 46019
+	"get_available_chars", #GH 46118
+	"set_primary_interface", #GH 46180
+	"add_feed", #GH 46181
+	"open_midi_inputs", #GH 46183
+	"get_unix_time_from_datetime", #GH 46188
+	"set_icon", #GH 46189
+	"set_window_size", #GH 46187
+	"get_screen_size", #GH 46186
+	"get_screen_position", #GH 46185
+	"set_current_screen", #GH 46184
+	"build_capsule_planes", #GH 
+	"build_cylinder_planes", #GH 
+	"get_latin_keyboard_variant", #GH  TODO Memory Leak
+	"add_feed", #GH 
+	"poll", #GH - HTTP CLIENT 
+	"make_atlas", #GH 
+	"set_editor_hint", #GH 
+	"", #GH 
 
+	"collide", #GH 46137
+	"collide_and_get_contacts", #GH 46137
+	"collide_with_motion", #GH 46137
+	"collide_with_motion_and_get_contacts", #GH 46137
+
+	# TODO Check this later
+	"propagate_notification",
+	"notification",
+
+	# TODO Adds big spam when i>100 - look for possiblity to 
+	"add_sphere",
+	# Spam when i~1000 - change to specific 
+	"update_bitmask_region",
+
+	# Slow Function
+	"_update_sky",
+
+	# Undo/Redo function which doesn't provide enough information about types of objects, probably due vararg(variable size argument)
+	"add_do_method",
+	"add_undo_method",
+
+	# Do not save files and create files and folders
+	"pck_start",
+	"save",
+	"save_png",
+	"save_to_wav",
+	"save_to_file",
+	"make_dir",
+	"make_dir_recursive",
+	"save_encrypted",
+	"save_encrypted_pass",
+	"dump_resources_to_file",
+	"dump_memory_to_file",
+	# This also allow to save files
+	"open",
+	"open_encrypted",
+	"open_encrypted_with_pass",
+	"open_compressed",
+
+	# Do not warp mouse
+	"warp_mouse",
+	"warp_mouse_position",
+
+	# OS
+	"kill",
+	"shell_open",
+	"execute",
+	"delay_usec",
+	"delay_msec",
+	"alert", # Stupid alert window opens
+
+	# Godot Freeze
+	"wait_to_finish",
+	"accept_stream",
+	"connect_to_stream",
+	"discover",
+	"wait",
+
+	"_create", # TODO Check
+
+
+	"set_gizmo", # Stupid function, needs as parameter an object which can't be instanced # TODO, create issue to hide it 
+
+	# Spams Output
+	"print_tree",
+	"print_stray_nodes",
+	"print_tree_pretty",
+	"print_all_textures_by_size",
+	"print_all_resources",
+	"print_resources_in_use",
+
+	# Do not call other functions
+	"_call_function",
+	"call",
+	"call_deferred",
+	"callv",
+	# Looks like a bug in FuncRef, probably but not needed, because it call other functions
+	"call_func",
+
+	# Too dangerous, because add, mix and remove randomly nodes and objects
+	"replace_by",
+	"create_instance",
+	"set_owner",
+	"set_root_node",
+	"instance",
+	"init_ref",
+	"reference",
+	"unreference",
+	"new",
+	"duplicate",
+	"queue_free",
+	"free",
+	"remove_and_skip",
+	"remove_child",
+	"move_child",
+	"raise",
+	"add_child",
+	"add_child_below_node",
+]
 # List of slow functions, which may frooze project
 var slow_functions : Array = [
 	"interpolate_baked",
@@ -217,7 +221,6 @@ var invalid_signals : Array = [
 	"data_channel_received",
 	"",
 ]
-
 var disabled_classes : Array = [
 	"ProjectSettings", # Don't mess with project settings, because they can broke entire your workflow
 	"EditorSettings", # Also don't mess with editor settings
@@ -235,6 +238,7 @@ func get_list_of_available_classes() -> Array:
 		
 		if name_of_class.find("Server") != -1:
 			continue
+			
 #	Enable This for RegressionTestProject, to get visual info about what is going on the screen
 #		if !ClassDB.is_parent_class(name_of_class, "Node") && !ClassDB.is_parent_class(name_of_class, "Reference"):
 #			continue
