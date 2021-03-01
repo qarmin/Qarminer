@@ -3,6 +3,7 @@ extends Node
 var function_exceptions : Array = [
 # They exists without assigment like Class.method, because they may be a parent of other objects and children also should have disabled child.method, its children also etc. which is too much to do
 
+"get_sdfgi_max_distance",
 "draw_multiline_string",
 "draw_font",
 
@@ -246,6 +247,10 @@ var disabled_classes : Array = [
 	"CameraServer", # TODO - Some strange and random crash in contructor of CameraFeed, probably because CameraServer can be deleted
 	"TextServerManager", # 4.0 Crash
 	"GdNavigationServer",
+	"GPUParticlesCollisionHeightField", 4.0 Crash
+	"GIProbe",
+	"World3D",
+
 ]
 
 # Return all available classes to instance and test
