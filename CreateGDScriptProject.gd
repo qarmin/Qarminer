@@ -69,8 +69,8 @@ func create_basic_files() -> void:
 				data_to_save += "\t\t" + object_name + ".queue_free()\n"
 			if (
 				ClassDB.is_parent_class(class_data.name, "Object")
-				&& ! (ClassDB.is_parent_class(class_data.name, "Resource"))
-				&& ! (ClassDB.is_parent_class(class_data.name, "Node"))
+				&& !(ClassDB.is_parent_class(class_data.name, "Resource"))
+				&& !(ClassDB.is_parent_class(class_data.name, "Node"))
 				&& ClassDB.class_has_method(class_data.name, "new")
 			):
 				data_to_save += "\t\t" + object_name + ".free()\n"
@@ -110,9 +110,12 @@ func create_basic_files() -> void:
 			assert(list_of_new_arguments.size() == variables_to_add.size())
 			# Create temporary objects
 			for j in variables_to_add.size():
-				if ! variables_to_add[j].empty():
+				if !variables_to_add[j].empty():
 					assert(ClassDB.class_exists(variables_to_add[j].trim_suffix(".new()")))
-					data_to_save += "\t\tvar " + list_of_new_arguments[j] + " = " + variables_to_add[j] + "\n"
+					if ClassDB.is_parent_class(variables_to_add[j].trim_suffix(".new()"), "Resource") && CreateProjectBase.use_loaded_resources:
+						data_to_save += "\t\tvar " + list_of_new_arguments[j] + " = load(\"res://Resources/" + variables_to_add[j].trim_suffix(".new()") + ".res\")\n"
+					else:
+						data_to_save += "\t\tvar " + list_of_new_arguments[j] + " = " + variables_to_add[j] + "\n"
 
 			var string_new_arguments: String = ""
 			for j in range(variables_to_add.size()):
@@ -124,7 +127,7 @@ func create_basic_files() -> void:
 
 			# Delete all temporary objects
 			for j in range(variables_to_add.size()):
-				if ! variables_to_add[j].empty():
+				if !variables_to_add[j].empty():
 					if ClassDB.is_parent_class(variables_to_add[j].trim_suffix(".new()"), "Node"):
 						data_to_save += "\t\t" + list_of_new_arguments[j] + ".queue_free()\n"
 
@@ -133,8 +136,8 @@ func create_basic_files() -> void:
 
 		if (
 			ClassDB.is_parent_class(class_data.name, "Object")
-			&& ! (ClassDB.is_parent_class(class_data.name, "Resource"))
-			&& ! (ClassDB.is_parent_class(class_data.name, "Node"))
+			&& !(ClassDB.is_parent_class(class_data.name, "Resource"))
+			&& !(ClassDB.is_parent_class(class_data.name, "Node"))
 			&& ClassDB.class_has_method(class_data.name, "new")
 		):
 			data_to_save += "func _exit_tree() -> void:\n"

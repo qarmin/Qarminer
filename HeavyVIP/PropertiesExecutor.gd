@@ -8,7 +8,8 @@ var use_always_new_object: bool = true  # Don't allow to "remeber" other functio
 
 func _ready() -> void:
 	tests_all_functions()
-	get_tree().quit() # Remove this when using it with RegressionTestProject
+	get_tree().quit()  # Remove this when using it with RegressionTestProject
+
 
 # Test all functions
 func tests_all_functions() -> void:
@@ -22,8 +23,8 @@ func tests_all_functions() -> void:
 		if add_to_tree:
 			if object is Node:
 				add_child(object)
-		var properties_list: Array = ClassDB.class_get_property_list(name_of_class, ! use_parent_methods)
-		
+		var properties_list: Array = ClassDB.class_get_property_list(name_of_class, !use_parent_methods)
+
 		## Exception
 		for exception in Autoload.properties_exceptions:
 			var index: int = -1
@@ -47,35 +48,34 @@ func tests_all_functions() -> void:
 			assert(argument != null)
 			if argument is Node:
 				argument.queue_free()
-			elif argument is Object && ! (argument is Reference):
+			elif argument is Object && !(argument is Reference):
 				argument.free()
 
 			if use_always_new_object:
 				assert(object != null)
 				if object is Node:
 					object.queue_free()
-				elif object is Object && ! (object is Reference):
+				elif object is Object && !(object is Reference):
 					object.free()
 
 				object = ClassDB.instance(name_of_class)
 
 		if object is Node:  # Just prevent memory leak
 			object.queue_free()
-		elif object is Object && ! (object is Reference):
+		elif object is Object && !(object is Reference):
 			object.free()
 
 
 func return_for_all(properties_data: Dictionary):
 	var argument
 
-
 	ValueCreator.number = 1000
-	ValueCreator.random = true # RegressionTestProject - This must be false
+	ValueCreator.random = true  # RegressionTestProject - This must be false
 	ValueCreator.should_be_always_valid = false
 
 	match properties_data["type"]:
 		TYPE_NIL:  # Looks that this means VARIANT not null
-			argument = false   # TODO randomize this
+			argument = false  # TODO randomize this
 		TYPE_AABB:
 			argument = ValueCreator.get_aabb()
 		TYPE_ARRAY:
@@ -98,9 +98,9 @@ func return_for_all(properties_data: Dictionary):
 			argument = ValueCreator.get_nodepath()
 		TYPE_OBJECT:
 			if properties_data["class_name"].length() == 0:
-				argument = "" # TODO check wyhy this happens
+				argument = ""  # TODO check wyhy this happens
 			else:
-				argument = ValueCreator.get_object(properties_data["class_name"].split(",")[0]) # TODO, Check why things are THI,THI,THI etc.
+				argument = ValueCreator.get_object(properties_data["class_name"].split(",")[0])  # TODO, Check why things are THI,THI,THI etc.
 		TYPE_PLANE:
 			argument = ValueCreator.get_plane()
 		TYPE_QUAT:

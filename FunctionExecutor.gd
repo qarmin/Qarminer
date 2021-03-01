@@ -8,7 +8,8 @@ var use_always_new_object: bool = true  # Don't allow to "remeber" other functio
 
 func _ready() -> void:
 	tests_all_functions()
-	get_tree().quit() # Remove this when using it with RegressionTestProject
+	get_tree().quit()  # Remove this when using it with RegressionTestProject
+
 
 # Test all functions
 func tests_all_functions() -> void:
@@ -22,7 +23,7 @@ func tests_all_functions() -> void:
 		if add_to_tree:
 			if object is Node:
 				add_child(object)
-		var method_list: Array = ClassDB.class_get_method_list(name_of_class, ! use_parent_methods)
+		var method_list: Array = ClassDB.class_get_method_list(name_of_class, !use_parent_methods)
 
 		## Exception
 		for exception in Autoload.function_exceptions:
@@ -52,21 +53,21 @@ func tests_all_functions() -> void:
 				assert(argument != null)
 				if argument is Node:
 					argument.queue_free()
-				elif argument is Object && ! (argument is Reference):
+				elif argument is Object && !(argument is Reference):
 					argument.free()
 
 			if use_always_new_object:
 				assert(object != null)
 				if object is Node:
 					object.queue_free()
-				elif object is Object && ! (object is Reference):
+				elif object is Object && !(object is Reference):
 					object.free()
 
 				object = ClassDB.instance(name_of_class)
 
 		if object is Node:  # Just prevent memory leak
 			object.queue_free()
-		elif object is Object && ! (object is Reference):
+		elif object is Object && !(object is Reference):
 			object.free()
 
 
@@ -74,7 +75,7 @@ func return_for_all(method_data: Dictionary) -> Array:
 	var arguments_array: Array = []
 
 	ValueCreator.number = 1000
-	ValueCreator.random = true # RegressionTestProject - This must be false
+	ValueCreator.random = true  # RegressionTestProject - This must be false
 	ValueCreator.should_be_always_valid = false
 
 	for argument in method_data["args"]:

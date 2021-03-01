@@ -75,8 +75,8 @@ public class Node2D : Godot.Node2D
 				data_to_save += "\t\t\t" + object_name + ".QueueFree();\n"
 			if (
 				ClassDB.is_parent_class(class_data.name, "Object")
-				&& ! (ClassDB.is_parent_class(class_data.name, "Resource"))
-				&& ! (ClassDB.is_parent_class(class_data.name, "Node"))
+				&& !(ClassDB.is_parent_class(class_data.name, "Resource"))
+				&& !(ClassDB.is_parent_class(class_data.name, "Node"))
 				&& ClassDB.class_has_method(class_data.name, "new")
 			):
 				data_to_save += "\t\t\t" + object_name + ".Free();\n"
@@ -116,7 +116,7 @@ public class Node2D : Godot.Node2D
 			assert(list_of_new_arguments.size() == variables_to_add.size())
 			# Create temporary objects
 			for j in variables_to_add.size():
-				if ! variables_to_add[j].empty():
+				if !variables_to_add[j].empty():
 					if variables_to_add[j].find("Collections") == -1 && variables_to_add[j].find("[]") == -1 && variables_to_add[j].find("RID()") == -1:
 						assert(ClassDB.class_exists(variables_to_add[j].trim_suffix("()").trim_prefix("new Godot.")))
 						data_to_save += "\t\t\t" + variables_to_add[j].trim_suffix("()").trim_prefix("new ") + " " + list_of_new_arguments[j] + " = " + variables_to_add[j] + ";\n"
@@ -131,7 +131,7 @@ public class Node2D : Godot.Node2D
 
 			# Delete all temporary objects
 			for j in range(variables_to_add.size()):
-				if ! variables_to_add[j].empty():
+				if !variables_to_add[j].empty():
 					if variables_to_add[j].find("Collections") == -1 && variables_to_add[j].find("[]") == -1 && variables_to_add[j].find("RID()") == -1:
 						if ClassDB.is_parent_class(variables_to_add[j].trim_suffix("()").trim_prefix("new Godot."), "Node"):
 							data_to_save += "\t\t\t" + list_of_new_arguments[j] + ".QueueFree();\n"
@@ -141,8 +141,8 @@ public class Node2D : Godot.Node2D
 
 		if (
 			ClassDB.is_parent_class(class_data.name, "Object")
-			&& ! (ClassDB.is_parent_class(class_data.name, "Resource"))
-			&& ! (ClassDB.is_parent_class(class_data.name, "Node"))
+			&& !(ClassDB.is_parent_class(class_data.name, "Resource"))
+			&& !(ClassDB.is_parent_class(class_data.name, "Node"))
 			&& ClassDB.class_has_method(class_data.name, "new")
 		):
 			data_to_save += "public override void _ExitTree()\n\t{\n"

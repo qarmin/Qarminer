@@ -3,6 +3,8 @@ extends Node
 var base_path: String
 var base_dir: String
 
+var use_loaded_resources: bool = false  # Loads resources from file instead using empty
+
 var use_gdscript: bool
 
 var debug_in_runtime: bool = true  # Allow to print info in runtime about currenty executed function, it is very helpful, so I don't recommend to turn this off
@@ -36,7 +38,7 @@ func normalize_function_names(function_name: String) -> String:
 		return function_name
 
 	assert(function_name.length() > 1)
-	assert(! function_name.ends_with("_"))  # There is i+1 expression which may be out of bounds
+	assert(!function_name.ends_with("_"))  # There is i+1 expression which may be out of bounds
 	function_name = function_name[0].to_upper() + function_name.substr(1)
 
 	for i in function_name.length():
@@ -64,7 +66,7 @@ func collect_data() -> void:
 		var class_data: ClassData = ClassData.new()
 		class_data.name = name_of_class
 
-		var method_list: Array = ClassDB.class_get_method_list(name_of_class, ! use_parent_methods)
+		var method_list: Array = ClassDB.class_get_method_list(name_of_class, !use_parent_methods)
 		for exception in Autoload.function_exceptions + Autoload.slow_functions:
 			var index: int = -1
 			for method_index in range(method_list.size()):
