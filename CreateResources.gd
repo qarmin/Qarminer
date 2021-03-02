@@ -54,9 +54,9 @@ func create_resources() -> void:
 			if index != -1:
 				method_list.remove(index)
 
-		if name_of_class == "GDScript":
+		if name_of_class == "GDScript": # Cause some strange errors
 			continue
-		print("################ CLASS - " + name_of_class)
+#		print("################ CLASS - " + name_of_class)
 
 		for i in range(20):
 			for method_data in method_list:

@@ -101,6 +101,7 @@ var function_exceptions : Array = [
 	"make_dir_recursive",
 	"save_encrypted",
 	"save_encrypted_pass",
+	"save_exr",
 	"dump_resources_to_file",
 	"dump_memory_to_file",
 	# This also allow to save files
@@ -169,7 +170,7 @@ var function_exceptions : Array = [
 	"add_child",
 	"add_child_below_node",
 ]
-# List of slow functions, which may frooze project
+# List of slow functions, which may frooze project(not simple executing each function alone)
 var slow_functions : Array = [
 	"interpolate_baked",
 	"get_baked_length",
