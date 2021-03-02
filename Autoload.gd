@@ -247,7 +247,7 @@ var disabled_classes : Array = [
 	"CameraServer", # TODO - Some strange and random crash in contructor of CameraFeed, probably because CameraServer can be deleted
 	"TextServerManager", # 4.0 Crash
 	"GdNavigationServer",
-	"GPUParticlesCollisionHeightField", 4.0 Crash
+	"GPUParticlesCollisionHeightField", #4.0 Crash
 	"GIProbe",
 	"World3D",
 
