@@ -68,6 +68,7 @@ var function_exceptions : Array = [
 	"make_atlas", #GH 
 	"set_editor_hint", #GH 
 	"", #GH 
+	"set_probe_data", #GH 46570
 
 	"collide", #GH 46137
 	"collide_and_get_contacts", #GH 46137
