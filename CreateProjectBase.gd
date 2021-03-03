@@ -51,9 +51,7 @@ func normalize_function_names(function_name: String) -> String:
 
 
 func collect_data() -> void:
-	for name_of_class in Autoload.get_list_of_available_classes():
-		if name_of_class == "Image":  # TODO, Remove this when class will be stable enough
-			continue
+	for name_of_class in Autoload.get_list_of_available_classes(false):
 
 		var found: bool = false
 		for exception in Autoload.only_instance:
@@ -160,31 +158,31 @@ func remove_files_recursivelly(to_delete: String) -> void:
 				remove_files_recursivelly(file_name)
 			else:
 				file_name = to_delete + file_name
-				assert(file_name.find("/./") == -1 && file_name.begins_with("res://") && file_name.begins_with(CreateProjectBase.base_path) && file_name.find("//", 6) == -1)
+				assert(file_name.find("/./") == -1 && file_name.begins_with("res://") && file_name.begins_with(base_path) && file_name.find("//", 6) == -1)
 #				print(file_name)
 				assert(directory.remove(file_name) == OK)
 
-			assert(file_name.find("/./") == -1 && file_name.begins_with("res://") && file_name.begins_with(CreateProjectBase.base_path) && file_name.find("//", 6) == -1)
+			assert(file_name.find("/./") == -1 && file_name.begins_with("res://") && file_name.begins_with(base_path) && file_name.find("//", 6) == -1)
 		file_name = directory.get_next()
 
 #	print(to_delete)
-	assert(to_delete.find("/./") == -1 && to_delete.begins_with("res://") && to_delete.begins_with(CreateProjectBase.base_path) && to_delete.find("//", 6) == -1)
+	assert(to_delete.find("/./") == -1 && to_delete.begins_with("res://") && to_delete.begins_with(base_path) && to_delete.find("//", 6) == -1)
 	assert(directory.remove(to_delete) == OK)  # TODO, Test This
 
 
 func create_basic_structure() -> void:
 	var directory: Directory = Directory.new()
-	assert(directory.make_dir_recursive(CreateProjectBase.base_path + "2D/") == OK)
-	assert(directory.make_dir_recursive(CreateProjectBase.base_path + "3D/") == OK)
-	assert(directory.make_dir_recursive(CreateProjectBase.base_path + "Node/") == OK)
-	assert(directory.make_dir_recursive(CreateProjectBase.base_path + "Object/") == OK)
-	assert(directory.make_dir_recursive(CreateProjectBase.base_path + "Control/") == OK)
-	assert(directory.make_dir_recursive(CreateProjectBase.base_path + "Resource/") == OK)
-	assert(directory.make_dir_recursive(CreateProjectBase.base_path + "Reference/") == OK)
+	assert(directory.make_dir_recursive(base_path + "2D/") == OK)
+	assert(directory.make_dir_recursive(base_path + "3D/") == OK)
+	assert(directory.make_dir_recursive(base_path + "Node/") == OK)
+	assert(directory.make_dir_recursive(base_path + "Object/") == OK)
+	assert(directory.make_dir_recursive(base_path + "Control/") == OK)
+	assert(directory.make_dir_recursive(base_path + "Resource/") == OK)
+	assert(directory.make_dir_recursive(base_path + "Reference/") == OK)
 
 	var file: File = File.new()
 
-	assert(file.open(CreateProjectBase.base_path + "project.godot", File.WRITE) == OK)
+	assert(file.open(base_path + "project.godot", File.WRITE) == OK)
 	file.store_string(
 		"""
 config_version=4
@@ -195,8 +193,11 @@ run/main_scene="res://All.tscn"
 [memory]
 limits/message_queue/max_size_kb=65536
 limits/command_queue/multithreading_queue_size_kb=4096
+
+[network]
+
+limits/debugger_stdout/max_chars_per_second=10
+limits/debugger_stdout/max_errors_per_second=10
+limits/debugger_stdout/max_warnings_per_second=10
 		"""
 	)
-	file.store_string("config_version=4\n")
-	file.store_string("[application]\n")
-	file.store_string("run/main_scene=\"res://All.tscn\"\n")

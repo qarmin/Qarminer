@@ -223,13 +223,19 @@ var invalid_signals : Array = [
 	"data_channel_received",
 	"",
 ]
+# Used only in ValueCreator
 var disabled_classes : Array = [
 	"ProjectSettings", # Don't mess with project settings, because they can broke entire your workflow
 	"EditorSettings", # Also don't mess with editor settings
+	
+	# Just don't use these because they are not normal things 
+	"_Thread",
+	"_Semaphore",
+	"_Mutex",
 ]
 
 # Return all available classes to instance and test
-func get_list_of_available_classes() -> Array:
+func get_list_of_available_classes(must_be_instantable : bool = true) -> Array:
 	var full_class_list : Array = Array(ClassDB.get_class_list())
 	var classes : Array = []
 	full_class_list.sort()
@@ -240,12 +246,14 @@ func get_list_of_available_classes() -> Array:
 		
 		if name_of_class.find("Server") != -1:
 			continue
+		if name_of_class.find("Editor") != -1: # TODO not sure about it
+			continue
 			
-#	Enable This for RegressionTestProject, to get visual info about what is going on the screen
+#	Enable This for RegressionTestProject, to get visual info about what is going on the screen, because without it different nodes can broke view
 #		if !ClassDB.is_parent_class(name_of_class, "Node") && !ClassDB.is_parent_class(name_of_class, "Reference"):
 #			continue
 			
-		if ClassDB.can_instance(name_of_class):
+		if !must_be_instantable || ClassDB.can_instance(name_of_class):
 			classes.push_back(name_of_class)
 			c+= 1
 			

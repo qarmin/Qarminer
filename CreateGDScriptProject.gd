@@ -2,7 +2,7 @@ extends Node
 
 var number_of_external_resources : int = 4
 
-func object_type(name_of_class  : String) -> String:
+func get_object_type(name_of_class  : String) -> String:
 	assert(ClassDB.class_exists(name_of_class))
 	if ClassDB.is_parent_class(name_of_class, "Spatial"):  # TODO Fix in Godot 4.0
 		return "3D"
@@ -18,9 +18,7 @@ func object_type(name_of_class  : String) -> String:
 		return "Reference"
 	else:
 		return "Object"
-		
-	assert(false)
-	return "WHAT"
+	
 
 func create_basic_files() -> void:
 	var file: File = File.new()
@@ -29,23 +27,34 @@ func create_basic_files() -> void:
 		var data_to_save: String = ""
 		var file_name: String = CreateProjectBase.base_path
 
-		var prefix = object_type(class_data.name)
+		var prefix = get_object_type(class_data.name)
 		file_name += prefix + "/" + class_data.name + ".gd"
 		CreateProjectBase.list_of_all_files[prefix].append(file_name)
 
 		var object_type = class_data.name.trim_prefix("_")  # Change _Directory to Directory etc
 		var can_be_instanced : bool
+		var is_static : bool # Can execute static functions on it
 		var object_name
 		if (
+			ClassDB.can_instance(class_data.name) &&(
 			ClassDB.is_parent_class(class_data.name, "Node")
 			|| ClassDB.is_parent_class(class_data.name, "Reference")
-			|| (ClassDB.is_parent_class(class_data.name, "Object") && ClassDB.class_has_method(class_data.name, "new"))
+			|| (ClassDB.is_parent_class(class_data.name, "Object") 
+			&& ClassDB.class_has_method(class_data.name, "new"))
+			)
 		):
 			object_name = "q_" + object_type
 			can_be_instanced = true
+			is_static = false
+		elif ClassDB.is_parent_class(class_data.name, "Node") || ClassDB.is_parent_class(class_data.name, "Reference") || (ClassDB.is_parent_class(class_data.name, "Object") && ClassDB.class_has_method(class_data.name, "new")):
+			object_name = "q_" + object_type
+			can_be_instanced = false
+			is_static = false
 		else:
 			object_name = object_type
 			can_be_instanced = false
+			is_static = true
+		
 			
 		
 		### Global
@@ -54,107 +63,109 @@ func create_basic_files() -> void:
 			data_to_save += "var ||| : {} = {}.new()\n\n".replace("{}", object_type).replace("|||", object_name)
 
 		### Ready function
-		data_to_save += "func _ready() -> void:\n"
-		data_to_save += "\tif !is_visible():\n"
-		data_to_save += "\t\tset_process(false)\n"
-		if ClassDB.is_parent_class(class_data.name, "Node"):
-			data_to_save += "\t\t" + object_name + ".queue_free()\n"
-		data_to_save += "\t\treturn\n\n"
-		if ClassDB.is_parent_class(class_data.name, "Node"):
-			data_to_save += "\tadd_child(" + object_name + ")\n\n"
-
-		### Process Function
-		data_to_save += "func _process(_delta : float) -> void:\n"
-
-		if CreateProjectBase.allow_to_replace_old_with_new_objects:
-			if can_be_instanced:
-				data_to_save += "\tif randi() % 10 == 0:\n"
+		if can_be_instanced || is_static:
+			data_to_save += "func _ready() -> void:\n"
+			data_to_save += "\tif !is_visible():\n"
+			data_to_save += "\t\tset_process(false)\n"
 			if ClassDB.is_parent_class(class_data.name, "Node"):
 				data_to_save += "\t\t" + object_name + ".queue_free()\n"
-			if (
-				can_be_instanced
-				&& !(ClassDB.is_parent_class(class_data.name, "Resource"))
-				&& !(ClassDB.is_parent_class(class_data.name, "Node"))
-			):
-				data_to_save += "\t\t" + object_name + ".free()\n"
-			if can_be_instanced:
-				data_to_save += "\t\t" + object_name + " = " + object_type + ".new()\n"
+			data_to_save += "\t\treturn\n\n"
 			if ClassDB.is_parent_class(class_data.name, "Node"):
-				data_to_save += "\t\tadd_child(" + object_name + ")\n\n"
-			
-			## Execution of function
-			if can_be_instanced:
-				data_to_save += "\tmodify_object(|||)\n\n".replace("|||", object_name)
-			else:
-				data_to_save += "\tmodify_object()\n\n"
+				data_to_save += "\tadd_child(" + object_name + ")\n\n"
+
+		### Process Function
+		if can_be_instanced || is_static: # Disallow to use it for e.g. non instantable CollisionObject
+			data_to_save += "func _process(_delta : float) -> void:\n"
+			if CreateProjectBase.allow_to_replace_old_with_new_objects:
+				if can_be_instanced:
+					data_to_save += "\tif randi() % 10 == 0:\n"
+				if ClassDB.is_parent_class(class_data.name, "Node"):
+					data_to_save += "\t\t" + object_name + ".queue_free()\n"
+				if (
+					can_be_instanced
+					&& !(ClassDB.is_parent_class(class_data.name, "Resource"))
+					&& !(ClassDB.is_parent_class(class_data.name, "Node"))
+				):
+					data_to_save += "\t\t" + object_name + ".free()\n"
+				if can_be_instanced:
+					data_to_save += "\t\t" + object_name + " = " + object_type + ".new()\n"
+				if ClassDB.is_parent_class(class_data.name, "Node"):
+					data_to_save += "\t\tadd_child(" + object_name + ")\n\n"
+				
+				## Execution of function
+				if can_be_instanced:
+					data_to_save += "\tmodify_object(|||)\n\n".replace("|||", object_name)
+				else:
+					data_to_save += "\tmodify_object()\n\n"
 		
 		### Function which execute
-		if can_be_instanced:
+		if !is_static:
 			data_to_save += "static func modify_object(||| : {}) -> void:\n".replace("{}", object_type).replace("|||", object_name)
 		else:
 			data_to_save += "static func modify_object() -> void:\n"
-
-		for i in range(class_data.function_names.size()):
-			var function_use_objects : bool = false
 		
-			data_to_save += "\tif randi() % 2 == 0:\n"
-			if CreateProjectBase.debug_in_runtime:
-				data_to_save += "\t\tprint(\"Executing " + object_type + "." + class_data.function_names[i] + "\")\n"
+		if !(class_data.name in ["PhysicsDirectBodyState","PhysicsDirectSpaceState","Physics2DDirectBodyState","Physics2DDirectSpaceState","TreeItem", "Image"]): # Some functions are static, but some needs to work on objects etc.., TODO Remove Image when it will be enough stable
+			for i in range(class_data.function_names.size()):
+				var function_use_objects : bool = false
+			
+				data_to_save += "\tif randi() % 2 == 0:\n"
+				if CreateProjectBase.debug_in_runtime:
+					data_to_save += "\t\tprint(\"Executing " + object_type + "." + class_data.function_names[i] + "\")\n"
 
-			var arguments := convert_arguments_to_string(class_data.arguments[i])
+				var arguments := convert_arguments_to_string(class_data.arguments[i])
 
-			var list_of_new_arguments: Array = []  # e.g. (variable1,0,0) instead (object.new(),0,0)
-			var variables_to_add: Array = []  # e.g. var variable1 = Object.new()
+				var list_of_new_arguments: Array = []  # e.g. (variable1,0,0) instead (object.new(),0,0)
+				var variables_to_add: Array = []  # e.g. var variable1 = Object.new()
 
-			var index = 0
-			for j in arguments:
-				if j.ends_with(".new()"):
-					# Means that argument is an object
-					function_use_objects = true
-					var new_variable_name = "p_object_" + str(index)
-					index += 1
-					list_of_new_arguments.append(new_variable_name)
-					variables_to_add.append(j.strip_edges().trim_suffix(".new()"))
-				else:
-					list_of_new_arguments.append(j.strip_edges())
-					variables_to_add.append("")
-
-			assert(list_of_new_arguments.size() == variables_to_add.size())
-			# Create temporary objects
-			for j in variables_to_add.size():
-				if !variables_to_add[j].empty():
-					assert(ClassDB.class_exists(variables_to_add[j]))
-					if ClassDB.is_parent_class(variables_to_add[j], "Resource") && CreateProjectBase.use_loaded_resources:
-						data_to_save += "\t\tvar " + list_of_new_arguments[j] + " = load(\"res://Resources/" + variables_to_add[j] + ".res\")\n"
+				var index = 0
+				for j in arguments:
+					if j.ends_with(".new()"):
+						# Means that argument is an object
+						function_use_objects = true
+						var new_variable_name = "p_object_" + str(index)
+						index += 1
+						list_of_new_arguments.append(new_variable_name)
+						variables_to_add.append(j.strip_edges().trim_suffix(".new()"))
 					else:
-						data_to_save += "\t\tvar " + list_of_new_arguments[j] + " = " + variables_to_add[j] + ".new()\n"
-			# Apply data
-			if function_use_objects:
-				if number_of_external_resources > 0:
-					data_to_save += "\t\tfor _i in range(|||):\n".replace("|||",str(number_of_external_resources))
-					for j in variables_to_add.size():
-						if !variables_to_add[j].empty():
-							data_to_save += "\t\t\tload(\"res://|||/{}.gd\").modify_object(;;;)\n".replace("|||",object_type(variables_to_add[j])).replace("{}",variables_to_add[j]).replace(";;;",list_of_new_arguments[j])
+						list_of_new_arguments.append(j.strip_edges())
+						variables_to_add.append("")
+
+				assert(list_of_new_arguments.size() == variables_to_add.size())
+				# Create temporary objects
+				for j in variables_to_add.size():
+					if !variables_to_add[j].empty():
+						assert(ClassDB.class_exists(variables_to_add[j]))
+						if ClassDB.is_parent_class(variables_to_add[j], "Resource") && CreateProjectBase.use_loaded_resources:
+							data_to_save += "\t\tvar " + list_of_new_arguments[j] + " = load(\"res://Resources/" + variables_to_add[j] + ".res\")\n"
+						else:
+							data_to_save += "\t\tvar " + list_of_new_arguments[j] + " = " + variables_to_add[j].trim_prefix("_") + ".new()\n"
+				# Apply data
+				if function_use_objects:
+					if number_of_external_resources > 0:
+						data_to_save += "\t\tfor _i in range(|||):\n".replace("|||",str(number_of_external_resources))
+						for j in variables_to_add.size():
+							if !variables_to_add[j].empty():
+								data_to_save += "\t\t\tload(\"res://|||/{}.gd\").modify_object(;;;)\n".replace("|||",get_object_type(variables_to_add[j])).replace("{}",variables_to_add[j]).replace(";;;",list_of_new_arguments[j])
 
 
-			var string_new_arguments: String = ""
-			for j in range(variables_to_add.size()):
-				string_new_arguments += list_of_new_arguments[j]
-				if j != (variables_to_add.size() - 1):
-					string_new_arguments += ", "
+				var string_new_arguments: String = ""
+				for j in range(variables_to_add.size()):
+					string_new_arguments += list_of_new_arguments[j]
+					if j != (variables_to_add.size() - 1):
+						string_new_arguments += ", "
 
-			data_to_save += "\t\t" + object_name + "." + class_data.function_names[i] + "(" + string_new_arguments + ")\n"
+				data_to_save += "\t\t" + object_name + "." + class_data.function_names[i] + "(" + string_new_arguments + ")\n"
 
-			# Delete all temporary objects
-			for j in range(variables_to_add.size()):
-				if !variables_to_add[j].empty():
-					if ClassDB.is_parent_class(variables_to_add[j], "Node"):
-						data_to_save += "\t\t" + list_of_new_arguments[j] + ".queue_free()\n"
+				# Delete all temporary objects
+				for j in range(variables_to_add.size()):
+					if !variables_to_add[j].empty():
+						if ClassDB.is_parent_class(variables_to_add[j], "Node"):
+							data_to_save += "\t\t" + list_of_new_arguments[j] + ".queue_free()\n"
 
-			data_to_save += "\n"
+				data_to_save += "\n"
 		data_to_save += "\tpass\n\n"
 
-		if can_be_instanced:
+		if can_be_instanced && !ClassDB.is_parent_class(object_type, "Node") && !ClassDB.is_parent_class(object_type, "Resource"):
 			data_to_save += "func _exit_tree() -> void:\n"
 			data_to_save += "\t" + object_name + ".free()\n"
 
@@ -168,8 +179,6 @@ func convert_arguments_to_string(arguments: Array) -> PoolStringArray:
 	ValueCreator.number = 100
 	ValueCreator.random = true
 	ValueCreator.should_be_always_valid = true  # DO NOT CHANGE, BECAUSE NON VALID VALUES WILL SHOW GDSCRIPT ERRORS!
-
-	var argument_number: int = 0
 
 	for argument in arguments:
 		match argument["type"]:
@@ -231,8 +240,6 @@ func convert_arguments_to_string(arguments: Array) -> PoolStringArray:
 				return_array.append("PoolVector3Array([])")
 			_:
 				assert(false)  # Missed some types, add it
-
-		argument_number += 1
 
 	return return_array
 
