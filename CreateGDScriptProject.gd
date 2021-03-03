@@ -144,8 +144,10 @@ func create_basic_files() -> void:
 					if number_of_external_resources > 0:
 						data_to_save += "\t\tfor _i in range(|||):\n".replace("|||",str(number_of_external_resources))
 						for j in variables_to_add.size():
-							if !variables_to_add[j].empty():
+							if !variables_to_add[j].empty() && variables_to_add[j] != class_data.name: # Do not allow to recursive execute functions
 								data_to_save += "\t\t\tload(\"res://|||/{}.gd\").modify_object(;;;)\n".replace("|||",get_object_type(variables_to_add[j])).replace("{}",variables_to_add[j]).replace(";;;",list_of_new_arguments[j])
+						data_to_save += "\t\t\tpass"
+							
 
 
 				var string_new_arguments: String = ""
