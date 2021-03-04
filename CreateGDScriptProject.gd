@@ -167,7 +167,7 @@ func create_basic_files() -> void:
 				data_to_save += "\n"
 		data_to_save += "\tpass\n\n"
 
-		if can_be_instanced && !ClassDB.is_parent_class(class_data.name, "Node") && !ClassDB.is_parent_class(class_data.name, "Resource"):
+		if can_be_instanced && !ClassDB.is_parent_class(class_data.name, "Node") && !ClassDB.is_parent_class(class_data.name, "Reference"):
 			data_to_save += "func _exit_tree() -> void:\n"
 			data_to_save += "\t" + object_name + ".free()\n"
 
