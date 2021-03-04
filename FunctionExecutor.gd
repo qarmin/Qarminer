@@ -5,8 +5,8 @@ var add_to_tree: bool = true  # Adds nodes to tree
 var use_parent_methods: bool = false  # Allows Node2D use Node methods etc. - it is a little slow option which rarely shows
 var use_always_new_object: bool = true  # Don't allow to "remeber" other function effects
 
-
-func _ready() -> void:
+#func _ready() -> void:
+func _process(_delta : float) -> void: # Replace this with _ready in RegressionTestProject
 	tests_all_functions()
 	get_tree().quit()  # Remove this when using it with RegressionTestProject
 
@@ -74,7 +74,7 @@ func tests_all_functions() -> void:
 func return_for_all(method_data: Dictionary) -> Array:
 	var arguments_array: Array = []
 
-	ValueCreator.number = 1000
+	ValueCreator.number = 100
 	ValueCreator.random = true  # RegressionTestProject - This must be false
 	ValueCreator.should_be_always_valid = false
 

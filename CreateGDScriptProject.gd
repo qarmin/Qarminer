@@ -1,6 +1,6 @@
 extends Node
 
-var number_of_external_resources : int = 4
+var number_of_external_resources : int = 0
 
 func get_object_type(name_of_class  : String) -> String:
 	assert(ClassDB.class_exists(name_of_class))
@@ -83,7 +83,7 @@ func create_basic_files() -> void:
 					data_to_save += "\t\t" + object_name + ".queue_free()\n"
 				if (
 					can_be_instanced
-					&& !(ClassDB.is_parent_class(class_data.name, "Resource"))
+					&& !(ClassDB.is_parent_class(class_data.name, "Reference"))
 					&& !(ClassDB.is_parent_class(class_data.name, "Node"))
 				):
 					data_to_save += "\t\t" + object_name + ".free()\n"
@@ -146,7 +146,7 @@ func create_basic_files() -> void:
 						for j in variables_to_add.size():
 							if !variables_to_add[j].empty() && variables_to_add[j] != class_data.name: # Do not allow to recursive execute functions
 								data_to_save += "\t\t\tload(\"res://|||/{}.gd\").modify_object(;;;)\n".replace("|||",get_object_type(variables_to_add[j])).replace("{}",variables_to_add[j]).replace(";;;",list_of_new_arguments[j])
-						data_to_save += "\t\t\tpass"
+						data_to_save += "\t\t\tpass\n"
 							
 
 
@@ -167,7 +167,7 @@ func create_basic_files() -> void:
 				data_to_save += "\n"
 		data_to_save += "\tpass\n\n"
 
-		if can_be_instanced && !ClassDB.is_parent_class(object_type, "Node") && !ClassDB.is_parent_class(object_type, "Resource"):
+		if can_be_instanced && !ClassDB.is_parent_class(class_data.name, "Node") && !ClassDB.is_parent_class(class_data.name, "Resource"):
 			data_to_save += "func _exit_tree() -> void:\n"
 			data_to_save += "\t" + object_name + ".free()\n"
 

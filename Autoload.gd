@@ -67,8 +67,11 @@ var function_exceptions : Array = [
 	"poll", #GH - HTTP CLIENT 
 	"make_atlas", #GH 
 	"set_editor_hint", #GH 
-	"", #GH 
+	"get_item_at_position", #TODO FIND
 	"set_probe_data", #GH 46570
+	"get_joy_button_index_from_string",
+	"_range_click_timeout",
+	"remove_collision_exception_with",
 
 	"collide", #GH 46137
 	"collide_and_get_contacts", #GH 46137
@@ -244,7 +247,7 @@ func get_list_of_available_classes(must_be_instantable : bool = true) -> Array:
 		if name_of_class in disabled_classes:
 			continue
 		
-		if name_of_class.find("Server") != -1:
+		if name_of_class.find("Server") != -1 && !ClassDB.is_parent_class(name_of_class,"Reference"):
 			continue
 		if name_of_class.find("Editor") != -1: # TODO not sure about it
 			continue
