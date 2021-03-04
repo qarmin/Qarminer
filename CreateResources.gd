@@ -56,7 +56,7 @@ func create_resources() -> void:
 
 		if name_of_class == "GDScript": # Cause some strange errors
 			continue
-#		print("################ CLASS - " + name_of_class)
+		print("################ CLASS - " + name_of_class)
 
 		for i in range(20):
 			for method_data in method_list:
@@ -67,6 +67,7 @@ func create_resources() -> void:
 				# Function is virtual, so we just skip it
 				if method_data["flags"] == method_data["flags"] | METHOD_FLAG_VIRTUAL:
 					continue
+				print(method_data["name"])
 
 				var arguments: Array = return_for_all(method_data)
 				object.callv(method_data["name"], arguments)
@@ -77,8 +78,8 @@ func create_resources() -> void:
 						argument.queue_free()
 					elif argument is Object && !(argument is Reference):
 						argument.free()
-
-		assert(ResourceSaver.save(base_path + name_of_class + ".res", object) == OK)
+		if ResourceSaver.save(base_path + name_of_class + ".tres", object) != OK:
+			assert(ResourceSaver.save(base_path + name_of_class + ".res", object) == OK)
 
 
 func _ready() -> void:
