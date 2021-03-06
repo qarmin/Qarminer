@@ -6,6 +6,7 @@ var function_exceptions : Array = [
 "get_sdfgi_max_distance",
 "draw_multiline_string",
 "draw_font",
+"create",
 
 "align",# GH 45976
 "_screen_pick_pressed",# GH 45977
@@ -250,7 +251,8 @@ var disabled_classes : Array = [
 	"GPUParticlesCollisionHeightField", #4.0 Crash
 	"GIProbe",
 	"World3D",
-
+	"NavigationAgent2D",
+	"NavigationAgent3D",
 ]
 
 # Return all available classes to instance and test
@@ -261,8 +263,12 @@ func get_list_of_available_classes() -> Array:
 	var c = 0
 	var rr = 0
 	for name_of_class in full_class_list:
+		rr += 1
 		if name_of_class in disabled_classes:
 			continue
+#		if rr < 252 || rr > 252:
+#			continue
+#		print("AAAAAAAAAAAAAAA" + name_of_class)
 			
 		if ClassDB.can_instance(name_of_class):
 			classes.push_back(name_of_class)
