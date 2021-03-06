@@ -166,31 +166,31 @@ func remove_files_recursivelly(to_delete: String) -> void:
 				remove_files_recursivelly(file_name)
 			else:
 				file_name = to_delete + file_name
-				assert(file_name.find("/./") == -1 && file_name.begins_with("res://") && file_name.begins_with(CreateProjectBase.base_path) && file_name.find("//", 6) == -1)
+				assert(file_name.find("/./") == -1 && file_name.begins_with("res://") && file_name.begins_with(base_path) && file_name.find("//", 6) == -1)
 #				print(file_name)
 				assert(directory.remove(file_name) == OK)
 
-			assert(file_name.find("/./") == -1 && file_name.begins_with("res://") && file_name.begins_with(CreateProjectBase.base_path) && file_name.find("//", 6) == -1)
+			assert(file_name.find("/./") == -1 && file_name.begins_with("res://") && file_name.begins_with(base_path) && file_name.find("//", 6) == -1)
 		file_name = directory.get_next()
 
 #	print(to_delete)
-	assert(to_delete.find("/./") == -1 && to_delete.begins_with("res://") && to_delete.begins_with(CreateProjectBase.base_path) && to_delete.find("//", 6) == -1)
+	assert(to_delete.find("/./") == -1 && to_delete.begins_with("res://") && to_delete.begins_with(base_path) && to_delete.find("//", 6) == -1)
 	assert(directory.remove(to_delete) == OK)  # TODO, Test This
 
 
 func create_basic_structure() -> void:
 	var directory: Directory = Directory.new()
-	assert(directory.make_dir_recursive(CreateProjectBase.base_path + "2D/") == OK)
-	assert(directory.make_dir_recursive(CreateProjectBase.base_path + "3D/") == OK)
-	assert(directory.make_dir_recursive(CreateProjectBase.base_path + "Node/") == OK)
-	assert(directory.make_dir_recursive(CreateProjectBase.base_path + "Object/") == OK)
-	assert(directory.make_dir_recursive(CreateProjectBase.base_path + "Control/") == OK)
-	assert(directory.make_dir_recursive(CreateProjectBase.base_path + "Resource/") == OK)
-	assert(directory.make_dir_recursive(CreateProjectBase.base_path + "Reference/") == OK)
+	assert(directory.make_dir_recursive(base_path + "2D/") == OK)
+	assert(directory.make_dir_recursive(base_path + "3D/") == OK)
+	assert(directory.make_dir_recursive(base_path + "Node/") == OK)
+	assert(directory.make_dir_recursive(base_path + "Object/") == OK)
+	assert(directory.make_dir_recursive(base_path + "Control/") == OK)
+	assert(directory.make_dir_recursive(base_path + "Resource/") == OK)
+	assert(directory.make_dir_recursive(base_path + "Reference/") == OK)
 
 	var file: File = File.new()
 
-	assert(file.open(CreateProjectBase.base_path + "project.godot", File.WRITE) == OK)
+	assert(file.open(base_path + "project.godot", File.WRITE) == OK)
 	file.store_string(
 		"""
 ; Engine configuration file.
