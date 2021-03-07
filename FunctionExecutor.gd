@@ -14,8 +14,6 @@ func _process(_delta : float) -> void: # Replace this with _ready in RegressionT
 # Test all functions
 func tests_all_functions() -> void:
 	for name_of_class in Autoload.get_list_of_available_classes():
-		if name_of_class == "_OS":  # Do not change size of window
-			continue
 
 		# Instance object to be able to execute on it specific functions and later delete to prevent memory leak if it is a Node
 		var object: Object = ClassDB.instance(name_of_class)

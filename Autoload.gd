@@ -56,6 +56,9 @@ var function_exceptions : Array = [
 	"_set_YCbCr_imgs", #GH 46724
 	"_vp_input", # TODO
 	"_vp_unhandled_input", # TODO
+	"remove_joy_mapping", #GH 46754
+	"add_joy_mapping", #GH 46754
+
 
 	"collide", #GH 46137
 	"collide_and_get_contacts", #GH 46137
@@ -117,6 +120,7 @@ var function_exceptions : Array = [
 	"discover",
 	"wait",
 	"debug_bake",
+	"bake",
 
 	"_create", # TODO Check
 
@@ -216,6 +220,8 @@ var invalid_signals : Array = [
 var disabled_classes : Array = [
 	"ProjectSettings", # Don't mess with project settings, because they can broke entire your workflow
 	"EditorSettings", # Also don't mess with editor settings
+	"_OS", # This may sometimes crash compositor, but it should be tested manually sometimes
+	
 	
 	# Just don't use these because they are not normal things 
 	"_Thread",
