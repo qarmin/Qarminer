@@ -3,11 +3,32 @@ extends Node
 var function_exceptions : Array = [
 # They exists without assigment like Class.method, because they may be a parent of other objects and children also should have disabled child.method, its children also etc. which is too much to do
 
+#GODOT 4.0
+"create_from_image",
+"set_point_position",
+"connect", # OTHER THINGS
+"set_base",
+"particles_collision_set_height_field_resolution",
+"set_deconstruct_type",
+"set_constant_type",
+"set_enabled_inputs",
+"load_threaded_request",
 "get_sdfgi_max_distance",
 "draw_multiline_string",
 "draw_font",
 "create",
+"add_string",
+"draw_string",
+"set_dropcap",
+"set_sdfgi_max_distance",
+"get_inverse_inertia_tensor",
+"generate_lod",
+"optimize_indices_for_cache",
+"add_file",
+"",
+"",
 
+"_update_inputs",
 "align",# GH 45976
 "_screen_pick_pressed",# GH 45977
 "debug_bake",# GH 45978
@@ -69,21 +90,6 @@ var function_exceptions : Array = [
 "set_editor_hint", #GH 
 "", #GH 
 
-#GODOT 4.0
-"create_from_image",
-"set_point_position",
-"connect", # OTHER THINGS
-"set_base",
-"particles_collision_set_height_field_resolution",
-"set_deconstruct_type",
-"set_constant_type",
-"",
-
-
-"add_string",
-"draw_string",
-"set_dropcap",
-"",
 
 "collide", #GH 46137
 "collide_and_get_contacts", #GH 46137
@@ -248,11 +254,14 @@ var disabled_classes : Array = [
 	"CameraServer", # TODO - Some strange and random crash in contructor of CameraFeed, probably because CameraServer can be deleted
 	"TextServerManager", # 4.0 Crash
 	"GdNavigationServer",
-	"GPUParticlesCollisionHeightField", #4.0 Crash
 	"GIProbe",
+	
+	# Godot 4.0
 	"World3D",
+	"GPUParticlesCollisionHeightField", #4.0 Crash
 	"NavigationAgent2D",
 	"NavigationAgent3D",
+	"Image",
 ]
 
 # Return all available classes to instance and test

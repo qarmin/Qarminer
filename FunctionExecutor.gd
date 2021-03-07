@@ -3,7 +3,7 @@ extends Node
 var debug_print: bool = true
 var add_to_tree: bool = true  # Adds nodes to tree
 var use_parent_methods: bool = false  # Allows Node2D use Node methods etc. - it is a little slow option which rarely shows
-var use_always_new_object: bool = true  # Don't allow to "remeber" other function effects
+var use_always_new_object: bool = false  # Don't allow to "remeber" other function effects
 
 
 func _ready() -> void:
@@ -37,33 +37,33 @@ func tests_all_functions() -> void:
 
 		if debug_print:
 			print("############### CLASS ############### - " + name_of_class)
+		for i in range(10):
+			for method_data in method_list:
+				# Function is virtual, so we just skip it
+				if method_data.get("flags") == method_data.get("flags") | METHOD_FLAG_VIRTUAL:
+					continue
 
-		for method_data in method_list:
-			# Function is virtual, so we just skip it
-			if method_data.get("flags") == method_data.get("flags") | METHOD_FLAG_VIRTUAL:
-				continue
+				if debug_print:
+					print(method_data.get("name"))
 
-			if debug_print:
-				print(method_data.get("name"))
+				var arguments: Array = return_for_all(method_data)
+				object.callv(method_data.get("name"), arguments)
 
-			var arguments: Array = return_for_all(method_data)
-			object.callv(method_data.get("name"), arguments)
+				for argument in arguments:
+	#				assert(argument != null)
+					if argument is Node:
+						argument.queue_free()
+					elif argument is Object && ! (argument is Reference):
+						argument.free()
 
-			for argument in arguments:
-#				assert(argument != null)
-				if argument is Node:
-					argument.queue_free()
-				elif argument is Object && ! (argument is Reference):
-					argument.free()
+				if use_always_new_object:
+	#				assert(object != null)
+					if object is Node:
+						object.queue_free()
+					elif object is Object && ! (object is Reference):
+						object.free()
 
-			if use_always_new_object:
-#				assert(object != null)
-				if object is Node:
-					object.queue_free()
-				elif object is Object && ! (object is Reference):
-					object.free()
-
-				object = ClassDB.instance(name_of_class)
+					object = ClassDB.instance(name_of_class)
 
 		if object is Node:  # Just prevent memory leak
 			object.queue_free()
