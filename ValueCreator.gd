@@ -62,14 +62,23 @@ func get_bool_string() -> String:
 
 
 func get_vector2() -> Vector2:
+	if random:
+		if randi() % 2:
+			return Vector2(get_float(), get_float()).normalized()
 	return Vector2(get_float(), get_float())
 
 
 func get_vector2_string() -> String:
+	if random:
+		if randi() % 2:
+			return "Vector2(" + get_float_string() + ", " + get_float_string() + ").normalized()"
 	return "Vector2(" + get_float_string() + ", " + get_float_string() + ")"
 
 
 func get_vector2_string_csharp() -> String:
+	if random:
+		if randi() % 2:
+			return "new Vector2(" + get_float_string() + ", " + get_float_string() + ").Normalized()"
 	return "new Vector2(" + get_float_string() + ", " + get_float_string() + ")"
 
 
@@ -216,12 +225,17 @@ func get_nodepath_string_csharp() -> String:
 func get_array() -> Array:
 	var array: Array = []
 	for _i in range(int(min(max_array_size, number))):
-		array.append([])
+		if random && randi() % 2:
+			array.append(randi() % 100)
+		else:
+			array.append([])
 	return Array([])
 
 
 # TODO
 func get_dictionary() -> Dictionary:
+	if randi() % 2:
+		return Dictionary({"roman": 22,22: 25,BoxShape.new():BoxShape.new()})
 	return Dictionary({})
 
 

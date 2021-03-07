@@ -22,15 +22,15 @@ var classes: Array
 
 var list_of_all_files = {"2D": [], "3D": [], "Node": [], "Other": [], "Control": [], "Resource": [], "Reference": [], "Object": []}
 
-#func _init() -> void:
-#	test_normalize_function()
-#
-#func test_normalize_function():
-#	use_gdscript = false
-#	assert(normalize_function_names("node") == "Node")
-#	assert(normalize_function_names("get_methods") == "GetMethods")
-#	use_gdscript = true
-#	assert(normalize_function_names("node") == "node")
+func _init() -> void:
+	test_normalize_function()
+
+func test_normalize_function():
+	use_gdscript = false
+	assert(normalize_function_names("node") == "Node")
+	assert(normalize_function_names("get_methods") == "GetMethods")
+	use_gdscript = true
+	assert(normalize_function_names("node") == "node")
 
 
 func normalize_function_names(function_name: String) -> String:

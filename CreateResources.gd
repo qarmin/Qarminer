@@ -96,7 +96,7 @@ func return_for_all(method_data: Dictionary) -> Array:
 
 	ValueCreator.number = 100
 	ValueCreator.random = true  # RegressionTestProject - This must be false
-	ValueCreator.should_be_always_valid = true
+	ValueCreator.should_be_always_valid = false
 
 	for argument in method_data["args"]:
 		match argument.type:

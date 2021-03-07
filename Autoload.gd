@@ -8,20 +8,12 @@ var properties_exceptions : Array = [
 ]
 var function_exceptions : Array = [
 	# They exists without assigment like Class.method, because they may be a parent of other objects and children also should have disabled child.method, its children also etc. which is too much to do
-	"align",# GH 45976
-	"_screen_pick_pressed",# GH 45977
-	"debug_bake",# GH 45978
-	"bake", # GH 45978
 	"_editor_settings_changed",# GH 45979
-	"_mesh_changed",# GH 45980
 	"_submenu_timeout", # GH 45981
-	"set_data", # GH 45995 - probably this will cause a lot of different errors in other classes
-	"_set_user_data", # GH 45996
 	"set_config_file", # GH 45997
 	"_gui_input", # GH 45998
 	"_unhandled_key_input", # GH 45998
 	"navpoly_add", #GH 43288
-	"create_from_mesh", #GH 45999
 	"_thread_done", #GH 46000
 	"generate", #GH 46001
 	"_proximity_group_broadcast", #GH 46002
@@ -32,20 +24,13 @@ var function_exceptions : Array = [
 	"get_column_width", #GH 46005
 	"_unhandled_input", # TODO
 	"_input", # TODO
-	"lightmap_unwrap", #GH 46007 - memory leak
-	"_input_type_changed", #GH 46011
-	"add_node", #GH 46012
 	"play", #GH 46013
-	"connect_nodes_forced", #GH 46014
 	"_set_tile_data", #GH 46015
-	"add_image", #GH 46016
 	"_edit_set_state", #GH 46017
 	"_edit_set_position", #GH 46018
 	"_edit_set_rect", #GH 46018
 	"get", #GH 46019
 	"instance_has", #GH 46020
-	"_update_shader", #GH 46062
-	"generate_tangents", #GH 46059
 	"get_var", #GH 46096
 	"force_drag", #GH 46114
 	"set_script", #GH 46120
@@ -56,22 +41,21 @@ var function_exceptions : Array = [
 	"open_midi_inputs", #GH 46183
 	"get_unix_time_from_datetime", #GH 46188
 	"set_icon", #GH 46189
-	"set_window_size", #GH 46187
-	"get_screen_size", #GH 46186
-	"get_screen_position", #GH 46185
-	"set_current_screen", #GH 46184
-	"build_capsule_planes", #GH 
-	"build_cylinder_planes", #GH 
 	"get_latin_keyboard_variant", #GH  TODO Memory Leak
-	"add_feed", #GH 
-	"poll", #GH - HTTP CLIENT 
-	"make_atlas", #GH 
-	"set_editor_hint", #GH 
-	"get_item_at_position", #TODO FIND
+	"set_editor_hint", #GH 46252
+	"get_item_at_position", #TODO hard to find
 	"set_probe_data", #GH 46570
-	"get_joy_button_index_from_string",
 	"_range_click_timeout",
-	"remove_collision_exception_with",
+	"draw", #GH 46648
+	"get_indexed", #GH 46019
+	"set_RGB_img", #GH 46724
+	"_set_RGB_img", #GH 46724
+	"_set_YCbCr_img", #GH 46724
+	"set_YCbCr_img", #GH 46724
+	"set_YCbCr_imgs", #GH 46724
+	"_set_YCbCr_imgs", #GH 46724
+	"_vp_input", # TODO
+	"_vp_unhandled_input", # TODO
 
 	"collide", #GH 46137
 	"collide_and_get_contacts", #GH 46137
@@ -84,6 +68,7 @@ var function_exceptions : Array = [
 
 	# TODO Adds big spam when i>100 - look for possiblity to 
 	"add_sphere",
+	"_update_inputs", # Cause big spam with add_input
 	# Spam when i~1000 - change to specific 
 	"update_bitmask_region",
 
@@ -131,6 +116,7 @@ var function_exceptions : Array = [
 	"connect_to_stream",
 	"discover",
 	"wait",
+	"debug_bake",
 
 	"_create", # TODO Check
 
@@ -235,6 +221,8 @@ var disabled_classes : Array = [
 	"_Thread",
 	"_Semaphore",
 	"_Mutex",
+	
+	"Image",
 ]
 
 # Return all available classes to instance and test
@@ -243,9 +231,14 @@ func get_list_of_available_classes(must_be_instantable : bool = true) -> Array:
 	var classes : Array = []
 	full_class_list.sort()
 	var c = 0
+	var rr = 0
 	for name_of_class in full_class_list:
+		rr += 1
 		if name_of_class in disabled_classes:
 			continue
+		
+#		if rr < 550:
+#			continue
 		
 		if name_of_class.find("Server") != -1 && !ClassDB.is_parent_class(name_of_class,"Reference"):
 			continue

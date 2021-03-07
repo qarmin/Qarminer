@@ -11,6 +11,6 @@ logs/
 .godot/
 CSharp/
 GDScript/
-Node.gd
-Node.tscn
+Node2D.gd
+Node2D.tscn
 Resources/
