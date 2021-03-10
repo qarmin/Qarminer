@@ -3,7 +3,7 @@ extends Node
 var debug_print: bool = true
 var add_to_tree: bool = true  # Adds nodes to tree
 var use_parent_methods: bool = false  # Allows Node2D use Node methods etc. - it is a little slow option which rarely shows
-var use_always_new_object: bool = false  # Don't allow to "remeber" other function effects
+var use_always_new_object: bool = true  # Don't allow to "remeber" other function effects
 
 
 func _ready() -> void:

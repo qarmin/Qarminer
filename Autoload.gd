@@ -25,8 +25,8 @@ var function_exceptions : Array = [
 "generate_lod",
 "optimize_indices_for_cache",
 "add_file",
-"",
-"",
+"set_texture",
+"_activate",
 
 "_update_inputs",
 "align",# GH 45976
@@ -275,7 +275,7 @@ func get_list_of_available_classes() -> Array:
 		rr += 1
 		if name_of_class in disabled_classes:
 			continue
-#		if rr < 252 || rr > 252:
+#		if rr < 402 || rr > 502:
 #			continue
 #		print("AAAAAAAAAAAAAAA" + name_of_class)
 			
