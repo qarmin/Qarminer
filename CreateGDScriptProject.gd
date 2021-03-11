@@ -2,7 +2,16 @@ extends Node
 
 var number_of_external_resources : int = 0
 
-func get_object_type(name_of_class  : String) -> String:
+class SingleArgument:
+	var name : String # E.G. var roman, can be empty, so temp variable isn't created(nodes and objects must be created with temp_variable due to memory leaks)
+	var type : String # np. Vector2 or Object
+	var value : String # np. randi() % 100 or
+	var is_object : bool = false # Check if this is object e.g. Node not Vector2
+	var is_only_object : bool = false # Only needs to freed with .free()
+	var is_only_reference : bool = false # Don't needs to be removed manually
+	var is_only_node : bool = false # Needs to be removed with .queue_free()
+	
+func get_object_folder(name_of_class  : String) -> String:
 	assert(ClassDB.class_exists(name_of_class))
 	if ClassDB.is_parent_class(name_of_class, "Spatial"):  # TODO Fix in Godot 4.0
 		return "3D"
@@ -27,7 +36,7 @@ func create_basic_files() -> void:
 		var data_to_save: String = ""
 		var file_name: String = CreateProjectBase.base_path
 
-		var prefix = get_object_type(class_data.name)
+		var prefix = get_object_folder(class_data.name)
 		file_name += prefix + "/" + class_data.name + ".gd"
 		CreateProjectBase.list_of_all_files[prefix].append(file_name)
 
@@ -112,57 +121,56 @@ func create_basic_files() -> void:
 				if CreateProjectBase.debug_in_runtime:
 					data_to_save += "\t\tprint(\"Executing " + object_type + "." + class_data.function_names[i] + "\")\n"
 
-				var arguments := convert_arguments_to_string(class_data.arguments[i])
+				var arguments := create_arguments(class_data.arguments[i])
 
-				var list_of_new_arguments: Array = []  # e.g. (variable1,0,0) instead (object.new(),0,0)
-				var variables_to_add: Array = []  # e.g. var variable1 = Object.new()
-
-				var index = 0
-				for j in arguments:
-					if j.ends_with(".new()"):
-						# Means that argument is an object
-						function_use_objects = true
-						var new_variable_name = "p_object_" + str(index)
-						index += 1
-						list_of_new_arguments.append(new_variable_name)
-						variables_to_add.append(j.strip_edges().trim_suffix(".new()"))
-					else:
-						list_of_new_arguments.append(j.strip_edges())
-						variables_to_add.append("")
-
-				assert(list_of_new_arguments.size() == variables_to_add.size())
-				# Create temporary objects
-				for j in variables_to_add.size():
-					if !variables_to_add[j].empty():
-						assert(ClassDB.class_exists(variables_to_add[j]))
-						if ClassDB.is_parent_class(variables_to_add[j], "Resource") && CreateProjectBase.use_loaded_resources:
-							data_to_save += "\t\tvar " + list_of_new_arguments[j] + " = load(\"res://Resources/" + variables_to_add[j] + ".res\")\n"
+				for argument in arguments:
+					if argument.is_object:
+						assert(ClassDB.class_exists(argument.type))
+						if argument.is_only_reference && CreateProjectBase.use_loaded_resources:
+							data_to_save += "\t\tvar " + argument.name + ": " + argument.type + " = " + " load(\"res://Resources/" + argument.type + ".res\")\n"
 						else:
-							data_to_save += "\t\tvar " + list_of_new_arguments[j] + " = " + variables_to_add[j].trim_prefix("_") + ".new()\n"
+							data_to_save += "\t\tvar " + argument.name + ": " + argument.type + " = " + argument.type.trim_prefix("_") + ".new()\n"
+					else:
+						if argument.type == "Variant":
+							data_to_save += "\t\tvar " + argument.name + " = " + argument.value + "\n"
+						else:
+							data_to_save += "\t\tvar " + argument.name + ": " + argument.type + " = " + argument.value + "\n"
+				
+				if CreateProjectBase.debug_in_runtime:
+					data_to_save += "\t\tprint(\"Parameters[ "
+					for j in arguments.size():
+						data_to_save += "\" + str(" + arguments[j].name + ") + \""
+						if j != arguments.size() - 1:
+							data_to_save += ", "
+					data_to_save += " ]\")\n"
+				
 				# Apply data
-				if function_use_objects:
+				if function_use_objects: # TODO
 					if number_of_external_resources > 0:
 						data_to_save += "\t\tfor _i in range(|||):\n".replace("|||",str(number_of_external_resources))
-						for j in variables_to_add.size():
-							if !variables_to_add[j].empty() && variables_to_add[j] != class_data.name: # Do not allow to recursive execute functions
-								data_to_save += "\t\t\tload(\"res://|||/{}.gd\").modify_object(;;;)\n".replace("|||",get_object_type(variables_to_add[j])).replace("{}",variables_to_add[j]).replace(";;;",list_of_new_arguments[j])
+						for argument in arguments:
+							if !argument.name.empty() && argument.name != class_data.name: # Do not allow to recursive execute functions
+								data_to_save += "\t\t\tload(\"res://|||/{}.gd\").modify_object(;;;)\n".replace("|||",get_object_folder(argument.type)).replace("{}",argument.type).replace(";;;",argument.name)
 						data_to_save += "\t\t\tpass\n"
 							
 
-
 				var string_new_arguments: String = ""
-				for j in range(variables_to_add.size()):
-					string_new_arguments += list_of_new_arguments[j]
-					if j != (variables_to_add.size() - 1):
+				for j in range(arguments.size()):
+					if arguments[j].name.empty():
+						string_new_arguments += arguments[j].value
+					else:
+						string_new_arguments += arguments[j].name
+					if j != (arguments.size() - 1):
 						string_new_arguments += ", "
 
 				data_to_save += "\t\t" + object_name + "." + class_data.function_names[i] + "(" + string_new_arguments + ")\n"
 
 				# Delete all temporary objects
-				for j in range(variables_to_add.size()):
-					if !variables_to_add[j].empty():
-						if ClassDB.is_parent_class(variables_to_add[j], "Node"):
-							data_to_save += "\t\t" + list_of_new_arguments[j] + ".queue_free()\n"
+				for argument in arguments:
+					if argument.is_only_node:
+						data_to_save += "\t\t" + argument.name + ".queue_free()\n"
+					elif argument.is_only_object:
+						data_to_save += "\t\t" + argument.name + ".queue_free()\n"
 
 				data_to_save += "\n"
 		data_to_save += "\tpass\n\n"
@@ -175,75 +183,118 @@ func create_basic_files() -> void:
 		file.store_string(data_to_save)
 
 
-func convert_arguments_to_string(arguments: Array) -> PoolStringArray:
+func create_arguments(arguments: Array) -> Array:
 	var return_array: PoolStringArray = PoolStringArray([])
-
+	
+	var argument_array : Array = []
+	
 	ValueCreator.number = 100
 	ValueCreator.random = true
 	ValueCreator.should_be_always_valid = true  # DO NOT CHANGE, BECAUSE NON VALID VALUES WILL SHOW GDSCRIPT ERRORS!
 
+
+	var counter = 0
 	for argument in arguments:
+		counter += 1
+		var sa : SingleArgument = SingleArgument.new()
+		sa.name = "variable" + str(counter)
 		match argument["type"]:
 			TYPE_NIL:  # Looks that this means VARIANT not null
+				sa.type = "Variant"
+				sa.value = "false"
 				return_array.append("false")  # TODO add some randomization
-			TYPE_MAX:
-				assert(false)
 			TYPE_AABB:
-				return_array.append(ValueCreator.get_aabb_string())
+				sa.type = "AABB"
+				sa.value = ValueCreator.get_aabb_string()
 			TYPE_ARRAY:
-				return_array.append("[]")
+				sa.type = "Array"
+				sa.value = "[]"
 			TYPE_BASIS:
-				return_array.append(ValueCreator.get_basis_string())
+				sa.type = "Basis"
+				sa.value = ValueCreator.get_basis_string()
 			TYPE_BOOL:
-				return_array.append(ValueCreator.get_bool_string().to_lower())
+				sa.type = "bool"
+				sa.value = ValueCreator.get_bool_string().to_lower()
 			TYPE_COLOR:
-				return_array.append(ValueCreator.get_color_string())
+				sa.type = "Color"
+				sa.value = ValueCreator.get_color_string()
 			TYPE_COLOR_ARRAY:
-				return_array.append("PoolColorArray([])")
+				sa.type = "PoolColorArray"
+				sa.value = "PoolColorArray([])"
 			TYPE_DICTIONARY:
-				return_array.append("{}")
+				sa.type = "Dictionary"
+				sa.value = "{}" # TODO Why not all use ValueCreator?
 			TYPE_INT:
-				return_array.append(ValueCreator.get_int_string())
+				sa.type = "int"
+				sa.value = ValueCreator.get_int_string()
 			TYPE_INT_ARRAY:
-				return_array.append("PoolIntArray([])")
+				sa.type = "PoolIntArray"
+				sa.value = "PoolIntArray([])"
 			TYPE_NODE_PATH:
-				return_array.append("NodePath(\".\")")
+				sa.type = "NodePath"
+				sa.value = "NodePath(\".\")"
 			TYPE_OBJECT:
-				return_array.append(ValueCreator.get_object_string(argument["class_name"]) + ".new()")
+				sa.type = ValueCreator.get_object_string(argument["class_name"])
+				sa.value = sa.type + ".new()"
+				
+				sa.is_object = true
+				if ClassDB.is_parent_class(sa.type, "Node"):
+					sa.is_only_node = true
+				elif ClassDB.is_parent_class(sa.type, "Reference"):
+					sa.is_only_reference = true
+				else:
+					sa.is_only_object = true
+				
 			TYPE_PLANE:
-				return_array.append(ValueCreator.get_plane_string())
+				sa.type = "Plane"
+				sa.value = ValueCreator.get_plane_string()
 			TYPE_QUAT:
-				return_array.append(ValueCreator.get_quat_string())
+				sa.type = "Quat"
+				sa.value = ValueCreator.get_quat_string()
 			TYPE_RAW_ARRAY:
-				return_array.append("PoolByteArray([])")
+				sa.type = "PoolByteArray"
+				sa.value = "PoolByteArray([])"
 			TYPE_REAL:
-				return_array.append(ValueCreator.get_float_string())
+				sa.type = "float"
+				sa.value = ValueCreator.get_float_string()
 			TYPE_REAL_ARRAY:
-				return_array.append("PoolRealArray([])")
+				sa.type = "PoolRealArray"
+				sa.value = "PoolRealArray([])"
 			TYPE_RECT2:
-				return_array.append(ValueCreator.get_rect2_string())
+				sa.type = "Rect2"
+				sa.value = ValueCreator.get_rect2_string()
 			TYPE_RID:
-				return_array.append("RID()")
+				sa.type = "RID"
+				sa.value = "RID()"
 			TYPE_STRING:
-				return_array.append(ValueCreator.get_string_string())
+				sa.type = "String"
+				sa.value = ValueCreator.get_string_string()
 			TYPE_STRING_ARRAY:
-				return_array.append("PoolStringArray([])")
+				sa.type = "PoolStringArray"
+				sa.value = "PoolStringArray([])"
 			TYPE_TRANSFORM:
-				return_array.append(ValueCreator.get_transform_string())
+				sa.type = "Transform"
+				sa.value = ValueCreator.get_transform_string()
 			TYPE_TRANSFORM2D:
-				return_array.append(ValueCreator.get_transform2D_string())
+				sa.type = "Transform2D"
+				sa.value = ValueCreator.get_transform2D_string()
 			TYPE_VECTOR2:
-				return_array.append(ValueCreator.get_vector2_string())
+				sa.type = "Vector2"
+				sa.value = ValueCreator.get_vector2_string()
 			TYPE_VECTOR2_ARRAY:
-				return_array.append("PoolVector2Array([])")
+				sa.type = "PoolVector2Array"
+				sa.value = "PoolVector2Array([])"
 			TYPE_VECTOR3:
-				return_array.append(ValueCreator.get_vector3_string())
+				sa.type = "Vector3"
+				sa.value = ValueCreator.get_vector3_string()
 			TYPE_VECTOR3_ARRAY:
-				return_array.append("PoolVector3Array([])")
+				sa.type = "PoolVector3Array"
+				sa.value = "PoolVector3Array([])"
 			_:
 				assert(false)  # Missed some types, add it
+		argument_array.append(sa)
 
-	return return_array
+	return argument_array
 
 
 func _ready() -> void:

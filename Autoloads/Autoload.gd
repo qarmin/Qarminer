@@ -7,6 +7,8 @@ var properties_exceptions : Array = [
 	"",
 ]
 var function_exceptions : Array = [
+	"_set_user_data",
+	"create_from_mesh",
 	# They exists without assigment like Class.method, because they may be a parent of other objects and children also should have disabled child.method, its children also etc. which is too much to do
 	"_editor_settings_changed",# GH 45979
 	"_submenu_timeout", # GH 45981

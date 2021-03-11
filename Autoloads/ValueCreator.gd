@@ -83,14 +83,23 @@ func get_vector2_string_csharp() -> String:
 
 
 func get_vector3() -> Vector3:
+	if random:
+		if randi() % 2:
+			return Vector3(get_float(), get_float(), get_float()).normalized()
 	return Vector3(get_float(), get_float(), get_float())
 
 
 func get_vector3_string() -> String:
+	if random:
+		if randi() % 2:
+			return "Vector3(" + get_float_string() + ", " + get_float_string() + ", " + get_float_string() + ").normalized()"
 	return "Vector3(" + get_float_string() + ", " + get_float_string() + ", " + get_float_string() + ")"
 
 
 func get_vector3_string_csharp() -> String:
+	if random:
+		if randi() % 2:
+			return "new Vector3(" + get_float_string() + ", " + get_float_string() + ", " + get_float_string() + ").Normalized()"
 	return "new Vector3(" + get_float_string() + ", " + get_float_string() + ", " + get_float_string() + ")"
 
 

@@ -2,14 +2,13 @@ extends Node
 
 var debug_print: bool = true
 var add_to_tree: bool = true  # Adds nodes to tree
-var use_parent_methods: bool = true  # Allows Node2D use Node methods etc. - it is a little slow option which rarely shows
+var use_parent_methods: bool = false  # Allows Node2D use Node methods etc. - it is a little slow option which rarely shows
 var use_always_new_object: bool = true  # Don't allow to "remeber" other function effects
 
 #func _ready() -> void:
 func _process(_delta : float) -> void: # Replace this with _ready in RegressionTestProject
 	tests_all_functions()
 	get_tree().quit()  # Remove this when using it with RegressionTestProject
-
 
 # Test all functions
 func tests_all_functions() -> void:
