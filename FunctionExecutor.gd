@@ -5,15 +5,16 @@ var add_to_tree: bool = true  # Adds nodes to tree
 var use_parent_methods: bool = false  # Allows Node2D use Node methods etc. - it is a little slow option which rarely shows
 var use_always_new_object: bool = true  # Don't allow to "remeber" other function effects
 
+
 #func _ready() -> void:
-func _process(_delta : float) -> void: # Replace this with _ready in RegressionTestProject
+func _process(_delta: float) -> void:  # Replace this with _ready in RegressionTestProject
 	tests_all_functions()
 	get_tree().quit()  # Remove this when using it with RegressionTestProject
+
 
 # Test all functions
 func tests_all_functions() -> void:
 	for name_of_class in Autoload.get_list_of_available_classes():
-
 		# Instance object to be able to execute on it specific functions and later delete to prevent memory leak if it is a Node
 		var object: Object = ClassDB.instance(name_of_class)
 		assert(object != null)  # This should be checked before when collectiong functions
@@ -79,7 +80,7 @@ func return_for_all(method_data: Dictionary) -> Array:
 		match argument.type:
 			TYPE_NIL:  # Looks that this means VARIANT not null
 				if ValueCreator.random == false:
-					arguments_array.push_back(false) 
+					arguments_array.push_back(false)
 				else:
 					if randi() % 3:
 						arguments_array.push_back(ValueCreator.get_array())

@@ -244,7 +244,7 @@ func get_array() -> Array:
 func get_dictionary() -> Dictionary:
 	if random:
 		if randi() % 2:
-			return Dictionary({"roman": 22,22: 25,BoxShape.new():BoxShape.new()})
+			return Dictionary({"roman": 22, 22: 25, BoxShape.new(): BoxShape.new()})
 	return Dictionary({})
 
 

@@ -1,17 +1,19 @@
 extends Node
 
-var number_of_external_resources : int = 0
+var number_of_external_resources: int = 0
+
 
 class SingleArgument:
-	var name : String # E.G. var roman, can be empty, so temp variable isn't created(nodes and objects must be created with temp_variable due to memory leaks)
-	var type : String # np. Vector2 or Object
-	var value : String # np. randi() % 100 or
-	var is_object : bool = false # Check if this is object e.g. Node not Vector2
-	var is_only_object : bool = false # Only needs to freed with .free()
-	var is_only_reference : bool = false # Don't needs to be removed manually
-	var is_only_node : bool = false # Needs to be removed with .queue_free()
-	
-func get_object_folder(name_of_class  : String) -> String:
+	var name: String  # E.G. var roman, can be empty, so temp variable isn't created(nodes and objects must be created with temp_variable due to memory leaks)
+	var type: String  # np. Vector2 or Object
+	var value: String  # np. randi() % 100 or
+	var is_object: bool = false  # Check if this is object e.g. Node not Vector2
+	var is_only_object: bool = false  # Only needs to freed with .free()
+	var is_only_reference: bool = false  # Don't needs to be removed manually
+	var is_only_node: bool = false  # Needs to be removed with .queue_free()
+
+
+func get_object_folder(name_of_class: String) -> String:
 	assert(ClassDB.class_exists(name_of_class))
 	if ClassDB.is_parent_class(name_of_class, "Spatial"):  # TODO Fix in Godot 4.0
 		return "3D"
@@ -27,11 +29,11 @@ func get_object_folder(name_of_class  : String) -> String:
 		return "Reference"
 	else:
 		return "Object"
-	
+
 
 func create_basic_files() -> void:
 	var file: File = File.new()
-	var self_file : File = File.new()
+	var self_file: File = File.new()
 
 	for class_data in CreateProjectBase.classes:
 		var data_to_save: String = ""
@@ -42,21 +44,25 @@ func create_basic_files() -> void:
 		CreateProjectBase.list_of_all_files[prefix].append(file_name)
 
 		var object_type = class_data.name.trim_prefix("_")  # Change _Directory to Directory etc
-		var can_be_instanced : bool
-		var is_static : bool # Can execute static functions on it
+		var can_be_instanced: bool
+		var is_static: bool  # Can execute static functions on it
 		var object_name
 		if (
-			ClassDB.can_instance(class_data.name) &&(
-			ClassDB.is_parent_class(class_data.name, "Node")
-			|| ClassDB.is_parent_class(class_data.name, "Reference")
-			|| (ClassDB.is_parent_class(class_data.name, "Object") 
-			&& ClassDB.class_has_method(class_data.name, "new"))
+			ClassDB.can_instance(class_data.name)
+			&& (
+				ClassDB.is_parent_class(class_data.name, "Node")
+				|| ClassDB.is_parent_class(class_data.name, "Reference")
+				|| (ClassDB.is_parent_class(class_data.name, "Object") && ClassDB.class_has_method(class_data.name, "new"))
 			)
 		):
 			object_name = "q_" + object_type
 			can_be_instanced = true
 			is_static = false
-		elif ClassDB.is_parent_class(class_data.name, "Node") || ClassDB.is_parent_class(class_data.name, "Reference") || (ClassDB.is_parent_class(class_data.name, "Object") && ClassDB.class_has_method(class_data.name, "new")):
+		elif (
+			ClassDB.is_parent_class(class_data.name, "Node")
+			|| ClassDB.is_parent_class(class_data.name, "Reference")
+			|| (ClassDB.is_parent_class(class_data.name, "Object") && ClassDB.class_has_method(class_data.name, "new"))
+		):
 			object_name = "q_" + object_type
 			can_be_instanced = false
 			is_static = false
@@ -64,18 +70,17 @@ func create_basic_files() -> void:
 			object_name = object_type
 			can_be_instanced = false
 			is_static = true
-		
+
 		### Create file, which allow to open
 		if ClassDB.is_parent_class(class_data.name, "Node"):
 			var data_self = ""
 			data_self += "extends " + class_data.name + "\n\n"
 			data_self += "func _process(_delta: float) -> void:\n"
-			data_self += "\tload(\"res://" + prefix + "/"+ class_data.name +".gd\").modify_object(self)"
-			
-			assert(self_file.open("res://GDScript/Self/"+ class_data.name + ".gd", File.WRITE) == OK)
+			data_self += "\tload(\"res://" + prefix + "/" + class_data.name + ".gd\").modify_object(self)"
+
+			assert(self_file.open("res://GDScript/Self/" + class_data.name + ".gd", File.WRITE) == OK)
 			self_file.store_string(data_self)
-			 
-		
+
 		### Global
 		data_to_save += "extends Node2D\n\n"
 		if can_be_instanced:
@@ -93,40 +98,36 @@ func create_basic_files() -> void:
 				data_to_save += "\tadd_child(" + object_name + ")\n\n"
 
 		### Process Function
-		if can_be_instanced || is_static: # Disallow to use it for e.g. non instantable CollisionObject
+		if can_be_instanced || is_static:  # Disallow to use it for e.g. non instantable CollisionObject
 			data_to_save += "func _process(_delta : float) -> void:\n"
 			if CreateProjectBase.allow_to_replace_old_with_new_objects:
 				if can_be_instanced:
 					data_to_save += "\tif randi() % 10 == 0:\n"
 				if ClassDB.is_parent_class(class_data.name, "Node"):
 					data_to_save += "\t\t" + object_name + ".queue_free()\n"
-				if (
-					can_be_instanced
-					&& !(ClassDB.is_parent_class(class_data.name, "Reference"))
-					&& !(ClassDB.is_parent_class(class_data.name, "Node"))
-				):
+				if can_be_instanced && !(ClassDB.is_parent_class(class_data.name, "Reference")) && !(ClassDB.is_parent_class(class_data.name, "Node")):
 					data_to_save += "\t\t" + object_name + ".free()\n"
 				if can_be_instanced:
 					data_to_save += "\t\t" + object_name + " = " + object_type + ".new()\n"
 				if ClassDB.is_parent_class(class_data.name, "Node"):
 					data_to_save += "\t\tadd_child(" + object_name + ")\n\n"
-				
+
 				## Execution of function
 				if can_be_instanced:
 					data_to_save += "\tmodify_object(|||)\n\n".replace("|||", object_name)
 				else:
 					data_to_save += "\tmodify_object()\n\n"
-		
+
 		### Function which execute
 		if !is_static:
 			data_to_save += "static func modify_object(||| : {}) -> void:\n".replace("{}", object_type).replace("|||", object_name)
 		else:
 			data_to_save += "static func modify_object() -> void:\n"
-		
-		if !(class_data.name in ["PhysicsDirectBodyState","PhysicsDirectSpaceState","Physics2DDirectBodyState","Physics2DDirectSpaceState","TreeItem", "Image"]): # Some functions are static, but some needs to work on objects etc.., TODO Remove Image when it will be enough stable
+
+		if !(class_data.name in ["PhysicsDirectBodyState", "PhysicsDirectSpaceState", "Physics2DDirectBodyState", "Physics2DDirectSpaceState", "TreeItem", "Image"]):  # Some functions are static, but some needs to work on objects etc.., TODO Remove Image when it will be enough stable
 			for i in range(class_data.function_names.size()):
-				var function_use_objects : bool = false
-			
+				var function_use_objects: bool = false
+
 				data_to_save += "\tif randi() % 2 == 0:\n"
 				if CreateProjectBase.debug_in_runtime:
 					data_to_save += "\t\tprint(\"Executing " + object_type + "." + class_data.function_names[i] + "\")\n"
@@ -145,7 +146,7 @@ func create_basic_files() -> void:
 							data_to_save += "\t\tvar " + argument.name + " = " + argument.value + "\n"
 						else:
 							data_to_save += "\t\tvar " + argument.name + ": " + argument.type + " = " + argument.value + "\n"
-				
+
 				if CreateProjectBase.debug_in_runtime:
 					data_to_save += "\t\tprint(\"Parameters["
 					for j in arguments.size():
@@ -153,16 +154,17 @@ func create_basic_files() -> void:
 						if j != arguments.size() - 1:
 							data_to_save += ", "
 					data_to_save += "]\")\n"
-				
+
 				# Apply data
 				if function_use_objects:
 					if number_of_external_resources > 0:
-						data_to_save += "\t\tfor _i in range(|||):\n".replace("|||",str(number_of_external_resources))
+						data_to_save += "\t\tfor _i in range(|||):\n".replace("|||", str(number_of_external_resources))
 						for argument in arguments:
-							if !argument.name.empty() && argument.name != class_data.name: # Do not allow to recursive execute functions
-								data_to_save += "\t\t\tload(\"res://|||/{}.gd\").modify_object(;;;)\n".replace("|||",get_object_folder(argument.type)).replace("{}",argument.type).replace(";;;",argument.name)
+							if !argument.name.empty() && argument.name != class_data.name:  # Do not allow to recursive execute functions
+								data_to_save += "\t\t\tload(\"res://|||/{}.gd\").modify_object(;;;)\n".replace("|||", get_object_folder(argument.type)).replace("{}", argument.type).replace(
+									";;;", argument.name
+								)
 						data_to_save += "\t\t\tpass\n"
-							
 
 				var string_new_arguments: String = ""
 				for j in range(arguments.size()):
@@ -195,18 +197,17 @@ func create_basic_files() -> void:
 
 func create_arguments(arguments: Array) -> Array:
 	var return_array: PoolStringArray = PoolStringArray([])
-	
-	var argument_array : Array = []
-	
+
+	var argument_array: Array = []
+
 	ValueCreator.number = 10
 	ValueCreator.random = true
 	ValueCreator.should_be_always_valid = true  # DO NOT CHANGE, BECAUSE NON VALID VALUES WILL SHOW GDSCRIPT ERRORS!
 
-
 	var counter = 0
 	for argument in arguments:
 		counter += 1
-		var sa : SingleArgument = SingleArgument.new()
+		var sa: SingleArgument = SingleArgument.new()
 		sa.name = "variable" + str(counter)
 		match argument["type"]:
 			TYPE_NIL:  # Looks that this means VARIANT not null
@@ -233,7 +234,7 @@ func create_arguments(arguments: Array) -> Array:
 				sa.value = "PoolColorArray([])"
 			TYPE_DICTIONARY:
 				sa.type = "Dictionary"
-				sa.value = "{}" # TODO Why not all use ValueCreator?
+				sa.value = "{}"  # TODO Why not all use ValueCreator?
 			TYPE_INT:
 				sa.type = "int"
 				sa.value = ValueCreator.get_int_string()
@@ -246,7 +247,7 @@ func create_arguments(arguments: Array) -> Array:
 			TYPE_OBJECT:
 				sa.type = ValueCreator.get_object_string(argument["class_name"])
 				sa.value = sa.type + ".new()"
-				
+
 				sa.is_object = true
 				if ClassDB.is_parent_class(sa.type, "Node"):
 					sa.is_only_node = true
@@ -254,7 +255,7 @@ func create_arguments(arguments: Array) -> Array:
 					sa.is_only_reference = true
 				else:
 					sa.is_only_object = true
-				
+
 			TYPE_PLANE:
 				sa.type = "Plane"
 				sa.value = ValueCreator.get_plane_string()
@@ -306,19 +307,20 @@ func create_arguments(arguments: Array) -> Array:
 
 	return argument_array
 
+
 func create_self_scene() -> void:
 	var scene: File = File.new()
 	assert(scene.open("res://GDScript/Self.tscn", File.WRITE) == OK)
-	var data_to_save : String = """[gd_scene load_steps=2 format=2]
+	var data_to_save: String = """[gd_scene load_steps=2 format=2]
 
 [ext_resource path="res://Self.gd" type="Script" id=1]
 
 [node name="Self" type="Node"]
 script = ExtResource( 1 )"""
 	scene.store_string(data_to_save)
-	
+
 	assert(scene.open("res://GDScript/Self.gd", File.WRITE) == OK)
-	data_to_save  = """extends Node
+	data_to_save = """extends Node
 
 var number_of_nodes : int = 0
 
@@ -401,7 +403,7 @@ func get_special_node(var name_of_class : String) -> Node:
 	return node
 	"""
 	scene.store_string(data_to_save)
-	
+
 
 func _ready() -> void:
 	CreateProjectBase.use_gdscript = true

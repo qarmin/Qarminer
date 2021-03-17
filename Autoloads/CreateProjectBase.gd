@@ -22,8 +22,10 @@ var classes: Array
 
 var list_of_all_files = {"2D": [], "3D": [], "Node": [], "Other": [], "Control": [], "Resource": [], "Reference": [], "Object": []}
 
+
 func _init() -> void:
 	test_normalize_function()
+
 
 func test_normalize_function():
 	use_gdscript = false
@@ -52,7 +54,6 @@ func normalize_function_names(function_name: String) -> String:
 
 func collect_data() -> void:
 	for name_of_class in Autoload.get_list_of_available_classes(false):
-
 		var found: bool = false
 		for exception in Autoload.only_instance:
 			if exception == name_of_class:

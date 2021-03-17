@@ -26,7 +26,6 @@ var function_exceptions : Array = [
 	"get_column_width", #GH 46005
 	"_unhandled_input", # TODO
 	"_input", # TODO
-	"play", #GH 46013
 	"_set_tile_data", #GH 46015
 	"_edit_set_state", #GH 46017
 	"_edit_set_position", #GH 46018
