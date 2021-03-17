@@ -60,7 +60,7 @@ var function_exceptions : Array = [
 	"_vp_unhandled_input", # TODO
 	"remove_joy_mapping", #GH 46754
 	"add_joy_mapping", #GH 46754
-
+	"add_vertex", #GH 47066
 
 	"collide", #GH 46137
 	"collide_and_get_contacts", #GH 46137

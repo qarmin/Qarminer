@@ -25,7 +25,7 @@ func remove_files_recursivelly(to_delete: String) -> void:
 		file_name = directory.get_next()
 
 	assert(to_delete.find("/./") == -1 && to_delete.begins_with("res://") && to_delete.begins_with(CreateProjectBase.base_path) && to_delete.find("//", 6) == -1)
-	assert(directory.remove(to_delete) == OK)  # TODO, Test This
+	assert(directory.remove(to_delete) == OK)
 
 
 func create_basic_structure() -> void:

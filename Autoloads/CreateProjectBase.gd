@@ -167,7 +167,7 @@ func remove_files_recursivelly(to_delete: String) -> void:
 
 #	print(to_delete)
 	assert(to_delete.find("/./") == -1 && to_delete.begins_with("res://") && to_delete.begins_with(base_path) && to_delete.find("//", 6) == -1)
-	assert(directory.remove(to_delete) == OK)  # TODO, Test This
+	assert(directory.remove(to_delete) == OK)
 
 
 func create_basic_structure() -> void:
@@ -179,6 +179,7 @@ func create_basic_structure() -> void:
 	assert(directory.make_dir_recursive(base_path + "Control/") == OK)
 	assert(directory.make_dir_recursive(base_path + "Resource/") == OK)
 	assert(directory.make_dir_recursive(base_path + "Reference/") == OK)
+	assert(directory.make_dir_recursive(base_path + "Self/") == OK)
 
 	var file: File = File.new()
 

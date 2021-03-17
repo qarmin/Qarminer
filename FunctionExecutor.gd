@@ -34,7 +34,7 @@ func tests_all_functions() -> void:
 
 		if debug_print:
 			print("############### CLASS ############### - " + name_of_class)
-		for i in range(1):
+		for _i in range(1):
 			for method_data in method_list:
 				# Function is virtual, so we just skip it
 				if method_data["flags"] == method_data["flags"] | METHOD_FLAG_VIRTUAL:
@@ -78,7 +78,21 @@ func return_for_all(method_data: Dictionary) -> Array:
 	for argument in method_data["args"]:
 		match argument.type:
 			TYPE_NIL:  # Looks that this means VARIANT not null
-				arguments_array.push_back(false)  # TODO randomize this
+				if ValueCreator.random == false:
+					arguments_array.push_back(false) 
+				else:
+					if randi() % 3:
+						arguments_array.push_back(ValueCreator.get_array())
+					elif randi() % 3:
+						arguments_array.push_back(ValueCreator.get_object("Object"))
+					elif randi() % 3:
+						arguments_array.push_back(ValueCreator.get_dictionary())
+					elif randi() % 3:
+						arguments_array.push_back(ValueCreator.get_string())
+					elif randi() % 3:
+						arguments_array.push_back(ValueCreator.get_int())
+					else:
+						arguments_array.push_back(ValueCreator.get_basis())
 			TYPE_AABB:
 				arguments_array.push_back(ValueCreator.get_aabb())
 			TYPE_ARRAY:

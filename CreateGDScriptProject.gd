@@ -31,6 +31,7 @@ func get_object_folder(name_of_class  : String) -> String:
 
 func create_basic_files() -> void:
 	var file: File = File.new()
+	var self_file : File = File.new()
 
 	for class_data in CreateProjectBase.classes:
 		var data_to_save: String = ""
@@ -64,7 +65,16 @@ func create_basic_files() -> void:
 			can_be_instanced = false
 			is_static = true
 		
+		### Create file, which allow to open
+		if ClassDB.is_parent_class(class_data.name, "Node"):
+			var data_self = ""
+			data_self += "extends " + class_data.name + "\n\n"
+			data_self += "func _process(_delta: float) -> void:\n"
+			data_self += "\tload(\"res://" + prefix + "/"+ class_data.name +".gd\").modify_object(self)"
 			
+			assert(self_file.open("res://GDScript/Self/"+ class_data.name + ".gd", File.WRITE) == OK)
+			self_file.store_string(data_self)
+			 
 		
 		### Global
 		data_to_save += "extends Node2D\n\n"
@@ -129,7 +139,7 @@ func create_basic_files() -> void:
 						if argument.is_only_reference && CreateProjectBase.use_loaded_resources:
 							data_to_save += "\t\tvar " + argument.name + ": " + argument.type + " = " + " load(\"res://Resources/" + argument.type + ".res\")\n"
 						else:
-							data_to_save += "\t\tvar " + argument.name + ": " + argument.type + " = " + argument.type.trim_prefix("_") + ".new()\n"
+							data_to_save += "\t\tvar " + argument.name + ": " + argument.type.trim_prefix("_") + " = " + argument.type.trim_prefix("_") + ".new()\n"
 					else:
 						if argument.type == "Variant":
 							data_to_save += "\t\tvar " + argument.name + " = " + argument.value + "\n"
@@ -137,15 +147,15 @@ func create_basic_files() -> void:
 							data_to_save += "\t\tvar " + argument.name + ": " + argument.type + " = " + argument.value + "\n"
 				
 				if CreateProjectBase.debug_in_runtime:
-					data_to_save += "\t\tprint(\"Parameters[ "
+					data_to_save += "\t\tprint(\"Parameters["
 					for j in arguments.size():
 						data_to_save += "\" + str(" + arguments[j].name + ") + \""
 						if j != arguments.size() - 1:
 							data_to_save += ", "
-					data_to_save += " ]\")\n"
+					data_to_save += "]\")\n"
 				
 				# Apply data
-				if function_use_objects: # TODO
+				if function_use_objects:
 					if number_of_external_resources > 0:
 						data_to_save += "\t\tfor _i in range(|||):\n".replace("|||",str(number_of_external_resources))
 						for argument in arguments:
@@ -188,7 +198,7 @@ func create_arguments(arguments: Array) -> Array:
 	
 	var argument_array : Array = []
 	
-	ValueCreator.number = 100
+	ValueCreator.number = 10
 	ValueCreator.random = true
 	ValueCreator.should_be_always_valid = true  # DO NOT CHANGE, BECAUSE NON VALID VALUES WILL SHOW GDSCRIPT ERRORS!
 
@@ -296,6 +306,102 @@ func create_arguments(arguments: Array) -> Array:
 
 	return argument_array
 
+func create_self_scene() -> void:
+	var scene: File = File.new()
+	assert(scene.open("res://GDScript/Self.tscn", File.WRITE) == OK)
+	var data_to_save : String = """[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Self.gd" type="Script" id=1]
+
+[node name="Self" type="Node"]
+script = ExtResource( 1 )"""
+	scene.store_string(data_to_save)
+	
+	assert(scene.open("res://GDScript/Self.gd", File.WRITE) == OK)
+	data_to_save  = """extends Node
+
+var number_of_nodes : int = 0
+
+var collected_nodes : Array = []
+var disabled_classes : Array = [
+	"ReflectionProbe", # Cause errors, not sure about it
+] # Just add name of any class if cause problems
+
+func collect() -> void:
+	var classes : Array = ClassDB.get_class_list()
+	classes.sort()
+	for name_of_class in classes:
+		if ClassDB.is_parent_class(name_of_class,"Node"):
+			if name_of_class.find("Editor") != -1: # We don't want to test editor nodes
+				continue
+			if disabled_classes.has(name_of_class): # Class is disabled
+				continue
+			if ClassDB.can_instance(name_of_class): # Only instantable nodes can be used
+				collected_nodes.append(name_of_class)
+
+func _ready() -> void:
+	seed(405)
+	collect()
+	number_of_nodes = max(collected_nodes.size(),200) # Use at least all nodes, or more if you want(168 is probably number nodes)
+	for i in range(number_of_nodes): 
+		var index = i
+		if i >= collected_nodes.size(): # Wrap values
+			index = i % collected_nodes.size()
+		
+		var child : Node = get_special_node(collected_nodes[index])
+		child.set_name("Special Node " + str(i))
+		add_child(child)
+
+func _process(delta: float) -> void:
+#	assert(Performance.get_monitor(Performance.OBJECT_ORPHAN_NODE_COUNT) == 0) # Don't work good with running more than 1 this scene
+	
+	var choosen_node : Node
+	var parent_of_node : Node
+	for i in range(5):
+		var number : String = "Special Node " + str(randi() % number_of_nodes)
+		choosen_node = find_node(number,true,false)
+		parent_of_node = choosen_node.get_parent()
+		
+		var random_node = find_node("Special Node " + str(randi() % number_of_nodes),true,false)
+		parent_of_node.remove_child(choosen_node)
+		
+		if randi() % 6 == 0: # 16% chance to remove node with children
+			var names_to_remove : Array = find_all_special_children_names(choosen_node)
+			for name_to_remove in names_to_remove:
+				var node : Node = get_special_node(collected_nodes[randi() % collected_nodes.size()])
+				node.set_name(name_to_remove)
+				add_child(node)
+			choosen_node.queue_free()
+			continue
+		
+		
+		if choosen_node.find_node(random_node.get_name(),true,false) != null: # Cannot set as node parent one of its child
+			add_child(choosen_node)
+			continue
+		if choosen_node == random_node: # Do not reparent node to self
+			add_child(choosen_node)
+			continue
+		random_node.add_child(choosen_node)
+
+# Finds recusivelly all child nodes which are not internal
+func find_all_special_children_names(node : Node) -> Array:
+	var array : Array = []
+	array.append(node.get_name())
+	for child in node.get_children():
+		if child.get_name().begins_with("Special Node"):
+			array.append_array(find_all_special_children_names(child))
+	
+	return array
+
+func get_special_node(var name_of_class : String) -> Node:
+	assert(ClassDB.can_instance(name_of_class))
+	assert(ClassDB.is_parent_class(name_of_class, "Node"))
+	var node : Node = ClassDB.instance(name_of_class)
+	node.set_script(load("res://Self/" + name_of_class + ".gd"))
+	return node
+	"""
+	scene.store_string(data_to_save)
+	
 
 func _ready() -> void:
 	CreateProjectBase.use_gdscript = true
@@ -308,5 +414,6 @@ func _ready() -> void:
 	CreateProjectBase.create_basic_structure()
 	create_basic_files()
 	CreateProjectBase.create_scene_files()
+	create_self_scene()
 	print("Created test GDScript project")
 	get_tree().quit()

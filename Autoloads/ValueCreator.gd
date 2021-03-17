@@ -241,15 +241,17 @@ func get_array() -> Array:
 	return Array([])
 
 
-# TODO
 func get_dictionary() -> Dictionary:
-	if randi() % 2:
-		return Dictionary({"roman": 22,22: 25,BoxShape.new():BoxShape.new()})
+	if random:
+		if randi() % 2:
+			return Dictionary({"roman": 22,22: 25,BoxShape.new():BoxShape.new()})
 	return Dictionary({})
 
 
 func get_pool_string_array() -> PoolStringArray:
 	var array: Array = []
+	if random && randi() % 2:
+		return PoolStringArray(array)
 	for _i in range(int(min(max_array_size, number))):
 		array.append(get_string())
 	return PoolStringArray(array)
@@ -257,6 +259,8 @@ func get_pool_string_array() -> PoolStringArray:
 
 func get_pool_int_array() -> PoolIntArray:
 	var array: Array = []
+	if random && randi() % 2:
+		return PoolIntArray(array)
 	for _i in range(int(min(max_array_size, number))):
 		array.append(get_int())
 	return PoolIntArray(array)
@@ -264,6 +268,8 @@ func get_pool_int_array() -> PoolIntArray:
 
 func get_pool_byte_array() -> PoolByteArray:
 	var array: Array = []
+	if random && randi() % 2:
+		return PoolByteArray(array)
 	for _i in range(int(min(max_array_size, number))):
 		array.append(get_int())
 	return PoolByteArray(array)
@@ -271,6 +277,8 @@ func get_pool_byte_array() -> PoolByteArray:
 
 func get_pool_real_array() -> PoolRealArray:
 	var array: Array = []
+	if random && randi() % 2:
+		return PoolRealArray(array)
 	for _i in range(int(min(max_array_size, number))):
 		array.append(get_float())
 	return PoolRealArray(array)
@@ -278,6 +286,8 @@ func get_pool_real_array() -> PoolRealArray:
 
 func get_pool_vector2_array() -> PoolVector2Array:
 	var array: Array = []
+	if random && randi() % 2:
+		return PoolVector2Array(array)
 	for _i in range(int(min(max_array_size, number))):
 		array.append(get_vector2())
 	return PoolVector2Array(array)
@@ -285,6 +295,8 @@ func get_pool_vector2_array() -> PoolVector2Array:
 
 func get_pool_vector3_array() -> PoolVector3Array:
 	var array: Array = []
+	if random && randi() % 2:
+		return PoolVector3Array(array)
 	for _i in range(int(min(max_array_size, number))):
 		array.append(get_vector3())
 	return PoolVector3Array(array)
@@ -292,6 +304,8 @@ func get_pool_vector3_array() -> PoolVector3Array:
 
 func get_pool_color_array() -> PoolColorArray:
 	var array: Array = []
+	if random && randi() % 2:
+		return PoolColorArray(array)
 	for _i in range(int(min(max_array_size, number))):
 		array.append(get_color())
 	return PoolColorArray(array)
