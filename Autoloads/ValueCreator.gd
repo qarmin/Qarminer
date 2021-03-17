@@ -2,10 +2,9 @@ extends Node
 
 var number: float = 0.0
 var random: bool = false
-var should_be_always_valid: bool = true  # Generate only valid values e.g. to Node generate Node2D instead 
+var should_be_always_valid: bool = true  # Generate only valid values e.g. to Node generate Node2D instead
 
 var max_array_size: int = 15
-
 
 func _ready() -> void:
 	randomize()
@@ -218,8 +217,11 @@ func get_Packed_color_array() -> PackedColorArray:
 		array.append(get_color())
 	return PackedColorArray(array)
 
+
 func get_object(object_name: String) -> Object:
 	assert(ClassDB.class_exists(object_name))
+	if object_name == "PhysicsDirectSpaceState" || object_name == "Physics2DDirectSpaceState":
+		return BoxMesh.new()
 
 	var a = 0
 	if random:
@@ -231,7 +233,7 @@ func get_object(object_name: String) -> Object:
 				if (
 					ClassDB.can_instance(choosen_class)
 					&& (ClassDB.is_parent_class(choosen_class, "Node") || ClassDB.is_parent_class(choosen_class, "Reference"))
-					&& ! (choosen_class in Autoload.disabled_classes)
+					&& !(choosen_class in Autoload.disabled_classes)
 				):
 					return ClassDB.instance(choosen_class)
 
@@ -239,7 +241,7 @@ func get_object(object_name: String) -> Object:
 			if should_be_always_valid:
 				var to_use_classes = ClassDB.get_inheriters_from_class(object_name)
 				to_use_classes.append(object_name)
-				if ! ClassDB.can_instance(object_name) && object_name in Autoload.disabled_classes:
+				if !ClassDB.can_instance(object_name) && object_name in Autoload.disabled_classes:
 					assert(to_use_classes.size() > 0)
 
 				while true:
@@ -249,7 +251,7 @@ func get_object(object_name: String) -> Object:
 						# This shouldn't happens, but sadly happen with e.g. SpatialGizmo
 						assert(false)
 					var choosen_class: String = to_use_classes[randi() % to_use_classes.size()]
-					if ClassDB.can_instance(choosen_class) && ! (choosen_class in Autoload.disabled_classes):
+					if ClassDB.can_instance(choosen_class) && !(choosen_class in Autoload.disabled_classes):
 						return ClassDB.instance(choosen_class)
 			else:
 				while true:
@@ -257,9 +259,24 @@ func get_object(object_name: String) -> Object:
 					if a > 50:
 						assert(false)
 					var choosen_class: String = classes[randi() % classes.size()]
-					if ClassDB.can_instance(choosen_class) && ! ClassDB.is_parent_class(choosen_class, object_name) && ! (choosen_class in Autoload.disabled_classes):
+					if ClassDB.can_instance(choosen_class) && !ClassDB.is_parent_class(choosen_class, object_name) && !(choosen_class in Autoload.disabled_classes):
 						return ClassDB.instance(choosen_class)
-		assert(false)  # Other argument types are not supported
+
+		# Non Node/Resource object
+		var to_use_classes = ClassDB.get_inheriters_from_class(object_name)
+		to_use_classes.append(object_name)
+		if !ClassDB.can_instance(object_name) && object_name in Autoload.disabled_classes:
+			assert(to_use_classes.size() > 0)
+
+		while true:
+			a += 1
+			if a > 50:
+				# Object doesn't have children which can be instanced
+				# This shouldn't happens, but sadly happen with e.g. SpatialGizmo
+				assert(false)
+			var choosen_class: String = to_use_classes[randi() % to_use_classes.size()]
+			if ClassDB.can_instance(choosen_class) && !(choosen_class in Autoload.disabled_classes):
+				return ClassDB.instance(choosen_class)
 
 	else:
 		if ClassDB.can_instance(object_name):  # E.g. Texture is not instantable or shouldn't be, but LargeTexture is
@@ -294,7 +311,7 @@ func get_object_string(object_name: String) -> String:
 			if should_be_always_valid:
 				var to_use_classes = ClassDB.get_inheriters_from_class(object_name)
 				to_use_classes.append(object_name)
-				if ! ClassDB.can_instance(object_name):
+				if !ClassDB.can_instance(object_name):
 					assert(to_use_classes.size() > 0)
 
 				while true:
@@ -312,10 +329,24 @@ func get_object_string(object_name: String) -> String:
 					if a > 30:
 						assert(false)
 					var choosen_class: String = classes[randi() % classes.size()]
-					if ! ClassDB.is_parent_class(choosen_class, object_name):
+					if !ClassDB.is_parent_class(choosen_class, object_name):
 						return choosen_class
 
-		assert(false)  # Other argument types are not supported
+		# Non Node/Resource object
+		var to_use_classes = ClassDB.get_inheriters_from_class(object_name)
+		to_use_classes.append(object_name)
+		if !ClassDB.can_instance(object_name) && object_name in Autoload.disabled_classes:
+			assert(to_use_classes.size() > 0)
+
+		while true:
+			a += 1
+			if a > 50:
+				# Object doesn't have children which can be instanced
+				# This shouldn't happens, but sadly happen with e.g. SpatialGizmo
+				assert(false)
+			var choosen_class: String = to_use_classes[randi() % to_use_classes.size()]
+			if ClassDB.can_instance(choosen_class) && !(choosen_class in Autoload.disabled_classes):
+				return choosen_class
 
 	else:
 		if ClassDB.can_instance(object_name):  # E.g. Texture is not instantable or shouldn't be, but LargeTexture is

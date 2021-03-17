@@ -1,9 +1,11 @@
 extends Node
 
-var base_path: String = ""
-var base_dir: String = ""
+var base_path: String
+var base_dir: String
 
-var use_gdscript: bool = false
+var use_loaded_resources: bool = false  # Loads resources from file instead using empty
+
+var use_gdscript: bool
 
 var debug_in_runtime: bool = true  # Allow to print info in runtime about currenty executed function, it is very helpful, so I don't recommend to turn this off
 var use_parent_methods: bool = false  # Allows Node2D use Node methods etc. - it is a little slow option
@@ -20,39 +22,8 @@ var classes: Array = []
 
 var list_of_all_files = {"2D": [], "3D": [], "Node": [], "Other": [], "Control": [], "Resource": [], "Reference": [], "Object": []}
 
-#func _init() -> void:
-#	test_normalize_function()
-#
-#func test_normalize_function():
-#	use_gdscript = false
-#	assert(normalize_function_names("node") == "Node")
-#	assert(normalize_function_names("get_methods") == "GetMethods")
-#	use_gdscript = true
-#	assert(normalize_function_names("node") == "node")
-
-
-func normalize_function_names(function_name: String) -> String:
-	if use_gdscript:
-		return function_name
-
-	assert(function_name.length() > 1)
-	assert(! function_name.ends_with("_"))  # There is i+1 expression which may be out of bounds
-	function_name = function_name[0].to_upper() + function_name.substr(1)
-
-	for i in function_name.length():
-		if function_name[i] == "_":
-			function_name[i + 1] = function_name[i + 1].to_upper()
-
-	function_name = function_name.replace("_", "")
-
-	return function_name
-
-
 func collect_data() -> void:
-	for name_of_class in Autoload.get_list_of_available_classes():
-		if name_of_class == "Image":  # TODO, Remove this when class will be stable enough
-			continue
-
+	for name_of_class in Autoload.get_list_of_available_classes(false):
 		var found: bool = false
 		for exception in Autoload.only_instance:
 			if exception == name_of_class:
@@ -64,7 +35,7 @@ func collect_data() -> void:
 		var class_data: ClassData = ClassData.new()
 		class_data.name = name_of_class
 
-		var method_list: Array = ClassDB.class_get_method_list(name_of_class, ! use_parent_methods)
+		var method_list: Array = ClassDB.class_get_method_list(name_of_class, !use_parent_methods)
 		for exception in Autoload.function_exceptions + Autoload.slow_functions:
 			var index: int = -1
 			for method_index in range(method_list.size()):
@@ -80,7 +51,7 @@ func collect_data() -> void:
 				continue
 
 			var arguments: Array = []
-
+			
 			var found_callable : bool = false
 			for i in method_data.get("args"):
 				if i.get("type") == TYPE_CALLABLE:
@@ -91,10 +62,9 @@ func collect_data() -> void:
 			if found_callable:
 				continue
 
-
 			class_data.arguments.append(arguments)
 
-			class_data.function_names.append(normalize_function_names(method_data.get("name")))
+			class_data.function_names.append(method_data.get("name"))
 
 		classes.append(class_data)
 
@@ -175,7 +145,7 @@ func remove_files_recursivelly(to_delete: String) -> void:
 
 #	print(to_delete)
 	assert(to_delete.find("/./") == -1 && to_delete.begins_with("res://") && to_delete.begins_with(base_path) && to_delete.find("//", 6) == -1)
-	assert(directory.remove(to_delete) == OK)  # TODO, Test This
+	assert(directory.remove(to_delete) == OK)
 
 
 func create_basic_structure() -> void:
@@ -187,25 +157,23 @@ func create_basic_structure() -> void:
 	assert(directory.make_dir_recursive(base_path + "Control/") == OK)
 	assert(directory.make_dir_recursive(base_path + "Resource/") == OK)
 	assert(directory.make_dir_recursive(base_path + "Reference/") == OK)
+	assert(directory.make_dir_recursive(base_path + "Self/") == OK)
 
 	var file: File = File.new()
 
 	assert(file.open(base_path + "project.godot", File.WRITE) == OK)
 	file.store_string(
 		"""
-; Engine configuration file.
-; It's best edited using the editor UI and not directly,
-; since the parameters that go here are not all obvious.
-;
-; Format:
-;   [section] ; section goes between []
-;   param=value ; assign values to parameters
-
 config_version=4
 
 [memory]
-
 limits/message_queue/max_size_kb=65536
 limits/command_queue/multithreading_queue_size_kb=4096
-"""
+
+[network]
+
+limits/debugger_stdout/max_chars_per_second=10
+limits/debugger_stdout/max_errors_per_second=10
+limits/debugger_stdout/max_warnings_per_second=10
+		"""
 	)
