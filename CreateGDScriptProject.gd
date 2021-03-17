@@ -196,8 +196,6 @@ func create_basic_files() -> void:
 
 
 func create_arguments(arguments: Array) -> Array:
-	var return_array: PoolStringArray = PoolStringArray([])
-
 	var argument_array: Array = []
 
 	ValueCreator.number = 10
@@ -213,7 +211,6 @@ func create_arguments(arguments: Array) -> Array:
 			TYPE_NIL:  # Looks that this means VARIANT not null
 				sa.type = "Variant"
 				sa.value = "false"
-				return_array.append("false")  # TODO add some randomization
 			TYPE_AABB:
 				sa.type = "AABB"
 				sa.value = ValueCreator.get_aabb_string()
@@ -313,9 +310,9 @@ func create_self_scene() -> void:
 	assert(scene.open("res://GDScript/Self.tscn", File.WRITE) == OK)
 	var data_to_save: String = """[gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://Self.gd" type="Script" id=1]
+[ext_resource path=\"res://Self.gd\" type=\"Script\" id=1]
 
-[node name="Self" type="Node"]
+[node name=\"Self\" type=\"Node\"]
 script = ExtResource( 1 )"""
 	scene.store_string(data_to_save)
 
@@ -390,7 +387,7 @@ func find_all_special_children_names(node : Node) -> Array:
 	var array : Array = []
 	array.append(node.get_name())
 	for child in node.get_children():
-		if child.get_name().begins_with("Special Node"):
+		if String(child.get_name()).begins_with("Special Node"):
 			array.append_array(find_all_special_children_names(child))
 	
 	return array

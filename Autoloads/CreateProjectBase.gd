@@ -18,12 +18,12 @@ class ClassData:
 	var arguments: Array = []
 
 
-var classes: Array
+var classes: Array = []
 
 var list_of_all_files = {"2D": [], "3D": [], "Node": [], "Other": [], "Control": [], "Resource": [], "Reference": [], "Object": []}
 
 
-func _init() -> void:
+func _init():
 	test_normalize_function()
 
 
@@ -190,7 +190,7 @@ func create_basic_structure() -> void:
 config_version=4
 
 [application]
-run/main_scene="res://All.tscn"
+run/main_scene=\"res://All.tscn\"
 
 [memory]
 limits/message_queue/max_size_kb=65536
