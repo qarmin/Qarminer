@@ -70,6 +70,10 @@ var function_exceptions : Array = [
 	"collide_with_motion", #GH 46137
 	"collide_with_motion_and_get_contacts", #GH 46137
 
+	# Very hard to reproduce
+	"get_packet",
+
+
 	# TODO Check this later
 	"propagate_notification",
 	"notification",
@@ -227,6 +231,8 @@ var disabled_classes : Array = [
 	"ProjectSettings", # Don't mess with project settings, because they can broke entire your workflow
 	"EditorSettings", # Also don't mess with editor settings
 	"_OS", # This may sometimes crash compositor, but it should be tested manually sometimes
+	"SceneTree", # Strange, hard to reproduce crashes, useless
+	
 	
 	# This classes have problems with static/non static methods
 	"Physics2DDirectBodyStateSW",

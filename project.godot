@@ -25,6 +25,10 @@ AutoClose="*res://Autoloads/AutoClose.gd"
 
 file_logging/enable_file_logging.pc=false
 
+[memory]
+
+limits/message_queue/max_size_kb=65536
+
 [network]
 
 limits/debugger_stdout/max_chars_per_second=50
