@@ -19,6 +19,7 @@ run/main_scene="res://CreateGDScriptProject.tscn"
 Autoload="*res://Autoloads/Autoload.gd"
 ValueCreator="*res://Autoloads/ValueCreator.gd"
 CreateProjectBase="*res://Autoloads/CreateProjectBase.gd"
+AutoClose="*res://Autoloads/AutoClose.gd"
 
 [logging]
 
