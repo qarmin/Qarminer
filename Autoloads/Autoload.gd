@@ -62,6 +62,8 @@ var function_exceptions : Array = [
 	"add_vertex", #GH 47066
 	"play",
 	"create_client", # TODO, strange memory leak
+	"create_shape_owner", #47135
+	"shape_owner_get_owner", #47135
 
 	"collide", #GH 46137
 	"collide_and_get_contacts", #GH 46137
@@ -77,6 +79,7 @@ var function_exceptions : Array = [
 	"_update_inputs", # Cause big spam with add_input
 	# Spam when i~1000 - change to specific 
 	"update_bitmask_region",
+	"set_enabled_inputs",
 
 	# Slow Function
 	"_update_sky",
@@ -224,6 +227,13 @@ var disabled_classes : Array = [
 	"ProjectSettings", # Don't mess with project settings, because they can broke entire your workflow
 	"EditorSettings", # Also don't mess with editor settings
 	"_OS", # This may sometimes crash compositor, but it should be tested manually sometimes
+	
+	# This classes have problems with static/non static methods
+	"Physics2DDirectBodyStateSW",
+	"BulletPhysicsDirectSpaceState",
+	"InputDefault",
+	"IP_Unix",
+	"JNISingleton",
 	
 	
 	# Just don't use these because they are not normal things 
