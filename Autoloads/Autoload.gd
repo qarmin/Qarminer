@@ -61,6 +61,7 @@ var function_exceptions : Array = [
 	"add_joy_mapping", #GH 46754
 	"add_vertex", #GH 47066
 	"play",
+	"create_client", # TODO, strange memory leak
 
 	"collide", #GH 46137
 	"collide_and_get_contacts", #GH 46137
