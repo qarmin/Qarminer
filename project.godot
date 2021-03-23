@@ -5,7 +5,7 @@
 ; Format:
 ;   [section] ; section goes between []
 ;   param=value ; assign values to parameters
-
+ 
 config_version=4
 
 [application]
@@ -24,6 +24,10 @@ AutoClose="*res://Autoloads/AutoClose.gd"
 [logging]
 
 file_logging/enable_file_logging.pc=false
+
+[memory]
+
+limits/message_queue/max_size_kb=65536
 
 [network]
 
