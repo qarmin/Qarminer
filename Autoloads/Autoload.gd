@@ -7,6 +7,7 @@ var properties_exceptions : Array = [
 	"",
 ]
 var function_exceptions : Array = [
+	"play",
 	#GODOT 4.0
 	"create_from_image",
 	"set_point_position",
