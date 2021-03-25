@@ -169,6 +169,12 @@ var function_exceptions : Array = [
 	"add_child",
 	"add_child_below_node",
 ]
+var exported : Array = [
+	"get_bind_bone",
+	"get_bind_name",
+	"get_bind_pose",
+]
+
 # List of slow functions, which may frooze project(not simple executing each function alone)
 var slow_functions : Array = [
 	"interpolate_baked",
@@ -243,6 +249,9 @@ var disabled_classes : Array = [
 	
 	"Image",
 ]
+
+func _init():
+	function_exceptions.append_array(exported)
 
 # Return all available classes to instance and test
 func get_list_of_available_classes(must_be_instantable : bool = true) -> Array:
