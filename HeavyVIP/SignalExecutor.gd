@@ -16,7 +16,7 @@ extends Node
 #
 ## Test all signals
 #func tests_all_signals() -> void:
-#	for name_of_class in Autoload.get_list_of_available_classes():
+#	for name_of_class in BasicData.get_list_of_available_classes():
 #		if name_of_class == "_OS": # Do not change size of window
 #			continue
 #
@@ -29,7 +29,7 @@ extends Node
 #		var signal_list: Array = ClassDB.class_get_signal_list(name_of_class, ! use_parent_methods)
 #
 #		## Exception
-#		for exception in Autoload.invalid_signals:
+#		for exception in BasicData.invalid_signals:
 #			var index: int = -1
 #			for signal_index in range(signal_list.size()):
 #				if signal_list[signal_index]["name"] == exception:

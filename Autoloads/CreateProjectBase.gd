@@ -53,9 +53,9 @@ func normalize_function_names(function_name: String) -> String:
 
 
 func collect_data() -> void:
-	for name_of_class in Autoload.get_list_of_available_classes(false):
+	for name_of_class in BasicData.get_list_of_available_classes(false):
 		var found: bool = false
-		for exception in Autoload.only_instance:
+		for exception in BasicData.only_instance:
 			if exception == name_of_class:
 				found = true
 				break
@@ -66,7 +66,7 @@ func collect_data() -> void:
 		class_data.name = name_of_class
 
 		var method_list: Array = ClassDB.class_get_method_list(name_of_class, !use_parent_methods)
-		for exception in Autoload.function_exceptions + Autoload.slow_functions:
+		for exception in BasicData.function_exceptions + BasicData.slow_functions:
 			var index: int = -1
 			for method_index in range(method_list.size()):
 				if method_list[method_index]["name"] == exception:

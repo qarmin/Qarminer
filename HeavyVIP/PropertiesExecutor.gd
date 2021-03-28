@@ -13,7 +13,7 @@ func _ready() -> void:
 
 # Test all functions
 func tests_all_functions() -> void:
-	for name_of_class in Autoload.get_list_of_available_classes():
+	for name_of_class in BasicData.get_list_of_available_classes():
 		if name_of_class == "_OS":  # Do not change size of window
 			continue
 
@@ -26,7 +26,7 @@ func tests_all_functions() -> void:
 		var properties_list: Array = ClassDB.class_get_property_list(name_of_class, !use_parent_methods)
 
 		## Exception
-		for exception in Autoload.properties_exceptions:
+		for exception in BasicData.properties_exceptions:
 			var index: int = -1
 			for properties_index in range(properties_list.size()):
 				if properties_list[properties_index]["name"] == exception:

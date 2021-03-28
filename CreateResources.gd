@@ -36,7 +36,7 @@ func create_basic_structure() -> void:
 
 
 func create_resources() -> void:
-	for name_of_class in Autoload.get_list_of_available_classes():
+	for name_of_class in BasicData.get_list_of_available_classes():
 		if !ClassDB.is_parent_class(name_of_class, "Resource"):
 			continue
 		if !ClassDB.can_instance(name_of_class):
@@ -45,7 +45,7 @@ func create_resources() -> void:
 		var object = ClassDB.instance(name_of_class)
 
 		var method_list: Array = ClassDB.class_get_method_list(name_of_class, false)
-		for exception in Autoload.function_exceptions + Autoload.slow_functions:
+		for exception in BasicData.function_exceptions + BasicData.slow_functions:
 			var index: int = -1
 			for method_index in range(method_list.size()):
 				if method_list[method_index]["name"] == exception:
