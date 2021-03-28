@@ -44,7 +44,7 @@ func tests_all_functions() -> void:
 					continue
 
 				if debug_print:
-					print(method_data["name"])
+					print(name_of_class + "." + method_data["name"])
 
 				var arguments: Array = ParseArgumentType.parse_and_return_objects(method_data, debug_print)
 				object.callv(method_data["name"], arguments)
