@@ -4,7 +4,7 @@ var debug_print: bool = true
 var add_to_tree: bool = true  # Adds nodes to tree
 var use_parent_methods: bool = false  # Allows Node2D use Node methods etc. - it is a little slow option which rarely shows
 var use_always_new_object: bool = true  # Don't allow to "remeber" other function effects
-var exiting: bool = false
+var exiting: bool = true
 
 
 #func _ready() -> void:
@@ -50,11 +50,11 @@ func tests_all_functions() -> void:
 				object.callv(method_data["name"], arguments)
 
 				for argument in arguments:
-					assert(argument != null)
-					if argument is Node:
-						argument.queue_free()
-					elif argument is Object && !(argument is Reference):
-						argument.free()
+					if argument != null:
+						if argument is Node:
+							argument.queue_free()
+						elif argument is Object && !(argument is Reference):
+							argument.free()
 
 				if use_always_new_object:
 					assert(object != null)
@@ -64,6 +64,9 @@ func tests_all_functions() -> void:
 						object.free()
 
 					object = ClassDB.instance(name_of_class)
+					if add_to_tree:
+						if object is Node:
+							add_child(object)
 
 		if object is Node:  # Just prevent memory leak
 			object.queue_free()

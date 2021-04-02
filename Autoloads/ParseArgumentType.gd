@@ -167,7 +167,12 @@ func parse_and_return_objects(method_data: Dictionary, debug_print: bool = false
 			TYPE_NODE_PATH:
 				arguments_array.push_back(ValueCreator.get_nodepath())
 			TYPE_OBJECT:
-				arguments_array.push_back(ValueCreator.get_object(argument["class_name"]))
+				if ValueCreator.random && randi() % 2:
+					arguments_array.push_back(null)
+				else:
+					var obj: Object = ValueCreator.get_object(argument["class_name"])
+					arguments_array.push_back(obj)
+
 			TYPE_PLANE:
 				arguments_array.push_back(ValueCreator.get_plane())
 			TYPE_QUAT:

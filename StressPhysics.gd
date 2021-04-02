@@ -19,7 +19,7 @@ var created_objects = 0
 # Algorithm(each step may be disabled when needed):
 
 # Loop - exit after X frames
-# 	Create some physics nodes and add to them 
+# 	Create some physics nodes and add to them
 # 	Move nodes with set_position, add_force or similar
 #	Random Functions Executor - will probably show the biggest number of crashes, so for now it is better to disable it and fix rest of crashes. It execute on object all available functions without Object and Node functions.
 #	Delete some nodes - Randomly deletes nodes
@@ -47,15 +47,18 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	process_nodes()
 
+
 func _physics_process(_delta: float) -> void:
 	process_nodes()
 
+
 var times_executed: int = 0
+
 
 func process_nodes() -> void:
 	if debug_print:
 		print("--- Starting Processing Data ---")
-		
+
 	times_executed += 1
 	if times_executed >= 100:
 		get_tree().quit()
@@ -94,12 +97,12 @@ func create_nodes():
 			node.add_child(create_collision_object(is_2d))
 		node.set_name("Special Node " + str(created_objects))
 		add_child(node)
-		
+
 	if debug_print:
 		print("--- Ended Creating Nodes ---")
 
 
-func move_nodes()-> void:
+func move_nodes() -> void:
 	if debug_print:
 		print("--- Started Moving Nodes ---")
 	for i in nodes_moved_each_turn:
@@ -120,27 +123,28 @@ func move_nodes()-> void:
 			child.add_force(ValueCreator.get_vector3(), ValueCreator.get_vector3())
 		elif child is RigidBody2D:
 			child.add_force(ValueCreator.get_vector2(), ValueCreator.get_vector2())
-			
+
 	if debug_print:
 		print("--- Ended Creating Nodes ---")
+
 
 func random_functions() -> void:
 	if debug_print:
 		print("--- Started Random Function Execution ---")
-		
+
 	for child in get_children():
-		var name_of_class : String = child.get_class()
-		
-		var list_of_methods : Array = ClassDB.class_get_method_list(name_of_class, true)
+		var name_of_class: String = child.get_class()
+
+		var list_of_methods: Array = ClassDB.class_get_method_list(name_of_class, true)
 		for method_data in list_of_methods:
 			# Function is virtual, so we just skip it
 			if method_data["flags"] == method_data["flags"] | METHOD_FLAG_VIRTUAL:
 				continue
-				
+
 			# Don't use methods from Object or Node, because them ingerate too much with project
 			if ClassDB.class_has_method("Object", method_data["name"]) || ClassDB.class_has_method("Node", method_data["name"]):
 				continue
-				
+
 			if method_data["name"] in BasicData.function_exceptions:
 				continue
 
@@ -156,10 +160,10 @@ func random_functions() -> void:
 					argument.queue_free()
 				elif argument is Object && !(argument is Reference):
 					argument.free()
-					
+
 	if debug_print:
 		print("--- Ended Random Function Execution ---")
-		
+
 
 func delete_nodes() -> void:
 	if get_child_count() > used_nodes:

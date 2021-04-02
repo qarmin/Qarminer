@@ -1,7 +1,7 @@
 ## Qarminer
 Qarminer is simple tool(type of fuzzer) to find some types of bugs in Godot Engine with help of automation.
 
-Contains three main tools:
+Contains four main tools:
 - Executing every single function
 - Creating test GDScript project
 - Testing Physics nodes

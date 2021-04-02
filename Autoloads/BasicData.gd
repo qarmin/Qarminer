@@ -7,7 +7,11 @@ var properties_exceptions : Array = [
 	"",
 ]
 var function_exceptions : Array = [
+	"connect_to_signal", # GH 47572
+	"class_get_property", # GH 47573
+	"class_set_property", # GH 47573
 	"_set_user_data",
+	"get_packet", # TODO
 	"create_from_mesh",
 	# They exists without assigment like Class.method, because they may be a parent of other objects and children also should have disabled child.method, its children also etc. which is too much to do
 	"_editor_settings_changed",# GH 45979
@@ -233,6 +237,8 @@ var disabled_classes : Array = [
 	"ProjectSettings", # Don't mess with project settings, because they can broke entire your workflow
 	"EditorSettings", # Also don't mess with editor settings
 	"_OS", # This may sometimes crash compositor, but it should be tested manually sometimes
+	"GDScript", # Broke script
+	"ProximityGroup", # Not sure why but loads at the end of frame very very long
 	
 	# This classes have problems with static/non static methods
 	"Physics2DDirectBodyStateSW",
