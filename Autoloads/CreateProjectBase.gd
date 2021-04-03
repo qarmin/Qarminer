@@ -1,5 +1,7 @@
 extends Node
 
+# Base class for creation project in different languages like GDScript or C#
+
 var base_path: String
 var base_dir: String
 

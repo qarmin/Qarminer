@@ -137,10 +137,7 @@ func random_functions() -> void:
 
 		var list_of_methods: Array = ClassDB.class_get_method_list(name_of_class, true)
 		for method_data in list_of_methods:
-			# Function is virtual, so we just skip it
-			if method_data["flags"] == method_data["flags"] | METHOD_FLAG_VIRTUAL:
-				continue
-
+			
 			# Don't use methods from Object or Node, because them ingerate too much with project
 			if ClassDB.class_has_method("Object", method_data["name"]) || ClassDB.class_has_method("Node", method_data["name"]):
 				continue

@@ -1,5 +1,8 @@
 extends Node
 
+# Singleton to automatically close project after some amount of time
+# By default closing is disabled
+
 var close_order: bool = false
 
 var start_time: int

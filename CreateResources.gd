@@ -1,5 +1,7 @@
 extends Node
 
+# Class to create Resources files
+
 var base_path: String = "res://Resources/"
 var base_dir: String = "Resources/"
 
@@ -39,8 +41,6 @@ func create_resources() -> void:
 	for name_of_class in BasicData.get_list_of_available_classes():
 		if !ClassDB.is_parent_class(name_of_class, "Resource"):
 			continue
-		if !ClassDB.can_instance(name_of_class):
-			continue
 
 		var object = ClassDB.instance(name_of_class)
 
@@ -54,7 +54,7 @@ func create_resources() -> void:
 			if index != -1:
 				method_list.remove(index)
 
-		if name_of_class == "GDScript":  # Cause some strange errors
+		if name_of_class == "Image":
 			continue
 		print("################ CLASS - " + name_of_class)
 
@@ -64,20 +64,19 @@ func create_resources() -> void:
 					continue
 				if method_data["name"] == "start":  # Do not create new thread
 					continue
-				# Function is virtual, so we just skip it
-				if method_data["flags"] == method_data["flags"] | METHOD_FLAG_VIRTUAL:
+				if !BasicData.check_if_is_allowed(method_data):
 					continue
 				print(method_data["name"])
 
-				var arguments: Array = return_for_all(method_data)
+				var arguments: Array = ParseArgumentType.parse_and_return_objects(method_data)
 				object.callv(method_data["name"], arguments)
 
 				for argument in arguments:
-					assert(argument != null)
-					if argument is Node:
-						argument.queue_free()
-					elif argument is Object && !(argument is Reference):
-						argument.free()
+					if argument != null:
+						if argument is Node:
+							argument.queue_free()
+						elif argument is Object && !(argument is Reference):
+							argument.free()
 		if ResourceSaver.save(base_path + name_of_class + ".tres", object) != OK:
 			assert(ResourceSaver.save(base_path + name_of_class + ".res", object) == OK)
 
@@ -89,72 +88,3 @@ func _ready() -> void:
 	create_resources()
 	print("Saved resources")
 	get_tree().quit()
-
-
-func return_for_all(method_data: Dictionary) -> Array:
-	var arguments_array: Array = []
-
-	ValueCreator.number = 100
-	ValueCreator.random = true  # RegressionTestProject - This must be false
-	ValueCreator.should_be_always_valid = false
-
-	for argument in method_data["args"]:
-		match argument.type:
-			TYPE_NIL:  # Looks that this means VARIANT not null
-				arguments_array.push_back(false)  # TODO randomize this
-			TYPE_AABB:
-				arguments_array.push_back(ValueCreator.get_aabb())
-			TYPE_ARRAY:
-				arguments_array.push_back(ValueCreator.get_array())
-			TYPE_BASIS:
-				arguments_array.push_back(ValueCreator.get_basis())
-			TYPE_BOOL:
-				arguments_array.push_back(ValueCreator.get_bool())
-			TYPE_COLOR:
-				arguments_array.push_back(ValueCreator.get_color())
-			TYPE_COLOR_ARRAY:
-				arguments_array.push_back(ValueCreator.get_pool_color_array())
-			TYPE_DICTIONARY:
-				arguments_array.push_back(ValueCreator.get_dictionary())
-			TYPE_INT:
-				arguments_array.push_back(ValueCreator.get_int())
-			TYPE_INT_ARRAY:
-				arguments_array.push_back(ValueCreator.get_pool_int_array())
-			TYPE_NODE_PATH:
-				arguments_array.push_back(ValueCreator.get_nodepath())
-			TYPE_OBJECT:
-				arguments_array.push_back(ValueCreator.get_object(argument["class_name"]))
-			TYPE_PLANE:
-				arguments_array.push_back(ValueCreator.get_plane())
-			TYPE_QUAT:
-				arguments_array.push_back(ValueCreator.get_quat())
-			TYPE_RAW_ARRAY:
-				arguments_array.push_back(ValueCreator.get_pool_byte_array())
-			TYPE_REAL:
-				arguments_array.push_back(ValueCreator.get_float())
-			TYPE_REAL_ARRAY:
-				arguments_array.push_back(ValueCreator.get_pool_real_array())
-			TYPE_RECT2:
-				arguments_array.push_back(ValueCreator.get_rect2())
-			TYPE_RID:
-				arguments_array.push_back(RID())
-			TYPE_STRING:
-				arguments_array.push_back(ValueCreator.get_string())
-			TYPE_STRING_ARRAY:
-				arguments_array.push_back(ValueCreator.get_pool_string_array())
-			TYPE_TRANSFORM:
-				arguments_array.push_back(ValueCreator.get_transform())
-			TYPE_TRANSFORM2D:
-				arguments_array.push_back(ValueCreator.get_transform2D())
-			TYPE_VECTOR2:
-				arguments_array.push_back(ValueCreator.get_vector2())
-			TYPE_VECTOR2_ARRAY:
-				arguments_array.push_back(ValueCreator.get_pool_vector2_array())
-			TYPE_VECTOR3:
-				arguments_array.push_back(ValueCreator.get_vector3())
-			TYPE_VECTOR3_ARRAY:
-				arguments_array.push_back(ValueCreator.get_pool_vector3_array())
-			_:
-				assert(false)  # Missed some types, add it
-
-	return arguments_array

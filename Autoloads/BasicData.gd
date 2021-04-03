@@ -1,5 +1,8 @@
 extends Node
 
+# Contains info about disabled classes 
+# Also allows to get list of available classes
+
 var properties_exceptions : Array = [
 	"user_data",
 	"config_file",
@@ -7,16 +10,16 @@ var properties_exceptions : Array = [
 	"",
 ]
 var function_exceptions : Array = [
-	"connect_to_signal", # GH 47572
-	"class_get_property", # GH 47573
-	"class_set_property", # GH 47573
 	"_set_user_data",
 	"get_packet", # TODO
 	"create_from_mesh",
 	# They exists without assigment like Class.method, because they may be a parent of other objects and children also should have disabled child.method, its children also etc. which is too much to do
+	"connect_to_signal", # GH 47572
+	"set_config_file", # GH 45997
+	"class_get_property", # GH 47573
+	"class_set_property", # GH 47573
 	"_editor_settings_changed",# GH 45979
 	"_submenu_timeout", # GH 45981
-	"set_config_file", # GH 45997
 	"_gui_input", # GH 45998
 	"_unhandled_key_input", # GH 45998
 	"navpoly_add", #GH 43288
@@ -27,13 +30,9 @@ var function_exceptions : Array = [
 	"create_from", #GH 46004
 	"create_from_blend_shape", #GH 46004
 	"append_from", #GH 46004
-	"get_column_width", #GH 46005
 	"_unhandled_input", # TODO
 	"_input", # TODO
 	"_set_tile_data", #GH 46015
-	"_edit_set_state", #GH 46017
-	"_edit_set_position", #GH 46018
-	"_edit_set_rect", #GH 46018
 	"get", #GH 46019
 	"instance_has", #GH 46020
 	"get_var", #GH 46096
@@ -41,10 +40,7 @@ var function_exceptions : Array = [
 	"set_script", #GH 46120
 	"getvar", #GH 46019
 	"get_available_chars", #GH 46118
-	"set_primary_interface", #GH 46180
-	"add_feed", #GH 46181
 	"open_midi_inputs", #GH 46183
-	"get_unix_time_from_datetime", #GH 46188
 	"set_icon", #GH 46189
 	"get_latin_keyboard_variant", #GH  TODO Memory Leak
 	"set_editor_hint", #GH 46252
@@ -53,18 +49,11 @@ var function_exceptions : Array = [
 	"_range_click_timeout",
 	"draw", #GH 46648
 	"get_indexed", #GH 46019
-	"set_RGB_img", #GH 46724
-	"_set_RGB_img", #GH 46724
-	"_set_YCbCr_img", #GH 46724
-	"set_YCbCr_img", #GH 46724
-	"set_YCbCr_imgs", #GH 46724
-	"_set_YCbCr_imgs", #GH 46724
 	"_vp_input", # TODO
 	"_vp_unhandled_input", # TODO
 	"remove_joy_mapping", #GH 46754
 	"add_joy_mapping", #GH 46754
 	"add_vertex", #GH 47066
-	"play",
 	"create_client", # TODO, strange memory leak
 	"create_shape_owner", #47135
 	"shape_owner_get_owner", #47135
@@ -240,7 +229,10 @@ var disabled_classes : Array = [
 	"GDScript", # Broke script
 	
 	# This classes have problems with static/non static methods
-	"Physics2DDirectBodyStateSW",
+	"PhysicsDirectSpaceState",
+	"Physics2DDirectSpaceState",
+	"PhysicsDirectBodyState",
+	"Physics2DDirectBodyState",
 	"BulletPhysicsDirectSpaceState",
 	"InputDefault",
 	"IP_Unix",
@@ -251,12 +243,29 @@ var disabled_classes : Array = [
 	"_Thread",
 	"_Semaphore",
 	"_Mutex",
-	
-	"Image",
 ]
 
-func _init():
+# GH 47358
+func _init(): 
 	function_exceptions.append_array(exported)
+
+func check_if_is_allowed(method_data : Dictionary) -> bool:
+	# Function is virtual, so we just skip it
+	if method_data["flags"] == method_data["flags"] | METHOD_FLAG_VIRTUAL:
+		return false
+		
+	for arg in method_data["args"]:
+		var name_of_class : String = arg["class_name"]
+		if name_of_class.empty():
+			continue
+		if name_of_class in disabled_classes:
+			return false
+		if name_of_class.find("Server") != -1 && ClassDB.class_exists(name_of_class) && !ClassDB.is_parent_class(name_of_class,"Reference"):
+			return false
+		if name_of_class.find("Editor") != -1: # TODO not sure about it
+			return false
+	
+	return true
 
 # Return all available classes to instance and test
 func get_list_of_available_classes(must_be_instantable : bool = true) -> Array:
@@ -272,15 +281,15 @@ func get_list_of_available_classes(must_be_instantable : bool = true) -> Array:
 		
 #		if rr < 550:
 #			continue
-		
+		#Enable This for RegressionTestProject, to get visual info about what is going on the screen, because without it different nodes can broke view
+#	if !ClassDB.is_parent_class(name_of_class, "Node") && !ClassDB.is_parent_class(name_of_class, "Reference"):
+#		return true
+
 		if name_of_class.find("Server") != -1 && !ClassDB.is_parent_class(name_of_class,"Reference"):
 			continue
 		if name_of_class.find("Editor") != -1: # TODO not sure about it
 			continue
 			
-#	Enable This for RegressionTestProject, to get visual info about what is going on the screen, because without it different nodes can broke view
-#		if !ClassDB.is_parent_class(name_of_class, "Node") && !ClassDB.is_parent_class(name_of_class, "Reference"):
-#			continue
 			
 		if !must_be_instantable || ClassDB.can_instance(name_of_class):
 			classes.push_back(name_of_class)

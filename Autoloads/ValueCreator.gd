@@ -1,5 +1,7 @@
 extends Node
 
+# Creates random or not objects, variables etc.
+
 var number: float = 0.0
 var random: bool = false
 var should_be_always_valid: bool = true  # Generate only valid values e.g. to Node generate Node2D instead

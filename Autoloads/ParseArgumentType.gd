@@ -1,5 +1,6 @@
 extends Node
 
+# Parse arguments and return needed info/objects etc.
 
 class SingleArgument:
 	var name: String  # E.G. var roman, can be empty, so temp variable isn't created(nodes and objects must be created with temp_variable due to memory leaks)
