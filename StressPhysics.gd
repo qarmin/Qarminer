@@ -87,7 +87,7 @@ func create_nodes():
 		elif ClassDB.is_parent_class(name_of_class, "Spatial"):
 			is_2d = false
 		else:
-			assert(false)
+			assert(false, "Used class isn't child of Node2D or Spatial")
 
 		created_nodes += 1
 		created_objects += 1
@@ -155,11 +155,11 @@ func random_functions() -> void:
 			child.callv(method_data["name"], arguments)
 
 			for argument in arguments:
-				assert(argument != null)
-				if argument is Node:
-					argument.queue_free()
-				elif argument is Object && !(argument is Reference):
-					argument.free()
+				if argument != null:
+					if argument is Node:
+						argument.queue_free()
+					elif argument is Object && !(argument is Reference):
+						argument.free()
 
 	if debug_print:
 		print("--- Ended Random Function Execution ---")

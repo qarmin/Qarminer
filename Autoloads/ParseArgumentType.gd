@@ -115,7 +115,7 @@ func create_gdscript_arguments(arguments: Array) -> Array:
 				sa.type = "PoolVector3Array"
 				sa.value = "PoolVector3Array([])"
 			_:
-				assert(false)  # Missed some types, add it
+				assert(false, "Missing type, needs to be added to project")
 		argument_array.append(sa)
 
 	return argument_array
@@ -172,6 +172,7 @@ func parse_and_return_objects(method_data: Dictionary, debug_print: bool = false
 				else:
 					var obj: Object = ValueCreator.get_object(argument["class_name"])
 					arguments_array.push_back(obj)
+					assert(obj != null, "Failed to create an object of type " + argument["class_name"])
 
 			TYPE_PLANE:
 				arguments_array.push_back(ValueCreator.get_plane())
@@ -204,7 +205,7 @@ func parse_and_return_objects(method_data: Dictionary, debug_print: bool = false
 			TYPE_VECTOR3_ARRAY:
 				arguments_array.push_back(ValueCreator.get_pool_vector3_array())
 			_:
-				assert(false)  # Missed some types, add it
+				assert(false, "Missing type, needs to be added to project")
 
 	if debug_print:
 		print("Parameters " + str(arguments_array))

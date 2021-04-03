@@ -238,7 +238,6 @@ var disabled_classes : Array = [
 	"EditorSettings", # Also don't mess with editor settings
 	"_OS", # This may sometimes crash compositor, but it should be tested manually sometimes
 	"GDScript", # Broke script
-	"ProximityGroup", # Not sure why but loads at the end of frame very very long
 	
 	# This classes have problems with static/non static methods
 	"Physics2DDirectBodyStateSW",

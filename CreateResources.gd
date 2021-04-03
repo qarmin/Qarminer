@@ -58,7 +58,7 @@ func create_resources() -> void:
 			continue
 		print("################ CLASS - " + name_of_class)
 
-		for i in range(20):
+		for _i in range(20):
 			for method_data in method_list:
 				if ClassDB.class_has_method("Object", method_data["name"]):
 					continue
