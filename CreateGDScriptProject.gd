@@ -3,16 +3,6 @@ extends Node
 var number_of_external_resources: int = 0
 
 
-class SingleArgument:
-	var name: String  # E.G. var roman, can be empty, so temp variable isn't created(nodes and objects must be created with temp_variable due to memory leaks)
-	var type: String  # np. Vector2 or Object
-	var value: String  # np. randi() % 100 or
-	var is_object: bool = false  # Check if this is object e.g. Node not Vector2
-	var is_only_object: bool = false  # Only needs to freed with .free()
-	var is_only_reference: bool = false  # Don't needs to be removed manually
-	var is_only_node: bool = false  # Needs to be removed with .queue_free()
-
-
 func get_object_folder(name_of_class: String) -> String:
 	assert(ClassDB.class_exists(name_of_class))
 	if ClassDB.is_parent_class(name_of_class, "Node3D"):  # TODO Fix in Godot 4.0
@@ -132,8 +122,8 @@ func create_basic_files() -> void:
 				if CreateProjectBase.debug_in_runtime:
 					data_to_save += "\t\tprint(\"Executing " + object_type + "." + class_data.function_names[i] + "\")\n"
 
-				var arguments := create_arguments(class_data.arguments[i])
-					
+				var arguments := ParseArgumentType.create_gdscript_arguments(class_data.arguments[i])
+
 				for argument in arguments:
 					if argument.is_object:
 						assert(ClassDB.class_exists(argument.type))
@@ -160,7 +150,7 @@ func create_basic_files() -> void:
 					if number_of_external_resources > 0:
 						data_to_save += "\t\tfor _i in range(|||):\n".replace("|||", str(number_of_external_resources))
 						for argument in arguments:
-							if !argument.name.empty() && argument.name != class_data.name:  # Do not allow to recursive execute functions
+							if !argument.name.is_empty() && argument.name != class_data.name:  # Do not allow to recursive execute functions
 								data_to_save += "\t\t\tload(\"res://|||/{}.gd\").modify_object(;;;)\n".replace("|||", get_object_folder(argument.type)).replace("{}", argument.type).replace(
 									";;;", argument.name
 								)
@@ -195,137 +185,6 @@ func create_basic_files() -> void:
 		file.store_string(data_to_save)
 
 
-func create_arguments(arguments: Array) -> Array:
-	var argument_array: Array = []
-
-	ValueCreator.number = 10
-	ValueCreator.random = true
-	ValueCreator.should_be_always_valid = true  # DO NOT CHANGE, BECAUSE NON VALID VALUES WILL SHOW GDSCRIPT ERRORS!
-	
-	var counter = 0
-	for argument in arguments:
-		var typ = argument.get("type")
-		counter += 1
-		var sa: SingleArgument = SingleArgument.new()
-		sa.name = "variable" + str(counter)
-		if typ == TYPE_NIL: # Looks that this means VARIANT not null
-				sa.type = "Variant"
-				sa.value = "false"
-		elif typ ==TYPE_AABB:
-				sa.type = "AABB"
-				sa.value = ValueCreator.get_aabb_string()
-		elif typ ==TYPE_ARRAY:
-				sa.type = "Array"
-				sa.value = "[]"
-		elif typ ==TYPE_BASIS:
-				sa.type = "Basis"
-				sa.value = ValueCreator.get_basis_string()
-		elif typ ==TYPE_BOOL:
-				sa.type = "bool"
-				sa.value = ValueCreator.get_bool_string().to_lower()
-		elif typ ==TYPE_COLOR:
-				sa.type = "Color"
-				sa.value = ValueCreator.get_color_string()
-		elif typ ==TYPE_COLOR_ARRAY:
-				sa.type = "PackedColorArray"
-				sa.value = "PackedColorArray([])"
-		elif typ ==TYPE_DICTIONARY:
-				sa.type = "Dictionary"
-				sa.value = "{}"  # TODO Why not all use ValueCreator?
-		elif typ ==TYPE_INT:
-				sa.type = "int"
-				sa.value = ValueCreator.get_int_string()
-		elif typ ==TYPE_INT32_ARRAY:
-				sa.type = "PackedInt32Array"
-				sa.value = "PackedInt32Array([])"
-		elif typ ==TYPE_INT64_ARRAY:
-				sa.type = "PackedInt64Array"
-				sa.value = "PackedInt64Array([])"
-		elif typ ==TYPE_NODE_PATH:
-				sa.type = "NodePath"
-				sa.value = "NodePath(\".\")"
-		elif typ ==TYPE_OBJECT:
-				sa.type = ValueCreator.get_object_string(argument.get("class_name"))
-				sa.value = sa.type + ".new()"
-
-				sa.is_object = true
-				if ClassDB.is_parent_class(sa.type, "Node"):
-					sa.is_only_node = true
-				elif ClassDB.is_parent_class(sa.type, "Reference"):
-					sa.is_only_reference = true
-				else:
-					sa.is_only_object = true
-		elif typ ==TYPE_PLANE:
-				sa.type = "Plane"
-				sa.value = ValueCreator.get_plane_string()
-		elif typ ==TYPE_QUAT:
-				sa.type = "Quat"
-				sa.value = ValueCreator.get_quat_string()
-		elif typ ==TYPE_RAW_ARRAY:
-				sa.type = "PackedByteArray"
-				sa.value = "PackedByteArray([])"
-		elif typ ==TYPE_FLOAT:
-				sa.type = "float"
-				sa.value = ValueCreator.get_float_string()
-		elif typ ==TYPE_FLOAT32_ARRAY:
-				sa.type = "PackedFloat32Array"
-				sa.value = "PackedFloat32Array([])"
-		elif typ ==TYPE_FLOAT64_ARRAY:
-				sa.type = "PackedFloat64Array"
-				sa.value = "PackedFloat64Array([])"
-		elif typ ==TYPE_RECT2:
-				sa.type = "Rect2"
-				sa.value = ValueCreator.get_rect2_string()
-		elif typ ==TYPE_RID:
-				sa.type = "RID"
-				sa.value = "RID()"
-		elif typ ==TYPE_STRING:
-				sa.type = "String"
-				sa.value = ValueCreator.get_string_string()
-		elif typ ==TYPE_STRING_NAME:
-				sa.type = "StringName"
-				sa.value = StringName(ValueCreator.get_string_string())
-		elif typ ==TYPE_STRING_ARRAY:
-				sa.type = "PackedStringArray"
-				sa.value = "PackedStringArray([])"
-		elif typ ==TYPE_TRANSFORM:
-				sa.type = "Transform"
-				sa.value = ValueCreator.get_transform_string()
-		elif typ ==TYPE_TRANSFORM2D:
-				sa.type = "Transform2D"
-				sa.value = ValueCreator.get_transform2D_string()
-		elif typ ==TYPE_VECTOR2:
-				sa.type = "Vector2"
-				sa.value = ValueCreator.get_vector2_string()
-		elif typ ==TYPE_VECTOR2_ARRAY:
-				sa.type = "PackedVector2Array"
-				sa.value = "PackedVector2Array([])"
-		elif typ ==TYPE_VECTOR2I:
-				sa.type = "Vector2i"
-				sa.value = ValueCreator.get_vector2i_string()
-		elif typ ==TYPE_VECTOR3:
-				sa.type = "Vector3"
-				sa.value = ValueCreator.get_vector3_string()
-		elif typ ==TYPE_VECTOR3_ARRAY:
-				sa.type = "PackedVector3Array"
-				sa.value = "PackedVector3Array([])"
-		elif typ ==TYPE_VECTOR3I:
-				sa.type = "Vector3i"
-				sa.value = ValueCreator.get_vector3i_string()
-		elif typ ==TYPE_RECT2I:
-				sa.type = "Rect2i"
-				sa.value = ValueCreator.get_rect2i_string()
-		elif typ ==TYPE_CALLABLE:
-				assert(false) # Currently not supported
-		else:
-			print("Missing " + str(argument) )
-			assert(false) # Missed some types, add it
-				
-		argument_array.append(sa)
-
-	return argument_array
-
-
 func create_self_scene() -> void:
 	var scene: File = File.new()
 	assert(scene.open("res://GDScript/Self.tscn", File.WRITE) == OK)
@@ -344,15 +203,15 @@ var number_of_nodes : int = 0
 
 var collected_nodes : Array = []
 var disabled_classes : Array = [
-	\"ReflectionProbe\", # Cause errors, not sure about it
+	"ReflectionProbe", # Cause errors, not sure about it
 ] # Just add name of any class if cause problems
 
 func collect() -> void:
 	var classes : Array = ClassDB.get_class_list()
 	classes.sort()
 	for name_of_class in classes:
-		if ClassDB.is_parent_class(name_of_class,\"Node\"):
-			if name_of_class.find(\"Editor\") != -1: # We don't want to test editor nodes
+		if ClassDB.is_parent_class(name_of_class,"Node"):
+			if name_of_class.find("Editor") != -1: # We don't want to test editor nodes
 				continue
 			if disabled_classes.has(name_of_class): # Class is disabled
 				continue
@@ -369,7 +228,7 @@ func _ready() -> void:
 			index = i % collected_nodes.size()
 		
 		var child : Node = get_special_node(collected_nodes[index])
-		child.set_name(\"Special Node \" + str(i))
+		child.set_name("Special Node " + str(i))
 		add_child(child)
 
 func _process(delta: float) -> void:
@@ -378,11 +237,11 @@ func _process(delta: float) -> void:
 	var choosen_node : Node
 	var parent_of_node : Node
 	for i in range(5):
-		var number : String = \"Special Node \" + str(randi() % number_of_nodes)
+		var number : String = "Special Node " + str(randi() % number_of_nodes)
 		choosen_node = find_node(number,true,false)
 		parent_of_node = choosen_node.get_parent()
 		
-		var random_node = find_node(\"Special Node \" + str(randi() % number_of_nodes),true,false)
+		var random_node = find_node("Special Node " + str(randi() % number_of_nodes),true,false)
 		parent_of_node.remove_child(choosen_node)
 		
 		if randi() % 6 == 0: # 16% chance to remove node with children
@@ -408,16 +267,16 @@ func find_all_special_children_names(node : Node) -> Array:
 	var array : Array = []
 	array.append(node.get_name())
 	for child in node.get_children():
-		if child.get_name().begins_with(\"Special Node\"):
+		if String(child.get_name()).begins_with("Special Node"):
 			array.append_array(find_all_special_children_names(child))
 	
 	return array
 
-func get_special_node(name_of_class : String) -> Node:
+func get_special_node(var name_of_class : String) -> Node:
 	assert(ClassDB.can_instance(name_of_class))
-	assert(ClassDB.is_parent_class(name_of_class, \"Node\"))
+	assert(ClassDB.is_parent_class(name_of_class, "Node"))
 	var node : Node = ClassDB.instance(name_of_class)
-	node.set_script(load(\"res://Self/\" + name_of_class + \".gd\"))
+	node.set_script(load("res://Self/" + name_of_class + ".gd"))
 	return node
 	"""
 	scene.store_string(data_to_save)

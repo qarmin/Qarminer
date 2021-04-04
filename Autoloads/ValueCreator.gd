@@ -1,5 +1,6 @@
 extends Node
 
+# Creates random or not objects, variables etc.
 var number: float = 0.0
 var random: bool = false
 var should_be_always_valid: bool = true  # Generate only valid values e.g. to Node generate Node2D instead
@@ -219,9 +220,9 @@ func get_Packed_color_array() -> PackedColorArray:
 
 
 func get_object(object_name: String) -> Object:
-	assert(ClassDB.class_exists(object_name))
-	if object_name == "PhysicsDirectSpaceState" || object_name == "Physics2DDirectSpaceState":
-		return BoxMesh.new()
+	assert(ClassDB.class_exists(object_name), "Class doesn't exists.")
+	if object_name == "PhysicsDirectSpaceState3D" || object_name == "PhysicsDirectSpaceState2D" :
+		return BoxShape3D.new()
 
 	var a = 0
 	if random:
@@ -233,7 +234,7 @@ func get_object(object_name: String) -> Object:
 				if (
 					ClassDB.can_instance(choosen_class)
 					&& (ClassDB.is_parent_class(choosen_class, "Node") || ClassDB.is_parent_class(choosen_class, "Reference"))
-					&& !(choosen_class in Autoload.disabled_classes)
+					&& !(choosen_class in BasicData.disabled_classes)
 				):
 					return ClassDB.instance(choosen_class)
 
@@ -241,41 +242,41 @@ func get_object(object_name: String) -> Object:
 			if should_be_always_valid:
 				var to_use_classes = ClassDB.get_inheriters_from_class(object_name)
 				to_use_classes.append(object_name)
-				if !ClassDB.can_instance(object_name) && object_name in Autoload.disabled_classes:
-					assert(to_use_classes.size() > 0)
+				if !ClassDB.can_instance(object_name) && object_name in BasicData.disabled_classes:
+					assert(to_use_classes.size() > 0, "Cannot find proper instantable child for ")
 
 				while true:
 					a += 1
 					if a > 50:
 						# Object doesn't have children which can be instanced
 						# This shouldn't happens, but sadly happen with e.g. SpatialGizmo
-						assert(false)
+						assert(false, "Cannot find proper instantable child for ")
 					var choosen_class: String = to_use_classes[randi() % to_use_classes.size()]
-					if ClassDB.can_instance(choosen_class) && !(choosen_class in Autoload.disabled_classes):
+					if ClassDB.can_instance(choosen_class) && !(choosen_class in BasicData.disabled_classes):
 						return ClassDB.instance(choosen_class)
 			else:
 				while true:
 					a += 1
 					if a > 50:
-						assert(false)
+						assert(false, "Cannot find proper instantable child for ")
 					var choosen_class: String = classes[randi() % classes.size()]
-					if ClassDB.can_instance(choosen_class) && !ClassDB.is_parent_class(choosen_class, object_name) && !(choosen_class in Autoload.disabled_classes):
+					if ClassDB.can_instance(choosen_class) && !ClassDB.is_parent_class(choosen_class, object_name) && !(choosen_class in BasicData.disabled_classes):
 						return ClassDB.instance(choosen_class)
 
 		# Non Node/Resource object
 		var to_use_classes = ClassDB.get_inheriters_from_class(object_name)
 		to_use_classes.append(object_name)
-		if !ClassDB.can_instance(object_name) && object_name in Autoload.disabled_classes:
-			assert(to_use_classes.size() > 0)
+		if !ClassDB.can_instance(object_name) && object_name in BasicData.disabled_classes:
+			assert(to_use_classes.size() > 0, "Cannot find proper instantable child for ")
 
 		while true:
 			a += 1
 			if a > 50:
 				# Object doesn't have children which can be instanced
 				# This shouldn't happens, but sadly happen with e.g. SpatialGizmo
-				assert(false)
+				assert(false, "Cannot find proper instantable child for ")
 			var choosen_class: String = to_use_classes[randi() % to_use_classes.size()]
-			if ClassDB.can_instance(choosen_class) && !(choosen_class in Autoload.disabled_classes):
+			if ClassDB.can_instance(choosen_class) && !(choosen_class in BasicData.disabled_classes):
 				return ClassDB.instance(choosen_class)
 
 	else:
@@ -283,14 +284,14 @@ func get_object(object_name: String) -> Object:
 			return ClassDB.instance(object_name)
 		else:  # Found child of non instantable object
 			var list_of_class = ClassDB.get_inheriters_from_class(object_name)
-			assert(list_of_class.size() > 0)  # Number of inherited class of non instantable class must be greater than 0, otherwise this function would be useless
+			assert(list_of_class.size() > 0, "Cannot find proper instantable child for ")  # Number of inherited class of non instantable class must be greater than 0, otherwise this function would be useless
 			for i in list_of_class:
 				if ClassDB.can_instance(i) && (ClassDB.is_parent_class(i, "Node") || ClassDB.is_parent_class(i, "Reference")):
 					return ClassDB.instance(i)
-			assert(false)
+			assert(false, "Cannot find proper instantable child for ")
 
-	assert(false)
-	return BoxMesh.new()
+	assert(false, "Cannot find proper instantable child for ")
+	return BoxShape3D.new()
 
 
 # TODO Update this with upper implementation
@@ -312,14 +313,14 @@ func get_object_string(object_name: String) -> String:
 				var to_use_classes = ClassDB.get_inheriters_from_class(object_name)
 				to_use_classes.append(object_name)
 				if !ClassDB.can_instance(object_name):
-					assert(to_use_classes.size() > 0)
+					assert(to_use_classes.size() > 0, "Cannot find proper instantable child for ")
 
 				while true:
 					a += 1
 					if a > 30:
 						# Object doesn't have children which can be instanced
 						# This shouldn't happens, but sadly happen with e.g. SpatialGizmo
-						assert(false)
+						assert(false, "Cannot find proper instantable child for ")
 					var choosen_class: String = to_use_classes[randi() % to_use_classes.size()]
 					if ClassDB.can_instance(choosen_class):
 						return choosen_class
@@ -327,7 +328,7 @@ func get_object_string(object_name: String) -> String:
 				while true:
 					a += 1
 					if a > 30:
-						assert(false)
+						assert(false, "Cannot find proper instantable child for ")
 					var choosen_class: String = classes[randi() % classes.size()]
 					if !ClassDB.is_parent_class(choosen_class, object_name):
 						return choosen_class
@@ -335,17 +336,17 @@ func get_object_string(object_name: String) -> String:
 		# Non Node/Resource object
 		var to_use_classes = ClassDB.get_inheriters_from_class(object_name)
 		to_use_classes.append(object_name)
-		if !ClassDB.can_instance(object_name) && object_name in Autoload.disabled_classes:
-			assert(to_use_classes.size() > 0)
+		if !ClassDB.can_instance(object_name) && object_name in BasicData.disabled_classes:
+			assert(to_use_classes.size() > 0, "Cannot find proper instantable child for ")
 
 		while true:
 			a += 1
 			if a > 50:
 				# Object doesn't have children which can be instanced
 				# This shouldn't happens, but sadly happen with e.g. SpatialGizmo
-				assert(false)
+				assert(false, "Cannot find proper instantable child for ")
 			var choosen_class: String = to_use_classes[randi() % to_use_classes.size()]
-			if ClassDB.can_instance(choosen_class) && !(choosen_class in Autoload.disabled_classes):
+			if ClassDB.can_instance(choosen_class) && !(choosen_class in BasicData.disabled_classes):
 				return choosen_class
 
 	else:
@@ -353,11 +354,11 @@ func get_object_string(object_name: String) -> String:
 			return object_name
 		else:  # Found child of non instantable object
 			var list_of_class = ClassDB.get_inheriters_from_class(object_name)
-			assert(list_of_class.size() > 0)  # Number of inherited class of non instantable class must be greater than 0, otherwise this function would be useless
+			assert(list_of_class.size() > 0, "Cannot find proper instantable child for ")  # Number of inherited class of non instantable class must be greater than 0, otherwise this function would be useless
 			for i in list_of_class:
 				if ClassDB.can_instance(i) && (ClassDB.is_parent_class(i, "Node") || ClassDB.is_parent_class(i, "Reference")):
 					return i
-			assert(false)
+			assert(false, "Cannot find proper instantable child for ")
 
-	assert(false)
+	assert(false, "Cannot find proper instantable child for ")
 	return "BoxMesh"

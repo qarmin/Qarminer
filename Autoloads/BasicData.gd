@@ -1,5 +1,10 @@
 extends Node
 
+var regression_test_project : bool = false # Set it to true in RegressionTestProject
+
+# Contains info about disabled classes 
+# Also allows to get list of available classes
+
 var properties_exceptions : Array = [
 	"user_data",
 	"config_file",
@@ -7,8 +12,7 @@ var properties_exceptions : Array = [
 	"",
 ]
 var function_exceptions : Array = [
-	"play",
-	#GODOT 4.0
+		#GODOT 4.0
 	"create_from_image",
 	"set_point_position",
 	"connect", # OTHER THINGS
@@ -34,15 +38,20 @@ var function_exceptions : Array = [
 	"_activate",
 	"add_node", #GH 46012
 	
+	
+	
 	"_set_user_data",
+	"get_packet", # TODO
 	"create_from_mesh",
 	# They exists without assigment like Class.method, because they may be a parent of other objects and children also should have disabled child.method, its children also etc. which is too much to do
+	"connect_to_signal", # GH 47572
+	"set_config_file", # GH 45997
+	"class_get_property", # GH 47573
+	"class_set_property", # GH 47573
 	"_editor_settings_changed",# GH 45979
 	"_submenu_timeout", # GH 45981
-	"set_config_file", # GH 45997
 	"_gui_input", # GH 45998
 	"_unhandled_key_input", # GH 45998
-	"navpoly_add", #GH 43288
 	"_thread_done", #GH 46000
 	"generate", #GH 46001
 	"_proximity_group_broadcast", #GH 46002
@@ -50,13 +59,9 @@ var function_exceptions : Array = [
 	"create_from", #GH 46004
 	"create_from_blend_shape", #GH 46004
 	"append_from", #GH 46004
-	"get_column_width", #GH 46005
 	"_unhandled_input", # TODO
 	"_input", # TODO
 	"_set_tile_data", #GH 46015
-	"_edit_set_state", #GH 46017
-	"_edit_set_position", #GH 46018
-	"_edit_set_rect", #GH 46018
 	"get", #GH 46019
 	"instance_has", #GH 46020
 	"get_var", #GH 46096
@@ -64,10 +69,7 @@ var function_exceptions : Array = [
 	"set_script", #GH 46120
 	"getvar", #GH 46019
 	"get_available_chars", #GH 46118
-	"set_primary_interface", #GH 46180
-	"add_feed", #GH 46181
 	"open_midi_inputs", #GH 46183
-	"get_unix_time_from_datetime", #GH 46188
 	"set_icon", #GH 46189
 	"get_latin_keyboard_variant", #GH  TODO Memory Leak
 	"set_editor_hint", #GH 46252
@@ -76,17 +78,14 @@ var function_exceptions : Array = [
 	"_range_click_timeout",
 	"draw", #GH 46648
 	"get_indexed", #GH 46019
-	"set_RGB_img", #GH 46724
-	"_set_RGB_img", #GH 46724
-	"_set_YCbCr_img", #GH 46724
-	"set_YCbCr_img", #GH 46724
-	"set_YCbCr_imgs", #GH 46724
-	"_set_YCbCr_imgs", #GH 46724
 	"_vp_input", # TODO
 	"_vp_unhandled_input", # TODO
 	"remove_joy_mapping", #GH 46754
 	"add_joy_mapping", #GH 46754
 	"add_vertex", #GH 47066
+	"create_client", # TODO, strange memory leak
+	"create_shape_owner", #47135
+	"shape_owner_get_owner", #47135
 
 	"collide", #GH 46137
 	"collide_and_get_contacts", #GH 46137
@@ -102,6 +101,7 @@ var function_exceptions : Array = [
 	"_update_inputs", # Cause big spam with add_input
 	# Spam when i~1000 - change to specific 
 	"update_bitmask_region",
+	"set_enabled_inputs",
 
 	# Slow Function
 	"_update_sky",
@@ -191,6 +191,12 @@ var function_exceptions : Array = [
 	"add_child",
 	"add_child_below_node",
 ]
+var exported : Array = [
+	"get_bind_bone",
+	"get_bind_name",
+	"get_bind_pose",
+]
+
 # List of slow functions, which may frooze project(not simple executing each function alone)
 var slow_functions : Array = [
 	"interpolate_baked",
@@ -249,9 +255,19 @@ var disabled_classes : Array = [
 	"ProjectSettings", # Don't mess with project settings, because they can broke entire your workflow
 	"EditorSettings", # Also don't mess with editor settings
 	"_OS", # This may sometimes crash compositor, but it should be tested manually sometimes
+	"GDScript", # Broke script
 	
-
-	# Godot 4.0 Leaks, crashes etc.
+	# This classes have problems with static/non static methods
+	"PhysicsDirectSpaceState",
+	"PhysicsDirectSpaceState2D",
+	"PhysicsDirectBodyState",
+	"PhysicsDirectBodyState2D",
+	"BulletPhysicsDirectSpaceState",
+	"InputDefault",
+	"IP_Unix",
+	"JNISingleton",
+	
+		# Godot 4.0 Leaks, crashes etc.
 	"World3D",
 	"GPUParticlesCollisionHeightField", #4.0 Crash
 	"NavigationAgent2D",
@@ -259,13 +275,50 @@ var disabled_classes : Array = [
 	"Image",
 	"GIProbe",
 	
+	
 	# Just don't use these because they are not normal things 
 	"_Thread",
 	"_Semaphore",
 	"_Mutex",
-	
-	"Image",
 ]
+
+# GH 47358
+func _init(): 
+	function_exceptions.append_array(exported)
+
+# Checks if function can be executed
+# Looks at its arguments an
+func check_if_is_allowed(method_data : Dictionary) -> bool:
+	# Function is virtual, so we just skip it
+	if method_data.get("flags") == method_data.get("flags") | METHOD_FLAG_VIRTUAL:
+		return false
+		
+	for arg in method_data.get("args"):
+		var name_of_class : String = arg.get("class_name")
+		if name_of_class.is_empty():
+			continue
+		if name_of_class in disabled_classes:
+			return false
+		if name_of_class.find("Server") != -1 && ClassDB.class_exists(name_of_class) && !ClassDB.is_parent_class(name_of_class,"Reference"):
+			return false
+		if name_of_class.find("Editor") != -1: # TODO not sure about it
+			return false
+			
+		#This is only for RegressionTestProject, because it needs for now clear visual info what is going on screen, but some nodes broke view
+		if regression_test_project:
+			if !ClassDB.is_parent_class(name_of_class, "Node") && !ClassDB.is_parent_class(name_of_class, "Reference"):
+				return false
+			
+		# In case of adding new type, this prevents from crashing due not recognizing this type
+		var t : int = arg.get("type")
+		if t == TYPE_CALLABLE:
+			return false
+		elif !(t == TYPE_NIL|| t == TYPE_MAX|| t == TYPE_AABB|| t == TYPE_ARRAY|| t == TYPE_BASIS|| t == TYPE_BOOL|| t == TYPE_COLOR|| t == TYPE_COLOR_ARRAY|| t == TYPE_DICTIONARY|| t == TYPE_INT|| t == TYPE_INT32_ARRAY|| t == TYPE_INT64_ARRAY|| t == TYPE_NODE_PATH|| t == TYPE_OBJECT|| t == TYPE_PLANE|| t == TYPE_QUAT|| t == TYPE_RAW_ARRAY|| t == TYPE_FLOAT|| t == TYPE_FLOAT32_ARRAY|| t == TYPE_FLOAT64_ARRAY|| t == TYPE_RECT2|| t == TYPE_RECT2I|| t == TYPE_RID|| t == TYPE_STRING|| t == TYPE_STRING_NAME|| t == TYPE_STRING_ARRAY|| t == TYPE_TRANSFORM|| t == TYPE_TRANSFORM2D|| t == TYPE_VECTOR2|| t == TYPE_VECTOR2I|| t == TYPE_VECTOR2_ARRAY|| t == TYPE_VECTOR3|| t == TYPE_VECTOR3I|| t == TYPE_VECTOR3_ARRAY):
+			print("----------------------------------------------------------- TODO - MISSING TYPE, ADD SUPPORT IT")
+			return false
+			
+	
+	return true
 
 # Return all available classes to instance and test
 func get_list_of_available_classes(must_be_instantable : bool = true) -> Array:
@@ -280,16 +333,18 @@ func get_list_of_available_classes(must_be_instantable : bool = true) -> Array:
 			continue
 		
 #		if rr < 550:
-#			continue
-		
+#			continue	
+
+		#This is only for RegressionTestProject, because it needs for now clear visual info what is going on screen, but some nodes broke view
+		if regression_test_project:
+			if !ClassDB.is_parent_class(name_of_class, "Node") && !ClassDB.is_parent_class(name_of_class, "Reference"):
+				continue
+
 		if name_of_class.find("Server") != -1 && !ClassDB.is_parent_class(name_of_class,"Reference"):
 			continue
-		if name_of_class.find("Editor") != -1 || name_of_class == "GLTFMesh": # TODO not sure about it, GLTFMesh is Editor node
+		if name_of_class.find("Editor") != -1: # TODO not sure about it
 			continue
 			
-#	Enable This for RegressionTestProject, to get visual info about what is going on the screen, because without it different nodes can broke view
-#		if !ClassDB.is_parent_class(name_of_class, "Node") && !ClassDB.is_parent_class(name_of_class, "Reference"):
-#			continue
 			
 		if !must_be_instantable || ClassDB.can_instance(name_of_class):
 			classes.push_back(name_of_class)

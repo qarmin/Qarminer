@@ -12,13 +12,15 @@ config_version=4
 
 config/name="Qarminer"
 config/description="Tool to automatically test Godot"
-run/main_scene="res://FunctionExecutor.tscn"
+run/main_scene="res://CreateGDScriptProject.tscn"
 
 [autoload]
 
-Autoload="*res://Autoloads/Autoload.gd"
+BasicData="*res://Autoloads/BasicData.gd"
 ValueCreator="*res://Autoloads/ValueCreator.gd"
 CreateProjectBase="*res://Autoloads/CreateProjectBase.gd"
+AutoClose="*res://Autoloads/AutoClose.gd"
+ParseArgumentType="*res://Autoloads/ParseArgumentType.gd"
 
 [logging]
 
@@ -26,6 +28,5 @@ file_logging/enable_file_logging.pc=false
 
 [network]
 
-limits/debugger_stdout/max_chars_per_second=50
 limits/debugger_stdout/max_errors_per_second=5
 limits/debugger_stdout/max_warnings_per_second=5
