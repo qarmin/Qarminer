@@ -162,6 +162,7 @@ var function_exceptions : Array = [
 	"raise",
 	"add_child",
 	"add_child_below_node",
+	"add_sibling",
 ]
 var exported : Array = [
 	"get_bind_bone",
