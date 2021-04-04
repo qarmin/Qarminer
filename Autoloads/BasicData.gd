@@ -1,5 +1,7 @@
 extends Node
 
+var regression_test_project : bool = false # Set it to true in RegressionTestProject
+
 # Contains info about disabled classes 
 # Also allows to get list of available classes
 
@@ -22,7 +24,6 @@ var function_exceptions : Array = [
 	"_submenu_timeout", # GH 45981
 	"_gui_input", # GH 45998
 	"_unhandled_key_input", # GH 45998
-	"navpoly_add", #GH 43288
 	"_thread_done", #GH 46000
 	"generate", #GH 46001
 	"_proximity_group_broadcast", #GH 46002
@@ -249,6 +250,8 @@ var disabled_classes : Array = [
 func _init(): 
 	function_exceptions.append_array(exported)
 
+# Checks if function can be executed
+# Looks at its arguments an
 func check_if_is_allowed(method_data : Dictionary) -> bool:
 	# Function is virtual, so we just skip it
 	if method_data["flags"] == method_data["flags"] | METHOD_FLAG_VIRTUAL:
@@ -264,6 +267,18 @@ func check_if_is_allowed(method_data : Dictionary) -> bool:
 			return false
 		if name_of_class.find("Editor") != -1: # TODO not sure about it
 			return false
+			
+		#This is only for RegressionTestProject, because it needs for now clear visual info what is going on screen, but some nodes broke view
+		if regression_test_project:
+			if !ClassDB.is_parent_class(name_of_class, "Node") && !ClassDB.is_parent_class(name_of_class, "Reference"):
+				return false
+			
+		# In case of adding new type, this prevents from crashing due not recognizing this type
+		var t : int = arg["type"]
+		if !(t == TYPE_NIL || t == TYPE_AABB || t == TYPE_ARRAY || t == TYPE_BASIS || t == TYPE_BOOL || t == TYPE_COLOR || t == TYPE_COLOR_ARRAY || t == TYPE_DICTIONARY || t == TYPE_INT || t == TYPE_INT_ARRAY || t == TYPE_NODE_PATH || t == TYPE_OBJECT || t == TYPE_PLANE || t == TYPE_QUAT || t == TYPE_RAW_ARRAY || t == TYPE_REAL || t == TYPE_REAL_ARRAY || t == TYPE_RECT2 || t == TYPE_RID || t == TYPE_STRING || t == TYPE_TRANSFORM || t == TYPE_TRANSFORM2D || t == TYPE_VECTOR2 || t == TYPE_VECTOR2_ARRAY || t == TYPE_VECTOR3 || t == TYPE_VECTOR3_ARRAY):
+			print("----------------------------------------------------------- TODO - MISSING TYPE, ADD SUPPORT IT")
+			return false
+			
 	
 	return true
 
@@ -280,10 +295,12 @@ func get_list_of_available_classes(must_be_instantable : bool = true) -> Array:
 			continue
 		
 #		if rr < 550:
-#			continue
-		#Enable This for RegressionTestProject, to get visual info about what is going on the screen, because without it different nodes can broke view
-#	if !ClassDB.is_parent_class(name_of_class, "Node") && !ClassDB.is_parent_class(name_of_class, "Reference"):
-#		return true
+#			continue	
+
+		#This is only for RegressionTestProject, because it needs for now clear visual info what is going on screen, but some nodes broke view
+		if regression_test_project:
+			if !ClassDB.is_parent_class(name_of_class, "Node") && !ClassDB.is_parent_class(name_of_class, "Reference"):
+				continue
 
 		if name_of_class.find("Server") != -1 && !ClassDB.is_parent_class(name_of_class,"Reference"):
 			continue

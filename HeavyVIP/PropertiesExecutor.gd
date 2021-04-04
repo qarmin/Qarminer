@@ -69,8 +69,12 @@ func tests_all_functions() -> void:
 func return_for_all(properties_data: Dictionary):
 	var argument
 
-	ValueCreator.number = 1000
-	ValueCreator.random = true  # RegressionTestProject - This must be false
+	if BasicData.regression_test_project:
+		ValueCreator.number = 100
+		ValueCreator.random = false # Results in RegressionTestProject must be always reproducible
+	else:
+		ValueCreator.number = 1000
+		ValueCreator.random = true
 	ValueCreator.should_be_always_valid = false
 
 	match properties_data["type"]:

@@ -125,8 +125,12 @@ func create_gdscript_arguments(arguments: Array) -> Array:
 func parse_and_return_objects(method_data: Dictionary, debug_print: bool = false) -> Array:
 	var arguments_array: Array = []
 
-	ValueCreator.number = 100
-	ValueCreator.random = true  # RegressionTestProject - This must be false
+	if BasicData.regression_test_project:
+		ValueCreator.number = 100
+		ValueCreator.random = false # Results in RegressionTestProject must be always reproducible
+	else:
+		ValueCreator.number = 1000
+		ValueCreator.random = true
 	ValueCreator.should_be_always_valid = false
 
 	for argument in method_data["args"]:

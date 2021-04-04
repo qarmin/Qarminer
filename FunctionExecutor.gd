@@ -9,13 +9,15 @@ var use_always_new_object: bool = true  # Don't allow to "remeber" other functio
 var exiting: bool = true
 
 
-#func _ready() -> void: # Use this instead _process for RegressionTestProject
-#	tests_all_functions()
+func _ready() -> void:
+	if BasicData.regression_test_project:
+		tests_all_functions()
 	
 func _process(_delta: float) -> void:
-	tests_all_functions()
-	if exiting:
-		get_tree().quit()
+	if !BasicData.regression_test_project:
+		tests_all_functions()
+		if exiting:
+			get_tree().quit()
 
 
 # Test all functions
