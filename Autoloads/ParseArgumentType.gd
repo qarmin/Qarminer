@@ -129,7 +129,7 @@ func parse_and_return_objects(method_data: Dictionary, debug_print: bool = false
 		ValueCreator.number = 100
 		ValueCreator.random = false # Results in RegressionTestProject must be always reproducible
 	else:
-		ValueCreator.number = 1000
+		ValueCreator.number = 10
 		ValueCreator.random = true
 	ValueCreator.should_be_always_valid = false
 
