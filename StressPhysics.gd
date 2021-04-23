@@ -1,7 +1,6 @@
 extends Node
 # Test physics nodes due adding and removing them from scene, moving them and executing random functions on them 
 
-
 # 0 - no info, 1 - basic info about executed functions, 2 - prints also info about moved nodes etc., 3 - all with also printing executed functions
 var debug_level : int = 2 
 
@@ -33,6 +32,14 @@ var created_objects = 0
 
 # Function collects names of nodes which will be later used to create its instances
 func _ready() -> void:
+	if BasicData.regression_test_project:
+		ValueCreator.random = false # Results in RegressionTestProject must be always reproducible
+	else:
+		ValueCreator.random = true
+		
+	ValueCreator.number = 10
+	ValueCreator.should_be_always_valid = false
+	
 	for name_of_class in BasicData.get_list_of_available_classes():
 		if !ClassDB.can_instance(name_of_class):
 			continue
@@ -201,10 +208,7 @@ func random_functions() -> void:
 			if method_data["name"] in BasicData.function_exceptions:
 				continue
 
-			if debug_level >= 3:
-				print("-- Executing - " + name_of_class + "." + method_data["name"])
-
-			var arguments: Array = ParseArgumentType.parse_and_return_objects(method_data, debug_level >= 3)
+			var arguments: Array = ParseArgumentType.parse_and_return_objects(method_data, name_of_class, debug_level >= 3)
 			child.callv(method_data["name"], arguments)
 
 			for argument in arguments:

@@ -45,7 +45,7 @@ func create_resources() -> void:
 		var object = ClassDB.instance(name_of_class)
 
 		var method_list: Array = ClassDB.class_get_method_list(name_of_class, false)
-		for exception in BasicData.function_exceptions + BasicData.slow_functions:
+		for exception in BasicData.function_exceptions + BasicData.project_resources_exclusion:
 			var index: int = -1
 			for method_index in range(method_list.size()):
 				if method_list[method_index]["name"] == exception:
@@ -68,7 +68,7 @@ func create_resources() -> void:
 					continue
 				print(method_data["name"])
 
-				var arguments: Array = ParseArgumentType.parse_and_return_objects(method_data)
+				var arguments: Array = ParseArgumentType.parse_and_return_objects(method_data,name_of_class)
 				object.callv(method_data["name"], arguments)
 
 				for argument in arguments:

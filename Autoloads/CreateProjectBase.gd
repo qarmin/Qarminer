@@ -25,39 +25,40 @@ var classes: Array = []
 var list_of_all_files = {"2D": [], "3D": [], "Node": [], "Other": [], "Control": [], "Resource": [], "Reference": [], "Object": []}
 
 
-func _init():
-	test_normalize_function()
-
-
-func test_normalize_function():
-	use_gdscript = false
-	assert(normalize_function_names("node") == "Node")
-	assert(normalize_function_names("get_methods") == "GetMethods")
-	use_gdscript = true
-	assert(normalize_function_names("node") == "node")
+#func _init():
+#	test_normalize_function()
+#
+#
+#func test_normalize_function():
+#	use_gdscript = false
+#	assert(normalize_function_names("node") == "Node")
+#	assert(normalize_function_names("get_methods") == "GetMethods")
+#	use_gdscript = true
+#	assert(normalize_function_names("node") == "node")
 
 
 func normalize_function_names(function_name: String) -> String:
-	if use_gdscript:
-		return function_name
-
-	assert(function_name.length() > 1)
-	assert(!function_name.ends_with("_"))  # There is i+1 expression which may be out of bounds
-	function_name = function_name[0].to_upper() + function_name.substr(1)
-
-	for i in function_name.length():
-		if function_name[i] == "_":
-			function_name[i + 1] = function_name[i + 1].to_upper()
-
-	function_name = function_name.replace("_", "")
-
 	return function_name
+#	if use_gdscript:
+#		return function_name
+#
+#	assert(function_name.length() > 1)
+#	assert(!function_name.ends_with("_"))  # There is i+1 expression which may be out of bounds
+#	function_name = function_name[0].to_upper() + function_name.substr(1)
+#
+#	for i in function_name.length():
+#		if function_name[i] == "_":
+#			function_name[i + 1] = function_name[i + 1].to_upper()
+#
+#	function_name = function_name.replace("_", "")
+#
+#	return function_name
 
 
 func collect_data() -> void:
 	for name_of_class in BasicData.get_list_of_available_classes(false):
 		var found: bool = false
-		for exception in BasicData.only_instance:
+		for exception in BasicData.project_only_instance:
 			if exception == name_of_class:
 				found = true
 				break
@@ -68,7 +69,7 @@ func collect_data() -> void:
 		class_data.name = name_of_class
 
 		var method_list: Array = ClassDB.class_get_method_list(name_of_class, !use_parent_methods)
-		for exception in BasicData.function_exceptions + BasicData.slow_functions:
+		for exception in BasicData.function_exceptions + BasicData.project_resources_exclusion:
 			var index: int = -1
 			for method_index in range(method_list.size()):
 				if method_list[method_index]["name"] == exception:
@@ -78,8 +79,7 @@ func collect_data() -> void:
 				method_list.remove(index)
 
 		for method_data in method_list:
-			# Function is virtual, so we just skip it
-			if method_data["flags"] == method_data["flags"] | METHOD_FLAG_VIRTUAL:
+			if !BasicData.check_if_is_allowed(method_data):
 				continue
 
 			var arguments: Array = []

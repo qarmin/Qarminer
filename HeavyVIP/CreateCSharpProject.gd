@@ -233,6 +233,10 @@ func convert_arguments_to_string(arguments: Array) -> String:
 
 
 func _ready() -> void:
+	ValueCreator.number = 10
+	ValueCreator.random = true
+	ValueCreator.should_be_always_valid = true  # DO NOT CHANGE, BECAUSE NON VALID VALUES WILL SHOW C# ERRORS!
+	
 	CreateProjectBase.use_gdscript = false
 	CreateProjectBase.base_path = "res://CSharp/"
 	CreateProjectBase.base_dir = "CSharp/"

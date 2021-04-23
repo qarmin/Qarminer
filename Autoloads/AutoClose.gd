@@ -21,7 +21,7 @@ func _init():
 			break  # We only need to take first argument
 
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	var current_run_time: int = OS.get_ticks_msec() - start_time
 
 	if close_order && current_run_time > time_to_show:
