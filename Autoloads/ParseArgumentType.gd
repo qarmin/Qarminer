@@ -2,7 +2,8 @@ extends Node
 
 ### Scripts to arguments and return needed info about them.
 
-### Class which contains informations about used 
+
+### Class which contains informations about used
 class SingleArgument:
 	var name: String  # E.G. var roman, can be empty, so temp variable isn't created(nodes and objects must be created with temp_variable due to memory leaks)
 	var type: String  # np. Vector2 or Object
@@ -205,12 +206,13 @@ func parse_and_return_objects(method_data: Dictionary, name_of_class: String, de
 		print(name_of_class + "." + method_data["name"] + " --- executing with " + str(arguments_array.size()) + " parameters " + str(arguments_array))
 	return arguments_array
 
-func return_gdscript_code_which_run_this_object(data)  -> String: 
+
+func return_gdscript_code_which_run_this_object(data) -> String:
 	if data == null:
 		return "null"
-	
-	var return_string : String = ""
-		
+
+	var return_string: String = ""
+
 	match typeof(data):
 		TYPE_NIL:  # Looks that this means VARIANT not null
 			assert("false", "This is even possible?")
@@ -224,7 +226,7 @@ func return_gdscript_code_which_run_this_object(data)  -> String:
 			return_string = "Array(["
 			for i in data.size():
 				return_string += return_gdscript_code_which_run_this_object(data[i])
-				if i != data.size() -1:
+				if i != data.size() - 1:
 					return_string += ", "
 			return_string += "])"
 		TYPE_BASIS:
@@ -254,7 +256,7 @@ func return_gdscript_code_which_run_this_object(data)  -> String:
 			return_string = "PoolColorArray(["
 			for i in data.size():
 				return_string += return_gdscript_code_which_run_this_object(data[i])
-				if i != data.size() -1:
+				if i != data.size() - 1:
 					return_string += ", "
 			return_string += "])"
 		TYPE_DICTIONARY:
@@ -272,7 +274,7 @@ func return_gdscript_code_which_run_this_object(data)  -> String:
 			return_string = "PoolIntArray(["
 			for i in data.size():
 				return_string += return_gdscript_code_which_run_this_object(data[i])
-				if i != data.size() -1:
+				if i != data.size() - 1:
 					return_string += ", "
 			return_string += "])"
 		TYPE_NODE_PATH:
@@ -283,13 +285,18 @@ func return_gdscript_code_which_run_this_object(data)  -> String:
 			if data == null:
 				return_string = "null"
 			else:
-				var name_of_class : String = data.get_class()
-				if ClassDB.is_parent_class(name_of_class, "Object") && !ClassDB.is_parent_class(name_of_class, "Node") && !ClassDB.is_parent_class(name_of_class, "Reference") && !ClassDB.class_has_method(name_of_class, "new"):
-					return_string += "ClassDB.instance(\"" + name_of_class +  "\")"
+				var name_of_class: String = data.get_class()
+				if (
+					ClassDB.is_parent_class(name_of_class, "Object")
+					&& !ClassDB.is_parent_class(name_of_class, "Node")
+					&& !ClassDB.is_parent_class(name_of_class, "Reference")
+					&& !ClassDB.class_has_method(name_of_class, "new")
+				):
+					return_string += "ClassDB.instance(\"" + name_of_class + "\")"
 				else:
 					return_string = name_of_class
 					return_string += ".new()"
-					
+
 		TYPE_PLANE:
 			return_string = "Plane("
 			return_string += return_gdscript_code_which_run_this_object(data.x)
@@ -314,7 +321,7 @@ func return_gdscript_code_which_run_this_object(data)  -> String:
 			return_string = "PoolByteArray(["
 			for i in data.size():
 				return_string += return_gdscript_code_which_run_this_object(data[i])
-				if i != data.size() -1:
+				if i != data.size() - 1:
 					return_string += ", "
 			return_string += "])"
 		TYPE_REAL:
@@ -323,7 +330,7 @@ func return_gdscript_code_which_run_this_object(data)  -> String:
 			return_string = "PoolRealArray(["
 			for i in data.size():
 				return_string += return_gdscript_code_which_run_this_object(data[i])
-				if i != data.size() -1:
+				if i != data.size() - 1:
 					return_string += ", "
 			return_string += "])"
 		TYPE_RECT2:
@@ -335,12 +342,12 @@ func return_gdscript_code_which_run_this_object(data)  -> String:
 		TYPE_RID:
 			return_string = "RID()"
 		TYPE_STRING:
-			return_string = "\"" + data +  "\""
+			return_string = "\"" + data + "\""
 		TYPE_STRING_ARRAY:
 			return_string = "PoolStringArray(["
 			for i in data.size():
 				return_string += return_gdscript_code_which_run_this_object(data[i])
-				if i != data.size() -1:
+				if i != data.size() - 1:
 					return_string += ", "
 			return_string += "])"
 		TYPE_TRANSFORM:
@@ -367,7 +374,7 @@ func return_gdscript_code_which_run_this_object(data)  -> String:
 			return_string = "PoolVector2Array(["
 			for i in data.size():
 				return_string += return_gdscript_code_which_run_this_object(data[i])
-				if i != data.size() -1:
+				if i != data.size() - 1:
 					return_string += ", "
 			return_string += "])"
 		TYPE_VECTOR3:
@@ -382,10 +389,10 @@ func return_gdscript_code_which_run_this_object(data)  -> String:
 			return_string = "PoolVector3Array(["
 			for i in data.size():
 				return_string += return_gdscript_code_which_run_this_object(data[i])
-				if i != data.size() -1:
+				if i != data.size() - 1:
 					return_string += ", "
 			return_string += "])"
 		_:
 			assert(false, "Missing type, needs to be added to project")
-	
+
 	return return_string

@@ -71,7 +71,7 @@ func return_for_all(properties_data: Dictionary):
 
 	if BasicData.regression_test_project:
 		ValueCreator.number = 100
-		ValueCreator.random = false # Results in RegressionTestProject must be always reproducible
+		ValueCreator.random = false  # Results in RegressionTestProject must be always reproducible
 	else:
 		ValueCreator.number = 1000
 		ValueCreator.random = true

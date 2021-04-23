@@ -1,6 +1,6 @@
 extends Node
 
-var regression_test_project : bool = false # Set it to true in RegressionTestProject
+var regression_test_project : bool = true # Set it to true in RegressionTestProject
 
 ### Contains info about disabled classes and allows to take info about allowed methods
 
@@ -265,6 +265,16 @@ func check_if_is_allowed(method_data : Dictionary) -> bool:
 			
 	
 	return true
+
+func remove_disabled_methods(method_list : Array, exceptions : Array) -> void:
+	for exception in exceptions:
+		var index: int = -1
+		for method_index in range(method_list.size()):
+			if method_list[method_index]["name"] == exception:
+				index = method_index
+				break
+		if index != -1:
+			method_list.remove(index)
 
 # Return all available classes which can be used
 func get_list_of_available_classes(must_be_instantable : bool = true) -> Array:

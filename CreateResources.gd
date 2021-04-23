@@ -68,7 +68,7 @@ func create_resources() -> void:
 					continue
 				print(method_data["name"])
 
-				var arguments: Array = ParseArgumentType.parse_and_return_objects(method_data,name_of_class)
+				var arguments: Array = ParseArgumentType.parse_and_return_objects(method_data, name_of_class)
 				object.callv(method_data["name"], arguments)
 
 				for argument in arguments:

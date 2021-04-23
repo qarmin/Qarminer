@@ -1,10 +1,10 @@
 extends Node
-# Test physics nodes due adding and removing them from scene, moving them and executing random functions on them 
+# Test physics nodes due adding and removing them from scene, moving them and executing random functions on them
 
 # 0 - no info, 1 - basic info about executed functions, 2 - prints also info about moved nodes etc., 3 - all with also printing executed functions
-var debug_level : int = 2 
+var debug_level: int = 2
 
-var number_of_showed_frames : int = 10000
+var number_of_showed_frames: int = 10000
 var used_nodes: int = 100  # Use 100 objects, when using more delete some
 var nodes_created_each_turn: int = 10
 var nodes_moved_each_turn: int = 10
@@ -17,7 +17,7 @@ var shape_2d: Array = []
 var joint_3d: Array = []
 var joint_2d: Array = []
 
-var all_physical : Array = []
+var all_physical: Array = []
 
 var created_objects = 0
 
@@ -33,13 +33,13 @@ var created_objects = 0
 # Function collects names of nodes which will be later used to create its instances
 func _ready() -> void:
 	if BasicData.regression_test_project:
-		ValueCreator.random = false # Results in RegressionTestProject must be always reproducible
+		ValueCreator.random = false  # Results in RegressionTestProject must be always reproducible
 	else:
 		ValueCreator.random = true
-		
+
 	ValueCreator.number = 10
 	ValueCreator.should_be_always_valid = false
-	
+
 	for name_of_class in BasicData.get_list_of_available_classes():
 		if !ClassDB.can_instance(name_of_class):
 			continue
@@ -55,13 +55,12 @@ func _ready() -> void:
 			shape_3d.append(name_of_class)
 		if ClassDB.is_parent_class(name_of_class, "Shape2D"):
 			shape_2d.append(name_of_class)
-		
+
 	all_physical = physics_nodes_3d + physics_nodes_2d + joint_2d + joint_3d
-	
-	
+
 	assert(all_physical.size() > 0)
 	assert((shape_2d + shape_3d).size() > 0)
-	
+
 	if debug_level >= 1:
 		print("Collected this items:")
 		print("CollisionObject: ")
@@ -82,6 +81,7 @@ func _ready() -> void:
 		print("Shape2D: ")
 		for i in shape_2d:
 			print("-- " + i)
+
 
 # Enable this after testing
 #func _process(_delta: float) -> void:
@@ -134,9 +134,9 @@ func create_nodes():
 
 		if debug_level >= 2:
 			print("-- Creating - " + name_of_class)
-		
+
 		var node: Node = ClassDB.instance(name_of_class)
-		
+
 		if name_of_class in joint_2d or name_of_class in joint_3d:
 			# TODO add something for joint
 			pass
@@ -156,10 +156,10 @@ func move_nodes() -> void:
 	for i in nodes_moved_each_turn:
 		var index: int = randi() % get_child_count()
 		var child: Node = get_child(index)
-		
+
 		if debug_level >= 2:
 			print("-- Moving - " + child.get_class())
-		
+
 		if randi() % 2:
 			if child is Node2D:
 				child.set_position(ValueCreator.get_vector2())
@@ -175,14 +175,14 @@ func move_nodes() -> void:
 		elif child is RigidBody2D:
 			child.add_force(ValueCreator.get_vector2(), ValueCreator.get_vector2())
 		elif child is Joint:
-			var nodea : Node = get_child(randi() % get_child_count())
-			var nodeb : Node = get_child(randi() % get_child_count())
+			var nodea: Node = get_child(randi() % get_child_count())
+			var nodeb: Node = get_child(randi() % get_child_count())
 			assert(child.get_node("../" + nodea.get_name()) != null)
 			child.set_node_a("../" + nodea.get_name())
 			child.set_node_b("../" + nodeb.get_name())
 		elif child is Joint2D:
-			var nodea : Node = get_child(randi() % get_child_count())
-			var nodeb : Node = get_child(randi() % get_child_count())
+			var nodea: Node = get_child(randi() % get_child_count())
+			var nodeb: Node = get_child(randi() % get_child_count())
 			assert(child.get_node("../" + nodea.get_name()) != null)
 			child.set_node_a("../" + nodea.get_name())
 			child.set_node_b("../" + nodeb.get_name())
@@ -196,11 +196,10 @@ func random_functions() -> void:
 		print("--- Started Random Function Execution ---")
 
 	for child in get_children():
-		var name_of_class: String = child.get_class()			
+		var name_of_class: String = child.get_class()
 
 		var list_of_methods: Array = ClassDB.class_get_method_list(name_of_class, true)
 		for method_data in list_of_methods:
-			
 			# Don't use methods from Object or Node, because them ingerate too much with project
 			if ClassDB.class_has_method("Object", method_data["name"]) || ClassDB.class_has_method("Node", method_data["name"]):
 				continue

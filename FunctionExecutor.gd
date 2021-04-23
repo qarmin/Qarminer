@@ -1,6 +1,11 @@
 extends Node
 
-# Execute every object function
+### Script:
+### - takes all available classes
+### - checks if method is allowed
+### - checks each argument if is allowed(in case e.g. adding new, to prevent crashes due not recognizing types)
+### - print info if needed to console
+### - execute function with parameters
 
 var debug_print: bool = true
 var add_to_tree: bool = false  # Adds nodes to tree, freeze godot when removing a lot of nodes
@@ -11,16 +16,17 @@ var exiting: bool = true
 
 func _ready() -> void:
 	if BasicData.regression_test_project:
-		ValueCreator.random = false # Results in RegressionTestProject must be always reproducible
+		ValueCreator.random = false  # Results in RegressionTestProject must be always reproducible
 	else:
 		ValueCreator.random = true
-		
+
 	ValueCreator.number = 100
 	ValueCreator.should_be_always_valid = false
-	
+
 	if BasicData.regression_test_project:
 		tests_all_functions()
-	
+
+
 func _process(_delta: float) -> void:
 	if !BasicData.regression_test_project:
 		tests_all_functions()
@@ -37,40 +43,37 @@ func tests_all_functions() -> void:
 				add_child(object)
 		var method_list: Array = ClassDB.class_get_method_list(name_of_class, !use_parent_methods)
 
-		## Exception
-		for exception in BasicData.function_exceptions:
-			var index: int = -1
-			for method_index in range(method_list.size()):
-				if method_list[method_index]["name"] == exception:
-					index = method_index
-					break
-			if index != -1:
-				method_list.remove(index)
+		# Removes
+		BasicData.remove_disabled_methods(method_list, BasicData.function_exceptions)
 
 		if debug_print:
-			print("#################### " + name_of_class +" ####################")
-			print()
+			print("#################### " + name_of_class + " ####################\n")
 		for _i in range(1):
 			for method_data in method_list:
 				if !BasicData.check_if_is_allowed(method_data):
 					continue
 
 				var arguments: Array = ParseArgumentType.parse_and_return_objects(method_data, name_of_class, debug_print)
-				
+
 				if debug_print:
-					var to_print : String ="GDSCRIPT CODE:     "
-					if ClassDB.is_parent_class(name_of_class, "Object") && !ClassDB.is_parent_class(name_of_class, "Node") && !ClassDB.is_parent_class(name_of_class, "Reference") && !ClassDB.class_has_method(name_of_class, "new"):
-						to_print += "ClassDB.instance(\"" + name_of_class+ "\")." + method_data["name"] + "("
+					var to_print: String = "GDSCRIPT CODE:     "
+					if (
+						ClassDB.is_parent_class(name_of_class, "Object")
+						&& !ClassDB.is_parent_class(name_of_class, "Node")
+						&& !ClassDB.is_parent_class(name_of_class, "Reference")
+						&& !ClassDB.class_has_method(name_of_class, "new")
+					):
+						to_print += "ClassDB.instance(\"" + name_of_class + "\")." + method_data["name"] + "("
 					else:
-						to_print += name_of_class+ ".new()." + method_data["name"] + "("
-						
+						to_print += name_of_class + ".new()." + method_data["name"] + "("
+
 					for i in arguments.size():
 						to_print += ParseArgumentType.return_gdscript_code_which_run_this_object(arguments[i])
 						if i != arguments.size() - 1:
 							to_print += ", "
 					to_print += ")\n"
 					print(to_print)
-				
+
 #				object.callv(method_data["name"], arguments)
 
 				for argument in arguments:

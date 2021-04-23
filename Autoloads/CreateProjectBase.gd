@@ -24,7 +24,6 @@ var classes: Array = []
 
 var list_of_all_files = {"2D": [], "3D": [], "Node": [], "Other": [], "Control": [], "Resource": [], "Reference": [], "Object": []}
 
-
 #func _init():
 #	test_normalize_function()
 #
@@ -39,6 +38,8 @@ var list_of_all_files = {"2D": [], "3D": [], "Node": [], "Other": [], "Control":
 
 func normalize_function_names(function_name: String) -> String:
 	return function_name
+
+
 #	if use_gdscript:
 #		return function_name
 #

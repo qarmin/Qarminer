@@ -117,7 +117,7 @@ func create_basic_files() -> void:
 		if !(class_data.name in ["PhysicsDirectBodyState", "PhysicsDirectSpaceState", "Physics2DDirectBodyState", "Physics2DDirectSpaceState", "TreeItem", "Image"]):  # Some functions are static, but some needs to work on objects etc.., TODO Remove Image when it will be enough stable
 			for i in range(class_data.function_names.size()):
 				var function_use_objects: bool = false
-				
+
 				data_to_save += "\tif randi() % 2 == 0:\n"
 				if CreateProjectBase.debug_in_runtime:
 					data_to_save += "\t\tprint(\"Executing " + object_type + "." + class_data.function_names[i] + "\")\n"
@@ -286,7 +286,7 @@ func _ready() -> void:
 	ValueCreator.number = 10
 	ValueCreator.random = true
 	ValueCreator.should_be_always_valid = true  # DO NOT CHANGE, BECAUSE NON VALID VALUES WILL SHOW GDSCRIPT ERRORS!
-	
+
 	CreateProjectBase.use_gdscript = true
 	CreateProjectBase.base_path = "res://GDScript/"
 	CreateProjectBase.base_dir = "GDScript/"
