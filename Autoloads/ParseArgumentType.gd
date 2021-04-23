@@ -294,7 +294,7 @@ func return_gdscript_code_which_run_this_object(data) -> String:
 				):
 					return_string += "ClassDB.instance(\"" + name_of_class + "\")"
 				else:
-					return_string = name_of_class
+					return_string = name_of_class.trim_prefix("_")
 					return_string += ".new()"
 
 		TYPE_PLANE:

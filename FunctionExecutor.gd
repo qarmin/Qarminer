@@ -65,7 +65,7 @@ func tests_all_functions() -> void:
 					):
 						to_print += "ClassDB.instance(\"" + name_of_class + "\")." + method_data["name"] + "("
 					else:
-						to_print += name_of_class + ".new()." + method_data["name"] + "("
+						to_print += name_of_class.trim_prefix("_") + ".new()." + method_data["name"] + "("
 
 					for i in arguments.size():
 						to_print += ParseArgumentType.return_gdscript_code_which_run_this_object(arguments[i])

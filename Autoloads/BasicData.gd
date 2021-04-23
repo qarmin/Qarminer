@@ -251,11 +251,6 @@ func check_if_is_allowed(method_data : Dictionary) -> bool:
 		if name_of_class.find("Editor") != -1 || name_of_class.find("SkinReference") != -1:
 			return false
 			
-		#This is only for RegressionTestProject, because it needs for now clear visual info what is going on screen, but some nodes broke view
-		if regression_test_project:
-			if !ClassDB.is_parent_class(name_of_class, "Node") && !ClassDB.is_parent_class(name_of_class, "Reference"):
-				return false
-			
 		# In case of adding new type, this prevents from crashing due not recognizing this type
 		# In case of removing/rename type, just comment e.g. TYPE_ARRAY and all occurencies on e.g. switch statement with it
 		var t : int = arg["type"]
@@ -263,6 +258,13 @@ func check_if_is_allowed(method_data : Dictionary) -> bool:
 			print("----------------------------------------------------------- TODO - MISSING TYPE, ADD SUPPORT IT") # Add assert here to get info which type is missing
 			return false
 			
+		#This is only for RegressionTestProject, because it needs for now clear visual info what is going on screen, but some nodes broke view
+		if regression_test_project:
+			# That means that this is constant, not class
+			if !ClassDB.class_exists(name_of_class):
+				continue
+			if !ClassDB.is_parent_class(name_of_class, "Node") && !ClassDB.is_parent_class(name_of_class, "Reference"):
+				return false
 	
 	return true
 
