@@ -1,7 +1,9 @@
 extends Node
 
-# Parse arguments and return needed info/objects etc.
+### Scripts to arguments and return needed info about them.
 
+
+### Class which contains informations about used
 class SingleArgument:
 	var name: String  # E.G. var roman, can be empty, so temp variable isn't created(nodes and objects must be created with temp_variable due to memory leaks)
 	var type: String  # np. Vector2 or Object
@@ -10,7 +12,6 @@ class SingleArgument:
 	var is_only_object: bool = false  # Only needs to freed with .free()
 	var is_only_reference: bool = false  # Don't needs to be removed manually
 	var is_only_node: bool = false  # Needs to be removed with .queue_free()
-
 
 func create_gdscript_arguments(arguments: Array) -> Array:
 	var argument_array: Array = []
@@ -144,8 +145,8 @@ func create_gdscript_arguments(arguments: Array) -> Array:
 	return argument_array
 
 
-func parse_and_return_objects(method_data: Dictionary, debug_print: bool = false) -> Array:
-	var arguments_array: Array = []
+func parse_and_return_objects(method_data: Dictionary,name_of_class : String, debug_print: bool = false) -> Array:
+	var arguments_array: Array = Array([])
 
 	if BasicData.regression_test_project:
 		ValueCreator.number = 100
@@ -160,8 +161,6 @@ func parse_and_return_objects(method_data: Dictionary, debug_print: bool = false
 		if type == TYPE_NIL: # Looks that this means VARIANT not null
 				arguments_array.push_back(false) # TODO Add some randomization
 #				assert(false)
-		elif type == TYPE_MAX:
-				assert(false)
 		elif type == TYPE_AABB:
 				arguments_array.push_back(ValueCreator.get_aabb())
 		elif type == TYPE_ARRAY:
@@ -231,6 +230,229 @@ func parse_and_return_objects(method_data: Dictionary, debug_print: bool = false
 		else:
 				assert(false) # Missed some types, add it
 
+#	assert(is_instance_valid(arguments_array) == true)
 	if debug_print:
-		print("Parameters " + str(arguments_array))
+		print("\n" + name_of_class + "." + method_data.get("name") + " --- executing with " + str(arguments_array.size()) + " parameters " + str(arguments_array))
 	return arguments_array
+
+
+func return_gdscript_code_which_run_this_object(data) -> String:
+	var return_string: String = ""
+
+	var type = typeof(data)
+
+	if type == TYPE_NIL:  # Looks that this means VARIANT not null
+		return_string = "null"
+		#assert("false", "This is even possible?")
+	elif type== TYPE_AABB:
+		return_string = "AABB("
+		return_string += return_gdscript_code_which_run_this_object(data.position)
+		return_string += ", "
+		return_string += return_gdscript_code_which_run_this_object(data.size)
+		return_string += ")"
+	elif type== TYPE_ARRAY:
+		return_string = "Array(["
+		for i in data.size():
+			return_string += return_gdscript_code_which_run_this_object(data[i])
+			if i != data.size() - 1:
+				return_string += ", "
+		return_string += "])"
+	elif type== TYPE_BASIS:
+		return_string = "Basis("
+		return_string += return_gdscript_code_which_run_this_object(data.x)
+		return_string += ", "
+		return_string += return_gdscript_code_which_run_this_object(data.y)
+		return_string += ", "
+		return_string += return_gdscript_code_which_run_this_object(data.z)
+		return_string += ")"
+	elif type== TYPE_BOOL:
+		if data == true:
+			return_string = "true"
+		else:
+			return_string = "false"
+	elif type== TYPE_COLOR:
+		return_string = "Color("
+		return_string += return_gdscript_code_which_run_this_object(data.r)
+		return_string += ", "
+		return_string += return_gdscript_code_which_run_this_object(data.g)
+		return_string += ", "
+		return_string += return_gdscript_code_which_run_this_object(data.b)
+		return_string += ", "
+		return_string += return_gdscript_code_which_run_this_object(data.a)
+		return_string += ")"
+	elif type== TYPE_COLOR_ARRAY:
+		return_string = "PoolColorArray(["
+		for i in data.size():
+			return_string += return_gdscript_code_which_run_this_object(data[i])
+			if i != data.size() - 1:
+				return_string += ", "
+		return_string += "])"
+	elif type== TYPE_DICTIONARY:
+		return_string = "{"
+		for i in data.size():
+			return_string += return_gdscript_code_which_run_this_object(data.keys()[i])
+			return_string += " : "
+			return_string += return_gdscript_code_which_run_this_object(data.values()[i])
+			if i != data.size() - 1:
+				return_string += ", "
+		return_string += "}"
+	elif type== TYPE_INT:
+		return_string = str(data)
+	elif type== TYPE_INT32_ARRAY:
+		return_string = "PoolInt32Array(["
+		for i in data.size():
+			return_string += return_gdscript_code_which_run_this_object(data[i])
+			if i != data.size() - 1:
+				return_string += ", "
+		return_string += "])"
+	elif type== TYPE_INT64_ARRAY:
+		return_string = "PoolInt64Array(["
+		for i in data.size():
+			return_string += return_gdscript_code_which_run_this_object(data[i])
+			if i != data.size() - 1:
+				return_string += ", "
+		return_string += "])"
+	elif type== TYPE_NODE_PATH:
+		return_string = "NodePath("
+		return_string += return_gdscript_code_which_run_this_object(str(data))
+		return_string += ")"
+	elif type== TYPE_OBJECT:
+		if data == null:
+			return_string = "null"
+		else:
+			var name_of_class: String = data.get_class()
+			if (
+				ClassDB.is_parent_class(name_of_class, "Object")
+				&& !ClassDB.is_parent_class(name_of_class, "Node")
+				&& !ClassDB.is_parent_class(name_of_class, "Reference")
+				&& !ClassDB.class_has_method(name_of_class, "new")
+			):
+				return_string += "ClassDB.instance(\"" + name_of_class + "\")"
+			else:
+				return_string = name_of_class.trim_prefix("_")
+				return_string += ".new()"
+
+	elif type== TYPE_PLANE:
+		return_string = "Plane("
+		return_string += return_gdscript_code_which_run_this_object(data.x)
+		return_string += ", "
+		return_string += return_gdscript_code_which_run_this_object(data.y)
+		return_string += ", "
+		return_string += return_gdscript_code_which_run_this_object(data.z)
+		return_string += ", "
+		return_string += return_gdscript_code_which_run_this_object(data.d)
+		return_string += ")"
+	elif type== TYPE_QUAT:
+		return_string = "Quat("
+		return_string += return_gdscript_code_which_run_this_object(data.x)
+		return_string += ", "
+		return_string += return_gdscript_code_which_run_this_object(data.y)
+		return_string += ", "
+		return_string += return_gdscript_code_which_run_this_object(data.z)
+		return_string += ", "
+		return_string += return_gdscript_code_which_run_this_object(data.w)
+		return_string += ")"
+	elif type== TYPE_RAW_ARRAY:
+		return_string = "PoolByteArray(["
+		for i in data.size():
+			return_string += return_gdscript_code_which_run_this_object(data[i])
+			if i != data.size() - 1:
+				return_string += ", "
+		return_string += "])"
+	elif type== TYPE_FLOAT:
+		return_string = str(data)
+	elif type== TYPE_FLOAT32_ARRAY:
+		return_string = "PoolFloat32Array(["
+		for i in data.size():
+			return_string += return_gdscript_code_which_run_this_object(data[i])
+			if i != data.size() - 1:
+				return_string += ", "
+		return_string += "])"
+	elif type== TYPE_FLOAT32_ARRAY:
+		return_string = "PoolFloat64Array(["
+		for i in data.size():
+			return_string += return_gdscript_code_which_run_this_object(data[i])
+			if i != data.size() - 1:
+				return_string += ", "
+		return_string += "])"
+	elif type== TYPE_RECT2:
+		return_string = "Rect2("
+		return_string += return_gdscript_code_which_run_this_object(data.position)
+		return_string += ", "
+		return_string += return_gdscript_code_which_run_this_object(data.size)
+		return_string += ")"
+	elif type== TYPE_RID:
+		return_string = "RID()"
+	elif type== TYPE_STRING:
+		return_string = "\"" + data + "\""
+	elif type== TYPE_STRING_ARRAY:
+		return_string = "PackedStringArray(["
+		for i in data.size():
+			return_string += return_gdscript_code_which_run_this_object(data[i])
+			if i != data.size() - 1:
+				return_string += ", "
+		return_string += "])"
+	elif type== TYPE_TRANSFORM:
+		return_string = "Transform("
+		return_string += return_gdscript_code_which_run_this_object(data.basis)
+		return_string += ", "
+		return_string += return_gdscript_code_which_run_this_object(data.origin)
+		return_string += ")"
+	elif type== TYPE_TRANSFORM2D:
+		return_string = "Transform2D("
+		return_string += return_gdscript_code_which_run_this_object(data.x)
+		return_string += ", "
+		return_string += return_gdscript_code_which_run_this_object(data.y)
+		return_string += ", "
+		return_string += return_gdscript_code_which_run_this_object(data.origin)
+		return_string += ")"
+	elif type== TYPE_VECTOR2:
+		return_string = "Vector2("
+		return_string += return_gdscript_code_which_run_this_object(data.x)
+		return_string += ", "
+		return_string += return_gdscript_code_which_run_this_object(data.y)
+		return_string += ")"
+	elif type== TYPE_VECTOR2I:
+		return_string = "Vector2i("
+		return_string += return_gdscript_code_which_run_this_object(data.x)
+		return_string += ", "
+		return_string += return_gdscript_code_which_run_this_object(data.y)
+		return_string += ")"
+	elif type== TYPE_VECTOR2_ARRAY:
+		return_string = "PoolVector2Array(["
+		for i in data.size():
+			return_string += return_gdscript_code_which_run_this_object(data[i])
+			if i != data.size() - 1:
+				return_string += ", "
+		return_string += "])"
+	elif type== TYPE_VECTOR3:
+		return_string = "Vector3("
+		return_string += return_gdscript_code_which_run_this_object(data.x)
+		return_string += ", "
+		return_string += return_gdscript_code_which_run_this_object(data.y)
+		return_string += ", "
+		return_string += return_gdscript_code_which_run_this_object(data.z)
+		return_string += ")"
+	elif type== TYPE_VECTOR3I:
+		return_string = "Vector3i("
+		return_string += return_gdscript_code_which_run_this_object(data.x)
+		return_string += ", "
+		return_string += return_gdscript_code_which_run_this_object(data.y)
+		return_string += ", "
+		return_string += return_gdscript_code_which_run_this_object(data.z)
+		return_string += ")"
+	elif type== TYPE_STRING_NAME:
+		return_string = "StringName("
+		return_string += return_gdscript_code_which_run_this_object(str(data))
+		return_string += ")"
+	elif type== TYPE_VECTOR3_ARRAY:
+		return_string = "PoolVector3Array(["
+		for i in data.size():
+			return_string += return_gdscript_code_which_run_this_object(data[i])
+			if i != data.size() - 1:
+				return_string += ", "
+		return_string += "])"
+	else:
+		assert(false, "Missing type, needs to be added to project")
+
+	return return_string

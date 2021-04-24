@@ -12,13 +12,12 @@ config_version=4
 
 config/name="Qarminer"
 config/description="Tool to automatically test Godot"
-run/main_scene="res://CreateGDScriptProject.tscn"
+run/main_scene="res://FunctionExecutor.tscn"
 
 [autoload]
 
 BasicData="*res://Autoloads/BasicData.gd"
 ValueCreator="*res://Autoloads/ValueCreator.gd"
-CreateProjectBase="*res://Autoloads/CreateProjectBase.gd"
 AutoClose="*res://Autoloads/AutoClose.gd"
 ParseArgumentType="*res://Autoloads/ParseArgumentType.gd"
 

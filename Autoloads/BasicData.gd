@@ -2,15 +2,9 @@ extends Node
 
 var regression_test_project : bool = false # Set it to true in RegressionTestProject
 
-# Contains info about disabled classes 
-# Also allows to get list of available classes
+### Contains info about disabled classes and allows to take info about allowed methods
 
-var properties_exceptions : Array = [
-	"user_data",
-	"config_file",
-	"",
-	"",
-]
+# Globablly disabled functions for all classes
 var function_exceptions : Array = [
 		#GODOT 4.0
 	"create_from_image",
@@ -39,19 +33,17 @@ var function_exceptions : Array = [
 	"add_node", #GH 46012
 	
 	
-	
-	"_set_user_data",
 	"get_packet", # TODO
-	"create_from_mesh",
+	"_gui_input", # TODO probably missing cherrypick #GH 47636
+	"_input",
+	"_unhandled_input", 
+	"_unhandled_key_input",
+	"connect_to_signal", # Should be chrrypicked
+	
 	# They exists without assigment like Class.method, because they may be a parent of other objects and children also should have disabled child.method, its children also etc. which is too much to do
-	"connect_to_signal", # GH 47572
-	"set_config_file", # GH 45997
-	"class_get_property", # GH 47573
-	"class_set_property", # GH 47573
+	#"connect_to_signal", # GH 47572
 	"_editor_settings_changed",# GH 45979
 	"_submenu_timeout", # GH 45981
-	"_gui_input", # GH 45998
-	"_unhandled_key_input", # GH 45998
 	"_thread_done", #GH 46000
 	"generate", #GH 46001
 	"_proximity_group_broadcast", #GH 46002
@@ -59,13 +51,10 @@ var function_exceptions : Array = [
 	"create_from", #GH 46004
 	"create_from_blend_shape", #GH 46004
 	"append_from", #GH 46004
-	"_unhandled_input", # TODO
-	"_input", # TODO
 	"_set_tile_data", #GH 46015
 	"get", #GH 46019
 	"instance_has", #GH 46020
 	"get_var", #GH 46096
-	"force_drag", #GH 46114
 	"set_script", #GH 46120
 	"getvar", #GH 46019
 	"get_available_chars", #GH 46118
@@ -75,22 +64,16 @@ var function_exceptions : Array = [
 	"set_editor_hint", #GH 46252
 	"get_item_at_position", #TODO hard to find
 	"set_probe_data", #GH 46570
-	"_range_click_timeout",
-	"draw", #GH 46648
+	"_range_click_timeout", #GH 46648
 	"get_indexed", #GH 46019
-	"_vp_input", # TODO
-	"_vp_unhandled_input", # TODO
-	"remove_joy_mapping", #GH 46754
-	"add_joy_mapping", #GH 46754
 	"add_vertex", #GH 47066
 	"create_client", # TODO, strange memory leak
 	"create_shape_owner", #47135
 	"shape_owner_get_owner", #47135
 
-	"collide", #GH 46137
-	"collide_and_get_contacts", #GH 46137
-	"collide_with_motion", #GH 46137
-	"collide_with_motion_and_get_contacts", #GH 46137
+	"get_bind_bone", #GH 47358
+	"get_bind_name", #GH 47358
+	"get_bind_pose", #GH 47358
 
 	# TODO Check this later
 	"propagate_notification",
@@ -190,15 +173,11 @@ var function_exceptions : Array = [
 	"raise",
 	"add_child",
 	"add_child_below_node",
-]
-var exported : Array = [
-	"get_bind_bone",
-	"get_bind_name",
-	"get_bind_pose",
+	"add_sibling",
 ]
 
 # List of slow functions, which may frooze project(not simple executing each function alone)
-var slow_functions : Array = [
+var project_resources_exclusion : Array = [
 	"interpolate_baked",
 	"get_baked_length",
 	"get_baked_points",
@@ -226,7 +205,8 @@ var slow_functions : Array = [
 	"is_on_screen"
 ]
 # Specific classes which are initialized in specific way e.g. var undo_redo = get_undo_redo() instead var undo_redo = UndoRedo.new()
-var only_instance : Array = [
+# It is used when generating project
+var project_only_instance : Array = [
 	"UndoRedo",
 	"Object",
 	"JSONRPC",
@@ -250,7 +230,14 @@ var invalid_signals : Array = [
 	"data_channel_received",
 	"",
 ]
-# Used only in ValueCreator
+var properties_exceptions : Array = [
+	"user_data",
+	"config_file",
+	"",
+	"",
+]
+
+# Globally disabled classes which causes bugs or are very hard to us
 var disabled_classes : Array = [
 	"ProjectSettings", # Don't mess with project settings, because they can broke entire your workflow
 	"EditorSettings", # Also don't mess with editor settings
@@ -275,22 +262,19 @@ var disabled_classes : Array = [
 	"Image",
 	"GIProbe",
 	
-	
 	# Just don't use these because they are not normal things 
 	"_Thread",
 	"_Semaphore",
 	"_Mutex",
 ]
 
-# GH 47358
-func _init(): 
-	function_exceptions.append_array(exported)
-
 # Checks if function can be executed
 # Looks at its arguments an
 func check_if_is_allowed(method_data : Dictionary) -> bool:
-	# Function is virtual, so we just skip it
+	# Function is virtual or vararg, so we just skip it
 	if method_data.get("flags") == method_data.get("flags") | METHOD_FLAG_VIRTUAL:
+		return false
+	if method_data.get("flags") == method_data.get("flags") | 128: # VARARG TODO, Godot issue, add missing flag binding
 		return false
 		
 	for arg in method_data.get("args"):
@@ -301,14 +285,12 @@ func check_if_is_allowed(method_data : Dictionary) -> bool:
 			return false
 		if name_of_class.find("Server") != -1 && ClassDB.class_exists(name_of_class) && !ClassDB.is_parent_class(name_of_class,"Reference"):
 			return false
-		if name_of_class.find("Editor") != -1: # TODO not sure about it
+		# Editor stuff usually aren't good choice for arhuments	
+		if name_of_class.find("Editor") != -1 || name_of_class.find("SkinReference") != -1:
 			return false
 			
-		#This is only for RegressionTestProject, because it needs for now clear visual info what is going on screen, but some nodes broke view
-		if regression_test_project:
-			if !ClassDB.is_parent_class(name_of_class, "Node") && !ClassDB.is_parent_class(name_of_class, "Reference"):
-				return false
-			
+		# In case of adding new type, this prevents from crashing due not recognizing this type
+		# In case of removing/rename type, just comment e.g. TYPE_ARRAY and all occurencies on e.g. switch statement with it
 		# In case of adding new type, this prevents from crashing due not recognizing this type
 		var t : int = arg.get("type")
 		if t == TYPE_CALLABLE:
@@ -317,18 +299,35 @@ func check_if_is_allowed(method_data : Dictionary) -> bool:
 			print("----------------------------------------------------------- TODO - MISSING TYPE, ADD SUPPORT IT")
 			return false
 			
+		#This is only for RegressionTestProject, because it needs for now clear visual info what is going on screen, but some nodes broke view
+		if regression_test_project:
+			# That means that this is constant, not class
+			if !ClassDB.class_exists(name_of_class):
+				continue
+			if !ClassDB.is_parent_class(name_of_class, "Node") && !ClassDB.is_parent_class(name_of_class, "Reference"):
+				return false
 	
 	return true
 
-# Return all available classes to instance and test
+func remove_disabled_methods(method_list : Array, exceptions : Array) -> void:
+	for exception in exceptions:
+		var index: int = -1
+		for method_index in range(method_list.size()):
+			if method_list[method_index].get("name") == exception:
+				index = method_index
+				break
+		if index != -1:
+			method_list.remove(index)
+
+# Return all available classes which can be used
 func get_list_of_available_classes(must_be_instantable : bool = true) -> Array:
 	var full_class_list : Array = Array(ClassDB.get_class_list())
 	var classes : Array = []
 	full_class_list.sort()
 	var c = 0
-	var rr = 0
+#	var rr = 0
 	for name_of_class in full_class_list:
-		rr += 1
+#		rr += 1
 		if name_of_class in disabled_classes:
 			continue
 		
@@ -342,7 +341,7 @@ func get_list_of_available_classes(must_be_instantable : bool = true) -> Array:
 
 		if name_of_class.find("Server") != -1 && !ClassDB.is_parent_class(name_of_class,"Reference"):
 			continue
-		if name_of_class.find("Editor") != -1: # TODO not sure about it
+		if name_of_class.find("Editor") != -1 && regression_test_project:
 			continue
 			
 			
