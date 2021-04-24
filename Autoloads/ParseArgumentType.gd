@@ -203,7 +203,7 @@ func parse_and_return_objects(method_data: Dictionary, name_of_class: String, de
 				assert(false, "Missing type, needs to be added to project")
 
 	if debug_print:
-		print(name_of_class + "." + method_data["name"] + " --- executing with " + str(arguments_array.size()) + " parameters " + str(arguments_array))
+		print("\n" + name_of_class + "." + method_data["name"] + " --- executing with " + str(arguments_array.size()) + " parameters " + str(arguments_array))
 	return arguments_array
 
 

@@ -1,12 +1,18 @@
 extends Node
 
-var regression_test_project : bool = true # Set it to true in RegressionTestProject
+var regression_test_project : bool = false # Set it to true in RegressionTestProject
 
 ### Contains info about disabled classes and allows to take info about allowed methods
 
 # Globablly disabled functions for all classes
 var function_exceptions : Array = [
 	"get_packet", # TODO
+	"_gui_input", # TODO probably missing cherrypick #GH 47636
+	"_input",
+	"_unhandled_input", 
+	"_unhandled_key_input",
+	"connect_to_signal", # Should be chrrypicked
+	
 	# They exists without assigment like Class.method, because they may be a parent of other objects and children also should have disabled child.method, its children also etc. which is too much to do
 	#"connect_to_signal", # GH 47572
 	"_editor_settings_changed",# GH 45979
@@ -14,7 +20,7 @@ var function_exceptions : Array = [
 	"_thread_done", #GH 46000
 	"generate", #GH 46001
 	"_proximity_group_broadcast", #GH 46002
-#	"_direct_state_changed", #GH 46003
+	"_direct_state_changed", #GH 46003
 	"create_from", #GH 46004
 	"create_from_blend_shape", #GH 46004
 	"append_from", #GH 46004
