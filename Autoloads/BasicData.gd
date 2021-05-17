@@ -6,7 +6,7 @@ var regression_test_project : bool = false # Set it to true in RegressionTestPro
 
 # Globablly disabled functions for all classes
 var function_exceptions : Array = [
-		#GODOT 4.0
+    # GODOT 4.0
 	"create_from_image",
 	"set_point_position",
 	"connect", # OTHER THINGS
@@ -31,6 +31,8 @@ var function_exceptions : Array = [
 	"set_texture",
 	"_activate",
 	"add_node", #GH 46012
+	"set_peering_bit_terrain", #GH 48799
+	"get_peering_bit_terrain",
 	
 	
 	"get_packet", # TODO
@@ -253,6 +255,7 @@ var disabled_classes : Array = [
 	"InputDefault",
 	"IP_Unix",
 	"JNISingleton",
+	"JavaClass",
 	
 		# Godot 4.0 Leaks, crashes etc.
 	"World3D",
@@ -265,11 +268,18 @@ var disabled_classes : Array = [
 	# Just don't use these because they are not normal things 
 	"_Thread",
 	"_Semaphore",
-	"_Mutex",
+	"_Mutex",	
+	
+	
+	# Creating them is really slow in Godot 4.0
+	"ColorPicker",
+	"FileDialog",
+	"ColorPickerButton",
+	"PhysicalSkyMaterial",
+	"ProceduralSkyMaterial"
 ]
 
 # Checks if function can be executed
-# Looks at its arguments an
 func check_if_is_allowed(method_data : Dictionary) -> bool:
 	# Function is virtual or vararg, so we just skip it
 	if method_data.get("flags") == method_data.get("flags") | METHOD_FLAG_VIRTUAL:
@@ -293,9 +303,8 @@ func check_if_is_allowed(method_data : Dictionary) -> bool:
 		# In case of removing/rename type, just comment e.g. TYPE_ARRAY and all occurencies on e.g. switch statement with it
 		# In case of adding new type, this prevents from crashing due not recognizing this type
 		var t : int = arg.get("type")
-		if t == TYPE_CALLABLE:
-			return false
-		elif !(t == TYPE_NIL|| t == TYPE_MAX|| t == TYPE_AABB|| t == TYPE_ARRAY|| t == TYPE_BASIS|| t == TYPE_BOOL|| t == TYPE_COLOR|| t == TYPE_COLOR_ARRAY|| t == TYPE_DICTIONARY|| t == TYPE_INT|| t == TYPE_INT32_ARRAY|| t == TYPE_INT64_ARRAY|| t == TYPE_NODE_PATH|| t == TYPE_OBJECT|| t == TYPE_PLANE|| t == TYPE_QUAT|| t == TYPE_RAW_ARRAY|| t == TYPE_FLOAT|| t == TYPE_FLOAT32_ARRAY|| t == TYPE_FLOAT64_ARRAY|| t == TYPE_RECT2|| t == TYPE_RECT2I|| t == TYPE_RID|| t == TYPE_STRING|| t == TYPE_STRING_NAME|| t == TYPE_STRING_ARRAY|| t == TYPE_TRANSFORM|| t == TYPE_TRANSFORM2D|| t == TYPE_VECTOR2|| t == TYPE_VECTOR2I|| t == TYPE_VECTOR2_ARRAY|| t == TYPE_VECTOR3|| t == TYPE_VECTOR3I|| t == TYPE_VECTOR3_ARRAY):
+		
+		if !(t == TYPE_NIL|| t == TYPE_CALLABLE || t == TYPE_MAX|| t == TYPE_AABB|| t == TYPE_ARRAY|| t == TYPE_BASIS|| t == TYPE_BOOL|| t == TYPE_COLOR|| t == TYPE_COLOR_ARRAY|| t == TYPE_DICTIONARY|| t == TYPE_INT|| t == TYPE_INT32_ARRAY|| t == TYPE_INT64_ARRAY|| t == TYPE_NODE_PATH|| t == TYPE_OBJECT|| t == TYPE_PLANE|| t == TYPE_QUAT|| t == TYPE_RAW_ARRAY|| t == TYPE_FLOAT|| t == TYPE_FLOAT32_ARRAY|| t == TYPE_FLOAT64_ARRAY|| t == TYPE_RECT2|| t == TYPE_RECT2I|| t == TYPE_RID|| t == TYPE_STRING|| t == TYPE_STRING_NAME|| t == TYPE_STRING_ARRAY|| t == TYPE_TRANSFORM|| t == TYPE_TRANSFORM2D|| t == TYPE_VECTOR2|| t == TYPE_VECTOR2I|| t == TYPE_VECTOR2_ARRAY|| t == TYPE_VECTOR3|| t == TYPE_VECTOR3I|| t == TYPE_VECTOR3_ARRAY):
 			print("----------------------------------------------------------- TODO - MISSING TYPE, ADD SUPPORT IT")
 			return false
 			

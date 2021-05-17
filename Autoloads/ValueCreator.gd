@@ -7,6 +7,7 @@ var should_be_always_valid: bool = true  # Generate only valid values e.g. to No
 
 var max_array_size: int = 15
 
+
 func _ready() -> void:
 	randomize()
 
@@ -18,26 +19,30 @@ func get_int() -> int:
 		return (randi() % int(number)) - int(number / 2.0)
 	else:
 		return int(number)
-		
+
+
 func get_int_string() -> String:
 	if random:
 		if int(number) == 0:
 			return "0"
-		return "(randi() % int(number)) - int(number / 2.0)".replace("number",str(number))
+		return "(randi() % int(number)) - int(number / 2.0)".replace("number", str(number))
 	else:
 		return str(int(number))
+
 
 func get_float() -> float:
 	if random:
 		return (randf() * number) - (number / 2.0)
 	else:
 		return number
-		
+
+
 func get_float_string() -> String:
 	if random:
 		return "(randf() * number) - (number / 2.0)".replace("number", str(number))
 	else:
 		return str(number)
+
 
 func get_bool() -> bool:
 	if random:
@@ -46,7 +51,8 @@ func get_bool() -> bool:
 		return bool(randi() % 2)
 	else:
 		return bool()
-		
+
+
 func get_bool_string() -> String:
 	if random:
 		if number < 2:
@@ -55,84 +61,110 @@ func get_bool_string() -> String:
 	else:
 		return str(bool())
 
+
 func get_vector2() -> Vector2:
 	return Vector2(get_float(), get_float())
-	
+
+
 func get_vector2i() -> Vector2i:
 	return Vector2i(get_int(), get_int())
-		
+
+
 func get_vector2_string() -> String:
 	return "Vector2(" + get_float_string() + ", " + get_float_string() + ")"
-		
+
+
 func get_vector2i_string() -> String:
 	return "Vector2i(" + get_int_string() + ", " + get_int_string() + ")"
-	
+
+
 func get_vector3() -> Vector3:
-	return Vector3(get_float(),get_float(),get_float())
-	
+	return Vector3(get_float(), get_float(), get_float())
+
+
 func get_vector3i() -> Vector3i:
-	return Vector3i(get_int(),get_int(),get_int())
-		
+	return Vector3i(get_int(), get_int(), get_int())
+
+
 func get_vector3i_string() -> String:
-	return "Vector3i(" + get_int_string() + ", " + get_int_string()+ ", " + get_int_string() + ")"
-	
+	return "Vector3i(" + get_int_string() + ", " + get_int_string() + ", " + get_int_string() + ")"
+
+
 func get_vector3_string() -> String:
 	return "Vector3(" + get_float_string() + ", " + get_float_string() + ", " + get_float_string() + ")"
-	
+
+
 func get_aabb() -> AABB:
-	return AABB(get_vector3(),get_vector3())
-	
+	return AABB(get_vector3(), get_vector3())
+
+
 func get_aabb_string() -> String:
 	return "AABB(" + get_vector3_string() + ", " + get_vector3_string() + ")"
-	
+
+
 func get_transform() -> Transform:
-	return Transform(get_vector3(),get_vector3(),get_vector3(),get_vector3())
-	
+	return Transform(get_vector3(), get_vector3(), get_vector3(), get_vector3())
+
+
 func get_transform_string() -> String:
 	return "Transform(" + get_vector3_string() + ", " + get_vector3_string() + ", " + get_vector3_string() + ", " + get_vector3_string() + ")"
-	
+
+
 func get_transform2D() -> Transform2D:
-	return Transform2D(get_vector2(),get_vector2(),get_vector2())
-	
+	return Transform2D(get_vector2(), get_vector2(), get_vector2())
+
+
 func get_transform2D_string() -> String:
-	return "Transform2D(" + get_vector2_string() + ", " + get_vector2_string()+ ", " + get_vector2_string() + ")"
-	
+	return "Transform2D(" + get_vector2_string() + ", " + get_vector2_string() + ", " + get_vector2_string() + ")"
+
 
 func get_plane() -> Plane:
-	return Plane(get_vector3(),get_vector3(),get_vector3())
-	
+	return Plane(get_vector3(), get_vector3(), get_vector3())
+
+
 func get_plane_string() -> String:
-	return "Plane(" + get_vector3_string() + ", " + get_vector3_string()+ ", " + get_vector3_string() + ")"
-	
+	return "Plane(" + get_vector3_string() + ", " + get_vector3_string() + ", " + get_vector3_string() + ")"
+
+
 func get_quat() -> Quat:
 	return Quat(get_vector3())
-	
+
+
 func get_quat_string() -> String:
 	return "Quat(" + get_vector3_string() + ")"
-	
+
+
 func get_basis() -> Basis:
 	return Basis(get_vector3())
-	
+
+
 func get_basis_string() -> String:
 	return "Basis(" + get_vector3_string() + ")"
-	
+
+
 func get_rect2() -> Rect2:
 	return Rect2(get_vector2(), get_vector2())
-	
+
+
 func get_rect2i() -> Rect2i:
 	return Rect2i(get_vector2i(), get_vector2i())
-	
+
+
 func get_rect2_string() -> String:
-	return "Rect2(" + get_vector2_string() + ", " + get_vector2_string()+ ")"
-	
+	return "Rect2(" + get_vector2_string() + ", " + get_vector2_string() + ")"
+
+
 func get_rect2i_string() -> String:
-	return "Rect2i(" + get_vector2i_string() + ", " + get_vector2i_string()+ ")"
-	
+	return "Rect2i(" + get_vector2i_string() + ", " + get_vector2i_string() + ")"
+
+
 func get_color() -> Color:
-	return Color(get_float(), get_float(),get_float())
-	
+	return Color(get_float(), get_float(), get_float())
+
+
 func get_color_string() -> String:
-	return "Color(" + get_float_string() + ", " + get_float_string()+ ", " + get_float_string() + ")"
+	return "Color(" + get_float_string() + ", " + get_float_string() + ", " + get_float_string() + ")"
+
 
 # TODO
 func get_string() -> String:
@@ -142,7 +174,8 @@ func get_string() -> String:
 		else:
 			return str(randi())
 	return String()
-	
+
+
 func get_string_string() -> String:
 	if random:
 		if randi() % 2 == 0:
@@ -150,78 +183,92 @@ func get_string_string() -> String:
 		else:
 			return "\"randi())\""
 	return "\"\""
+
+
 # TODO
 func get_nodepath() -> NodePath:
 	return NodePath(get_string())
+
+
 # TODO
 func get_array() -> Array:
-	var array : Array = []
-	for _i in range(int(min(max_array_size,number))):
+	var array: Array = []
+	for _i in range(int(min(max_array_size, number))):
 		array.append([])
 	return Array([])
+
+
 # TODO
 func get_dictionary() -> Dictionary:
 	return Dictionary({})
-	
-	
+
+
 func get_Packed_string_array() -> PackedStringArray:
-	var array : Array = []
-	for _i in range(int(min(max_array_size,number))):
+	var array: Array = []
+	for _i in range(int(min(max_array_size, number))):
 		array.append(get_string())
 	return PackedStringArray(array)
-	
+
+
 func get_Packed_int32_array() -> PackedInt32Array:
-	var array : Array = []
-	for _i in range(int(min(max_array_size,number))):
+	var array: Array = []
+	for _i in range(int(min(max_array_size, number))):
 		array.append(get_int())
 	return PackedInt32Array(array)
-	
+
+
 func get_Packed_int64_array() -> PackedInt32Array:
-	var array : Array = []
-	for _i in range(int(min(max_array_size,number))):
+	var array: Array = []
+	for _i in range(int(min(max_array_size, number))):
 		array.append(get_int())
 	return PackedInt32Array(array)
-	
+
+
 func get_Packed_byte_array() -> PackedByteArray:
-	var array : Array = []
-	for _i in range(int(min(max_array_size,number))):
+	var array: Array = []
+	for _i in range(int(min(max_array_size, number))):
 		array.append(get_int())
 	return PackedByteArray(array)
-	
+
+
 func get_Packed_float32_array() -> PackedFloat32Array:
-	var array : Array = []
-	for _i in range(int(min(max_array_size,number))):
+	var array: Array = []
+	for _i in range(int(min(max_array_size, number))):
 		array.append(get_float())
 	return PackedFloat32Array(array)
-	
+
+
 func get_Packed_float64_array() -> PackedFloat64Array:
-	var array : Array = []
-	for _i in range(int(min(max_array_size,number))):
+	var array: Array = []
+	for _i in range(int(min(max_array_size, number))):
 		array.append(get_float())
 	return PackedFloat64Array(array)
-	
+
+
 func get_Packed_vector2_array() -> PackedVector2Array:
-	var array : Array = []
-	for _i in range(int(min(max_array_size,number))):
+	var array: Array = []
+	for _i in range(int(min(max_array_size, number))):
 		array.append(get_vector2())
 	return PackedVector2Array(array)
-	
+
+
 func get_Packed_vector3_array() -> PackedVector3Array:
-	var array : Array = []
-	for _i in range(int(min(max_array_size,number))):
+	var array: Array = []
+	for _i in range(int(min(max_array_size, number))):
 		array.append(get_vector3())
 	return PackedVector3Array(array)
-	
+
+
 func get_Packed_color_array() -> PackedColorArray:
-	var array : Array = []
-	for _i in range(int(min(max_array_size,number))):
+	var array: Array = []
+	for _i in range(int(min(max_array_size, number))):
 		array.append(get_color())
 	return PackedColorArray(array)
 
 
 func get_object(object_name: String) -> Object:
 	assert(ClassDB.class_exists(object_name), "Class doesn't exists.")
-	if object_name == "PhysicsDirectSpaceState3D" || object_name == "PhysicsDirectSpaceState2D" :
+	if object_name == "PhysicsDirectSpaceState3D" || object_name == "PhysicsDirectSpaceState2D":
 		return BoxShape3D.new()
 
 	var a = 0
