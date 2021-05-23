@@ -57,7 +57,7 @@ func normalize_function_names(function_name: String) -> String:
 
 
 func collect_data() -> void:
-	for name_of_class in BasicData.get_list_of_available_classes(false):
+	for name_of_class in BasicData.get_list_of_available_classes(false,false):
 		var found: bool = false
 		for exception in BasicData.project_only_instance:
 			if exception == name_of_class:

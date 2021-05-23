@@ -6,6 +6,17 @@ var regression_test_project : bool = false # Set it to true in RegressionTestPro
 
 # Globablly disabled functions for all classes
 var function_exceptions : Array = [
+	"get_column_at_position",
+	"get_drop_section_at_position",
+	"_vp_input",
+	"_vp_unhandled_input",
+	"create_debug_tangents",
+	"compress",
+	"generate_mipmaps",
+	
+	"add_undo_reference",
+#	"commit_action",
+	
 	"get_packet", # TODO
 	"_gui_input", # TODO probably missing cherrypick #GH 47636
 	"_input",
@@ -164,7 +175,6 @@ var project_resources_exclusion : Array = [
 	"grow_mask",
 	"force_update_transform",
 	
-	
 	# In 3d view some options are really slow, needs to be limited
 	"set_rings",
 	"set_amount", # Particles
@@ -216,6 +226,8 @@ var disabled_classes : Array = [
 	"EditorSettings", # Also don't mess with editor settings
 	"_OS", # This may sometimes crash compositor, but it should be tested manually sometimes
 	"GDScript", # Broke script
+	"SceneTree",
+	"Image",
 	
 	# This classes have problems with static/non static methods
 	"PhysicsDirectSpaceState",
@@ -227,6 +239,7 @@ var disabled_classes : Array = [
 	"IP_Unix",
 	"JNISingleton",
 	
+	"OpenSimplexNoise",
 	# Only one class - JavaClass returns Null when using JavaClass.new().get_class
 	"JavaClass",
 	
@@ -234,6 +247,10 @@ var disabled_classes : Array = [
 	"_Thread",
 	"_Semaphore",
 	"_Mutex",
+]
+var variant_exceptions : Array =  [
+	"decompress", # GH 49006
+	
 ]
 
 # Checks if function can be executed
@@ -285,7 +302,7 @@ func remove_disabled_methods(method_list : Array, exceptions : Array) -> void:
 			method_list.remove(index)
 
 # Return all available classes which can be used
-func get_list_of_available_classes(must_be_instantable : bool = true) -> Array:
+func get_list_of_available_classes(must_be_instantable : bool = true, allow_editor : bool = true) -> Array:
 	var full_class_list : Array = Array(ClassDB.get_class_list())
 	var classes : Array = []
 	full_class_list.sort()
@@ -306,7 +323,7 @@ func get_list_of_available_classes(must_be_instantable : bool = true) -> Array:
 
 		if name_of_class.find("Server") != -1 && !ClassDB.is_parent_class(name_of_class,"Reference"):
 			continue
-		if name_of_class.find("Editor") != -1 && regression_test_project:
+		if name_of_class.find("Editor") != -1 && (regression_test_project || !allow_editor):
 			continue
 			
 			

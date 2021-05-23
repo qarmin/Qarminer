@@ -55,45 +55,46 @@ func tests_all_functions() -> void:
 				if !BasicData.check_if_is_allowed(method_data):
 					continue
 
-				var arguments: Array = ParseArgumentType.parse_and_return_objects(method_data, name_of_class, debug_print)
+				if randi() % 1 == 0:
+					var arguments: Array = ParseArgumentType.parse_and_return_objects(method_data, name_of_class, debug_print)
 
-				if debug_print:
-					var to_print: String = "GDSCRIPT CODE:     "
-					if (
-						ClassDB.is_parent_class(name_of_class, "Object")
-						&& !ClassDB.is_parent_class(name_of_class, "Node")
-						&& !ClassDB.is_parent_class(name_of_class, "Reference")
-						&& !ClassDB.class_has_method(name_of_class, "new")
-					):
-						to_print += "ClassDB.instance(\"" + name_of_class + "\")." + method_data["name"] + "("
-					else:
-						to_print += name_of_class.trim_prefix("_") + ".new()." + method_data["name"] + "("
+					if debug_print:
+						var to_print: String = "GDSCRIPT CODE:     "
+						if (
+							ClassDB.is_parent_class(name_of_class, "Object")
+							&& !ClassDB.is_parent_class(name_of_class, "Node")
+							&& !ClassDB.is_parent_class(name_of_class, "Reference")
+							&& !ClassDB.class_has_method(name_of_class, "new")
+						):
+							to_print += "ClassDB.instance(\"" + name_of_class + "\")." + method_data["name"] + "("
+						else:
+							to_print += name_of_class.trim_prefix("_") + ".new()." + method_data["name"] + "("
 
-					for i in arguments.size():
-						to_print += ParseArgumentType.return_gdscript_code_which_run_this_object(arguments[i])
-						if i != arguments.size() - 1:
-							to_print += ", "
-					to_print += ")"
-					print(to_print)
+						for i in arguments.size():
+							to_print += ParseArgumentType.return_gdscript_code_which_run_this_object(arguments[i])
+							if i != arguments.size() - 1:
+								to_print += ", "
+						to_print += ")"
+						print(to_print)
+					
+						object.callv(method_data["name"], arguments)
 
-				object.callv(method_data["name"], arguments)
+					for argument in arguments:
+						if argument is Node:
+							argument.queue_free()
+						elif argument is Object && !(argument is Reference):
+							argument.free()
 
-				for argument in arguments:
-					if argument is Node:
-						argument.queue_free()
-					elif argument is Object && !(argument is Reference):
-						argument.free()
-
-				if use_always_new_object:
-					if object is Node:
-						object.queue_free()
-					elif object is Object && !(object is Reference):
-						object.free()
-
-					object = ClassDB.instance(name_of_class)
-					if add_to_tree:
+					if use_always_new_object:
 						if object is Node:
-							add_child(object)
+							object.queue_free()
+						elif object is Object && !(object is Reference):
+							object.free()
+
+						object = ClassDB.instance(name_of_class)
+						if add_to_tree:
+							if object is Node:
+								add_child(object)
 
 		if object is Node:
 			object.queue_free()
