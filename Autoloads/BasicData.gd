@@ -6,7 +6,7 @@ var regression_test_project : bool = false # Set it to true in RegressionTestPro
 
 # Globablly disabled functions for all classes
 var function_exceptions : Array = [
-    # GODOT 4.0
+	# GODOT 4.0
 	"create_from_image",
 	"set_point_position",
 	"connect", # OTHER THINGS
@@ -237,6 +237,11 @@ var properties_exceptions : Array = [
 	"config_file",
 	"",
 	"",
+]
+
+var variant_exceptions : Array = [
+	"get_named_color_name",
+	"get_named_color",
 ]
 
 # Globally disabled classes which causes bugs or are very hard to us
