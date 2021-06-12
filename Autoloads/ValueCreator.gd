@@ -126,12 +126,12 @@ func get_plane_string() -> String:
 	return "Plane(" + get_vector3_string() + ", " + get_vector3_string() + ", " + get_vector3_string() + ")"
 
 
-func get_quat() -> Quat:
-	return Quat(get_vector3())
+func get_quat() -> Quaternion:
+	return Quaternion(get_vector3())
 
 
 func get_quat_string() -> String:
-	return "Quat(" + get_vector3_string() + ")"
+	return "Quaternion(" + get_vector3_string() + ")"
 
 
 func get_basis() -> Basis:

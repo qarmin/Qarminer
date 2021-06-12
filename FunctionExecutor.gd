@@ -9,8 +9,8 @@ extends Node
 
 var debug_print: bool = true
 var add_to_tree: bool = false  # Adds nodes to tree, freeze godot when removing a lot of nodes
-var use_parent_methods: bool = false  # Allows Node2D use Node methods etc. - it is a little slow option which rarely shows
-var use_always_new_object: bool = true  # Don't allow to "remeber" other function effects
+var use_parent_methods: bool = true  # Allows Node2D use Node methods etc. - it is a little slow option which rarely shows
+var use_always_new_object: bool = false  # Don't allow to "remeber" other function effects
 var exiting: bool = false
 
 
@@ -50,7 +50,7 @@ func tests_all_functions() -> void:
 		# Removes excluded methods
 		BasicData.remove_disabled_methods(method_list, BasicData.function_exceptions)
 
-		for _i in range(1):
+		for _i in range(5):
 			for method_data in method_list:
 				if !BasicData.check_if_is_allowed(method_data):
 					continue

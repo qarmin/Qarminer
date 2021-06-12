@@ -118,8 +118,8 @@ func type_to_name(type:int) -> String:
 		name = "NodePath"
 	elif type == TYPE_PLANE:
 		name = "Plane"
-	elif type == TYPE_QUAT:
-		name = "Quat"
+	elif type == TYPE_QUATERNION:
+		name = "Quaternion"
 	elif type == TYPE_RAW_ARRAY:
 		name = "PackedByteArray"
 	elif type == TYPE_FLOAT:
@@ -138,7 +138,7 @@ func type_to_name(type:int) -> String:
 		name = "StringName"
 	elif type == TYPE_STRING_ARRAY:
 		name = "PackedStringArray"
-	elif type == TYPE_TRANSFORM:
+	elif type == TYPE_TRANSFORM3D:
 		name = "Transform"
 	elif type == TYPE_TRANSFORM2D:
 		name = "Transform2D"
@@ -194,7 +194,7 @@ func get_basic_thing(type:int):
 		thing = ValueCreator.get_nodepath()
 	elif type == TYPE_PLANE:
 		thing = ValueCreator.get_plane()
-	elif type == TYPE_QUAT:
+	elif type == TYPE_QUATERNION:
 		thing =ValueCreator.get_quat()
 	elif type == TYPE_RAW_ARRAY:
 		thing = ValueCreator.get_Packed_byte_array()
@@ -214,7 +214,7 @@ func get_basic_thing(type:int):
 		thing = StringName(ValueCreator.get_string())
 	elif type == TYPE_STRING_ARRAY:
 		thing = ValueCreator.get_Packed_string_array()
-	elif type == TYPE_TRANSFORM:
+	elif type == TYPE_TRANSFORM3D:
 		thing = ValueCreator.get_transform()
 	elif type == TYPE_TRANSFORM2D:
 		thing = ValueCreator.get_transform2D()

@@ -77,7 +77,7 @@ func create_gdscript_arguments(arguments: Array) -> Array:
 		elif typ == TYPE_PLANE:
 			sa.type = "Plane"
 			sa.value = ValueCreator.get_plane_string()
-		elif typ == TYPE_QUAT:
+		elif typ == TYPE_QUATERNION:
 			sa.type = "Quat"
 			sa.value = ValueCreator.get_quat_string()
 		elif typ == TYPE_RAW_ARRAY:
@@ -107,7 +107,7 @@ func create_gdscript_arguments(arguments: Array) -> Array:
 		elif typ == TYPE_STRING_ARRAY:
 			sa.type = "PackedStringArray"
 			sa.value = "PackedStringArray([])"
-		elif typ == TYPE_TRANSFORM:
+		elif typ == TYPE_TRANSFORM3D:
 			sa.type = "Transform"
 			sa.value = ValueCreator.get_transform_string()
 		elif typ == TYPE_TRANSFORM2D:
@@ -188,7 +188,7 @@ func parse_and_return_objects(method_data: Dictionary, name_of_class: String, de
 			arguments_array.push_back(ValueCreator.get_object(argument.get("class_name")))
 		elif type == TYPE_PLANE:
 			arguments_array.push_back(ValueCreator.get_plane())
-		elif type == TYPE_QUAT:
+		elif type == TYPE_QUATERNION:
 			arguments_array.push_back(ValueCreator.get_quat())
 		elif type == TYPE_RAW_ARRAY:
 			arguments_array.push_back(PackedByteArray([]))
@@ -210,7 +210,7 @@ func parse_and_return_objects(method_data: Dictionary, name_of_class: String, de
 			arguments_array.push_back(StringName(ValueCreator.get_string()))
 		elif type == TYPE_STRING_ARRAY:
 			arguments_array.push_back(PackedStringArray([]))
-		elif type == TYPE_TRANSFORM:
+		elif type == TYPE_TRANSFORM3D:
 			arguments_array.push_back(ValueCreator.get_transform())
 		elif type == TYPE_TRANSFORM2D:
 			arguments_array.push_back(ValueCreator.get_transform2D())
@@ -343,7 +343,7 @@ func return_gdscript_code_which_run_this_object(data) -> String:
 		return_string += ", "
 		return_string += return_gdscript_code_which_run_this_object(data.d)
 		return_string += ")"
-	elif type == TYPE_QUAT:
+	elif type == TYPE_QUATERNION:
 		return_string = "Quat("
 		return_string += return_gdscript_code_which_run_this_object(data.x)
 		return_string += ", "
@@ -399,7 +399,7 @@ func return_gdscript_code_which_run_this_object(data) -> String:
 			if i != data.size() - 1:
 				return_string += ", "
 		return_string += "])"
-	elif type == TYPE_TRANSFORM:
+	elif type == TYPE_TRANSFORM3D:
 		return_string = "Transform("
 		return_string += return_gdscript_code_which_run_this_object(data.basis)
 		return_string += ", "
