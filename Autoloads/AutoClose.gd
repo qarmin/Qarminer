@@ -11,7 +11,7 @@ var time_to_show: int = 1 * 1000  # How long test works in miliseconds
 
 
 func _init():
-	start_time = OS.get_ticks_msec()
+	start_time = Time.get_ticks_msec()
 
 	for argument in OS.get_cmdline_args():
 		if argument.is_valid_float():  # Ignore all non numeric arguments
@@ -22,7 +22,7 @@ func _init():
 
 
 func _process(_delta: float) -> void:
-	var current_run_time: int = OS.get_ticks_msec() - start_time
+	var current_run_time: int = Time.get_ticks_msec() - start_time
 
 	if close_order && current_run_time > time_to_show:
 		print("######################## Ending test ########################")

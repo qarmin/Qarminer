@@ -17,10 +17,6 @@ class SingleArgument:
 func create_gdscript_arguments(arguments: Array) -> Array:
 	var argument_array: Array = []
 
-	ValueCreator.number = 10
-	ValueCreator.random = true
-	ValueCreator.should_be_always_valid = true  # DO NOT CHANGE, BECAUSE NON VALID VALUES WILL SHOW GDSCRIPT ERRORS!
-
 	var counter = 0
 	for argument in arguments:
 		var typ = argument.get("type")
@@ -70,7 +66,7 @@ func create_gdscript_arguments(arguments: Array) -> Array:
 			sa.is_object = true
 			if ClassDB.is_parent_class(sa.type, "Node"):
 				sa.is_only_node = true
-			elif ClassDB.is_parent_class(sa.type, "Reference"):
+			elif ClassDB.is_parent_class(sa.type, "RefCounted"):
 				sa.is_only_reference = true
 			else:
 				sa.is_only_object = true
@@ -108,8 +104,8 @@ func create_gdscript_arguments(arguments: Array) -> Array:
 			sa.type = "PackedStringArray"
 			sa.value = "PackedStringArray([])"
 		elif typ == TYPE_TRANSFORM3D:
-			sa.type = "Transform"
-			sa.value = ValueCreator.get_transform_string()
+			sa.type = "Transform3D"
+			sa.value = ValueCreator.get_transform3D_string()
 		elif typ == TYPE_TRANSFORM2D:
 			sa.type = "Transform2D"
 			sa.value = ValueCreator.get_transform2D_string()
@@ -148,14 +144,6 @@ func create_gdscript_arguments(arguments: Array) -> Array:
 
 func parse_and_return_objects(method_data: Dictionary, name_of_class: String, debug_print: bool = false) -> Array:
 	var arguments_array: Array = Array([])
-
-	if BasicData.regression_test_project:
-		ValueCreator.number = 100
-		ValueCreator.random = false  # Results in RegressionTestProject must be always reproducible
-	else:
-		ValueCreator.number = 1000
-		ValueCreator.random = true
-	ValueCreator.should_be_always_valid = false
 
 	for argument in method_data.get("args"):
 		var type = argument.get("type")
@@ -211,7 +199,7 @@ func parse_and_return_objects(method_data: Dictionary, name_of_class: String, de
 		elif type == TYPE_STRING_ARRAY:
 			arguments_array.push_back(PackedStringArray([]))
 		elif type == TYPE_TRANSFORM3D:
-			arguments_array.push_back(ValueCreator.get_transform())
+			arguments_array.push_back(ValueCreator.get_transform3D())
 		elif type == TYPE_TRANSFORM2D:
 			arguments_array.push_back(ValueCreator.get_transform2D())
 		elif type == TYPE_VECTOR2:
@@ -282,7 +270,7 @@ func return_gdscript_code_which_run_this_object(data) -> String:
 		return_string += return_gdscript_code_which_run_this_object(data.a)
 		return_string += ")"
 	elif type == TYPE_COLOR_ARRAY:
-		return_string = "PoolColorArray(["
+		return_string = "PackedColorArray(["
 		for i in data.size():
 			return_string += return_gdscript_code_which_run_this_object(data[i])
 			if i != data.size() - 1:
@@ -300,14 +288,14 @@ func return_gdscript_code_which_run_this_object(data) -> String:
 	elif type == TYPE_INT:
 		return_string = str(data)
 	elif type == TYPE_INT32_ARRAY:
-		return_string = "PoolInt32Array(["
+		return_string = "PackedInt32Array(["
 		for i in data.size():
 			return_string += return_gdscript_code_which_run_this_object(data[i])
 			if i != data.size() - 1:
 				return_string += ", "
 		return_string += "])"
 	elif type == TYPE_INT64_ARRAY:
-		return_string = "PoolInt64Array(["
+		return_string = "PackedInt64Array(["
 		for i in data.size():
 			return_string += return_gdscript_code_which_run_this_object(data[i])
 			if i != data.size() - 1:
@@ -325,7 +313,7 @@ func return_gdscript_code_which_run_this_object(data) -> String:
 			if (
 				ClassDB.is_parent_class(name_of_class, "Object")
 				&& !ClassDB.is_parent_class(name_of_class, "Node")
-				&& !ClassDB.is_parent_class(name_of_class, "Reference")
+				&& !ClassDB.is_parent_class(name_of_class, "RefCounted")
 				&& !ClassDB.class_has_method(name_of_class, "new")
 			):
 				return_string += "ClassDB.instance(\"" + name_of_class + "\")"
@@ -354,7 +342,7 @@ func return_gdscript_code_which_run_this_object(data) -> String:
 		return_string += return_gdscript_code_which_run_this_object(data.w)
 		return_string += ")"
 	elif type == TYPE_RAW_ARRAY:
-		return_string = "PoolByteArray(["
+		return_string = "PackedByteArray(["
 		for i in data.size():
 			return_string += return_gdscript_code_which_run_this_object(data[i])
 			if i != data.size() - 1:
@@ -363,14 +351,14 @@ func return_gdscript_code_which_run_this_object(data) -> String:
 	elif type == TYPE_FLOAT:
 		return_string = str(data)
 	elif type == TYPE_FLOAT32_ARRAY:
-		return_string = "PoolFloat32Array(["
+		return_string = "PackedFloat32Array(["
 		for i in data.size():
 			return_string += return_gdscript_code_which_run_this_object(data[i])
 			if i != data.size() - 1:
 				return_string += ", "
 		return_string += "])"
 	elif type == TYPE_FLOAT64_ARRAY:
-		return_string = "PoolFloat64Array(["
+		return_string = "PackedFloat64Array(["
 		for i in data.size():
 			return_string += return_gdscript_code_which_run_this_object(data[i])
 			if i != data.size() - 1:
@@ -400,7 +388,7 @@ func return_gdscript_code_which_run_this_object(data) -> String:
 				return_string += ", "
 		return_string += "])"
 	elif type == TYPE_TRANSFORM3D:
-		return_string = "Transform("
+		return_string = "Transform3D("
 		return_string += return_gdscript_code_which_run_this_object(data.basis)
 		return_string += ", "
 		return_string += return_gdscript_code_which_run_this_object(data.origin)
@@ -426,7 +414,7 @@ func return_gdscript_code_which_run_this_object(data) -> String:
 		return_string += return_gdscript_code_which_run_this_object(data.y)
 		return_string += ")"
 	elif type == TYPE_VECTOR2_ARRAY:
-		return_string = "PoolVector2Array(["
+		return_string = "PackedVector2Array(["
 		for i in data.size():
 			return_string += return_gdscript_code_which_run_this_object(data[i])
 			if i != data.size() - 1:
@@ -453,7 +441,7 @@ func return_gdscript_code_which_run_this_object(data) -> String:
 		return_string += return_gdscript_code_which_run_this_object(str(data))
 		return_string += ")"
 	elif type == TYPE_VECTOR3_ARRAY:
-		return_string = "PoolVector3Array(["
+		return_string = "PackedVector3Array(["
 		for i in data.size():
 			return_string += return_gdscript_code_which_run_this_object(data[i])
 			if i != data.size() - 1:

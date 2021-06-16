@@ -102,12 +102,12 @@ func get_aabb_string() -> String:
 	return "AABB(" + get_vector3_string() + ", " + get_vector3_string() + ")"
 
 
-func get_transform() -> Transform:
-	return Transform(get_vector3(), get_vector3(), get_vector3(), get_vector3())
+func get_transform3D() -> Transform3D:
+	return Transform3D(get_vector3(), get_vector3(), get_vector3(), get_vector3())
 
 
-func get_transform_string() -> String:
-	return "Transform(" + get_vector3_string() + ", " + get_vector3_string() + ", " + get_vector3_string() + ", " + get_vector3_string() + ")"
+func get_transform3D_string() -> String:
+	return "Transform3D(" + get_vector3_string() + ", " + get_vector3_string() + ", " + get_vector3_string() + ", " + get_vector3_string() + ")"
 
 
 func get_transform2D() -> Transform2D:
@@ -273,19 +273,19 @@ func get_object(object_name: String) -> Object:
 
 	var a = 0
 	if random:
-		var classes = ClassDB.get_inheriters_from_class("Node") + ClassDB.get_inheriters_from_class("Reference")
+		var classes = ClassDB.get_inheriters_from_class("Node") + ClassDB.get_inheriters_from_class("RefCounted")
 
 		if object_name == "Object":
 			while true:
 				var choosen_class: String = classes[randi() % classes.size()]
 				if (
 					ClassDB.can_instance(choosen_class)
-					&& (ClassDB.is_parent_class(choosen_class, "Node") || ClassDB.is_parent_class(choosen_class, "Reference"))
+					&& (ClassDB.is_parent_class(choosen_class, "Node") || ClassDB.is_parent_class(choosen_class, "RefCounted"))
 					&& !(choosen_class in BasicData.disabled_classes)
 				):
 					return ClassDB.instance(choosen_class)
 
-		if ClassDB.is_parent_class(object_name, "Node") || ClassDB.is_parent_class(object_name, "Reference"):
+		if ClassDB.is_parent_class(object_name, "Node") || ClassDB.is_parent_class(object_name, "RefCounted"):
 			if should_be_always_valid:
 				var to_use_classes = ClassDB.get_inheriters_from_class(object_name)
 				to_use_classes.append(object_name)
@@ -333,7 +333,7 @@ func get_object(object_name: String) -> Object:
 			var list_of_class = ClassDB.get_inheriters_from_class(object_name)
 			assert(list_of_class.size() > 0, "Cannot find proper instantable child for ")  # Number of inherited class of non instantable class must be greater than 0, otherwise this function would be useless
 			for i in list_of_class:
-				if ClassDB.can_instance(i) && (ClassDB.is_parent_class(i, "Node") || ClassDB.is_parent_class(i, "Reference")):
+				if ClassDB.can_instance(i) && (ClassDB.is_parent_class(i, "Node") || ClassDB.is_parent_class(i, "RefCounted")):
 					return ClassDB.instance(i)
 			assert(false, "Cannot find proper instantable child for ")
 
@@ -347,15 +347,15 @@ func get_object_string(object_name: String) -> String:
 
 	var a = 0
 	if random:
-		var classes = ClassDB.get_inheriters_from_class("Node") + ClassDB.get_inheriters_from_class("Reference")
+		var classes = ClassDB.get_inheriters_from_class("Node") + ClassDB.get_inheriters_from_class("RefCounted")
 
 		if object_name == "Object":
 			while true:
 				var choosen_class: String = classes[randi() % classes.size()]
-				if ClassDB.can_instance(choosen_class) && (ClassDB.is_parent_class(choosen_class, "Node") || ClassDB.is_parent_class(choosen_class, "Reference")):
+				if ClassDB.can_instance(choosen_class) && (ClassDB.is_parent_class(choosen_class, "Node") || ClassDB.is_parent_class(choosen_class, "RefCounted")):
 					return choosen_class
 
-		if ClassDB.is_parent_class(object_name, "Node") || ClassDB.is_parent_class(object_name, "Reference"):
+		if ClassDB.is_parent_class(object_name, "Node") || ClassDB.is_parent_class(object_name, "RefCounted"):
 			if should_be_always_valid:
 				var to_use_classes = ClassDB.get_inheriters_from_class(object_name)
 				to_use_classes.append(object_name)
@@ -403,7 +403,7 @@ func get_object_string(object_name: String) -> String:
 			var list_of_class = ClassDB.get_inheriters_from_class(object_name)
 			assert(list_of_class.size() > 0, "Cannot find proper instantable child for ")  # Number of inherited class of non instantable class must be greater than 0, otherwise this function would be useless
 			for i in list_of_class:
-				if ClassDB.can_instance(i) && (ClassDB.is_parent_class(i, "Node") || ClassDB.is_parent_class(i, "Reference")):
+				if ClassDB.can_instance(i) && (ClassDB.is_parent_class(i, "Node") || ClassDB.is_parent_class(i, "RefCounted")):
 					return i
 			assert(false, "Cannot find proper instantable child for ")
 

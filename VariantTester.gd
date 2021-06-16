@@ -87,7 +87,7 @@ func tests_all_functions() -> void:
 				for argument in arguments:
 					if argument is Node:
 						argument.queue_free()
-					elif argument is Object && !(argument is Reference):
+					elif argument is Object && !(argument is RefCounted):
 						argument.free()
 
 
@@ -139,7 +139,7 @@ func type_to_name(type:int) -> String:
 	elif type == TYPE_STRING_ARRAY:
 		name = "PackedStringArray"
 	elif type == TYPE_TRANSFORM3D:
-		name = "Transform"
+		name = "Transform3D"
 	elif type == TYPE_TRANSFORM2D:
 		name = "Transform2D"
 	elif type == TYPE_VECTOR2:

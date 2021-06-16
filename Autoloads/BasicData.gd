@@ -7,6 +7,15 @@ var regression_test_project : bool = false # Set it to true in RegressionTestPro
 # Globablly disabled functions for all classes
 var function_exceptions : Array = [
 	# GODOT 4.0
+	"set_gradient",
+	"get_delimiter_start_postion",
+	"get_aabb",
+	"set_code",
+	"fix_invalid_tiles",
+	"set_is_setup",
+	"as_text",
+	"set_button_index", #49534
+	"set_handle_input_locally", # 49533
 	"set_editor_draw_gizmo", #49531
 	"_gui_remove_focus_for_window", #49530
 	"set_simulate_physics", #49529
@@ -30,6 +39,7 @@ var function_exceptions : Array = [
 	"add_node", #GH 46012
 	"set_peering_bit_terrain", #GH 48799
 	"get_peering_bit_terrain",
+	"_update_texture",
 	
 	
 	"_gui_input", # TODO probably missing cherrypick #GH 47636
@@ -277,7 +287,18 @@ var disabled_classes : Array = [
 	"FileDialog",
 	"ColorPickerButton",
 	"PhysicalSkyMaterial",
-	"ProceduralSkyMaterial"
+	"ProceduralSkyMaterial",
+	
+	# Thread related crashes, hard to find
+	"NavigationRegion3D",
+	"SceneTree", # Related to BVH crash with World 3D
+	"SkeletonModification2DJiggle", #  Później sprawdze
+	"SkeletonModification2DLookAt",
+	"SkeletonModification2DPhysicalBones",
+	"SkeletonModification2DStackHolder",
+	"MultiMesh", # TODO
+	"CodeEdit",
+	"UndoRedo",
 ]
 
 # Checks if function can be executed
@@ -294,7 +315,7 @@ func check_if_is_allowed(method_data : Dictionary) -> bool:
 			continue
 		if name_of_class in disabled_classes:
 			return false
-		if name_of_class.find("Server") != -1 && ClassDB.class_exists(name_of_class) && !ClassDB.is_parent_class(name_of_class,"Reference"):
+		if name_of_class.find("Server") != -1 && ClassDB.class_exists(name_of_class) && !ClassDB.is_parent_class(name_of_class,"RefCounted"):
 			return false
 		# Editor stuff usually aren't good choice for arhuments	
 		if name_of_class.find("Editor") != -1 || name_of_class.find("SkinReference") != -1:
@@ -314,7 +335,7 @@ func check_if_is_allowed(method_data : Dictionary) -> bool:
 			# That means that this is constant, not class
 			if !ClassDB.class_exists(name_of_class):
 				continue
-			if !ClassDB.is_parent_class(name_of_class, "Node") && !ClassDB.is_parent_class(name_of_class, "Reference"):
+			if !ClassDB.is_parent_class(name_of_class, "Node") && !ClassDB.is_parent_class(name_of_class, "RefCounted"):
 				return false
 	
 	return true
@@ -346,10 +367,10 @@ func get_list_of_available_classes(must_be_instantable : bool = true) -> Array:
 
 		#This is only for RegressionTestProject, because it needs for now clear visual info what is going on screen, but some nodes broke view
 		if regression_test_project:
-			if !ClassDB.is_parent_class(name_of_class, "Node") && !ClassDB.is_parent_class(name_of_class, "Reference"):
+			if !ClassDB.is_parent_class(name_of_class, "Node") && !ClassDB.is_parent_class(name_of_class, "RefCounted"):
 				continue
 
-		if name_of_class.find("Server") != -1 && !ClassDB.is_parent_class(name_of_class,"Reference"):
+		if name_of_class.find("Server") != -1 && !ClassDB.is_parent_class(name_of_class,"RefCounted"):
 			continue
 		if name_of_class.find("Editor") != -1 && regression_test_project:
 			continue
@@ -360,4 +381,6 @@ func get_list_of_available_classes(must_be_instantable : bool = true) -> Array:
 			c+= 1
 			
 	print(str(c) + " choosen classes from all " + str(full_class_list.size()) + " classes.")
+	
+#	classes = classes.slice(250,600)
 	return classes
