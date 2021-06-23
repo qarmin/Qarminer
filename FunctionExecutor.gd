@@ -11,7 +11,7 @@ var debug_print: bool = true
 var add_to_tree: bool = false  # Adds nodes to tree, freeze godot when removing a lot of nodes
 var use_parent_methods: bool = false  # Allows Node2D use Node methods etc. - it is a little slow option which rarely shows
 var use_always_new_object: bool = false  # Don't allow to "remeber" other function effects
-var exiting: bool = true
+var exiting: bool = false
 var number_of_loops : int = 1 # How much times will be repeated this
 
 
@@ -21,7 +21,7 @@ func _ready() -> void:
 	else:
 		ValueCreator.random = true
 
-	ValueCreator.number = 10
+	ValueCreator.number = 100
 	ValueCreator.should_be_always_valid = true
 	
 	if BasicData.regression_test_project:

@@ -7,73 +7,28 @@ var regression_test_project : bool = false # Set it to true in RegressionTestPro
 # Globablly disabled functions for all classes
 var function_exceptions : Array = [
 	# GODOT 4.0
-	"set_gradient",
-	"get_delimiter_start_postion",
-	"get_aabb",
-	"set_code",
-	"fix_invalid_tiles",
-	"set_is_setup",
-	"as_text",
-	"set_button_index", #49534
-	"set_handle_input_locally", # 49533
-	"set_editor_draw_gizmo", #49531
-	"_gui_remove_focus_for_window", #49530
-	"set_simulate_physics", #49529
-	"add_modification", # 49528
-	"connect", # OTHER THINGS
-	"set_base",
-	"set_constant_type",
-	"set_enabled_inputs",
-	"load_threaded_request",
-	"get_sdfgi_max_distance",
-	"draw_multiline_string",
-	"draw_font",
-	"create",
-	"set_sdfgi_max_distance",
-	"get_inverse_inertia_tensor",
-	"generate_lod",
-	"optimize_indices_for_cache",
-	"add_file",
-	"set_texture",
-	"_activate",
-	"add_node", #GH 46012
-	"set_peering_bit_terrain", #GH 48799
-	"get_peering_bit_terrain",
-	"_update_texture",
+	"set_gradient", # 49569
+	"set_enabled_inputs", # Probably error spam
+	"load_threaded_request", # 46762 - Memory leak
+	"_update_texture", # 49563
+	"_activate", # 45984
+	"_gui_input", # TODO Było wcześniej, ale nie naprawione 
 	
-	
-	"_gui_input", # TODO probably missing cherrypick #GH 47636
-	"_input",
-	"_unhandled_input", 
-	"_unhandled_key_input",
-	"connect_to_signal", # Should be chrrypicked
-	
-	# They exists without assigment like Class.method, because they may be a parent of other objects and children also should have disabled child.method, its children also etc. which is too much to do
-	#"connect_to_signal", # GH 47572
+
 	"_editor_settings_changed",# GH 45979
 	"_submenu_timeout", # GH 45981
 	"_thread_done", #GH 46000
-	"generate", #GH 46001
 	"_proximity_group_broadcast", #GH 46002
-	"_direct_state_changed", #GH 46003
-	"create_from", #GH 46004
-	"create_from_blend_shape", #GH 46004
-	"append_from", #GH 46004
 	"_set_tile_data", #GH 46015
-	"get", #GH 46019
 	"instance_has", #GH 46020
 	"get_var", #GH 46096
 	"set_script", #GH 46120
-	"getvar", #GH 46019
-	"get_available_chars", #GH 46118
-	"open_midi_inputs", #GH 46183
 	"set_icon", #GH 46189
 	"get_latin_keyboard_variant", #GH  TODO Memory Leak
 	"set_editor_hint", #GH 46252
 	"get_item_at_position", #TODO hard to find
 	"set_probe_data", #GH 46570
 	"_range_click_timeout", #GH 46648
-	"get_indexed", #GH 46019
 	"add_vertex", #GH 47066
 	"create_client", # TODO, strange memory leak
 	"create_shape_owner", #47135
@@ -299,6 +254,11 @@ var disabled_classes : Array = [
 	"MultiMesh", # TODO
 	"CodeEdit",
 	"UndoRedo",
+	
+	
+	
+	# Temporary
+	"BoxMesh",
 ]
 
 # Checks if function can be executed
@@ -382,5 +342,5 @@ func get_list_of_available_classes(must_be_instantable : bool = true) -> Array:
 			
 	print(str(c) + " choosen classes from all " + str(full_class_list.size()) + " classes.")
 	
-#	classes = classes.slice(250,600)
+	classes = classes.slice(300,600)
 	return classes
