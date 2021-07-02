@@ -12,7 +12,7 @@ var add_to_tree: bool = false  # Adds nodes to tree, freeze godot when removing 
 var use_parent_methods: bool = false  # Allows Node2D use Node methods etc. - it is a little slow option which rarely shows
 var use_always_new_object: bool = false  # Don't allow to "remeber" other function effects
 var exiting: bool = false
-var number_of_loops : int = 1 # How much times will be repeated this
+var number_of_loops : int = 1# How much times will be repeated this
 
 
 func _ready() -> void:
@@ -47,7 +47,7 @@ func tests_all_functions() -> void:
 		if debug_print:
 			print("\n#################### " + name_of_class + " ####################")
 
-		var object: Object = ClassDB.instance(name_of_class)
+		var object: Object = ClassDB.instantiate(name_of_class)
 		assert(object != null, "Object must be instantable")
 		if add_to_tree:
 			if object is Node:
@@ -75,7 +75,7 @@ func tests_all_functions() -> void:
 						&& !ClassDB.is_parent_class(name_of_class, "RefCounted")
 						&& !ClassDB.class_has_method(name_of_class, "new")
 					):
-						to_print += "ClassDB.instance(\"" + name_of_class + "\")." + method_data.get("name") + "("
+						to_print += "ClassDB.instantiate(\"" + name_of_class + "\")." + method_data.get("name") + "("
 					else:
 						to_print += name_of_class.trim_prefix("_") + ".new()." + method_data.get("name") + "("
 
@@ -100,7 +100,7 @@ func tests_all_functions() -> void:
 					elif object is Object && !(object is RefCounted):
 						object.free()
 
-					object = ClassDB.instance(name_of_class)
+					object = ClassDB.instantiate(name_of_class)
 					if add_to_tree:
 						if object is Node:
 							add_child(object)

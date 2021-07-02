@@ -6,6 +6,16 @@ var regression_test_project : bool = false # Set it to true in RegressionTestPro
 
 # Globablly disabled functions for all classes
 var function_exceptions : Array = [
+	# Image todo
+	"adjust_bcs",
+	"compress_from_channels",
+	"compress",
+	"decompress",
+	"save_png_to_buffer",
+	"convert",
+	"",
+	
+	
 	# GODOT 4.0
 	"set_gradient", # 49569
 	"set_enabled_inputs", # Probably error spam
@@ -336,7 +346,7 @@ func get_list_of_available_classes(must_be_instantable : bool = true) -> Array:
 			continue
 			
 			
-		if !must_be_instantable || ClassDB.can_instance(name_of_class):
+		if !must_be_instantable || ClassDB.can_instantiate(name_of_class):
 			classes.push_back(name_of_class)
 			c+= 1
 			

@@ -279,17 +279,17 @@ func get_object(object_name: String) -> Object:
 			while true:
 				var choosen_class: String = classes[randi() % classes.size()]
 				if (
-					ClassDB.can_instance(choosen_class)
+					ClassDB.can_instantiate(choosen_class)
 					&& (ClassDB.is_parent_class(choosen_class, "Node") || ClassDB.is_parent_class(choosen_class, "RefCounted"))
 					&& !(choosen_class in BasicData.disabled_classes)
 				):
-					return ClassDB.instance(choosen_class)
+					return ClassDB.instantiate(choosen_class)
 
 		if ClassDB.is_parent_class(object_name, "Node") || ClassDB.is_parent_class(object_name, "RefCounted"):
 			if should_be_always_valid:
 				var to_use_classes = ClassDB.get_inheriters_from_class(object_name)
 				to_use_classes.append(object_name)
-				if !ClassDB.can_instance(object_name) && object_name in BasicData.disabled_classes:
+				if !ClassDB.can_instantiate(object_name) && object_name in BasicData.disabled_classes:
 					assert(to_use_classes.size() > 0, "Cannot find proper instantable child for ")
 
 				while true:
@@ -299,21 +299,21 @@ func get_object(object_name: String) -> Object:
 						# This shouldn't happens, but sadly happen with e.g. SpatialGizmo
 						assert(false, "Cannot find proper instantable child for ")
 					var choosen_class: String = to_use_classes[randi() % to_use_classes.size()]
-					if ClassDB.can_instance(choosen_class) && !(choosen_class in BasicData.disabled_classes):
-						return ClassDB.instance(choosen_class)
+					if ClassDB.can_instantiate(choosen_class) && !(choosen_class in BasicData.disabled_classes):
+						return ClassDB.instantiate(choosen_class)
 			else:
 				while true:
 					a += 1
 					if a > 50:
 						assert(false, "Cannot find proper instantable child for ")
 					var choosen_class: String = classes[randi() % classes.size()]
-					if ClassDB.can_instance(choosen_class) && !ClassDB.is_parent_class(choosen_class, object_name) && !(choosen_class in BasicData.disabled_classes):
-						return ClassDB.instance(choosen_class)
+					if ClassDB.can_instantiate(choosen_class) && !ClassDB.is_parent_class(choosen_class, object_name) && !(choosen_class in BasicData.disabled_classes):
+						return ClassDB.instantiate(choosen_class)
 
 		# Non Node/Resource object
 		var to_use_classes = ClassDB.get_inheriters_from_class(object_name)
 		to_use_classes.append(object_name)
-		if !ClassDB.can_instance(object_name) && object_name in BasicData.disabled_classes:
+		if !ClassDB.can_instantiate(object_name) && object_name in BasicData.disabled_classes:
 			assert(to_use_classes.size() > 0, "Cannot find proper instantable child for ")
 
 		while true:
@@ -323,18 +323,18 @@ func get_object(object_name: String) -> Object:
 				# This shouldn't happens, but sadly happen with e.g. SpatialGizmo
 				assert(false, "Cannot find proper instantable child for ")
 			var choosen_class: String = to_use_classes[randi() % to_use_classes.size()]
-			if ClassDB.can_instance(choosen_class) && !(choosen_class in BasicData.disabled_classes):
-				return ClassDB.instance(choosen_class)
+			if ClassDB.can_instantiate(choosen_class) && !(choosen_class in BasicData.disabled_classes):
+				return ClassDB.instantiate(choosen_class)
 
 	else:
-		if ClassDB.can_instance(object_name):  # E.g. Texture is not instantable or shouldn't be, but LargeTexture is
-			return ClassDB.instance(object_name)
+		if ClassDB.can_instantiate(object_name):  # E.g. Texture is not instantable or shouldn't be, but LargeTexture is
+			return ClassDB.instantiate(object_name)
 		else:  # Found child of non instantable object
 			var list_of_class = ClassDB.get_inheriters_from_class(object_name)
 			assert(list_of_class.size() > 0, "Cannot find proper instantable child for ")  # Number of inherited class of non instantable class must be greater than 0, otherwise this function would be useless
 			for i in list_of_class:
-				if ClassDB.can_instance(i) && (ClassDB.is_parent_class(i, "Node") || ClassDB.is_parent_class(i, "RefCounted")):
-					return ClassDB.instance(i)
+				if ClassDB.can_instantiate(i) && (ClassDB.is_parent_class(i, "Node") || ClassDB.is_parent_class(i, "RefCounted")):
+					return ClassDB.instantiate(i)
 			assert(false, "Cannot find proper instantable child for ")
 
 	assert(false, "Cannot find proper instantable child for ")
@@ -352,14 +352,14 @@ func get_object_string(object_name: String) -> String:
 		if object_name == "Object":
 			while true:
 				var choosen_class: String = classes[randi() % classes.size()]
-				if ClassDB.can_instance(choosen_class) && (ClassDB.is_parent_class(choosen_class, "Node") || ClassDB.is_parent_class(choosen_class, "RefCounted")):
+				if ClassDB.can_instantiate(choosen_class) && (ClassDB.is_parent_class(choosen_class, "Node") || ClassDB.is_parent_class(choosen_class, "RefCounted")):
 					return choosen_class
 
 		if ClassDB.is_parent_class(object_name, "Node") || ClassDB.is_parent_class(object_name, "RefCounted"):
 			if should_be_always_valid:
 				var to_use_classes = ClassDB.get_inheriters_from_class(object_name)
 				to_use_classes.append(object_name)
-				if !ClassDB.can_instance(object_name):
+				if !ClassDB.can_instantiate(object_name):
 					assert(to_use_classes.size() > 0, "Cannot find proper instantable child for ")
 
 				while true:
@@ -369,7 +369,7 @@ func get_object_string(object_name: String) -> String:
 						# This shouldn't happens, but sadly happen with e.g. SpatialGizmo
 						assert(false, "Cannot find proper instantable child for ")
 					var choosen_class: String = to_use_classes[randi() % to_use_classes.size()]
-					if ClassDB.can_instance(choosen_class):
+					if ClassDB.can_instantiate(choosen_class):
 						return choosen_class
 			else:
 				while true:
@@ -383,7 +383,7 @@ func get_object_string(object_name: String) -> String:
 		# Non Node/Resource object
 		var to_use_classes = ClassDB.get_inheriters_from_class(object_name)
 		to_use_classes.append(object_name)
-		if !ClassDB.can_instance(object_name) && object_name in BasicData.disabled_classes:
+		if !ClassDB.can_instantiate(object_name) && object_name in BasicData.disabled_classes:
 			assert(to_use_classes.size() > 0, "Cannot find proper instantable child for ")
 
 		while true:
@@ -393,17 +393,17 @@ func get_object_string(object_name: String) -> String:
 				# This shouldn't happens, but sadly happen with e.g. SpatialGizmo
 				assert(false, "Cannot find proper instantable child for ")
 			var choosen_class: String = to_use_classes[randi() % to_use_classes.size()]
-			if ClassDB.can_instance(choosen_class) && !(choosen_class in BasicData.disabled_classes):
+			if ClassDB.can_instantiate(choosen_class) && !(choosen_class in BasicData.disabled_classes):
 				return choosen_class
 
 	else:
-		if ClassDB.can_instance(object_name):  # E.g. Texture is not instantable or shouldn't be, but LargeTexture is
+		if ClassDB.can_instantiate(object_name):  # E.g. Texture is not instantable or shouldn't be, but LargeTexture is
 			return object_name
 		else:  # Found child of non instantable object
 			var list_of_class = ClassDB.get_inheriters_from_class(object_name)
 			assert(list_of_class.size() > 0, "Cannot find proper instantable child for ")  # Number of inherited class of non instantable class must be greater than 0, otherwise this function would be useless
 			for i in list_of_class:
-				if ClassDB.can_instance(i) && (ClassDB.is_parent_class(i, "Node") || ClassDB.is_parent_class(i, "RefCounted")):
+				if ClassDB.can_instantiate(i) && (ClassDB.is_parent_class(i, "Node") || ClassDB.is_parent_class(i, "RefCounted")):
 					return i
 			assert(false, "Cannot find proper instantable child for ")
 

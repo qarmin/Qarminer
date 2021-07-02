@@ -316,7 +316,7 @@ func return_gdscript_code_which_run_this_object(data) -> String:
 				&& !ClassDB.is_parent_class(name_of_class, "RefCounted")
 				&& !ClassDB.class_has_method(name_of_class, "new")
 			):
-				return_string += "ClassDB.instance(\"" + name_of_class + "\")"
+				return_string += "ClassDB.instantiate(\"" + name_of_class + "\")"
 			else:
 				return_string = name_of_class.trim_prefix("_")
 				return_string += ".new()"
