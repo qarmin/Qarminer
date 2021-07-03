@@ -6,54 +6,46 @@ var regression_test_project : bool = false # Set it to true in RegressionTestPro
 
 # Globablly disabled functions for all classes
 var function_exceptions : Array = [
-	"get_column_at_position",
-	"get_drop_section_at_position",
-	"_vp_input",
-	"_vp_unhandled_input",
-	"create_debug_tangents",
+	# Image crashes TODO
 	"compress",
-	"generate_mipmaps",
+	"convert",
+	"get_height",
+	"lock",
+	"decompress",
+	"save_png_to_buffer",
+	"",
 	
-	"add_undo_reference",
-#	"commit_action",
-	
-	"get_packet", # TODO
-	"_gui_input", # TODO probably missing cherrypick #GH 47636
+	# TODO
+	"create_action", #UndoRedo
+	 
+	# Input crashes, not cherrypicked #GH 47636
+	"_gui_input", 
 	"_input",
 	"_unhandled_input", 
 	"_unhandled_key_input",
-	"connect_to_signal", # Should be chrrypicked
+	"_vp_input",
+	"_vp_unhandled_input",
+	"_direct_state_changed", #GH 46003 - Not cherrypicked
+	"connect_to_signal", # GH 47572 - Not cherrypicked
 	
 	# They exists without assigment like Class.method, because they may be a parent of other objects and children also should have disabled child.method, its children also etc. which is too much to do
-	#"connect_to_signal", # GH 47572
+
 	"_editor_settings_changed",# GH 45979
 	"_submenu_timeout", # GH 45981
 	"_thread_done", #GH 46000
-	"generate", #GH 46001
 	"_proximity_group_broadcast", #GH 46002
-	"_direct_state_changed", #GH 46003
-	"create_from", #GH 46004
-	"create_from_blend_shape", #GH 46004
-	"append_from", #GH 46004
 	"_set_tile_data", #GH 46015
-	"get", #GH 46019
-	"instance_has", #GH 46020
-	"get_var", #GH 46096
 	"set_script", #GH 46120
-	"getvar", #GH 46019
-	"get_available_chars", #GH 46118
-	"open_midi_inputs", #GH 46183
 	"set_icon", #GH 46189
-	"get_latin_keyboard_variant", #GH  TODO Memory Leak
 	"set_editor_hint", #GH 46252
-	"get_item_at_position", #TODO hard to find
 	"set_probe_data", #GH 46570
 	"_range_click_timeout", #GH 46648
-	"get_indexed", #GH 46019
 	"add_vertex", #GH 47066
-	"create_client", # TODO, strange memory leak
 	"create_shape_owner", #47135
 	"shape_owner_get_owner", #47135
+	"generate_mipmaps", #GH 46485
+	"start", #GH 50120
+	"add_undo_reference", #GH 48756
 
 	"get_bind_bone", #GH 47358
 	"get_bind_name", #GH 47358
@@ -72,6 +64,29 @@ var function_exceptions : Array = [
 
 	# Slow Function
 	"_update_sky",
+	"interpolate_baked",
+	"get_baked_length",
+	"get_baked_points",
+	"get_closest_offset",
+	"get_closest_point", # Only Curve, but looks that a lot of other classes uses this
+	"get_baked_up_vectors",
+	"interpolate_baked_up_vector",
+	"tessellate",
+	"get_baked_tilts",
+	"set_enabled_inputs",
+	"grow_mask",
+	"force_update_transform",
+	
+	# In 3d view some options are really slow, needs to be limited
+	"set_rings",
+	"set_amount", # Particles
+
+	# Just a little slow functions
+	"is_enabler_enabled",
+	"set_enabler",
+	"get_aabb",
+	"set_aabb",
+	"is_on_screen",
 
 	# Undo/Redo function which doesn't provide enough information about types of objects, probably due vararg(variable size argument)
 	"add_do_method",
@@ -108,7 +123,7 @@ var function_exceptions : Array = [
 	"delay_msec",
 	"alert", # Stupid alert window opens
 
-	# Godot Freeze
+	# Godot Freeze/Very slow
 	"wait_to_finish",
 	"accept_stream",
 	"connect_to_stream",
@@ -116,9 +131,6 @@ var function_exceptions : Array = [
 	"wait",
 	"debug_bake",
 	"bake",
-
-	"_create", # TODO Check
-
 
 	"set_gizmo", # Stupid function, needs as parameter an object which can't be instanced # TODO, create issue to hide it 
 
@@ -160,66 +172,6 @@ var function_exceptions : Array = [
 	"add_sibling",
 ]
 
-# List of slow functions, which may frooze project(not simple executing each function alone)
-var project_resources_exclusion : Array = [
-	"interpolate_baked",
-	"get_baked_length",
-	"get_baked_points",
-	"get_closest_offset",
-	"get_closest_point", # Only Curve, but looks that a lot of other classes uses this
-	"get_baked_up_vectors",
-	"interpolate_baked_up_vector",
-	"tessellate",
-	"get_baked_tilts",
-	"set_enabled_inputs",
-	"grow_mask",
-	"force_update_transform",
-	
-	# In 3d view some options are really slow, needs to be limited
-	"set_rings",
-	"set_amount", # Particles
-
-
-	# Just a little slow functions
-	"is_enabler_enabled",
-	"set_enabler",
-	"get_aabb",
-	"set_aabb",
-	"is_on_screen"
-]
-# Specific classes which are initialized in specific way e.g. var undo_redo = get_undo_redo() instead var undo_redo = UndoRedo.new()
-# It is used when generating project
-var project_only_instance : Array = [
-	"UndoRedo",
-	"Object",
-	"JSONRPC",
-	"MainLoop",
-	"SceneTree",
-	"ARVRPositionalTracker",
-]
-var invalid_signals : Array = [
-	"multi_selected",
-	"item_collapsed",
-	"button_pressed",
-	"",
-	"",
-	"",
-	
-	
-	# Probably Vararg
-	"tween_step",
-	"tween_completed",
-	"tween_started",
-	"data_channel_received",
-	"",
-]
-var properties_exceptions : Array = [
-	"user_data",
-	"config_file",
-	"",
-	"",
-]
-
 # Globally disabled classes which causes bugs or are very hard to us
 var disabled_classes : Array = [
 	"ProjectSettings", # Don't mess with project settings, because they can broke entire your workflow
@@ -227,19 +179,8 @@ var disabled_classes : Array = [
 	"_OS", # This may sometimes crash compositor, but it should be tested manually sometimes
 	"GDScript", # Broke script
 	"SceneTree",
-	"Image",
+	"JNISingleton", # Freeze - who use it?
 	
-	# This classes have problems with static/non static methods
-	"PhysicsDirectSpaceState",
-	"Physics2DDirectSpaceState",
-	"PhysicsDirectBodyState",
-	"Physics2DDirectBodyState",
-	"BulletPhysicsDirectSpaceState",
-	"InputDefault",
-	"IP_Unix",
-	"JNISingleton",
-	
-	"OpenSimplexNoise",
 	# Only one class - JavaClass returns Null when using JavaClass.new().get_class
 	"JavaClass",
 	
@@ -249,8 +190,7 @@ var disabled_classes : Array = [
 	"_Mutex",
 ]
 var variant_exceptions : Array =  [
-	"decompress", # GH 49006
-	
+	# TODO
 ]
 
 # Checks if function can be executed
@@ -291,6 +231,18 @@ func check_if_is_allowed(method_data : Dictionary) -> bool:
 	
 	return true
 
+# Return GDScript code which create this object
+func get_gdscript_class_creation(name_of_class : String) -> String:
+	if (
+		ClassDB.is_parent_class(name_of_class, "Object")
+		&& !ClassDB.is_parent_class(name_of_class, "Node")
+		&& !ClassDB.is_parent_class(name_of_class, "Reference")
+		&& !ClassDB.class_has_method(name_of_class, "new")
+	):
+		return "ClassDB.instance(\"" + name_of_class + "\")"
+	else:
+		return name_of_class.trim_prefix("_") + ".new()"
+
 func remove_disabled_methods(method_list : Array, exceptions : Array) -> void:
 	for exception in exceptions:
 		var index: int = -1
@@ -301,20 +253,21 @@ func remove_disabled_methods(method_list : Array, exceptions : Array) -> void:
 		if index != -1:
 			method_list.remove(index)
 
+func remove_thing(thing : Object) -> void:
+	if thing is Node:
+		thing.queue_free()
+	elif thing is Object && !(thing is Reference):
+		thing.free()
+
 # Return all available classes which can be used
 func get_list_of_available_classes(must_be_instantable : bool = true, allow_editor : bool = true) -> Array:
 	var full_class_list : Array = Array(ClassDB.get_class_list())
 	var classes : Array = []
 	full_class_list.sort()
-	var c = 0
-#	var rr = 0
+	
 	for name_of_class in full_class_list:
-#		rr += 1
 		if name_of_class in disabled_classes:
 			continue
-		
-#		if rr < 550:
-#			continue	
 
 		#This is only for RegressionTestProject, because it needs for now clear visual info what is going on screen, but some nodes broke view
 		if regression_test_project:
@@ -329,7 +282,9 @@ func get_list_of_available_classes(must_be_instantable : bool = true, allow_edit
 			
 		if !must_be_instantable || ClassDB.can_instance(name_of_class):
 			classes.push_back(name_of_class)
-			c+= 1
 			
-	print(str(c) + " choosen classes from all " + str(full_class_list.size()) + " classes.")
+#	classes = classes.slice(0, 200)
+	
+	print(str(classes.size()) + " choosen classes from all " + str(full_class_list.size()) + " classes.")
+	
 	return classes

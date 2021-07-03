@@ -2,13 +2,13 @@ extends Node
 # Test physics nodes due adding and removing them from scene, moving them and executing random functions on them
 
 # 0 - no info, 1 - basic info about executed functions, 2 - prints also info about moved nodes etc., 3 - all with also printing executed functions
-var debug_level: int = 2
+var debug_level: int = 3
 
 var number_of_showed_frames: int = 10000
 var used_nodes: int = 100  # Use 100 objects, when using more delete some
-var nodes_created_each_turn: int = 10
+var nodes_created_each_turn: int = 30
 var nodes_moved_each_turn: int = 10
-var max_collision_shapes: int = 2
+var max_collision_shapes: int = 10
 
 var physics_nodes_3d: Array = []
 var physics_nodes_2d: Array = []
