@@ -14,7 +14,7 @@ var function_exceptions : Array = [
 	"decompress",
 	"save_png_to_buffer",
 	"",
-	
+    	
 	# TODO
 	"create_action", #UndoRedo
 	 
@@ -28,6 +28,7 @@ var function_exceptions : Array = [
 	"_direct_state_changed", #GH 46003 - Not cherrypicked
 	"connect_to_signal", # GH 47572 - Not cherrypicked
 	
+    "set_function", # not cherrypick
 	# They exists without assigment like Class.method, because they may be a parent of other objects and children also should have disabled child.method, its children also etc. which is too much to do
 
 	"_editor_settings_changed",# GH 45979
