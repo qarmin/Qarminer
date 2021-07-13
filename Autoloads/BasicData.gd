@@ -6,6 +6,9 @@ var regression_test_project : bool = false # Set it to true in RegressionTestPro
 
 # Globablly disabled functions for all classes
 var function_exceptions : Array = [
+	"decompress_dynamic",
+	
+	
 	# Image todo
 	"adjust_bcs",
 	"compress_from_channels",

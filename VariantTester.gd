@@ -46,6 +46,8 @@ func tests_all_functions() -> void:
 			if randi() % 2:
 				if !BasicData.check_if_is_allowed(method_data):
 					continue
+				if method_data["name"] in ["decompress_dynamic"]:
+					continue
 				
 				var is_there_object : bool = false
 				for arg in method_data["args"]:
@@ -215,7 +217,7 @@ func get_basic_thing(type:int):
 	elif type == TYPE_STRING_ARRAY:
 		thing = ValueCreator.get_Packed_string_array()
 	elif type == TYPE_TRANSFORM3D:
-		thing = ValueCreator.get_transform()
+		thing = ValueCreator.get_transform3D()
 	elif type == TYPE_TRANSFORM2D:
 		thing = ValueCreator.get_transform2D()
 	elif type == TYPE_VECTOR2:
