@@ -6,14 +6,11 @@ var regression_test_project : bool = false # Set it to true in RegressionTestPro
 
 # Globablly disabled functions for all classes
 var function_exceptions : Array = [
-	# Image crashes TODO
+	# Image functions
 	"compress",
-	"convert",
-	"get_height",
-	"lock",
 	"decompress",
-	"save_png_to_buffer",
-	"",
+	"convert",
+	
 	# TODO
 	"create_action", #UndoRedo
 	 
@@ -63,6 +60,7 @@ var function_exceptions : Array = [
 	"set_enabled_inputs",
 
 	# Slow Function
+	"load_webp_from_buffer",
 	"_update_sky",
 	"interpolate_baked",
 	"get_baked_length",

@@ -49,7 +49,7 @@ func _process(_delta: float) -> void:
 func tests_all_functions() -> void:
 	for name_of_class in BasicData.get_list_of_available_classes():
 		if debug_print:
-			print("\n#################### " + name_of_class + " ####################")
+			print("\n######################################## " + name_of_class + " ########################################")
 
 		var object: Object = ClassDB.instance(name_of_class)
 		assert(object != null, "Object must be instantable")
