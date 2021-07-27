@@ -10,6 +10,7 @@ var function_exceptions : Array = [
 	"compress",
 	"decompress",
 	"convert",
+	"save_png_to_buffer", # uses decompress
 	
 	# TODO
 	"create_action", #UndoRedo
