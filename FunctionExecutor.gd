@@ -1,3 +1,4 @@
+
 extends Node
 
 ### Script:
@@ -8,29 +9,33 @@ extends Node
 ### - execute function with parameters
 
 var debug_print: bool = true
+var exiting: bool = false  # Exit after 1 loop?
 var add_to_tree: bool = false  # Adds nodes to tree, freeze godot when removing a lot of nodes
 var use_parent_methods: bool = false  # Allows Node2D use Node methods etc. - it is a little slow option which rarely shows
 var use_always_new_object: bool = false  # Don't allow to "remeber" other function effects
-var exiting: bool = false
-var number_of_loops : int = 1# How much times will be repeated this
+var number_of_repeats: int = 5  # How many times functions can be repeated
+var shuffle_methods: bool = true
+var miss_some_functions: int = true  # Allows to not execute some functions to be able to get more random results
 
 
 func _ready() -> void:
+	ValueCreator.should_be_always_valid = false
+
 	if BasicData.regression_test_project:
+		add_to_tree = false
+		use_parent_methods = false
+		use_always_new_object = true
+		number_of_repeats = 1
+		shuffle_methods = false
+		miss_some_functions = false
+
 		ValueCreator.random = false  # Results in RegressionTestProject must be always reproducible
+		ValueCreator.number = 100
 	else:
 		ValueCreator.random = true
-
-	ValueCreator.number = 100
-	ValueCreator.should_be_always_valid = true
-	
-	if BasicData.regression_test_project:
-		number_of_loops = 1
-	else:
-		number_of_loops = 5
+		ValueCreator.number = 100
 
 	if BasicData.regression_test_project:
-		exiting = false
 		tests_all_functions()
 
 
@@ -45,7 +50,7 @@ func _process(_delta: float) -> void:
 func tests_all_functions() -> void:
 	for name_of_class in BasicData.get_list_of_available_classes():
 		if debug_print:
-			print("\n#################### " + name_of_class + " ####################")
+			print("\n######################################## " + name_of_class + " ########################################")
 
 		var object: Object = ClassDB.instantiate(name_of_class)
 		assert(object != null, "Object must be instantable")
@@ -57,53 +62,55 @@ func tests_all_functions() -> void:
 		# Removes excluded methods
 		BasicData.remove_disabled_methods(method_list, BasicData.function_exceptions)
 
-		if !BasicData.regression_test_project:
+		if shuffle_methods:
 			method_list.shuffle()
+
+		if debug_print && !use_always_new_object:
+			print("\tvar temp_variable = " + BasicData.get_gdscript_class_creation(name_of_class))
 			
-		for _i in range(number_of_loops):
+		for _i in range(number_of_repeats):
 			for method_data in method_list:
 				if !BasicData.check_if_is_allowed(method_data):
 					continue
 
-				var arguments: Array = ParseArgumentType.parse_and_return_objects(method_data, name_of_class, debug_print)
+				if !miss_some_functions || randi() % 2 == 0:
+					var arguments: Array = ParseArgumentType.parse_and_return_objects(method_data, name_of_class, debug_print)
 
-				if debug_print:
-					var to_print: String = "GDSCRIPT CODE:     "
-					if (
-						ClassDB.is_parent_class(name_of_class, "Object")
-						&& !ClassDB.is_parent_class(name_of_class, "Node")
-						&& !ClassDB.is_parent_class(name_of_class, "RefCounted")
-						&& !ClassDB.class_has_method(name_of_class, "new")
-					):
-						to_print += "ClassDB.instantiate(\"" + name_of_class + "\")." + method_data.get("name") + "("
-					else:
-						to_print += name_of_class.trim_prefix("_") + ".new()." + method_data.get("name") + "("
+					if debug_print:
+						var to_print: String
+						if use_always_new_object:
+							to_print = "GDSCRIPT CODE:     "
+							to_print += BasicData.get_gdscript_class_creation(name_of_class)
+						else:
+							to_print = "\ttemp_variable"
 
-					for i in arguments.size():
-						to_print += ParseArgumentType.return_gdscript_code_which_run_this_object(arguments[i])
-						if i != arguments.size() - 1:
-							to_print += ", "
-					to_print += ")"
-					print(to_print)
+						to_print += "." + method_data["name"] + "("
 
-				object.callv(method_data.get("name"), arguments)
+						for i in arguments.size():
+							to_print += ParseArgumentType.return_gdscript_code_which_run_this_object(arguments[i])
+							if i != arguments.size() - 1:
+								to_print += ", "
+						to_print += ")"
+						print(to_print)
 
-				for argument in arguments:
-					if argument is Node:
-						argument.queue_free()
-					elif argument is Object && !(argument is RefCounted):
-						argument.free()
+					object.callv(method_data.get("name"), arguments)
 
-				if use_always_new_object:
-					if object is Node:
-						object.queue_free()
-					elif object is Object && !(object is RefCounted):
-						object.free()
+					for argument in arguments:
+						if argument is Node:
+							argument.queue_free()
+						elif argument is Object && !(argument is RefCounted):
+							argument.free()
 
-					object = ClassDB.instantiate(name_of_class)
-					if add_to_tree:
+					if use_always_new_object:
 						if object is Node:
-							add_child(object)
+							object.queue_free()
+						elif object is Object && !(object is RefCounted):
+							object.free()
+
+						object = ClassDB.instantiate(name_of_class)
+						if add_to_tree:
+							if object is Node:
+								add_child(object)
 
 		if object is Node:
 			object.queue_free()

@@ -8,6 +8,10 @@ var regression_test_project : bool = false # Set it to true in RegressionTestPro
 var function_exceptions : Array = [
 	"decompress_dynamic",
 	"generate_lod", # TODO
+	"bind_node", #51149
+	"add_node", #51150
+	"set_peering_bit_terrain", # TODO Tile cośtam
+	"get_sdfgi_max_distance",# TODO Environment.get_sdfgi_max_distance
 	
 	"optimize_indices_for_cache", # TODO
 	
@@ -152,10 +156,9 @@ var function_exceptions : Array = [
 	"add_child",
 	"add_child_below_node",
 	"add_sibling",
-]
-
-# List of slow functions, which may frooze project(not simple executing each function alone)
-var project_resources_exclusion : Array = [
+	
+	
+	#SLOW
 	"interpolate_baked",
 	"get_baked_length",
 	"get_baked_points",
@@ -168,19 +171,17 @@ var project_resources_exclusion : Array = [
 	"set_enabled_inputs",
 	"grow_mask",
 	"force_update_transform",
-	
-	
 	# In 3d view some options are really slow, needs to be limited
 	"set_rings",
 	"set_amount", # Particles
-
-
 	# Just a little slow functions
 	"is_enabler_enabled",
 	"set_enabler",
 	"get_aabb",
 	"set_aabb",
 	"is_on_screen"
+	
+	
 ]
 # Specific classes which are initialized in specific way e.g. var undo_redo = get_undo_redo() instead var undo_redo = UndoRedo.new()
 # It is used when generating project
@@ -275,6 +276,17 @@ var disabled_classes : Array = [
 	# Temporary
 	"BoxMesh",
 ]
+# Return GDScript code which create this object
+func get_gdscript_class_creation(name_of_class : String) -> String:
+	if (
+		ClassDB.is_parent_class(name_of_class, "Object")
+		&& !ClassDB.is_parent_class(name_of_class, "Node")
+		&& !ClassDB.is_parent_class(name_of_class, "RefCounted")
+		&& !ClassDB.class_has_method(name_of_class, "new")
+	):
+		return "ClassDB.instance(\"" + name_of_class + "\")"
+	else:
+		return name_of_class.trim_prefix("_") + ".new()"
 
 # Checks if function can be executed
 func check_if_is_allowed(method_data : Dictionary) -> bool:
@@ -357,5 +369,4 @@ func get_list_of_available_classes(must_be_instantable : bool = true) -> Array:
 			
 	print(str(c) + " choosen classes from all " + str(full_class_list.size()) + " classes.")
 	
-	classes = classes.slice(300,600)
 	return classes
