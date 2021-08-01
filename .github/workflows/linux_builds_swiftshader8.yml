@@ -1,0 +1,73 @@
+name: 🐧 SwiftShader 8
+on: [push, pull_request]
+
+jobs:
+  vulkan-normal:
+    runs-on: "ubuntu-20.04"
+    name: Editor and exported project with sanitizers (target=debug/release, tools=yes/no, debug_symbols=yes, use_ubsan=yes, use_asan=yes)
+
+    steps:
+      - uses: actions/checkout@v2
+
+      # Azure repositories are not reliable, we need to prevent azure giving us packages.
+      - name: Make apt sources.list use the default Ubuntu repositories
+        run: |
+          sudo rm -f /etc/apt/sources.list.d/*
+          sudo cp -f misc/ci/sources.list /etc/apt/sources.list
+          sudo apt-get update
+
+      # Install all packages (except scons)
+      - name: Configure dependencies
+        run: |
+          sudo apt-get install build-essential pkg-config libx11-dev libxcursor-dev \
+            libxinerama-dev libgl1-mesa-dev libglu-dev libasound2-dev libpulse-dev libudev-dev libxi-dev libxrandr-dev yasm \
+            xvfb wget2 unzip python scons git
+
+#      - name: Download Godot
+#        run: |
+#          wget2 https://archive.hugo.pro/builds/godot/master/editor/godot-linux-nightly-x86_64.zip
+#          unzip godot-linux-nightly-x86_64.zip
+#          rm godot-linux-nightly-x86_64.zip
+#          mv godot godot.linuxbsd.tools.64s
+
+#      - name: Download Godot(ZIP)
+#        run: |
+#          wget2 https://github.com/godotengine/godot/archive/3.2.zip
+#          unzip 3.2.zip
+#          rm 3.2.zip
+
+
+      - name: Download Godot(GIT)
+        run: |
+          git clone https://github.com/godotengine/godot.git
+          cd godot
+          git checkout master
+          cd ../
+
+      - name: Compile Godot
+        run: |
+          cd godot
+          sed -i "s|ERR_FAIL_COND_V(p_rasterization_state.patch_control_points|//ERR_FAIL_COND_V(p_rasterization_state.patch_control_points|" drivers/vulkan/rendering_device_vulkan.cpp
+          scons p=linuxbsd -j2 use_asan=yes use_ubsan=yes CCFLAGS="-fsanitize=shift,shift-exponent,integer-divide-by-zero,unreachable,vla-bound,null,return,signed-integer-overflow,bounds,float-divide-by-zero,float-cast-overflow,nonnull-attribute,returns-nonnull-attribute,bool,enum,vptr"
+          cp bin/godot.linuxbsd.tools.64s ../
+          cd ../
+          rm -rf godot
+
+      # Download, unzip and setup SwiftShader library
+      - name: Download SwiftShader
+        run: |
+          wget https://github.com/qarmin/gtk_library_store/releases/download/3.24.0/swiftshader2.zip
+          unzip swiftshader2.zip
+          rm swiftshader2.zip
+          curr="$(pwd)/libvk_swiftshader.so"
+          sed -i "s|PATH_TO_CHANGE|$curr|" vk_swiftshader_icd.json
+
+      - name: Open Godot
+        run: |
+          VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json DRI_PRIME=0 xvfb-run ./godot.linuxbsd.tools.64s --audio-driver Dummy -e -q --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          misc/check_ci_log.py sanitizers_log.txt
+          
+      - name: Run Godot
+        run: |
+          VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json DRI_PRIME=0 xvfb-run ./godot.linuxbsd.tools.64s 3600 --audio-driver Dummy --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          misc/check_ci_log.py sanitizers_log.txt
