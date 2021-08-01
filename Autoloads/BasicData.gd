@@ -7,7 +7,9 @@ var regression_test_project : bool = false # Set it to true in RegressionTestPro
 # Globablly disabled functions for all classes
 var function_exceptions : Array = [
 	"decompress_dynamic",
+	"generate_lod", # TODO
 	
+	"optimize_indices_for_cache", # TODO
 	
 	# Image todo
 	"adjust_bcs",
@@ -268,7 +270,7 @@ var disabled_classes : Array = [
 	"CodeEdit",
 	"UndoRedo",
 	
-	
+	"Node3DGizmo",
 	
 	# Temporary
 	"BoxMesh",
