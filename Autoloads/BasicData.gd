@@ -22,6 +22,8 @@ var function_exceptions : Array = [
 	# Dommy Rasterizer
 	"set_data", # ImageTexture
 	"set_YCbCr_imgs", # CameraFeed
+
+	"remove_line", # 49571
 	
 	# Image functions
 	"compress",
