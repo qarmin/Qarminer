@@ -10,10 +10,10 @@ var function_exceptions : Array = [
 	"generate_lod", # TODO
 	"bind_node", #51149
 	"add_node", #51150
-	"set_peering_bit_terrain", # TODO Tile cośtam
-	"get_sdfgi_max_distance",# TODO Environment.get_sdfgi_max_distance
+	"set_peering_bit_terrain", #51183
+	"optimize_indices_for_cache", #51184
 	
-	"optimize_indices_for_cache", # TODO
+	"set_sdfgi_cascades", #51182
 	
 	# Image todo
 	"adjust_bcs",
@@ -284,7 +284,7 @@ func get_gdscript_class_creation(name_of_class : String) -> String:
 		&& !ClassDB.is_parent_class(name_of_class, "RefCounted")
 		&& !ClassDB.class_has_method(name_of_class, "new")
 	):
-		return "ClassDB.instance(\"" + name_of_class + "\")"
+		return "ClassDB.instantiate(\"" + name_of_class + "\")"
 	else:
 		return name_of_class.trim_prefix("_") + ".new()"
 
