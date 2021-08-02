@@ -6,14 +6,31 @@ var regression_test_project : bool = false # Set it to true in RegressionTestPro
 
 # Globablly disabled functions for all classes
 var function_exceptions : Array = [
+	# GODEX
+	"smooth_polygon_approx", # _Geometry
+	"smooth_polyline_approx", 
+	"stamp_rect",# ImageBlender
+	"get_centroid",
+	"get_pixelv_or_null",
+	"replace_color",
+	"rotate_180",
+	"rotate_90",
+	"blend_rect",
+	"_iter_init",
+	"save_gif",
+	
+	# Dommy Rasterizer
+	"set_data", # ImageTexture
+	"set_YCbCr_imgs", # CameraFeed
+	
 	# Image functions
 	"compress",
 	"decompress",
 	"convert",
 	"save_png_to_buffer", # uses decompress
 	
-	# TODO
-	"create_action", #UndoRedo
+	"create_client",#51196
+	"add_node", #51189
 	 
 	# Input crashes, not cherrypicked #GH 47636
 	"_gui_input", 
@@ -187,6 +204,9 @@ var disabled_classes : Array = [
 	"_Thread",
 	"_Semaphore",
 	"_Mutex",
+	
+	#GOOST
+	"_GoostImage", # TODO, for now heavily crashing
 ]
 var variant_exceptions : Array =  [
 	# TODO
