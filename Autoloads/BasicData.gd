@@ -286,6 +286,14 @@ func get_list_of_available_classes(must_be_instantable : bool = true, allow_edit
 	var classes : Array = []
 	full_class_list.sort()
 	
+	var classes_from_config : Array = []
+	var file = File.new()
+	if file.file_exists("res://classes.txt"):
+		file.open("res://classes.txt", File.READ)
+		while !file.eof_reached():
+			classes_from_config.push_back(file.get_line())
+		file.close()
+
 	for name_of_class in full_class_list:
 		if name_of_class in disabled_classes:
 			continue
@@ -299,11 +307,13 @@ func get_list_of_available_classes(must_be_instantable : bool = true, allow_edit
 			continue
 		if name_of_class.find("Editor") != -1 && (regression_test_project || !allow_editor):
 			continue
-			
-			
+
+		if !classes_from_config.empty() and !(name_of_class in classes_from_config):
+			continue
+
 		if !must_be_instantable || ClassDB.can_instance(name_of_class):
 			classes.push_back(name_of_class)
-			
+
 #	classes = classes.slice(0, 200)
 	
 	print(str(classes.size()) + " choosen classes from all " + str(full_class_list.size()) + " classes.")
