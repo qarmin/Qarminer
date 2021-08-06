@@ -272,12 +272,19 @@ func get_list_of_available_classes(must_be_instantable : bool = true, allow_edit
 	var classes : Array = []
 	full_class_list.sort()
 	
-	var classes_from_config : Array = []
+	var custom_classes : Array = []
 	var file = File.new()
 	if file.file_exists("res://classes.txt"):
 		file.open("res://classes.txt", File.READ)
 		while !file.eof_reached():
-			classes_from_config.push_back(file.get_line())
+			var cname = file.get_line()
+			var internal_cname = "_" + cname
+			# The declared class may not exist, and it may be exposed as `_ClassName` rather than `ClassName`.
+			if !ClassDB.class_exists(cname) && !ClassDB.class_exists(internal_cname):
+				continue
+			if ClassDB.class_exists(internal_cname):
+				cname = internal_cname
+			custom_classes.push_back(cname)
 		file.close()
 
 	for name_of_class in full_class_list:
@@ -294,7 +301,7 @@ func get_list_of_available_classes(must_be_instantable : bool = true, allow_edit
 		if name_of_class.find("Editor") != -1 && (regression_test_project || !allow_editor):
 			continue
 
-		if !classes_from_config.empty() and !(name_of_class in classes_from_config):
+		if !custom_classes.empty() and !(name_of_class in custom_classes):
 			continue
 
 		if !must_be_instantable || ClassDB.can_instance(name_of_class):
