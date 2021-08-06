@@ -175,6 +175,11 @@ var function_exceptions : Array = [
 	"add_child",
 	"add_child_below_node",
 	"add_sibling",
+
+	# Goost
+	# TODO: these take too long to execute, does not make sense to limit number of iterations ether.
+	"smooth_polyline_approx",
+	"smooth_polygon_approx",
 ]
 
 # Globally disabled classes which causes bugs or are very hard to us
