@@ -92,7 +92,8 @@ func tests_all_functions() -> void:
 						to_print += ")"
 						print(to_print)
 
-					object.callv(method_data["name"], arguments)
+					var ret = object.callv(method_data["name"], arguments)
+					BasicData.remove_thing(ret)
 
 					for argument in arguments:
 						BasicData.remove_thing(argument)
