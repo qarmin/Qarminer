@@ -267,10 +267,6 @@ func remove_disabled_methods(method_list : Array, exceptions : Array) -> void:
 			method_list.remove(index)
 
 func remove_thing(thing : Object) -> void:
-	if !thing:
-		return
-	if !is_instance_valid(thing):
-		return
 	if thing is Node:
 		thing.queue_free()
 	elif thing is Object && !(thing is Reference):
