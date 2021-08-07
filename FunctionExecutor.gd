@@ -96,8 +96,12 @@ func tests_all_functions() -> void:
 
 					if !BasicData.regression_test_project:
 						if ret != null && ret is Object:
-							if !(ret.get_class() in BasicData.disabled_classes) && \
-									!(ret.get_class() in ["PhysicsDirectSpaceStateSW", "Physics2DDirectSpaceStateSW"]):
+							var disabled_return_classes = [
+								"PhysicsDirectSpaceStateSW", 
+								"Physics2DDirectSpaceStateSW", 
+								"BulletPhysicsDirectSpaceState",
+							]
+							if !(ret.get_class() in BasicData.disabled_classes) && !(ret.get_class() in disabled_return_classes):
 								BasicData.remove_thing(ret)
 
 					for argument in arguments:
