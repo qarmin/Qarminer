@@ -92,7 +92,13 @@ func tests_all_functions() -> void:
 						to_print += ")"
 						print(to_print)
 
-					object.callv(method_data["name"], arguments)
+					var ret = object.callv(method_data["name"], arguments)
+
+					if !BasicData.regression_test_project:
+						if ret != null && ret is Object:
+							if !(ret.get_class() in BasicData.disabled_classes) && \
+									!(ret.get_class() in ["PhysicsDirectSpaceStateSW", "Physics2DDirectSpaceStateSW"]):
+								BasicData.remove_thing(ret)
 
 					for argument in arguments:
 						BasicData.remove_thing(argument)
