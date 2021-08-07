@@ -180,9 +180,6 @@ var function_exceptions : Array = [
 	# TODO: these take too long to execute, does not make sense to limit number of iterations ether.
 	"smooth_polyline_approx",
 	"smooth_polygon_approx",
-	# TODO: infinite spam of errors
-	"stamp_rect",
-	"blend_rect",
 ]
 
 # Globally disabled classes which causes bugs or are very hard to us
