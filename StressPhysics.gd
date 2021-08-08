@@ -40,7 +40,7 @@ func _ready() -> void:
 	ValueCreator.number = 10
 	ValueCreator.should_be_always_valid = false
 
-	for name_of_class in BasicData.get_list_of_available_classes():
+	for name_of_class in HelpFunctions.get_list_of_available_classes():
 		if !ClassDB.can_instance(name_of_class):
 			continue
 		if ClassDB.is_parent_class(name_of_class, "CollisionObject"):
@@ -104,7 +104,7 @@ func process_nodes() -> void:
 		get_tree().quit()
 	create_nodes()
 	move_nodes()
-#	random_functions()
+	random_functions()
 	delete_nodes()
 	if debug_level:
 		print("--- Ended Processing Data ---")
@@ -204,7 +204,7 @@ func random_functions() -> void:
 			if ClassDB.class_has_method("Object", method_data["name"]) || ClassDB.class_has_method("Node", method_data["name"]):
 				continue
 
-			if method_data["name"] in BasicData.function_exceptions:
+			if !HelpFunctions.check_if_is_allowed(method_data):
 				continue
 
 			var arguments: Array = ParseArgumentType.parse_and_return_objects(method_data, name_of_class, debug_level >= 3)

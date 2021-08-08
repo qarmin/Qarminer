@@ -55,7 +55,7 @@ func normalize_function_names(function_name: String) -> String:
 
 
 func collect_data() -> void:
-	for name_of_class in BasicData.get_list_of_available_classes(false, false):
+	for name_of_class in HelpFunctions.get_list_of_available_classes(false, false):
 		var found: bool = false
 		for exception in project_only_instance:
 			if exception == name_of_class:
@@ -69,10 +69,10 @@ func collect_data() -> void:
 
 		var method_list: Array = ClassDB.class_get_method_list(name_of_class, !use_parent_methods)
 
-		BasicData.remove_disabled_methods(method_list, BasicData.function_exceptions)
+		HelpFunctions.remove_disabled_methods(method_list, BasicData.function_exceptions)
 
 		for method_data in method_list:
-			if !BasicData.check_if_is_allowed(method_data):
+			if !HelpFunctions.check_if_is_allowed(method_data):
 				continue
 
 			var arguments: Array = []

@@ -20,6 +20,7 @@ BasicData="*res://Autoloads/BasicData.gd"
 ValueCreator="*res://Autoloads/ValueCreator.gd"
 AutoClose="*res://Autoloads/AutoClose.gd"
 ParseArgumentType="*res://Autoloads/ParseArgumentType.gd"
+HelpFunctions="*res://Autoloads/HelpFunctions.gd"
 
 [logging]
 
