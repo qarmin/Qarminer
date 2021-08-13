@@ -12,7 +12,7 @@ var function_exceptions : Array = [
 	"add_node", #51150
 	"set_peering_bit_terrain", #51183
 	"optimize_indices_for_cache", #51184
-	
+	"set_draw_control_chars", #51613
 	"set_sdfgi_cascades", #51182
 	
 	# Image todo
@@ -275,6 +275,7 @@ var disabled_classes : Array = [
 	
 	# Temporary
 	"BoxMesh",
+	"_GodotSharp",
 ]
 # Return GDScript code which create this object
 func get_gdscript_class_creation(name_of_class : String) -> String:
