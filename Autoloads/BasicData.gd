@@ -267,6 +267,7 @@ var disabled_classes : Array = [
 	"SkeletonModification2DLookAt",
 	"SkeletonModification2DPhysicalBones",
 	"SkeletonModification2DStackHolder",
+	"SkeletonModificationStack3D",
 	"MultiMesh", # TODO
 	"CodeEdit",
 	"UndoRedo",
