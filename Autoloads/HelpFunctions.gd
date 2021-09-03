@@ -16,8 +16,7 @@ func check_if_is_allowed(method_data: Dictionary) -> bool:
 
 	for arg in method_data["args"]:
 		var name_of_class: String = arg["class_name"]
-		if name_of_class.empty():
-			continue
+
 		if name_of_class in BasicData.disabled_classes:
 			return false
 		if name_of_class.find("Server") != -1 && ClassDB.class_exists(name_of_class) && !ClassDB.is_parent_class(name_of_class, "Reference"):
@@ -59,6 +58,9 @@ func check_if_is_allowed(method_data: Dictionary) -> bool:
 		):
 			print("----------------------------------------------------------- TODO - MISSING TYPE, ADD SUPPORT IT")  # Add assert here to get info which type is missing
 			return false
+
+		if name_of_class.empty():
+			continue
 
 		#This is only for RegressionTestProject, because it needs for now clear visual info what is going on screen, but some nodes broke view
 		if BasicData.regression_test_project:
