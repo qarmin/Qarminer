@@ -305,8 +305,7 @@ func check_if_is_allowed(method_data : Dictionary) -> bool:
 		
 	for arg in method_data.get("args"):
 		var name_of_class : String = arg.get("class_name")
-		if name_of_class.is_empty():
-			continue
+		
 		if name_of_class in disabled_classes:
 			return false
 		if name_of_class.find("Server") != -1 && ClassDB.class_exists(name_of_class) && !ClassDB.is_parent_class(name_of_class,"RefCounted"):
@@ -323,6 +322,9 @@ func check_if_is_allowed(method_data : Dictionary) -> bool:
 		if !(t == TYPE_NIL|| t == TYPE_CALLABLE || t == TYPE_MAX|| t == TYPE_AABB|| t == TYPE_ARRAY|| t == TYPE_BASIS|| t == TYPE_BOOL|| t == TYPE_COLOR|| t == TYPE_COLOR_ARRAY|| t == TYPE_DICTIONARY|| t == TYPE_INT|| t == TYPE_INT32_ARRAY|| t == TYPE_INT64_ARRAY|| t == TYPE_NODE_PATH|| t == TYPE_OBJECT|| t == TYPE_PLANE|| t == TYPE_QUATERNION|| t == TYPE_RAW_ARRAY|| t == TYPE_FLOAT|| t == TYPE_FLOAT32_ARRAY|| t == TYPE_FLOAT64_ARRAY|| t == TYPE_RECT2|| t == TYPE_RECT2I|| t == TYPE_RID|| t == TYPE_STRING|| t == TYPE_STRING_NAME|| t == TYPE_STRING_ARRAY|| t == TYPE_TRANSFORM3D|| t == TYPE_TRANSFORM2D|| t == TYPE_VECTOR2|| t == TYPE_VECTOR2I|| t == TYPE_VECTOR2_ARRAY|| t == TYPE_VECTOR3|| t == TYPE_VECTOR3I|| t == TYPE_VECTOR3_ARRAY):
 			print("----------------------------------------------------------- TODO - MISSING TYPE, ADD SUPPORT IT")
 			return false
+			
+		if name_of_class.is_empty():
+			continue
 			
 		#This is only for RegressionTestProject, because it needs for now clear visual info what is going on screen, but some nodes broke view
 		if regression_test_project:
