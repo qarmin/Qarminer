@@ -15,6 +15,11 @@ var function_exceptions : Array = [
 	"set_draw_control_chars", #51613
 	"set_sdfgi_cascades", #51182
 	
+	"set_glyph_texture_idx", # FontData.new().set_glyph_texture_idx(-29, Vector2i(2, -39), 24, -1)
+	"clear_glyphs", #clear_glyphs(-31, Vector2i(38, 33))
+		#
+		#
+	
 	# Image todo
 	"adjust_bcs",
 	"compress_from_channels",
