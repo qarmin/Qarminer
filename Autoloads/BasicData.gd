@@ -17,7 +17,8 @@ var function_exceptions : Array = [
 	
 	"set_glyph_texture_idx", # FontData.new().set_glyph_texture_idx(-29, Vector2i(2, -39), 24, -1)
 	"clear_glyphs", #clear_glyphs(-31, Vector2i(38, 33))
-		#
+	"set_kerning", # TODO
+	"set_descent",	#
 		#
 	
 	# Image todo
@@ -276,6 +277,7 @@ var disabled_classes : Array = [
 	"MultiMesh", # TODO
 	"CodeEdit",
 	"UndoRedo",
+	"FontData", # TOO MUCH BUGS
 	
 	"Node3DGizmo",
 	
