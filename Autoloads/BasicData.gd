@@ -14,12 +14,14 @@ var function_exceptions : Array = [
 	"optimize_indices_for_cache", #51184
 	"set_draw_control_chars", #51613
 	"set_sdfgi_cascades", #51182
+	"get_singleton", # TODO
+	"set_singleton", # TODO
 	
 	"set_glyph_texture_idx", # FontData.new().set_glyph_texture_idx(-29, Vector2i(2, -39), 24, -1)
 	"clear_glyphs", #clear_glyphs(-31, Vector2i(38, 33))
 	"set_kerning", # TODO
-	"set_descent",	#
-		#
+	"set_descent", #
+	
 	
 	# Image todo
 	"adjust_bcs",
