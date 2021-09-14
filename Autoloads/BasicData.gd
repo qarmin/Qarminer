@@ -16,6 +16,8 @@ var function_exceptions : Array = [
 	"set_sdfgi_cascades", #51182
 	"get_singleton", # TODO
 	"set_singleton", # TODO
+	"save_scene", # TODO GLTFDocument.new().save_scene(ShaderMaterial.new(), ".", ".", 14, -17.5731897354126, Camera3D.new())
+
 	
 	"set_glyph_texture_idx", # FontData.new().set_glyph_texture_idx(-29, Vector2i(2, -39), 24, -1)
 	"clear_glyphs", #clear_glyphs(-31, Vector2i(38, 33))
@@ -281,6 +283,7 @@ var disabled_classes : Array = [
 	"UndoRedo",
 	"FontData", # TOO MUCH BUGS
 	
+	"InputEventShortcut", # 52191
 	"Node3DGizmo",
 	
 	# Temporary
