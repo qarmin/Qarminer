@@ -58,7 +58,7 @@ func create_gdscript_arguments(arguments: Array) -> Array:
 			sa.value = "PackedInt64Array([])"
 		elif typ == TYPE_NODE_PATH:
 			sa.type = "NodePath"
-			sa.value = "NodePath(\".\")"
+			sa.value = 'NodePath(".")'
 		elif typ == TYPE_OBJECT:
 			sa.type = ValueCreator.get_object_string(argument.get("class_name"))
 			sa.value = sa.type + ".new()"
@@ -316,7 +316,7 @@ func return_gdscript_code_which_run_this_object(data) -> String:
 				&& !ClassDB.is_parent_class(name_of_class, "RefCounted")
 				&& !ClassDB.class_has_method(name_of_class, "new")
 			):
-				return_string += "ClassDB.instantiate(\"" + name_of_class + "\")"
+				return_string += 'ClassDB.instantiate("' + name_of_class + '")'
 			else:
 				return_string = name_of_class.trim_prefix("_")
 				return_string += ".new()"
@@ -379,7 +379,7 @@ func return_gdscript_code_which_run_this_object(data) -> String:
 	elif type == TYPE_RID:
 		return_string = "RID()"
 	elif type == TYPE_STRING:
-		return_string = "\"" + data + "\""
+		return_string = '"' + data + '"'
 	elif type == TYPE_STRING_ARRAY:
 		return_string = "PackedStringArray(["
 		for i in data.size():
@@ -448,7 +448,7 @@ func return_gdscript_code_which_run_this_object(data) -> String:
 				return_string += ", "
 		return_string += "])"
 	elif type == TYPE_CALLABLE:
-		return_string = "Callable(BoxMesh.new(),\"\")"
+		return_string = 'Callable(BoxMesh.new(),"")'
 	else:
 		print(type)
 		assert(false, "Missing type, needs to be added to project")

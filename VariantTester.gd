@@ -3,7 +3,7 @@ extends Node
 var debug_print: bool = true
 var use_always_new_object: bool = false  # Don't allow to "remeber" other function effects
 
-var expr : Expression = Expression.new()
+var expr: Expression = Expression.new()
 
 var thing
 #func _ready() -> void:
@@ -12,8 +12,8 @@ var thing
 #	print(expr.execute())
 #	assert(!expr.has_execute_failed())
 #	print("TEST PASSED")
-	
-	
+
+
 #func _ready() -> void:
 func _process(delta) -> void:
 	if BasicData.regression_test_project:
@@ -34,7 +34,6 @@ func tests_all_functions() -> void:
 			continue
 		if debug_print:
 			print("\n#################### " + type_to_name(type) + " ####################")
-		
 
 		thing = get_basic_thing(type)
 		var method_list: Array = ClassDB.get_non_object_methods_list(type)
@@ -48,41 +47,40 @@ func tests_all_functions() -> void:
 					continue
 				if method_data["name"] in ["decompress_dynamic"]:
 					continue
-				
-				var is_there_object : bool = false
+
+				var is_there_object: bool = false
 				for arg in method_data["args"]:
-					if arg["type"] == TYPE_OBJECT || arg["type"] == TYPE_NIL|| arg["type"] == TYPE_SIGNAL:
+					if arg["type"] == TYPE_OBJECT || arg["type"] == TYPE_NIL || arg["type"] == TYPE_SIGNAL:
 						is_there_object = true
 						break
 				if is_there_object:
 					continue
 
 				var arguments: Array = ParseArgumentType.parse_and_return_objects(method_data, type_to_name(type), debug_print)
-				
-				var argument_string : String = ""
+
+				var argument_string: String = ""
 				for i in range(arguments.size()):
 					argument_string += ParseArgumentType.return_gdscript_code_which_run_this_object(arguments[i])
 					if i != arguments.size() - 1:
 						argument_string += ", "
-						
+
 				if debug_print:
 					var to_print: String = "GDSCRIPT CODE:     "
 					to_print += ParseArgumentType.return_gdscript_code_which_run_this_object(thing)
 					to_print += "." + method_data["name"] + "(" + argument_string + ")"
 					print(to_print)
 
+				#					print(ParseArgumentType.return_gdscript_code_which_run_this_object(arguments))
+				#					print(argument_string)
+				#					print("thing." + method_data["name"] + "(" + argument_string + ")")
 
-	#					print(ParseArgumentType.return_gdscript_code_which_run_this_object(arguments))
-	#					print(argument_string)
-	#					print("thing." + method_data["name"] + "(" + argument_string + ")")
-					
 				if expr.parse("thing." + method_data["name"] + "(" + argument_string + ")") != OK:
 					printerr("ERROR: " + expr.get_error_text())
-	#					assert(false)
+					#					assert(false)
 					continue
-				expr.execute([],self)
+				expr.execute([], self)
 #				assert(!expr.has_execute_failed())
-				
+
 				if use_always_new_object:
 					thing = get_basic_thing(type)
 
@@ -93,9 +91,9 @@ func tests_all_functions() -> void:
 						argument.free()
 
 
-func type_to_name(type:int) -> String:
-	var name : String
-	
+func type_to_name(type: int) -> String:
+	var name: String
+
 	if type == TYPE_AABB:
 		name = "AABB"
 	elif type == TYPE_ARRAY:
@@ -161,17 +159,18 @@ func type_to_name(type:int) -> String:
 	elif type == TYPE_CALLABLE:
 		name = "Callable"
 	elif type == TYPE_OBJECT:
-			assert(false, "Object not supported")
+		assert(false, "Object not supported")
 	elif type == TYPE_NIL:
-			assert(false, "Variant not supported")
+		assert(false, "Variant not supported")
 	else:
-			assert(false, "Missing type, needs to be added to project")
-	
+		assert(false, "Missing type, needs to be added to project")
+
 	return name
 
-func get_basic_thing(type:int):
+
+func get_basic_thing(type: int):
 	var thing
-	
+
 	if type == TYPE_AABB:
 		thing = ValueCreator.get_aabb()
 	elif type == TYPE_ARRAY:
@@ -197,7 +196,7 @@ func get_basic_thing(type:int):
 	elif type == TYPE_PLANE:
 		thing = ValueCreator.get_plane()
 	elif type == TYPE_QUATERNION:
-		thing =ValueCreator.get_quat()
+		thing = ValueCreator.get_quat()
 	elif type == TYPE_RAW_ARRAY:
 		thing = ValueCreator.get_Packed_byte_array()
 	elif type == TYPE_FLOAT:
@@ -238,5 +237,5 @@ func get_basic_thing(type:int):
 		thing = Callable(self, "ff")
 	else:
 		assert(false, "Missing type, needs to be added to project")
-	
+
 	return thing

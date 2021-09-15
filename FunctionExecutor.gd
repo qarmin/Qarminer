@@ -1,4 +1,3 @@
-
 extends Node
 
 ### Script:
@@ -67,7 +66,7 @@ func tests_all_functions() -> void:
 
 		if debug_print && !use_always_new_object:
 			print("\tvar temp_variable = " + BasicData.get_gdscript_class_creation(name_of_class))
-			
+
 		for _i in range(number_of_repeats):
 			for method_data in method_list:
 				if !BasicData.check_if_is_allowed(method_data):

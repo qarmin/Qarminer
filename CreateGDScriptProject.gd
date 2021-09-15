@@ -105,15 +105,15 @@ func create_scene_files() -> void:
 			else:
 				latest_name = split[split.size() - 1].trim_suffix(".cs")
 
-			external_dependiences += "[ext_resource path=\"_PATH_\" type=\"Script\" id=COUNTER]\n".replace("COUNTER", str(counter)).replace("_PATH_", file_name.replace(base_dir, ""))
-			node_data += "[node name=\"FILE_NAME\" type=\"Node2D\" parent=\".\"]\n".replace("FILE_NAME", latest_name)
+			external_dependiences += '[ext_resource path="_PATH_" type="Script" id=COUNTER]\n'.replace("COUNTER", str(counter)).replace("_PATH_", file_name.replace(base_dir, ""))
+			node_data += '[node name="FILE_NAME" type="Node2D" parent="."]\n'.replace("FILE_NAME", latest_name)
 			node_data += "script = ExtResource( COUNTER )\n\n".replace("COUNTER", str(counter))
 
 			counter += 1
 
 		file.store_string(external_dependiences)
 		file.store_string("\n")
-		file.store_string("[node name=\"Root\" type=\"Node2D\"]".replace("Root", type))
+		file.store_string('[node name="Root" type="Node2D"]'.replace("Root", type))
 		file.store_string("\n\n")
 		file.store_string(node_data)
 
@@ -160,7 +160,9 @@ func remove_files_recursivelly(to_delete: String) -> void:
 
 #	print(to_delete)
 	assert(to_delete.find("/./") == -1 && to_delete.begins_with("res://") && to_delete.begins_with(base_path) && to_delete.find("//", 6) == -1)
-	directory.remove(to_delete) # TODO Renable
+	directory.remove(to_delete)  # TODO Renable
+
+
 #	assert(directory.remove(to_delete) == OK)
 
 
@@ -261,7 +263,7 @@ func create_gdscript_arguments(arguments: Array) -> Array:
 				sa.value = "PackedInt64Array([])"
 			TYPE_NODE_PATH:
 				sa.type = "NodePath"
-				sa.value = "NodePath(\".\")"
+				sa.value = 'NodePath(".")'
 			TYPE_OBJECT:
 				sa.type = get_object_string(argument["class_name"])
 				sa.value = sa.type + ".new()"
@@ -371,7 +373,8 @@ func get_vector2_string() -> String:
 		if randi() % 2:
 			return "Vector2(" + get_float_string() + ", " + get_float_string() + ").normalized()"
 	return "Vector2(" + get_float_string() + ", " + get_float_string() + ")"
-	
+
+
 func get_vector2i_string() -> String:
 	return "Vector2i(" + get_int_string() + ", " + get_int_string() + ")"
 
@@ -382,8 +385,10 @@ func get_vector3_string() -> String:
 			return "Vector3(" + get_float_string() + ", " + get_float_string() + ", " + get_float_string() + ").normalized()"
 	return "Vector3(" + get_float_string() + ", " + get_float_string() + ", " + get_float_string() + ")"
 
+
 func get_vector3i_string() -> String:
-	return "Vector3i(" + get_int_string() + ", " + get_int_string()+ ", " + get_int_string() + ")"
+	return "Vector3i(" + get_int_string() + ", " + get_int_string() + ", " + get_int_string() + ")"
+
 
 func get_aabb_string() -> String:
 	return "AABB(" + get_vector3_string() + ", " + get_vector3_string() + ")"
@@ -420,12 +425,12 @@ func get_color_string() -> String:
 func get_string_string() -> String:
 	if ValueCreator.random:
 		if randi() % 3 == 0:
-			return "\".\""
+			return '"."'
 		elif randi() % 3 == 0:
-			return "\"\""
+			return '""'
 		else:
 			return "str(randi() / 100)"
-	return "\"\""
+	return '""'
 
 
 # TODO Update this with upper implementation
@@ -447,14 +452,14 @@ func get_object_string(object_name: String) -> String:
 				var to_use_classes = ClassDB.get_inheriters_from_class(object_name)
 				to_use_classes.append(object_name)
 				if !ClassDB.can_instantiate(object_name):
-					assert(to_use_classes.size() > 0)#, "Cannot find proper instantable child for " + object_name)
+					assert(to_use_classes.size() > 0)  #, "Cannot find proper instantable child for " + object_name)
 
 				while true:
 					a += 1
 					if a > 30:
 						# Object doesn't have children which can be instanced
 						# This shouldn't happens, but sadly happen with e.g. SpatialGizmo
-						assert(false)#, "Cannot find proper instantable child for " + object_name)
+						assert(false)  #, "Cannot find proper instantable child for " + object_name)
 					var choosen_class: String = to_use_classes[randi() % to_use_classes.size()]
 					if ClassDB.can_instantiate(choosen_class):
 						return choosen_class
@@ -462,7 +467,7 @@ func get_object_string(object_name: String) -> String:
 				while true:
 					a += 1
 					if a > 30:
-						assert(false)#, "Cannot find proper instantable child for " + object_name)
+						assert(false)  #, "Cannot find proper instantable child for " + object_name)
 					var choosen_class: String = classes[randi() % classes.size()]
 					if !ClassDB.is_parent_class(choosen_class, object_name):
 						return choosen_class
@@ -471,14 +476,14 @@ func get_object_string(object_name: String) -> String:
 		var to_use_classes = ClassDB.get_inheriters_from_class(object_name)
 		to_use_classes.append(object_name)
 		if !ClassDB.can_instantiate(object_name) && object_name in BasicData.disabled_classes:
-			assert(to_use_classes.size() > 0)#, "Cannot find proper instantable child for " + object_name)
+			assert(to_use_classes.size() > 0)  #, "Cannot find proper instantable child for " + object_name)
 
 		while true:
 			a += 1
 			if a > 50:
 				# Object doesn't have children which can be instanced
 				# This shouldn't happens, but sadly happen with e.g. SpatialGizmo
-				assert(false)#, "Cannot find proper instantable child for " + object_name)
+				assert(false)  #, "Cannot find proper instantable child for " + object_name)
 			var choosen_class: String = to_use_classes[randi() % to_use_classes.size()]
 			if ClassDB.can_instantiate(choosen_class) && !(choosen_class in BasicData.disabled_classes):
 				return choosen_class
@@ -488,13 +493,13 @@ func get_object_string(object_name: String) -> String:
 			return object_name
 		else:  # Found child of non instantable object
 			var list_of_class = ClassDB.get_inheriters_from_class(object_name)
-			assert(list_of_class.size() > 0)#, "Cannot find proper instantable child for " + object_name)  # Number of inherited class of non instantable class must be greater than 0, otherwise this function would be useless
+			assert(list_of_class.size() > 0)  #, "Cannot find proper instantable child for " + object_name)  # Number of inherited class of non instantable class must be greater than 0, otherwise this function would be useless
 			for i in list_of_class:
 				if ClassDB.can_instantiate(i) && (ClassDB.is_parent_class(i, "Node") || ClassDB.is_parent_class(i, "RefCounted")):
 					return i
-			assert(false)#, "Cannot find proper instantable child for " + object_name)
+			assert(false)  #, "Cannot find proper instantable child for " + object_name)
 
-	assert(false)#, "Cannot find proper instantable child for " + object_name)
+	assert(false)  #, "Cannot find proper instantable child for " + object_name)
 	return "BoxMesh"
 
 
@@ -566,7 +571,7 @@ func create_basic_files() -> void:
 			var data_self = ""
 			data_self += "extends " + class_data.name + "\n\n"
 			data_self += "func _process(_delta: float) -> void:\n"
-			data_self += "\tload(\"res://" + prefix + "/" + class_data.name + ".gd\").modify_object(self)"
+			data_self += '\tload("res://' + prefix + "/" + class_data.name + '.gd").modify_object(self)'
 
 			assert(self_file.open("res://GDScript/Self/" + class_data.name + ".gd", File.WRITE) == OK)
 			self_file.store_string(data_self)
@@ -620,7 +625,7 @@ func create_basic_files() -> void:
 
 				data_to_save += "\tif randi() % 2 == 0:\n"
 				if debug_in_runtime:
-					data_to_save += "\t\tprint(\"Executing " + object_type + "." + class_data.function_names[i] + "\")\n"
+					data_to_save += '\t\tprint("Executing ' + object_type + "." + class_data.function_names[i] + '")\n'
 
 				var arguments := create_gdscript_arguments(class_data.arguments[i])
 
@@ -628,7 +633,7 @@ func create_basic_files() -> void:
 					if argument.is_object:
 						assert(ClassDB.class_exists(argument.type))
 						if argument.is_only_reference && use_loaded_resources:
-							data_to_save += "\t\tvar " + argument.name + ": " + argument.type + " = " + " load(\"res://Resources/" + argument.type + ".res\")\n"
+							data_to_save += "\t\tvar " + argument.name + ": " + argument.type + " = " + ' load("res://Resources/' + argument.type + '.res")\n'
 						else:
 							data_to_save += "\t\tvar " + argument.name + ": " + argument.type.trim_prefix("_") + " = " + argument.type.trim_prefix("_") + ".new()\n"
 					else:
@@ -638,12 +643,12 @@ func create_basic_files() -> void:
 							data_to_save += "\t\tvar " + argument.name + ": " + argument.type + " = " + argument.value + "\n"
 
 				if debug_in_runtime:
-					data_to_save += "\t\tprint(\"Parameters["
+					data_to_save += '\t\tprint("Parameters['
 					for j in arguments.size():
-						data_to_save += "\" + str(" + arguments[j].name + ") + \""
+						data_to_save += '" + str(' + arguments[j].name + ') + "'
 						if j != arguments.size() - 1:
 							data_to_save += ", "
-					data_to_save += "]\")\n"
+					data_to_save += ']")\n'
 
 				# Apply data
 				if function_use_objects:
@@ -651,7 +656,7 @@ func create_basic_files() -> void:
 						data_to_save += "\t\tfor _i in range(|||):\n".replace("|||", str(number_of_external_resources))
 						for argument in arguments:
 							if !argument.name.empty() && argument.name != class_data.name:  # Do not allow to recursive execute functions
-								data_to_save += "\t\t\tload(\"res://|||/{}.gd\").modify_object(;;;)\n".replace("|||", get_object_folder(argument.type)).replace("{}", argument.type).replace(
+								data_to_save += '\t\t\tload("res://|||/{}.gd").modify_object(;;;)\n'.replace("|||", get_object_folder(argument.type)).replace("{}", argument.type).replace(
 									";;;", argument.name
 								)
 						data_to_save += "\t\t\tpass\n"
@@ -772,12 +777,14 @@ func get_special_node(var name_of_class : String) -> Node:
 	"""
 	scene.store_string(data_to_save)
 
+
 func _process() -> void:
 	print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
 	get_tree().quit()
 	pass
+
+
 func _ready() -> void:
-	
 	ValueCreator.number = 10
 	ValueCreator.random = true
 	ValueCreator.should_be_always_valid = true  # DO NOT CHANGE, BECAUSE NON VALID VALUES WILL SHOW GDSCRIPT ERRORS!
@@ -785,7 +792,7 @@ func _ready() -> void:
 	use_gdscript = true
 	base_path = "res://GDScript/"
 	base_dir = "GDScript/"
-	
+
 	collect_data()
 	if Directory.new().dir_exists(base_path):
 		remove_files_recursivelly(base_path)

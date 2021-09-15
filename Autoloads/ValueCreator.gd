@@ -179,10 +179,10 @@ func get_string() -> String:
 func get_string_string() -> String:
 	if random:
 		if randi() % 2 == 0:
-			return "\".\""
+			return '"."'
 		else:
-			return "\"randi())\""
-	return "\"\""
+			return '"randi())"'
+	return '""'
 
 
 # TODO
