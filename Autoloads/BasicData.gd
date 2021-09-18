@@ -16,10 +16,11 @@ var function_exceptions: Array = [
 	"set_sdfgi_cascades",  #51182
 	"get_singleton",  # TODO
 	"set_singleton",  # TODO
-	"save_scene",  # TODO GLTFDocument.new().save_scene(ShaderMaterial.new(), ".", ".", 14, -17.5731897354126, Camera3D.new())
-	"set_glyph_texture_idx",  # FontData.new().set_glyph_texture_idx(-29, Vector2i(2, -39), 24, -1)
+	"save_scene",  #52816
+	"set_glyph_texture_idx",  #52817
 	"clear_glyphs",  #clear_glyphs(-31, Vector2i(38, 33))
 	"get_menu", #LineEdit.get_menu
+	"open_midi_inputs", #52821
 		
 		
 		
@@ -391,7 +392,7 @@ func get_list_of_available_classes(must_be_instantable: bool = true) -> Array:
 		if !must_be_instantable || ClassDB.can_instantiate(name_of_class):
 			classes.push_back(name_of_class)
 			c += 1
-
+#	classes = classes.slice(250,300)
 	print(str(c) + " choosen classes from all " + str(full_class_list.size()) + " classes.")
 
 	return classes
