@@ -19,6 +19,10 @@ var function_exceptions: Array = [
 	"save_scene",  # TODO GLTFDocument.new().save_scene(ShaderMaterial.new(), ".", ".", 14, -17.5731897354126, Camera3D.new())
 	"set_glyph_texture_idx",  # FontData.new().set_glyph_texture_idx(-29, Vector2i(2, -39), 24, -1)
 	"clear_glyphs",  #clear_glyphs(-31, Vector2i(38, 33))
+	"get_menu", #LineEdit.get_menu
+		
+		
+		
 	"set_kerning",  # TODO
 	"set_descent",  #
 	# Image todo
@@ -73,6 +77,7 @@ var function_exceptions: Array = [
 	"add_undo_method",
 	# Do not save files and create files and folders
 	"pck_start",
+	
 	"save",
 	"save_png",
 	"save_to_wav",
@@ -164,7 +169,8 @@ var function_exceptions: Array = [
 	"set_enabler",
 	"get_aabb",
 	"set_aabb",
-	"is_on_screen"
+	"is_on_screen",
+	"poll",
 ]
 # Specific classes which are initialized in specific way e.g. var undo_redo = get_undo_redo() instead var undo_redo = UndoRedo.new()
 # It is used when generating project
