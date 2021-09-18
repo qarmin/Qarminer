@@ -45,12 +45,9 @@ func parse_and_return_objects(method_data: Dictionary, name_of_class: String, de
 			TYPE_NODE_PATH:
 				arguments_array.push_back(ValueCreator.get_nodepath())
 			TYPE_OBJECT:
-				if ValueCreator.random && randi() % 2:
-					arguments_array.push_back(null)
-				else:
-					var obj: Object = ValueCreator.get_object(argument["class_name"])
-					arguments_array.push_back(obj)
-					assert(obj != null, "Failed to create an object of type " + argument["class_name"])
+				var obj: Object = ValueCreator.get_object(argument["class_name"])
+				arguments_array.push_back(obj)
+#				assert(obj != null, "Failed to create an object of type " + argument["class_name"])
 
 			TYPE_PLANE:
 				arguments_array.push_back(ValueCreator.get_plane())
@@ -175,7 +172,7 @@ func return_gdscript_code_which_run_this_object(data) -> String:
 					&& !ClassDB.is_parent_class(name_of_class, "Reference")
 					&& !ClassDB.class_has_method(name_of_class, "new")
 				):
-					return_string += "ClassDB.instance(\"" + name_of_class + "\")"
+					return_string += 'ClassDB.instance("' + name_of_class + '")'
 				else:
 					return_string = name_of_class.trim_prefix("_")
 					return_string += ".new()"
@@ -225,7 +222,7 @@ func return_gdscript_code_which_run_this_object(data) -> String:
 		TYPE_RID:
 			return_string = "RID()"
 		TYPE_STRING:
-			return_string = "\"" + data + "\""
+			return_string = '"' + data + '"'
 		TYPE_STRING_ARRAY:
 			return_string = "PoolStringArray(["
 			for i in data.size():

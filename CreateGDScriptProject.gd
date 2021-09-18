@@ -105,15 +105,15 @@ func create_scene_files() -> void:
 			else:
 				latest_name = split[split.size() - 1].trim_suffix(".cs")
 
-			external_dependiences += "[ext_resource path=\"_PATH_\" type=\"Script\" id=COUNTER]\n".replace("COUNTER", str(counter)).replace("_PATH_", file_name.replace(base_dir, ""))
-			node_data += "[node name=\"FILE_NAME\" type=\"Node2D\" parent=\".\"]\n".replace("FILE_NAME", latest_name)
+			external_dependiences += '[ext_resource path="_PATH_" type="Script" id=COUNTER]\n'.replace("COUNTER", str(counter)).replace("_PATH_", file_name.replace(base_dir, ""))
+			node_data += '[node name="FILE_NAME" type="Node2D" parent="."]\n'.replace("FILE_NAME", latest_name)
 			node_data += "script = ExtResource( COUNTER )\n\n".replace("COUNTER", str(counter))
 
 			counter += 1
 
 		file.store_string(external_dependiences)
 		file.store_string("\n")
-		file.store_string("[node name=\"Root\" type=\"Node2D\"]".replace("Root", type))
+		file.store_string('[node name="Root" type="Node2D"]'.replace("Root", type))
 		file.store_string("\n\n")
 		file.store_string(node_data)
 
@@ -257,7 +257,7 @@ func create_gdscript_arguments(arguments: Array) -> Array:
 				sa.value = "PoolIntArray([])"
 			TYPE_NODE_PATH:
 				sa.type = "NodePath"
-				sa.value = "NodePath(\".\")"
+				sa.value = 'NodePath(".")'
 			TYPE_OBJECT:
 				sa.type = get_object_string(argument["class_name"])
 				sa.value = sa.type + ".new()"
@@ -396,12 +396,12 @@ func get_color_string() -> String:
 func get_string_string() -> String:
 	if ValueCreator.random:
 		if randi() % 3 == 0:
-			return "\".\""
+			return '"."'
 		elif randi() % 3 == 0:
-			return "\"\""
+			return '""'
 		else:
 			return "str(randi() / 100)"
-	return "\"\""
+	return '""'
 
 
 # TODO Update this with upper implementation
@@ -542,7 +542,7 @@ func create_basic_files() -> void:
 			var data_self = ""
 			data_self += "extends " + class_data.name + "\n\n"
 			data_self += "func _process(_delta: float) -> void:\n"
-			data_self += "\tload(\"res://" + prefix + "/" + class_data.name + ".gd\").modify_object(self)"
+			data_self += '\tload("res://' + prefix + "/" + class_data.name + '.gd").modify_object(self)'
 
 			assert(self_file.open("res://GDScript/Self/" + class_data.name + ".gd", File.WRITE) == OK)
 			self_file.store_string(data_self)
@@ -596,7 +596,7 @@ func create_basic_files() -> void:
 
 				data_to_save += "\tif randi() % 2 == 0:\n"
 				if debug_in_runtime:
-					data_to_save += "\t\tprint(\"Executing " + object_type + "." + class_data.function_names[i] + "\")\n"
+					data_to_save += '\t\tprint("Executing ' + object_type + "." + class_data.function_names[i] + '")\n'
 
 				var arguments := create_gdscript_arguments(class_data.arguments[i])
 
@@ -604,7 +604,7 @@ func create_basic_files() -> void:
 					if argument.is_object:
 						assert(ClassDB.class_exists(argument.type))
 						if argument.is_only_reference && use_loaded_resources:
-							data_to_save += "\t\tvar " + argument.name + ": " + argument.type + " = " + " load(\"res://Resources/" + argument.type + ".res\")\n"
+							data_to_save += "\t\tvar " + argument.name + ": " + argument.type + " = " + ' load("res://Resources/' + argument.type + '.res")\n'
 						else:
 							data_to_save += "\t\tvar " + argument.name + ": " + argument.type.trim_prefix("_") + " = " + argument.type.trim_prefix("_") + ".new()\n"
 					else:
@@ -614,12 +614,12 @@ func create_basic_files() -> void:
 							data_to_save += "\t\tvar " + argument.name + ": " + argument.type + " = " + argument.value + "\n"
 
 				if debug_in_runtime:
-					data_to_save += "\t\tprint(\"Parameters["
+					data_to_save += '\t\tprint("Parameters['
 					for j in arguments.size():
-						data_to_save += "\" + str(" + arguments[j].name + ") + \""
+						data_to_save += '" + str(' + arguments[j].name + ') + "'
 						if j != arguments.size() - 1:
 							data_to_save += ", "
-					data_to_save += "]\")\n"
+					data_to_save += ']")\n'
 
 				# Apply data
 				if function_use_objects:
@@ -627,7 +627,7 @@ func create_basic_files() -> void:
 						data_to_save += "\t\tfor _i in range(|||):\n".replace("|||", str(number_of_external_resources))
 						for argument in arguments:
 							if !argument.name.empty() && argument.name != class_data.name:  # Do not allow to recursive execute functions
-								data_to_save += "\t\t\tload(\"res://|||/{}.gd\").modify_object(;;;)\n".replace("|||", get_object_folder(argument.type)).replace("{}", argument.type).replace(
+								data_to_save += '\t\t\tload("res://|||/{}.gd").modify_object(;;;)\n'.replace("|||", get_object_folder(argument.type)).replace("{}", argument.type).replace(
 									";;;", argument.name
 								)
 						data_to_save += "\t\t\tpass\n"

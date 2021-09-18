@@ -1,4 +1,4 @@
-name: 🐧 Linux Builds 1
+name: 🐧 Linux Builds
 on: 
   push:
   pull_request:
@@ -47,4 +47,14 @@ jobs:
         run: |
           echo "-------------------- RUN PROJECT -----------------------"
           DRI_PRIME=0 xvfb-run ./godot.x11.tools.64s FunctionExecutor.tscn 3600 --audio-driver Dummy --video-driver GLES3 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+
+      - name: Store test results
+        uses: actions/upload-artifact@v2
+        with:
+          name: last-run-results
+          path: results.txt
+
+      - name: Check Log
+        run: |
+          echo "-------------------- CHECK LOG -----------------------"
           misc/check_ci_log.py sanitizers_log.txt

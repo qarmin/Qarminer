@@ -81,7 +81,7 @@ func get_gdscript_class_creation(name_of_class: String) -> String:
 		&& !ClassDB.is_parent_class(name_of_class, "Reference")
 		&& !ClassDB.class_has_method(name_of_class, "new")
 	):
-		return "ClassDB.instance(\"" + name_of_class + "\")"
+		return 'ClassDB.instance("' + name_of_class + '")'
 	else:
 		return name_of_class.trim_prefix("_") + ".new()"
 
@@ -109,7 +109,6 @@ func remove_thing(thing: Object) -> void:
 # Returns all available classes to use
 func get_list_of_available_classes(must_be_instantable: bool = true, allow_editor: bool = true) -> Array:
 	var full_class_list: Array = Array(ClassDB.get_class_list())
-	var classes: Array = []
 	full_class_list.sort()
 
 	var custom_classes: Array = []
@@ -147,10 +146,10 @@ func get_list_of_available_classes(must_be_instantable: bool = true, allow_edito
 			continue
 
 		if !must_be_instantable || ClassDB.can_instance(name_of_class):
-			classes.push_back(name_of_class)
+			BasicData.classes.push_back(name_of_class)
 
 #	classes = classes.slice(0, 200)
 
-	print(str(classes.size()) + " choosen classes from all " + str(full_class_list.size()) + " classes.")
+	print(str(BasicData.classes.size()) + " choosen classes from all " + str(full_class_list.size()) + " classes.")
 
-	return classes
+	return BasicData.classes
