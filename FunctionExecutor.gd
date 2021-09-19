@@ -12,10 +12,13 @@ var exiting: bool = false  # Exit after 1 loop?
 var add_to_tree: bool = false  # Adds nodes to tree, freeze godot when removing a lot of nodes
 var use_parent_methods: bool = false  # Allows Node2D use Node methods etc. - it is a little slow option which rarely shows
 var use_always_new_object: bool = false  # Don't allow to "remeber" other function effects
-var number_of_repeats: int = 5  # How many times functions can be repeated
+var number_of_repeats: int = 3  # How many times functions can be repeated
 var shuffle_methods: bool = true
 var miss_some_functions: int = true  # Allows to not execute some functions to be able to get more random results
 var remove_returned_value: bool = true  # Removes returned value from function
+var save_data_to_file: bool = true  # Save data to file(probably this have big performance impact)
+
+var file_handler: File = File.new()
 
 
 # Prepare options for desired type of test
@@ -31,6 +34,7 @@ func _ready() -> void:
 		shuffle_methods = false
 		miss_some_functions = false
 		remove_returned_value = false
+		save_data_to_file = false
 
 		ValueCreator.random = false  # Results in RegressionTestProject must be always reproducible
 		ValueCreator.number = 100
@@ -51,9 +55,16 @@ func _process(_delta: float) -> void:
 
 # Test all functions
 func tests_all_functions() -> void:
+	if save_data_to_file:
+		file_handler.open("res://results.txt", File.WRITE)
+
 	for name_of_class in HelpFunctions.get_list_of_available_classes():
 		if debug_print:
-			print("\n######################################## " + name_of_class + " ########################################")
+			var s: String = "\n######################################## " + name_of_class + " ########################################"
+			if save_data_to_file:
+				file_handler.store_string(s)
+				file_handler.flush()
+			print(s)
 
 		var object: Object = ClassDB.instance(name_of_class)
 		assert(object != null, "Object must be instantable")
@@ -69,7 +80,11 @@ func tests_all_functions() -> void:
 			method_list.shuffle()
 
 		if debug_print && !use_always_new_object:
-			print("\tvar temp_variable = " + HelpFunctions.get_gdscript_class_creation(name_of_class))
+			var s: String = "\tvar temp_variable = " + HelpFunctions.get_gdscript_class_creation(name_of_class)
+			if save_data_to_file:
+				file_handler.store_string("\n" + s)
+				file_handler.flush()
+			print(s)
 
 		for _i in range(number_of_repeats):
 			for method_data in method_list:
@@ -94,6 +109,11 @@ func tests_all_functions() -> void:
 							if i != arguments.size() - 1:
 								to_print += ", "
 						to_print += ")"
+
+						if save_data_to_file:
+							file_handler.store_string("\n" + to_print)
+							file_handler.flush()
+
 						print(to_print)
 
 					var ret = object.callv(method_data["name"], arguments)
