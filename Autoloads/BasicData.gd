@@ -228,10 +228,11 @@ var disabled_classes: Array = [
 	"FontData",  # A lot of crashes 52817
 	"InputEventShortcut",  # 52191
 	"MultiplayerAPI",  # Crashes TODO
-	"SkeletonModificationStack3D",  # TOO MUCH CRASHES
-	"SkeletonModification2DPhysicalBones",
-	"SkeletonModification2DLookAt",
-	"SkeletonModification2DTwoBoneIK",
+#	"SkeletonModificationStack3D",  # TOO MUCH CRASHES
+#	"SkeletonModification2DPhysicalBones",
+#	"SkeletonModification2DLookAt",
+#	"SkeletonModification2DTwoBoneIK",
+#	"SkeletonModification2DCCDIK",
 	"InputMap",
 	"OS", # Without underscore
 ]
