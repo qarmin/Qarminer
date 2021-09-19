@@ -16,6 +16,8 @@ var function_exceptions: Array = [
 	"get_singleton",
 	"get_menu",
 	"compress_from_channels",  # Image
+	"open_midi_inputs",
+	"load_threaded_request",
 	###
 	### Crashes TODO
 	###
@@ -227,6 +229,11 @@ var disabled_classes: Array = [
 	"InputEventShortcut",  # 52191
 	"MultiplayerAPI",  # Crashes TODO
 	"SkeletonModificationStack3D",  # TOO MUCH CRASHES
+	"SkeletonModification2DPhysicalBones",
+	"SkeletonModification2DLookAt",
+	"SkeletonModification2DTwoBoneIK",
+	"InputMap",
+	"OS", # Without underscore
 ]
 
 # Exceptions for e.g. float, String or int functions

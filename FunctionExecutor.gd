@@ -10,7 +10,7 @@ extends Node
 var debug_print: bool = true
 var exiting: bool = false  # Exit after 1 loop?
 var add_to_tree: bool = false  # Adds nodes to tree, freeze godot when removing a lot of nodes
-var use_parent_methods: bool = false  # Allows Node2D use Node methods etc. - it is a little slow option which rarely shows
+var use_parent_methods: bool = true  # Allows Node2D use Node methods etc. - it is a little slow option
 var use_always_new_object: bool = false  # Don't allow to "remeber" other function effects
 var number_of_repeats: int = 3  # How many times functions can be repeated
 var shuffle_methods: bool = true
@@ -122,7 +122,7 @@ func tests_all_functions() -> void:
 							HelpFunctions.remove_thing(ret)
 
 					for argument in arguments:
-						if argument is Object:
+						if argument is Object && ret != null:
 							HelpFunctions.remove_thing(argument)
 
 					if use_always_new_object:

@@ -195,7 +195,9 @@ func get_object(object_name: String) -> Object:
 		if randi() % 4 == 0:
 			return null
 
-		var arr: Array = ClassDB.get_inheriters_from_class("Object")
+		var arr: Array = ClassDB.get_inheriters_from_class(object_name)
+		if arr.is_empty():
+			return null
 
 		var element: String = arr[randi() % arr.size()]
 

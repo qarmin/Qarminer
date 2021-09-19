@@ -180,6 +180,6 @@ func initialize_list_of_available_classes(must_be_instantable: bool = true, allo
 		if !must_be_instantable || ClassDB.can_instantiate(name_of_class):
 			BasicData.classes.push_back(name_of_class)
 
-#	BasicData.classes = BasicData.classes.slice(600, 800)
+#	BasicData.classes = BasicData.classes.slice(350, 400)
 
 	print(str(BasicData.classes.size()) + " choosen classes from all " + str(full_class_list.size()) + " classes.")
