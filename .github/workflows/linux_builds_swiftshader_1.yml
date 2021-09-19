@@ -1,4 +1,4 @@
-name: 🐧 SwiftShader 8
+name: 🐧 SwiftShader 1
 on: [push, pull_request]
 
 jobs:
@@ -70,4 +70,14 @@ jobs:
       - name: Run Godot
         run: |
           VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json DRI_PRIME=0 xvfb-run ./godot.linuxbsd.tools.64s 3600 --audio-driver Dummy --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+
+      - name: Store test results
+        uses: actions/upload-artifact@v2
+        with:
+          name: last-run-results
+          path: results.txt
+
+      - name: Check Log
+        run: |
+          echo "-------------------- CHECK LOG -----------------------"
           misc/check_ci_log.py sanitizers_log.txt

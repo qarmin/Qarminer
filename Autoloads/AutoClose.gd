@@ -1,7 +1,7 @@
 extends Node
 
 # Singleton to automatically close project after some amount of time
-# By default closing is disabled
+# By default closing project is disabled
 
 var close_order: bool = false
 

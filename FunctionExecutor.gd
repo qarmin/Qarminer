@@ -12,11 +12,18 @@ var exiting: bool = false  # Exit after 1 loop?
 var add_to_tree: bool = false  # Adds nodes to tree, freeze godot when removing a lot of nodes
 var use_parent_methods: bool = false  # Allows Node2D use Node methods etc. - it is a little slow option which rarely shows
 var use_always_new_object: bool = false  # Don't allow to "remeber" other function effects
-var number_of_repeats: int = 5  # How many times functions can be repeated
+var number_of_repeats: int = 3  # How many times functions can be repeated
 var shuffle_methods: bool = true
 var miss_some_functions: int = true  # Allows to not execute some functions to be able to get more random results
+var remove_returned_value: bool = true  # Removes returned value from function
+var save_data_to_file: bool = true  # Save data to file(not big performance impact as I exepected)
+
+var file_handler: File = File.new()
+
+# TODO save all data about functions to Array and then execute all functions
 
 
+# Prepare options for desired type of test
 func _ready() -> void:
 	ValueCreator.should_be_always_valid = false
 
@@ -27,12 +34,18 @@ func _ready() -> void:
 		number_of_repeats = 1
 		shuffle_methods = false
 		miss_some_functions = false
+		remove_returned_value = false
+		save_data_to_file = false
 
 		ValueCreator.random = false  # Results in RegressionTestProject must be always reproducible
 		ValueCreator.number = 100
 	else:
 		ValueCreator.random = true
 		ValueCreator.number = 100
+
+	# Initialize array of objects at the end
+	HelpFunctions.initialize_list_of_available_classes()
+	HelpFunctions.initialize_array_with_allowed_functions(use_parent_methods, BasicData.function_exceptions)
 
 	if BasicData.regression_test_project:
 		tests_all_functions()
@@ -47,31 +60,36 @@ func _process(_delta: float) -> void:
 
 # Test all functions
 func tests_all_functions() -> void:
-	for name_of_class in BasicData.get_list_of_available_classes():
+	if save_data_to_file:
+		file_handler.open("res://results.txt", File.WRITE)
+
+	for name_of_class in BasicData.allowed_thing.keys():
 		if debug_print:
-			print("\n######################################## " + name_of_class + " ########################################")
+			var s: String = "\n######################################## " + name_of_class + " ########################################"
+			if save_data_to_file:
+				file_handler.store_string(s)
+				file_handler.flush()
+			print(s)
 
 		var object: Object = ClassDB.instantiate(name_of_class)
-		assert(object != null, "Object must be instantable")
+		assert(object != null)  #, "Object must be instantable")
 		if add_to_tree:
 			if object is Node:
 				add_child(object)
-		var method_list: Array = ClassDB.class_get_method_list(name_of_class, !use_parent_methods)
-
-		# Removes excluded methods
-		BasicData.remove_disabled_methods(method_list, BasicData.function_exceptions)
+		var method_list: Array = BasicData.allowed_thing[name_of_class]
 
 		if shuffle_methods:
 			method_list.shuffle()
 
 		if debug_print && !use_always_new_object:
-			print("\tvar temp_variable = " + BasicData.get_gdscript_class_creation(name_of_class))
+			var s: String = "\tvar temp_variable = " + HelpFunctions.get_gdscript_class_creation(name_of_class)
+			if save_data_to_file:
+				file_handler.store_string("\n" + s)
+				file_handler.flush()
+			print(s)
 
 		for _i in range(number_of_repeats):
 			for method_data in method_list:
-				if !BasicData.check_if_is_allowed(method_data):
-					continue
-
 				if !miss_some_functions || randi() % 2 == 0:
 					var arguments: Array = ParseArgumentType.parse_and_return_objects(method_data, name_of_class, debug_print)
 
@@ -79,7 +97,7 @@ func tests_all_functions() -> void:
 						var to_print: String
 						if use_always_new_object:
 							to_print = "GDSCRIPT CODE:     "
-							to_print += BasicData.get_gdscript_class_creation(name_of_class)
+							to_print += HelpFunctions.get_gdscript_class_creation(name_of_class)
 						else:
 							to_print = "\ttemp_variable"
 
@@ -90,28 +108,29 @@ func tests_all_functions() -> void:
 							if i != arguments.size() - 1:
 								to_print += ", "
 						to_print += ")"
+
+						if save_data_to_file:
+							file_handler.store_string("\n" + to_print)
+							file_handler.flush()
+
 						print(to_print)
 
-					object.callv(method_data.get("name"), arguments)
+					var ret = object.callv(method_data["name"], arguments)
+
+					if remove_returned_value:
+						if ret is Object && ret != null:
+							HelpFunctions.remove_thing(ret)
 
 					for argument in arguments:
-						if argument is Node:
-							argument.queue_free()
-						elif argument is Object && !(argument is RefCounted):
-							argument.free()
+						if argument is Object:
+							HelpFunctions.remove_thing(argument)
 
 					if use_always_new_object:
-						if object is Node:
-							object.queue_free()
-						elif object is Object && !(object is RefCounted):
-							object.free()
+						HelpFunctions.remove_thing(object)
 
 						object = ClassDB.instantiate(name_of_class)
 						if add_to_tree:
 							if object is Node:
 								add_child(object)
 
-		if object is Node:
-			object.queue_free()
-		elif object is Object && !(object is RefCounted):
-			object.free()
+		HelpFunctions.remove_thing(object)

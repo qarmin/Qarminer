@@ -14,3 +14,7 @@ GDScript/
 Node2D.gd
 Node2D.tscn
 Resources/
+
+# Config
+classes.txt
+results.txt
