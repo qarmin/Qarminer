@@ -49,6 +49,7 @@ func check_if_is_allowed(method_data: Dictionary) -> bool:
 			|| t == TYPE_RECT2
 			|| t == TYPE_RID
 			|| t == TYPE_STRING
+			|| t == TYPE_STRING_ARRAY
 			|| t == TYPE_TRANSFORM
 			|| t == TYPE_TRANSFORM2D
 			|| t == TYPE_VECTOR2
@@ -56,7 +57,7 @@ func check_if_is_allowed(method_data: Dictionary) -> bool:
 			|| t == TYPE_VECTOR3
 			|| t == TYPE_VECTOR3_ARRAY
 		):
-			print("----------------------------------------------------------- TODO - MISSING TYPE, ADD SUPPORT IT")  # Add assert here to get info which type is missing
+			print("----------------------------------------------------------- TODO - MISSING TYPE in function " + method_data["name"] + "  --  Variant type - " + str(t))
 			return false
 
 		if name_of_class.empty():
@@ -86,16 +87,19 @@ func get_gdscript_class_creation(name_of_class: String) -> String:
 		return name_of_class.trim_prefix("_") + ".new()"
 
 
-# Removes disabled methods from list
-func remove_disabled_methods(method_list: Array, exceptions: Array) -> void:
+# Removes disabled methods from list - TODO, for now it do unecessary duplication
+# because passing by reference seems to be broken in 4.0
+func remove_disabled_methods(method_list: Array, exceptions: Array) -> Array:
+	var new_method_list: Array = method_list.duplicate(true)
 	for exception in exceptions:
 		var index: int = -1
-		for method_index in range(method_list.size()):
-			if method_list[method_index]["name"] == exception:
+		for method_index in range(new_method_list.size()):
+			if new_method_list[method_index]["name"] == exception:
 				index = method_index
 				break
 		if index != -1:
-			method_list.remove(index)
+			new_method_list.remove(index)
+	return new_method_list
 
 
 # Removes specific object/node
@@ -106,8 +110,28 @@ func remove_thing(thing: Object) -> void:
 		thing.free()
 
 
+# Initialize array which contains only allowed Functions
+func initialize_array_with_allowed_functions(use_parent_methods: bool, disabled_methods: Array):
+	assert(!BasicData.classes.empty(), "Missing initalization of classes")
+	var class_info: Dictionary = {}
+
+	for name_of_class in BasicData.classes:
+		var old_method_list: Array = []
+		var new_method_list: Array = []
+
+		old_method_list = ClassDB.class_get_method_list(name_of_class, !use_parent_methods)
+		old_method_list = remove_disabled_methods(old_method_list, disabled_methods)
+		for method_data in old_method_list:
+			if !HelpFunctions.check_if_is_allowed(method_data):
+				continue
+			new_method_list.append(method_data)
+
+		class_info[name_of_class] = new_method_list
+	BasicData.allowed_thing = class_info
+
+
 # Returns all available classes to use
-func get_list_of_available_classes(must_be_instantable: bool = true, allow_editor: bool = true) -> Array:
+func initialize_list_of_available_classes(must_be_instantable: bool = true, allow_editor: bool = true) -> void:
 	var full_class_list: Array = Array(ClassDB.get_class_list())
 	full_class_list.sort()
 
@@ -151,5 +175,3 @@ func get_list_of_available_classes(must_be_instantable: bool = true, allow_edito
 #	classes = classes.slice(0, 200)
 
 	print(str(BasicData.classes.size()) + " choosen classes from all " + str(full_class_list.size()) + " classes.")
-
-	return BasicData.classes

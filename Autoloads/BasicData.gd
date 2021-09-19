@@ -4,15 +4,16 @@ extends Node
 
 var regression_test_project: bool = false  # Set it to true in RegressionTestProject
 var classes: Array = []  # List of all allowed classes
+var allowed_thing: Dictionary = {}  # List of all classes with
 
 # Globablly disabled functions for all classes
 var function_exceptions: Array = [
 	###
 	### Crashes TODO
 	###
-	"follow_property", #
-	"poll", # FREEZE
-	"_thread_done", #
+	"follow_property",  #
+	"poll",  # FREEZE
+	"_thread_done",  #
 	###
 	### Dummy Rasterizer(CRASHES)
 	###
@@ -168,8 +169,8 @@ var function_exceptions: Array = [
 	"init_ref",
 	"reference",
 	"unreference",
-#	"new",
-#	"duplicate",
+	#	"new",
+	#	"duplicate",
 	"queue_free",
 	"free",
 	"remove_and_skip",

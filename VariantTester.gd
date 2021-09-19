@@ -14,7 +14,6 @@ var thing
 #	print("TEST PASSED")
 
 
-#func _ready() -> void:
 func _process(delta) -> void:
 	if BasicData.regression_test_project:
 		ValueCreator.random = false  # Results in RegressionTestProject must be always reproducible
@@ -36,10 +35,10 @@ func tests_all_functions() -> void:
 			print("\n#################### " + type_to_name(type) + " ####################")
 
 		thing = get_basic_thing(type)
-		var method_list: Array = ClassDB.get_this_now(type)
+		var method_list: Array = ClassDB.get_variant_method_list(type)
 
 		# Removes excluded methods
-		BasicData.remove_disabled_methods(method_list, BasicData.variant_exceptions)
+		method_list = BasicData.remove_disabled_methods(method_list, BasicData.variant_exceptions)
 
 		for method_data in method_list:
 			if randi() % 2:

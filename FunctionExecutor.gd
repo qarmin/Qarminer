@@ -22,6 +22,7 @@ var file_handler: File = File.new()
 
 # TODO save all data about functions to Array and then execute all functions
 
+
 # Prepare options for desired type of test
 func _ready() -> void:
 	ValueCreator.should_be_always_valid = false
@@ -42,6 +43,10 @@ func _ready() -> void:
 		ValueCreator.random = true
 		ValueCreator.number = 100
 
+	# Initialize array of objects at the end
+	HelpFunctions.initialize_list_of_available_classes()
+	HelpFunctions.initialize_array_with_allowed_functions(use_parent_methods, BasicData.function_exceptions)
+
 	if BasicData.regression_test_project:
 		tests_all_functions()
 
@@ -58,7 +63,7 @@ func tests_all_functions() -> void:
 	if save_data_to_file:
 		file_handler.open("res://results.txt", File.WRITE)
 
-	for name_of_class in HelpFunctions.get_list_of_available_classes():
+	for name_of_class in BasicData.allowed_thing.keys():
 		if debug_print:
 			var s: String = "\n######################################## " + name_of_class + " ########################################"
 			if save_data_to_file:
@@ -71,10 +76,7 @@ func tests_all_functions() -> void:
 		if add_to_tree:
 			if object is Node:
 				add_child(object)
-		var method_list: Array = ClassDB.class_get_method_list(name_of_class, !use_parent_methods)
-
-		# Removes excluded methods
-		HelpFunctions.remove_disabled_methods(method_list, BasicData.function_exceptions)
+		var method_list: Array = BasicData.allowed_thing[name_of_class]
 
 		if shuffle_methods:
 			method_list.shuffle()
@@ -88,9 +90,6 @@ func tests_all_functions() -> void:
 
 		for _i in range(number_of_repeats):
 			for method_data in method_list:
-				if !HelpFunctions.check_if_is_allowed(method_data):
-					continue
-
 				if !miss_some_functions || randi() % 2 == 0:
 					var arguments: Array = ParseArgumentType.parse_and_return_objects(method_data, name_of_class, debug_print)
 
