@@ -22,12 +22,15 @@ var file_handler: File = File.new()
 
 # TODO save all data about functions to Array and then execute all functions
 
+var number_to_track_variables: int = 0
+
 
 # Prepare options for desired type of test
 func _ready() -> void:
 	ValueCreator.should_be_always_valid = false
 
 	if BasicData.regression_test_project:
+		debug_print = false
 		add_to_tree = false
 		use_parent_methods = false
 		use_always_new_object = true
@@ -64,12 +67,13 @@ func tests_all_functions() -> void:
 		file_handler.open("res://results.txt", File.WRITE)
 
 	for name_of_class in BasicData.allowed_thing.keys():
-		if debug_print:
-			var s: String = "\n######################################## " + name_of_class + " ########################################"
+		if debug_print || save_data_to_file:
+			var to_print: String = "\n######################################## " + name_of_class + " ########################################"
 			if save_data_to_file:
-				file_handler.store_string(s)
+				file_handler.store_string(to_print)
 				file_handler.flush()
-			print(s)
+			if debug_print:
+				print(to_print)
 
 		var object: Object = ClassDB.instance(name_of_class)
 		assert(object != null, "Object must be instantable")
@@ -81,25 +85,27 @@ func tests_all_functions() -> void:
 		if shuffle_methods:
 			method_list.shuffle()
 
-		if debug_print && !use_always_new_object:
-			var s: String = "\tvar temp_variable = " + HelpFunctions.get_gdscript_class_creation(name_of_class)
+		if (debug_print || save_data_to_file) && !use_always_new_object:
+			number_to_track_variables += 1
+			var to_print: String = "\tvar temp_variable" + str(number_to_track_variables) + " = " + HelpFunctions.get_gdscript_class_creation(name_of_class)
 			if save_data_to_file:
-				file_handler.store_string("\n" + s)
+				file_handler.store_string("\n" + to_print)
 				file_handler.flush()
-			print(s)
+			if debug_print:
+				print(to_print)
 
 		for _i in range(number_of_repeats):
 			for method_data in method_list:
 				if !miss_some_functions || randi() % 2 == 0:
 					var arguments: Array = ParseArgumentType.parse_and_return_objects(method_data, name_of_class, debug_print)
 
-					if debug_print:
+					if debug_print || save_data_to_file:
 						var to_print: String
 						if use_always_new_object:
 							to_print = "GDSCRIPT CODE:     "
 							to_print += HelpFunctions.get_gdscript_class_creation(name_of_class)
 						else:
-							to_print = "\ttemp_variable"
+							to_print = "\ttemp_variable" + str(number_to_track_variables)
 
 						to_print += "." + method_data["name"] + "("
 
@@ -112,8 +118,8 @@ func tests_all_functions() -> void:
 						if save_data_to_file:
 							file_handler.store_string("\n" + to_print)
 							file_handler.flush()
-
-						print(to_print)
+						if debug_print:
+							print(to_print)
 
 					var ret = object.callv(method_data["name"], arguments)
 
