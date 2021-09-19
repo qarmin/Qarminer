@@ -16,14 +16,14 @@ var number_of_repeats: int = 3  # How many times functions can be repeated
 var shuffle_methods: bool = true
 var miss_some_functions: int = true  # Allows to not execute some functions to be able to get more random results
 var remove_returned_value: bool = true  # Removes returned value from function
-var save_data_to_file: bool = true  # Save data to file(probably this have big performance impact)
+var save_data_to_file: bool = true  # Save data to file(not big performance impact as I exepected)
 
 var file_handler: File = File.new()
 
+# TODO save all data about functions to Array and then execute all functions
 
 # Prepare options for desired type of test
 func _ready() -> void:
-	# TODO when argument is not valid print ClassDB.instance("AAA") instead AAA.new()
 	ValueCreator.should_be_always_valid = false
 
 	if BasicData.regression_test_project:

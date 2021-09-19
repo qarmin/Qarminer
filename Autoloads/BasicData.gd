@@ -6,55 +6,72 @@ var regression_test_project: bool = false  # Set it to true in RegressionTestPro
 var classes: Array = []  # List of all allowed classes
 
 # Globablly disabled functions for all classes
-# Should be better if they would be disabled in this way - Class.Method, because
-# now it is possible to block Node2D.new() if we just want to block only Node3D.new()
 var function_exceptions: Array = [
-	### CRASHES
-	"follow_property", #TODo
+	###
+	### Crashes TODO
+	###
+	"follow_property", #
 	"poll", # FREEZE
-	"_thread_done", # TODO
+	"_thread_done", #
+	###
 	### Dummy Rasterizer(CRASHES)
+	###
 	"set_data",  # ImageTexture
 	"set_YCbCr_imgs",  # CameraFeed
-	"remove_line",  # 49571
+	"remove_line",  # 49571 - Memory leak
+	###
 	### Image functions(CRASHES)
+	###
 	"compress",
 	"decompress",
 	"convert",
 	"save_png_to_buffer",  # uses decompress
-	### Input crashes, not cherrypicked #GH 47636
+	###
+	### Input crashes, still are some problems
+	###
 	"_gui_input",
 	"_input",
 	"_unhandled_input",
 	"_unhandled_key_input",
 	"_vp_input",
 	"_vp_unhandled_input",
-	"_direct_state_changed",  #GH 46003 - Not cherrypicked
-	"connect_to_signal",  # GH 47572 - Not cherrypicked
+	###
+	### Reported crashes
+	###
+	"_direct_state_changed",  #46003 - Not cherrypicked
+	"connect_to_signal",  # 47572 - Not cherrypicked
 	"set_function",  # not cherrypick
-	"_editor_settings_changed",  # GH 45979
-	"set_script",  #GH 46120
-	"set_icon",  #GH 46189
-	"set_editor_hint",  #GH 46252
-	"set_probe_data",  #GH 46570
-	"add_vertex",  #GH 47066
+	"_editor_settings_changed",  # 45979
+	"set_script",  #46120
+	"set_icon",  #46189
+	"set_editor_hint",  #46252
+	"set_probe_data",  #46570
+	"add_vertex",  #47066
 	"create_shape_owner",  #47135
 	"shape_owner_get_owner",  #47135
-	"get_bind_bone",  #GH 47358
-	"get_bind_name",  #GH 47358
-	"get_bind_pose",  #GH 47358
-	# Crashes due removing values returned by function
+	"get_bind_bone",  #47358
+	"get_bind_name",  #47358
+	"get_bind_pose",  #47358
+	###
+	### Crashes due removing values returned by function
+	###
 	"get_main_loop",  # _Engine.get_main_loop - not good idea to remove main loop
 	"get_direct_space_state",
-	# TODO Check this later, but not sure if this is worth to check
+	###
+	### Not worth to check, because users rarely us this
+	###
 	"propagate_notification",
 	"notification",
-	# Error spam when using it, maybe it would be good to report also this as issues
+	###
+	### Error spam when using it TODO
+	###
 	"add_sphere",
 	"_update_inputs",
 	"update_bitmask_region",
 	"set_enabled_inputs",
-	# Slow Function
+	###
+	### Slow Function
+	###
 	"load_webp_from_buffer",
 	"_update_sky",
 	"interpolate_baked",
@@ -76,10 +93,9 @@ var function_exceptions: Array = [
 	"is_on_screen",
 	"set_rings",
 	"set_amount",
-	# Undo/Redo function which doesn't provide enough information about types of objects, probably due vararg(variable size argument)
-	#	"add_do_method",
-	#	"add_undo_method",
-	# Do not save files and create files and folders
+	###
+	### Do not save files and create files and folders, this probably can be enabled in CI
+	###
 	"pck_start",
 	"save",
 	"save_png",
@@ -92,22 +108,30 @@ var function_exceptions: Array = [
 	"save_exr",
 	"dump_resources_to_file",
 	"dump_memory_to_file",
-	# This also allow to save files
+	###
+	### This also allow to save files
+	###
 	"open",
 	"open_encrypted",
 	"open_encrypted_with_pass",
 	"open_compressed",
-	# Do not warp mouse
+	###
+	### Do not warp mouse, because I'm unable to do anything
+	###
 	"warp_mouse",
 	"warp_mouse_position",
-	# OS
+	###
+	### OS
+	###
 	"kill",
 	"shell_open",
 	"execute",
+	"alert",  # Stupid alert window opens
+	###
+	### Godot freeze or run very cslow
+	###
 	"delay_usec",
 	"delay_msec",
-	"alert",  # Stupid alert window opens
-	# Godot Freeze/Very slow
 	"wait_to_finish",
 	"accept_stream",
 	"connect_to_stream",
@@ -116,21 +140,26 @@ var function_exceptions: Array = [
 	"debug_bake",
 	"bake",
 	"set_gizmo",  # Stupid function, needs as parameter an object which can't be instanced # TODO, create issue to hide it
-	# Spams Output
+	###
+	### Spams Output and aren't very useful
+	###
 	"print_tree",
 	"print_stray_nodes",
 	"print_tree_pretty",
 	"print_all_textures_by_size",
 	"print_all_resources",
 	"print_resources_in_use",
-	# Do not call other functions
+	###
+	### Can call other functions and broke everything
+	###
 	"_call_function",
 	"call",
 	"call_deferred",
 	"callv",
-	# Looks like a bug in FuncRef, probably but not needed, because it call other functions
 	"call_func",
-	# Too dangerous, because add, mix and remove randomly nodes and objects
+	###
+	### Too dangerous, because add, mix and remove randomly nodes and objects
+	###
 	"replace_by",
 	"create_instance",
 	"set_owner",
@@ -139,8 +168,8 @@ var function_exceptions: Array = [
 	"init_ref",
 	"reference",
 	"unreference",
-	#	"new",
-	#	"duplicate",
+#	"new",
+#	"duplicate",
 	"queue_free",
 	"free",
 	"remove_and_skip",
@@ -150,27 +179,41 @@ var function_exceptions: Array = [
 	"add_child",
 	"add_child_below_node",
 	"add_sibling",
-	# Goost
-	# TODO: these take too long to execute, does not make sense to limit number of iterations ether.
+	#####
+	##### Goost
+	##### TODO: these take too long to execute, does not make sense to limit number of iterations ether.
+	#####
 	"smooth_polyline_approx",
 	"smooth_polygon_approx",
 ]
 
-# Globally disabled classes which causes bugs or are very hard to us
+# Globally disabled classes which causes bugs
 var disabled_classes: Array = [
+	###
+	### Crashes, Freezes
+	###
 	"ProjectSettings",  # Don't mess with project settings, because they can broke entire your workflow
 	"EditorSettings",  # Also don't mess with editor settings
-	"_OS",  # This may sometimes crash compositor, but it should be tested manually sometimes
 	"GDScript",  # Broke script
 	"SceneTree",
 	"JNISingleton",  # Freeze - who use it?
-	# Only one class - JavaClass returns Null when using JavaClass.new().get_class
+	###
+	### JavaClass is only functions that returns Null when using JavaClass.new().get_class
+	###
 	"JavaClass",
-	# Just don't use these because they are not normal things
+	###
+	### Just don't use these because they are not normal things
+	###
 	"_Thread",
 	"_Semaphore",
 	"_Mutex",
+	###
+	### OS - in normal testing, can broke everything, but can be used in CI
+	###
+	"_OS",
 ]
+
+# Exceptions for e.g. float, String or int functions
 var variant_exceptions: Array = [
 # TODO
 ]
