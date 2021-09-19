@@ -314,7 +314,7 @@ func create_gdscript_arguments(arguments: Array) -> Array:
 				sa.type = "PoolVector3Array"
 				sa.value = "PoolVector3Array([])"
 			_:
-				assert(false, "Missing type, needs to be added to project")
+				assert(false, "Missing type --" + str(argument["type"]) + "--, needs to be added to project")
 		argument_array.append(sa)
 
 	return argument_array

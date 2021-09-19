@@ -80,7 +80,7 @@ func parse_and_return_objects(method_data: Dictionary, name_of_class: String, de
 			TYPE_VECTOR3_ARRAY:
 				arguments_array.push_back(ValueCreator.get_pool_vector3_array())
 			_:
-				assert(false, "Missing type, needs to be added to project")
+				assert(false, "Missing type --" + str(argument.type) + "--, needs to be added to project")
 
 	if debug_print:
 		print("\n" + name_of_class + "." + method_data["name"] + " --- executing with " + str(arguments_array.size()) + " parameters " + str(arguments_array))
@@ -273,6 +273,6 @@ func return_gdscript_code_which_run_this_object(data) -> String:
 					return_string += ", "
 			return_string += "])"
 		_:
-			assert(false, "Missing type, needs to be added to project")
+			assert(false, "Missing type --" + str(typeof(data)) + "--, needs to be added to project")
 
 	return return_string

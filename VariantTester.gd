@@ -147,7 +147,7 @@ func type_to_name(type: int) -> String:
 		TYPE_NIL:
 			assert(false, "Variant not supported")
 		_:
-			assert(false, "Missing type, needs to be added to project")
+			assert(false, "Missing type --" + str(type) + "--, needs to be added to project")
 
 	return name
 
@@ -211,6 +211,6 @@ func get_basic_thing(type: int):
 		TYPE_NIL:
 			assert(false, "Variant not supported")
 		_:
-			assert(false, "Missing type, needs to be added to project")
+			assert(false, "Missing type --" + str(type) + "--, needs to be added to project")
 
 	return thing

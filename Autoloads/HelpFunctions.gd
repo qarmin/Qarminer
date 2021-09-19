@@ -57,7 +57,7 @@ func check_if_is_allowed(method_data: Dictionary) -> bool:
 			|| t == TYPE_VECTOR3
 			|| t == TYPE_VECTOR3_ARRAY
 		):
-			print("----------------------------------------------------------- TODO - MISSING TYPE in function " + method_data["name"] + "  --  Variant type - " + str(t))
+			print("MISSING TYPE in function " + method_data["name"] + "  --  Variant type - " + str(t))
 			return false
 
 		if name_of_class.empty():
@@ -122,7 +122,7 @@ func initialize_array_with_allowed_functions(use_parent_methods: bool, disabled_
 		old_method_list = ClassDB.class_get_method_list(name_of_class, !use_parent_methods)
 		old_method_list = remove_disabled_methods(old_method_list, disabled_methods)
 		for method_data in old_method_list:
-			if !HelpFunctions.check_if_is_allowed(method_data):
+			if !check_if_is_allowed(method_data):
 				continue
 			new_method_list.append(method_data)
 
