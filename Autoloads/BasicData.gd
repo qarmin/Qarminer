@@ -203,6 +203,10 @@ var disabled_classes: Array = [
 	###
 	"JavaClass",
 	###
+	### Android
+	###
+	"JavaClassWrapper", # Looks that JavaClassWrapper.new() crashes android
+	###
 	### Just don't use these because they are not normal things
 	###
 	"_Thread",
