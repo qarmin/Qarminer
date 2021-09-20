@@ -44,7 +44,7 @@ func _ready() -> void:
 		ValueCreator.number = 100
 
 	# Initialize array of objects at the end
-	HelpFunctions.initialize_list_of_available_classes()
+	HelpFunctions.initialize_list_of_available_classes(true,true,[])
 	HelpFunctions.initialize_array_with_allowed_functions(use_parent_methods, BasicData.function_exceptions)
 
 	if BasicData.regression_test_project:

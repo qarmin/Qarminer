@@ -225,6 +225,7 @@ var disabled_classes: Array = [
 	###
 	### Godot 4.0
 	###
+	"TextEdit", # Crashes 52876
 	"FontData",  # A lot of crashes 52817
 	"InputEventShortcut",  # 52191
 	"MultiplayerAPI",  # Crashes TODO
