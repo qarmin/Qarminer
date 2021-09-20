@@ -131,7 +131,12 @@ func initialize_array_with_allowed_functions(use_parent_methods: bool, disabled_
 
 
 # Returns all available classes to use
-func initialize_list_of_available_classes(must_be_instantable: bool = true, allow_editor: bool = true) -> void:
+func initialize_list_of_available_classes(must_be_instantable: bool = true, allow_editor: bool = true, available_classes : Array = []) -> void:
+	if !available_classes.empty():
+		available_classes.sort()
+		BasicData.classes = available_classes
+		return
+	
 	var full_class_list: Array = Array(ClassDB.get_class_list())
 	full_class_list.sort()
 
