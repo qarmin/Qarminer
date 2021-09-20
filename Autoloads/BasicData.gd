@@ -39,6 +39,8 @@ var function_exceptions: Array = [
 	###
 	### Reported crashes
 	###
+	"unparent_bone_and_rest", #52875 Freeze
+	"create_action", #50769
 	"_direct_state_changed",  #46003 - Not cherrypicked
 	"connect_to_signal",  # 47572 - Not cherrypicked
 	"set_function",  # not cherrypick
