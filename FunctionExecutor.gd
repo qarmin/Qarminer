@@ -10,13 +10,15 @@ extends Node
 var debug_print: bool = true
 var exiting: bool = false  # Exit after 1 loop?
 var add_to_tree: bool = false  # Adds nodes to tree, freeze godot when removing a lot of nodes
-var use_parent_methods: bool = true  # Allows Node2D use Node methods etc. - it is a little slow option
+var use_parent_methods: bool = false  # Allows Node2D use Node methods etc. - it is a little slow option
 var use_always_new_object: bool = false  # Don't allow to "remeber" other function effects
 var number_of_repeats: int = 3  # How many times functions can be repeated
 var shuffle_methods: bool = true
 var miss_some_functions: int = true  # Allows to not execute some functions to be able to get more random results
 var remove_returned_value: bool = true  # Removes returned value from function
 var save_data_to_file: bool = true  # Save data to file(not big performance impact as I exepected)
+
+var number_counter : int = 0
 
 var file_handler: File = File.new()
 
@@ -44,9 +46,12 @@ func _ready() -> void:
 		ValueCreator.number = 100
 
 	# Initialize array of objects at the end
+	# In latest array can be definied functions to speedup searching for function at beggining
 	HelpFunctions.initialize_list_of_available_classes(true,true,[])
 	HelpFunctions.initialize_array_with_allowed_functions(use_parent_methods, BasicData.function_exceptions)
 
+	if save_data_to_file:
+		file_handler.open("res://results.txt", File.WRITE)
 	if BasicData.regression_test_project:
 		tests_all_functions()
 
@@ -60,10 +65,9 @@ func _process(_delta: float) -> void:
 
 # Test all functions
 func tests_all_functions() -> void:
-	if save_data_to_file:
-		file_handler.open("res://results.txt", File.WRITE)
 
 	for name_of_class in BasicData.allowed_thing.keys():
+		number_counter+=1
 		if debug_print:
 			var s: String = "\n######################################## " + name_of_class + " ########################################"
 			if save_data_to_file:
@@ -82,7 +86,7 @@ func tests_all_functions() -> void:
 			method_list.shuffle()
 
 		if debug_print && !use_always_new_object:
-			var s: String = "\tvar temp_variable = " + HelpFunctions.get_gdscript_class_creation(name_of_class)
+			var s: String = "\tvar temp_variable"+str(number_counter)+" = " + HelpFunctions.get_gdscript_class_creation(name_of_class)
 			if save_data_to_file:
 				file_handler.store_string("\n" + s)
 				file_handler.flush()
@@ -99,7 +103,7 @@ func tests_all_functions() -> void:
 							to_print = "GDSCRIPT CODE:     "
 							to_print += HelpFunctions.get_gdscript_class_creation(name_of_class)
 						else:
-							to_print = "\ttemp_variable"
+							to_print = "\ttemp_variable"+str(number_counter)
 
 						to_print += "." + method_data["name"] + "("
 
@@ -122,7 +126,7 @@ func tests_all_functions() -> void:
 							HelpFunctions.remove_thing(ret)
 
 					for argument in arguments:
-						if argument is Object && ret != null:
+						if argument is Object && argument != null:
 							HelpFunctions.remove_thing(argument)
 
 					if use_always_new_object:
