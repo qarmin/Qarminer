@@ -50,8 +50,6 @@ func _ready() -> void:
 	HelpFunctions.initialize_list_of_available_classes(true,true,[])
 	HelpFunctions.initialize_array_with_allowed_functions(use_parent_methods, BasicData.function_exceptions)
 
-	if save_data_to_file:
-		file_handler.open("res://results.txt", File.WRITE)
 	if BasicData.regression_test_project:
 		tests_all_functions()
 
@@ -65,6 +63,8 @@ func _process(_delta: float) -> void:
 
 # Test all functions
 func tests_all_functions() -> void:
+	if save_data_to_file:
+		file_handler.open("res://results.txt", File.WRITE)
 
 	for name_of_class in BasicData.allowed_thing.keys():
 		number_counter+=1
