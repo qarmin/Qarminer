@@ -11,9 +11,11 @@ var function_exceptions: Array = [
 	###
 	### GODOT 4.0 CRASHES
 	###
+	"set_texture", #46828
 	"save_scene",
 	"_activate",
 	"get_singleton",
+	"set_singleton",
 	"get_menu",
 	"compress_from_channels",  # Image
 	"open_midi_inputs",

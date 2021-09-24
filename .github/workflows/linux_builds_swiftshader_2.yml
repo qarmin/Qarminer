@@ -1,4 +1,4 @@
-name: 🐧 SwiftShader 2
+name: 🐧 SwiftShader 1
 on: [push, pull_request]
 
 jobs:
@@ -47,7 +47,6 @@ jobs:
       - name: Compile Godot
         run: |
           cd godot
-          sed -i "s|ERR_FAIL_COND_V(p_rasterization_state.patch_control_points|//ERR_FAIL_COND_V(p_rasterization_state.patch_control_points|" drivers/vulkan/rendering_device_vulkan.cpp
           scons p=linuxbsd -j2 use_asan=yes use_ubsan=yes CCFLAGS="-fsanitize=shift,shift-exponent,integer-divide-by-zero,unreachable,vla-bound,null,return,signed-integer-overflow,bounds,float-divide-by-zero,float-cast-overflow,nonnull-attribute,returns-nonnull-attribute,bool,enum,vptr"
           cp bin/godot.linuxbsd.tools.64s ../
           cd ../
@@ -65,19 +64,35 @@ jobs:
       - name: Open Godot
         run: |
           VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json DRI_PRIME=0 xvfb-run ./godot.linuxbsd.tools.64s --audio-driver Dummy -e -q --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          tail -n 300 sanitizers_log.txt > editor_results.txt
+          
+      - name: Store editor results
+        uses: actions/upload-artifact@v2
+        with:
+          name: editor-results
+          path: editor_results.txt
+          
+      - name: Check Godot Editor Log
+        run: |
           misc/check_ci_log.py sanitizers_log.txt
           
       - name: Run Godot
         run: |
           VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json DRI_PRIME=0 xvfb-run ./godot.linuxbsd.tools.64s 3600 --audio-driver Dummy --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          tail -n 300 sanitizers_log.txt > project_results.txt
+          
+      - name: Store project results
+        uses: actions/upload-artifact@v2
+        with:
+          name: project-results
+          path: project_results.txt
 
       - name: Store test results
         uses: actions/upload-artifact@v2
         with:
-          name: last-run-results
+          name: last-run-functions
           path: results.txt
 
-      - name: Check Log
+      - name: Check Project Run Log
         run: |
-          echo "-------------------- CHECK LOG -----------------------"
           misc/check_ci_log.py sanitizers_log.txt
