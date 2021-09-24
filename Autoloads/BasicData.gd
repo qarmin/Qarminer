@@ -20,6 +20,7 @@ var function_exceptions: Array = [
 	"compress_from_channels",  # Image
 	"open_midi_inputs",
 	"load_threaded_request",
+    "generate_lod", # 53011
 	###
 	### Crashes TODO
 	###
