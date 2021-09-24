@@ -239,6 +239,8 @@ var disabled_classes: Array = [
 #	"SkeletonModification2DCCDIK",
 	"InputMap",
 	"OS", # Without underscore
+	"GPUParticles3D", # 53004
+
 ]
 
 # Exceptions for e.g. float, String or int functions
