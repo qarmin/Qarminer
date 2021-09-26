@@ -20,7 +20,7 @@ var function_exceptions: Array = [
 	"compress_from_channels",  # Image
 	"open_midi_inputs",
 	"load_threaded_request",
-    "generate_lod", # 53011
+	"generate_lod", # 53011
 	###
 	### Crashes TODO
 	###
@@ -228,6 +228,11 @@ var disabled_classes: Array = [
 	###
 	### Godot 4.0
 	###
+	"OS", # Without underscore
+	"Thread", # Without underscore
+	"Mutex", # Without underscore
+	"Semaphore", # Without underscore
+	
 	"TextEdit", # Crashes 52876
 	"CodeEdit", # Also 52876
 	"FontData",  # A lot of crashes 52817
@@ -239,7 +244,6 @@ var disabled_classes: Array = [
 #	"SkeletonModification2DTwoBoneIK",
 #	"SkeletonModification2DCCDIK",
 	"InputMap",
-	"OS", # Without underscore
 	"GPUParticles3D", # 53004
 
 ]
