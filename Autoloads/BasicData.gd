@@ -39,6 +39,7 @@ var function_exceptions: Array = [
 	###
 	### Reported crashes
 	###
+	"duplicate", 
 	"unparent_bone_and_rest", #52875 Freeze
 	"create_action", #50769
 	"_direct_state_changed",  #46003 - Not cherrypicked
@@ -171,8 +172,8 @@ var function_exceptions: Array = [
 	"init_ref",
 	"reference",
 	"unreference",
-	#	"new",
-	#	"duplicate",
+	"new",
+	"duplicate", #53120
 	"queue_free",
 	"free",
 	"remove_and_skip",
