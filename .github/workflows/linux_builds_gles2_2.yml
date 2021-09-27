@@ -1,4 +1,4 @@
-name: 🐧 Linux Builds GLES2 2
+name: 🐧 Linux Builds GLES2 2 Parent
 on: 
   push:
   pull_request:
@@ -26,6 +26,10 @@ jobs:
           sudo apt-get install build-essential pkg-config libx11-dev libxcursor-dev \
             libxinerama-dev libgl1-mesa-dev libglu-dev libasound2-dev libpulse-dev libudev-dev libxi-dev libxrandr-dev yasm \
             xvfb wget2 unzip python scons git
+
+      - name: Configure Data
+        run: |
+          sed -i 's/var use_parent_methods: bool = false/var use_parent_methods: bool = true/' FunctionExecutor.gd
 
 
       - name: Download Godot(GIT)
