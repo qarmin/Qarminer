@@ -3,7 +3,8 @@ extends Node
 ### Contains basic data about disabled things like functions etc.
 
 var regression_test_project: bool = false  # Set it to true in RegressionTestProject
-var classes: Array = []  # List of all allowed classes
+var base_classes: Array = []  # List of all allowed classes which can be used as Class.something else
+var argument_classes: Array = []  # Allowed classes that can be used as arguments, in normal usage this and base_classes are equal, but it is needed for custom classes e.g. custom_classes are [A,B] but this can be executed A.f(C)
 var allowed_thing: Dictionary = {}  # List of all classes with
 
 # Globablly disabled functions for all classes
@@ -39,9 +40,11 @@ var function_exceptions: Array = [
 	###
 	### Reported crashes
 	###
-	"duplicate", 
-	"unparent_bone_and_rest", #52875 Freeze
-	"create_action", #50769
+	"_submenu_timeout", #53164
+	"set_call_mode", #53120
+	"set_basic_type", #53120
+	"unparent_bone_and_rest",  #52875 Freeze
+	"create_action",  #50769
 	"_direct_state_changed",  #46003 - Not cherrypicked
 	"connect_to_signal",  # 47572 - Not cherrypicked
 	"set_function",  # not cherrypick
@@ -168,7 +171,7 @@ var function_exceptions: Array = [
 	"reference",
 	"unreference",
 	"new",
-	"duplicate", #53120
+	"duplicate",
 	"queue_free",
 	"free",
 	"remove_and_skip",
@@ -187,9 +190,9 @@ var function_exceptions: Array = [
 ]
 
 var return_value_exceptions: Array = [
-	"get_viewport", # Node
-	"get_parent", # Node
-	"get_tree", # Node but only when adding to tree
+	"get_viewport",  # Node
+	"get_parent",  # Node
+	"get_tree",  # Node but only when adding to tree
 	"get_main_loop",  # _Engine.get_main_loop - not good idea to remove main loop
 	"get_direct_space_state",
 ]
@@ -211,7 +214,7 @@ var disabled_classes: Array = [
 	###
 	### Android
 	###
-	"JavaClassWrapper", # Looks that JavaClassWrapper.new() crashes android
+	"JavaClassWrapper",  # Looks that JavaClassWrapper.new() crashes android
 	###
 	### Just don't use these because they are not normal things
 	###
@@ -222,6 +225,8 @@ var disabled_classes: Array = [
 	### OS - in normal testing, can broke everything, but can be used in CI
 	###
 	"_OS",
+	###
+	"VisualScriptFunctionCall",  # Crash
 ]
 
 # Exceptions for e.g. float, String or int functions

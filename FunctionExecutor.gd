@@ -22,8 +22,8 @@ var file_handler: File = File.new()
 
 # TODO save all data about functions to Array and then execute all functions
 
-var to_print: String = "" # Prints values
-				
+var to_print: String = ""  # Prints values
+
 var number_to_track_variables: int = 0
 
 
@@ -49,7 +49,7 @@ func _ready() -> void:
 		ValueCreator.number = 100
 
 	# Initialize array of objects at the end
-	HelpFunctions.initialize_list_of_available_classes(true,true,[])
+	HelpFunctions.initialize_list_of_available_classes(true, true, [])
 	HelpFunctions.initialize_array_with_allowed_functions(use_parent_methods, BasicData.function_exceptions)
 
 	if BasicData.regression_test_project:
@@ -92,7 +92,7 @@ func tests_all_functions() -> void:
 			to_print = "\tvar temp_variable" + str(number_to_track_variables) + " = " + HelpFunctions.get_gdscript_class_creation(name_of_class)
 			if add_to_tree:
 				if object is Node:
-					to_print += "\n\tadd_child(temp_variable"+str(number_to_track_variables)+")"
+					to_print += "\n\tadd_child(temp_variable" + str(number_to_track_variables) + ")"
 			if save_data_to_file:
 				file_handler.store_string("\n" + to_print)
 				file_handler.flush()
@@ -131,13 +131,12 @@ func tests_all_functions() -> void:
 					var ret = object.callv(method_data["name"], arguments)
 
 					if remove_returned_value:
-							
 						if ret is Object && ret != null && !(method_data["name"] in BasicData.return_value_exceptions):
 							HelpFunctions.remove_thing(ret)
-							
+
 							# This code must create duplicate line, because ret type is only known after executing function and cannot be deduced before.
 							var remove_function: String = HelpFunctions.remove_thing_string(object)
-							
+
 							if save_data_to_file:
 								file_handler.store_string("\n" + to_print + remove_function)
 								file_handler.flush()

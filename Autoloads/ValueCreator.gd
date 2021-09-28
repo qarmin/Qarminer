@@ -193,7 +193,7 @@ func get_object(object_name: String) -> Object:
 
 		var element: String = arr[randi() % arr.size()]
 
-		if ClassDB.can_instance(element) && element in BasicData.classes:
+		if ClassDB.can_instance(element) && element in BasicData.argument_classes:
 			return ClassDB.instance(element)
 		return null
 

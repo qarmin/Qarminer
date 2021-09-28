@@ -1,12 +1,9 @@
 extends Node
 
+
 # Checks if function can be executed
 # Looks at its arguments and method type
 # This is useful when e.g. adding/renaming type Transform -> Transform3D
-
-
-# TODO use this at the begining, before doing any computation, since this will save
-# a lot of time, but only when running this in loop
 func check_if_is_allowed(method_data: Dictionary) -> bool:
 	# Function is virtual or vararg, so we just skip it
 	if method_data["flags"] == method_data["flags"] | METHOD_FLAG_VIRTUAL:
@@ -109,6 +106,7 @@ func remove_thing(thing: Object) -> void:
 	elif thing is Object && !(thing is Reference):
 		thing.free()
 
+
 func remove_thing_string(thing: Object) -> String:
 	if thing is Node:
 		return ".queue_free()"
@@ -117,12 +115,14 @@ func remove_thing_string(thing: Object) -> String:
 	else:
 		return ""
 
+
 # Initialize array which contains only allowed Functions
 func initialize_array_with_allowed_functions(use_parent_methods: bool, disabled_methods: Array):
-	assert(!BasicData.classes.empty(), "Missing initalization of classes")
+	assert(!BasicData.base_classes.empty(), "Missing initalization of classes")
+	assert(!BasicData.argument_classes.empty(), "Missing initalization of classes")
 	var class_info: Dictionary = {}
 
-	for name_of_class in BasicData.classes:
+	for name_of_class in BasicData.base_classes:
 		var old_method_list: Array = []
 		var new_method_list: Array = []
 
@@ -138,15 +138,16 @@ func initialize_array_with_allowed_functions(use_parent_methods: bool, disabled_
 
 
 # Returns all available classes to use
-func initialize_list_of_available_classes(must_be_instantable: bool = true, allow_editor: bool = true, available_classes : Array = []) -> void:
+func initialize_list_of_available_classes(must_be_instantable: bool = true, allow_editor: bool = true, available_classes: Array = []) -> void:
 	if !available_classes.empty():
 		available_classes.sort()
-		BasicData.classes = available_classes
+		BasicData.base_classes = available_classes
+		BasicData.argument_classes = available_classes
 		return
-	
+
 	var full_class_list: Array = Array(ClassDB.get_class_list())
 	full_class_list.sort()
-	
+
 	# TODO now custom classes can only use self e.g. when custom_classes contains only [A,B] classes then this classes only can be used as arguments
 	var custom_classes: Array = []
 	var file = File.new()
@@ -179,12 +180,16 @@ func initialize_list_of_available_classes(must_be_instantable: bool = true, allo
 		if name_of_class.find("Editor") != -1 && (BasicData.regression_test_project || !allow_editor):
 			continue
 
+		if !must_be_instantable || ClassDB.can_instance(name_of_class):
+			BasicData.argument_classes.push_back(name_of_class)
+
 		if !custom_classes.empty() and !(name_of_class in custom_classes):
 			continue
 
 		if !must_be_instantable || ClassDB.can_instance(name_of_class):
-			BasicData.classes.push_back(name_of_class)
+			BasicData.base_classes.push_back(name_of_class)
 
-#	BasicData.classes = BasicData.classes.slice(500, 600)
+#	BasicData.base_classes = BasicData.base_classes.slice(500, 600)
 
-	print(str(BasicData.classes.size()) + " choosen classes from all " + str(full_class_list.size()) + " classes.")
+	print(str(BasicData.base_classes.size()) + " choosen classes from all " + str(full_class_list.size()) + " classes.")
+	print(str(BasicData.argument_classes.size()) + " classes can be used as arguments.")
