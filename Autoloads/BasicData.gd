@@ -40,6 +40,7 @@ var function_exceptions: Array = [
 	###
 	### Reported crashes
 	###
+	"_text_changed", #53194
 	"_submenu_timeout",  #53164
 	"set_call_mode",  #53120
 	"set_basic_type",  #53120
