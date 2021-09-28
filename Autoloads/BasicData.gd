@@ -16,10 +16,10 @@ var function_exceptions: Array = [
 	"poll",  # FREEZE
 	"_thread_done",  #
 	###
-	### Dummy Rasterizer(CRASHES)
+	### Dummy Rasterize
 	###
-	"set_data",  # ImageTexture
-	"set_YCbCr_imgs",  # CameraFeed
+	"create_debug_tangents",  #53182
+	"create_from_mesh",  #53181
 	"remove_line",  # 49571 - Memory leak
 	###
 	### Image functions(CRASHES)
@@ -40,9 +40,9 @@ var function_exceptions: Array = [
 	###
 	### Reported crashes
 	###
-	"_submenu_timeout", #53164
-	"set_call_mode", #53120
-	"set_basic_type", #53120
+	"_submenu_timeout",  #53164
+	"set_call_mode",  #53120
+	"set_basic_type",  #53120
 	"unparent_bone_and_rest",  #52875 Freeze
 	"create_action",  #50769
 	"_direct_state_changed",  #46003 - Not cherrypicked
@@ -226,7 +226,12 @@ var disabled_classes: Array = [
 	###
 	"_OS",
 	###
-	"VisualScriptFunctionCall",  # Crash
+	### Godot 4.0
+	###
+	"OS",
+	"Thread",
+	"Semaphore",
+	"Mutex",
 ]
 
 # Exceptions for e.g. float, String or int functions

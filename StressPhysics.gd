@@ -40,7 +40,10 @@ func _ready() -> void:
 	ValueCreator.number = 10
 	ValueCreator.should_be_always_valid = false
 
-	for name_of_class in HelpFunctions.get_list_of_available_classes():
+	HelpFunctions.initialize_list_of_available_classes()
+	HelpFunctions.initialize_array_with_allowed_functions(false, BasicData.function_exceptions)
+
+	for name_of_class in BasicData.base_classes:
 		if !ClassDB.can_instance(name_of_class):
 			continue
 		if ClassDB.is_parent_class(name_of_class, "CollisionObject"):
@@ -84,8 +87,8 @@ func _ready() -> void:
 
 
 # Enable this after testing
-#func _process(_delta: float) -> void:
-#	process_nodes()
+func _process(_delta: float) -> void:
+	process_nodes()
 
 
 func _physics_process(_delta: float) -> void:
@@ -104,7 +107,7 @@ func process_nodes() -> void:
 		get_tree().quit()
 	create_nodes()
 	move_nodes()
-	random_functions()
+#	random_functions()
 	delete_nodes()
 	if debug_level:
 		print("--- Ended Processing Data ---")
@@ -198,13 +201,11 @@ func random_functions() -> void:
 	for child in get_children():
 		var name_of_class: String = child.get_class()
 
-		var list_of_methods: Array = ClassDB.class_get_method_list(name_of_class, true)
-		for method_data in list_of_methods:
+		var method_list: Array = BasicData.allowed_thing[name_of_class]
+
+		for method_data in method_list:
 			# Don't use methods from Object or Node, because them ingerate too much with project
 			if ClassDB.class_has_method("Object", method_data["name"]) || ClassDB.class_has_method("Node", method_data["name"]):
-				continue
-
-			if !HelpFunctions.check_if_is_allowed(method_data):
 				continue
 
 			var arguments: Array = ParseArgumentType.parse_and_return_objects(method_data, name_of_class, debug_level >= 3)
