@@ -30,9 +30,10 @@ var function_exceptions: Array = [
 	###
 	### Dummy Rasterizer(CRASHES)
 	###
-	"set_data",  # ImageTexture
-	"set_YCbCr_imgs",  # CameraFeed
-	"remove_line",  # 49571 - Memory leak
+	"create_debug_tangents", #53182
+	"create_from_mesh", #53181
+#	"set_data",  # ImageTexture
+#	"set_YCbCr_imgs",  # CameraFeed
 	###
 	### Image functions(CRASHES)
 	###
