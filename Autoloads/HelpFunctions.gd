@@ -109,6 +109,13 @@ func remove_thing(thing: Object) -> void:
 	elif thing is Object && !(thing is Reference):
 		thing.free()
 
+func remove_thing_string(thing: Object) -> String:
+	if thing is Node:
+		return ".queue_free()"
+	elif thing is Object && !(thing is Reference):
+		return ".free()"
+	else:
+		return ""
 
 # Initialize array which contains only allowed Functions
 func initialize_array_with_allowed_functions(use_parent_methods: bool, disabled_methods: Array):
@@ -139,7 +146,8 @@ func initialize_list_of_available_classes(must_be_instantable: bool = true, allo
 	
 	var full_class_list: Array = Array(ClassDB.get_class_list())
 	full_class_list.sort()
-
+	
+	# TODO now custom classes can only use self e.g. when custom_classes contains only [A,B] classes then this classes only can be used as arguments
 	var custom_classes: Array = []
 	var file = File.new()
 	if file.file_exists("res://classes.txt"):
@@ -177,6 +185,6 @@ func initialize_list_of_available_classes(must_be_instantable: bool = true, allo
 		if !must_be_instantable || ClassDB.can_instance(name_of_class):
 			BasicData.classes.push_back(name_of_class)
 
-#	classes = classes.slice(0, 200)
+#	BasicData.classes = BasicData.classes.slice(500, 600)
 
 	print(str(BasicData.classes.size()) + " choosen classes from all " + str(full_class_list.size()) + " classes.")

@@ -9,7 +9,7 @@ extends Node
 
 var debug_print: bool = true
 var exiting: bool = false  # Exit after 1 loop?
-var add_to_tree: bool = false  # Adds nodes to tree, freeze godot when removing a lot of nodes
+var add_to_tree: bool = true  # Adds nodes to tree, freeze godot when removing a lot of nodes
 var use_parent_methods: bool = false  # Allows Node2D use Node methods etc. - it is a little slow option which rarely shows
 var use_always_new_object: bool = false  # Don't allow to "remeber" other function effects
 var number_of_repeats: int = 3  # How many times functions can be repeated
@@ -22,6 +22,8 @@ var file_handler: File = File.new()
 
 # TODO save all data about functions to Array and then execute all functions
 
+var to_print: String = "" # Prints values
+				
 var number_to_track_variables: int = 0
 
 
@@ -68,7 +70,7 @@ func tests_all_functions() -> void:
 
 	for name_of_class in BasicData.allowed_thing.keys():
 		if debug_print || save_data_to_file:
-			var to_print: String = "\n######################################## " + name_of_class + " ########################################"
+			to_print = "\n######################################## " + name_of_class + " ########################################"
 			if save_data_to_file:
 				file_handler.store_string(to_print)
 				file_handler.flush()
@@ -87,7 +89,10 @@ func tests_all_functions() -> void:
 
 		if (debug_print || save_data_to_file) && !use_always_new_object:
 			number_to_track_variables += 1
-			var to_print: String = "\tvar temp_variable" + str(number_to_track_variables) + " = " + HelpFunctions.get_gdscript_class_creation(name_of_class)
+			to_print = "\tvar temp_variable" + str(number_to_track_variables) + " = " + HelpFunctions.get_gdscript_class_creation(name_of_class)
+			if add_to_tree:
+				if object is Node:
+					to_print += "\n\tadd_child(temp_variable"+str(number_to_track_variables)+")"
 			if save_data_to_file:
 				file_handler.store_string("\n" + to_print)
 				file_handler.flush()
@@ -100,9 +105,11 @@ func tests_all_functions() -> void:
 					var arguments: Array = ParseArgumentType.parse_and_return_objects(method_data, name_of_class, debug_print)
 
 					if debug_print || save_data_to_file:
-						var to_print: String
 						if use_always_new_object:
-							to_print = "GDSCRIPT CODE:     "
+							if save_data_to_file:
+								to_print = "\t"
+							else:
+								to_print = "GDSCRIPT CODE:     "
 							to_print += HelpFunctions.get_gdscript_class_creation(name_of_class)
 						else:
 							to_print = "\ttemp_variable" + str(number_to_track_variables)
@@ -124,8 +131,18 @@ func tests_all_functions() -> void:
 					var ret = object.callv(method_data["name"], arguments)
 
 					if remove_returned_value:
-						if ret is Object && ret != null:
+							
+						if ret is Object && ret != null && !(method_data["name"] in BasicData.return_value_exceptions):
 							HelpFunctions.remove_thing(ret)
+							
+							# This code must create duplicate line, because ret type is only known after executing function and cannot be deduced before.
+							var remove_function: String = HelpFunctions.remove_thing_string(object)
+							
+							if save_data_to_file:
+								file_handler.store_string("\n" + to_print + remove_function)
+								file_handler.flush()
+							if debug_print:
+								print(to_print + remove_function)
 
 					for argument in arguments:
 						HelpFunctions.remove_thing(argument)

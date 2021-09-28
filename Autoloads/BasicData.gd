@@ -57,11 +57,6 @@ var function_exceptions: Array = [
 	"get_bind_name",  #47358
 	"get_bind_pose",  #47358
 	###
-	### Crashes due removing values returned by function
-	###
-	"get_main_loop",  # _Engine.get_main_loop - not good idea to remove main loop
-	"get_direct_space_state",
-	###
 	### Not worth to check, because users rarely us this
 	###
 	"propagate_notification",
@@ -189,6 +184,14 @@ var function_exceptions: Array = [
 	#####
 	"smooth_polyline_approx",
 	"smooth_polygon_approx",
+]
+
+var return_value_exceptions: Array = [
+	"get_viewport", # Node
+	"get_parent", # Node
+	"get_tree", # Node but only when adding to tree
+	"get_main_loop",  # _Engine.get_main_loop - not good idea to remove main loop
+	"get_direct_space_state",
 ]
 
 # Globally disabled classes which causes bugs
