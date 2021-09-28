@@ -9,7 +9,7 @@ extends Node
 
 var debug_print: bool = true
 var exiting: bool = false  # Exit after 1 loop?
-var add_to_tree: bool = true  # Adds nodes to tree, freeze godot when removing a lot of nodes
+var add_to_tree: bool = false  # Adds nodes to tree, freeze godot when removing a lot of nodes
 var use_parent_methods: bool = false  # Allows Node2D use Node methods etc. - it is a little slow option which rarely shows
 var use_always_new_object: bool = false  # Don't allow to "remeber" other function effects
 var number_of_repeats: int = 3  # How many times functions can be repeated
@@ -19,8 +19,6 @@ var remove_returned_value: bool = true  # Removes returned value from function
 var save_data_to_file: bool = true  # Save data to file(not big performance impact as I exepected)
 
 var file_handler: File = File.new()
-
-# TODO save all data about functions to Array and then execute all functions
 
 var to_print: String = ""  # Prints values
 

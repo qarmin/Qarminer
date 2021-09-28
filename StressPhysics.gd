@@ -138,8 +138,8 @@ func create_nodes():
 		var node: Node = ClassDB.instance(name_of_class)
 
 		if name_of_class in joint_2d or name_of_class in joint_3d:
-			# TODO add something for joint
-			pass
+			for i in randi() % max_collision_shapes:
+				node.add_child(create_collision_object(is_2d))
 		else:
 			for i in randi() % max_collision_shapes:
 				node.add_child(create_collision_object(is_2d))

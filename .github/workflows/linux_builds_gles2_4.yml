@@ -1,4 +1,4 @@
-name: 🐧 Linux Builds GLES3 3
+name: 🐧 Linux Builds GLES2 4 More Repeats
 on: 
   push:
   pull_request:
@@ -27,6 +27,10 @@ jobs:
             libxinerama-dev libgl1-mesa-dev libglu-dev libasound2-dev libpulse-dev libudev-dev libxi-dev libxrandr-dev yasm \
             xvfb wget2 unzip python scons git
 
+      - name: Configure Data
+        run: |
+          sed -i 's/var number_of_repeats: int = 3/var number_of_repeats: int = 20/' FunctionExecutor.gd
+
 
       - name: Download Godot(GIT)
         run: |
@@ -45,7 +49,7 @@ jobs:
 
       - name: Open Godot Editor
         run: |
-          DRI_PRIME=0 xvfb-run ./godot.x11.tools.64s FunctionExecutor.tscn -e -q --audio-driver Dummy --video-driver GLES3 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          DRI_PRIME=0 xvfb-run ./godot.x11.tools.64s FunctionExecutor.tscn -e -q --audio-driver Dummy --video-driver GLES2 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
           tail -n 300 sanitizers_log.txt > editor_results.txt
           
       - name: Store editor results
@@ -60,7 +64,7 @@ jobs:
           
       - name: Run GLES3
         run: |
-          DRI_PRIME=0 xvfb-run ./godot.x11.tools.64s FunctionExecutor.tscn 3600 --audio-driver Dummy --video-driver GLES3 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          DRI_PRIME=0 xvfb-run ./godot.x11.tools.64s FunctionExecutor.tscn 3600 --audio-driver Dummy --video-driver GLES2 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
           tail -n 300 sanitizers_log.txt > project_results.txt
           
       - name: Store project results

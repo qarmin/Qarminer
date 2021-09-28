@@ -148,7 +148,6 @@ func initialize_list_of_available_classes(must_be_instantable: bool = true, allo
 	var full_class_list: Array = Array(ClassDB.get_class_list())
 	full_class_list.sort()
 
-	# TODO now custom classes can only use self e.g. when custom_classes contains only [A,B] classes then this classes only can be used as arguments
 	var custom_classes: Array = []
 	var file = File.new()
 	if file.file_exists("res://classes.txt"):
@@ -189,7 +188,7 @@ func initialize_list_of_available_classes(must_be_instantable: bool = true, allo
 		if !must_be_instantable || ClassDB.can_instance(name_of_class):
 			BasicData.base_classes.push_back(name_of_class)
 
-#	BasicData.base_classes = BasicData.base_classes.slice(500, 600)
+#	BasicData.base_classes = BasicData.base_classes.slice(300, 400)
 
 	print(str(BasicData.base_classes.size()) + " choosen classes from all " + str(full_class_list.size()) + " classes.")
 	print(str(BasicData.argument_classes.size()) + " classes can be used as arguments.")

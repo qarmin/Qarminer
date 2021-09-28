@@ -402,7 +402,6 @@ func get_string_string() -> String:
 	return '""'
 
 
-# TODO Update this with upper implementation
 func get_object_string(object_name: String) -> String:
 	assert(ClassDB.class_exists(object_name))
 
