@@ -108,7 +108,7 @@ func type_to_name(type: int) -> String:
 			name = "Dictionary"
 		TYPE_INT:
 			name = "int"
-		TYPE_INT64_ARRAY:
+		TYPE_INT32_ARRAY:
 			name = "PackedInt32Array"
 		TYPE_NODE_PATH:
 			name = "NodePath"
@@ -120,7 +120,7 @@ func type_to_name(type: int) -> String:
 			name = "PackedByteArray"
 		TYPE_FLOAT:
 			name = "float"
-		TYPE_FLOAT64_ARRAY:
+		TYPE_FLOAT32_ARRAY:
 			name = "PackedFloat32Array"
 		TYPE_RECT2:
 			name = "Rect2"
@@ -147,7 +147,8 @@ func type_to_name(type: int) -> String:
 		TYPE_NIL:
 			assert(false)  #, "Variant not supported")
 		_:
-			assert(false, "Missing type, needs to be added to project")
+			printerr("Missing type --" + str(type) + "--, needs to be added to project")
+			assert(false)
 
 	return name
 
@@ -172,7 +173,7 @@ func get_basic_thing(type: int):
 			thing = ValueCreator.get_dictionary()
 		TYPE_INT:
 			thing = ValueCreator.get_int()
-		TYPE_INT64_ARRAY:
+		TYPE_INT32_ARRAY:
 			thing = ValueCreator.get_packed_int_array()
 		TYPE_NODE_PATH:
 			thing = ValueCreator.get_nodepath()
@@ -184,7 +185,7 @@ func get_basic_thing(type: int):
 			thing = ValueCreator.get_packed_byte_array()
 		TYPE_FLOAT:
 			thing = ValueCreator.get_float()
-		TYPE_FLOAT64_ARRAY:
+		TYPE_FLOAT32_ARRAY:
 			thing = ValueCreator.get_packed_real_array()
 		TYPE_RECT2:
 			thing = ValueCreator.get_rect2()
@@ -211,6 +212,7 @@ func get_basic_thing(type: int):
 		TYPE_NIL:
 			assert(false)  #, "Variant not supported")
 		_:
-			assert(false, "Missing type, needs to be added to project")
+			printerr("Missing type --" + str(type) + "--, needs to be added to project")
+			assert(false)
 
 	return thing

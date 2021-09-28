@@ -1,4 +1,4 @@
-name: 🐧 SwiftShader 5
+name: 🐧 SwiftShader 5 Multithread Rendering
 on: [push, pull_request]
 
 jobs:
@@ -23,20 +23,11 @@ jobs:
             libxinerama-dev libgl1-mesa-dev libglu-dev libasound2-dev libpulse-dev libudev-dev libxi-dev libxrandr-dev yasm \
             xvfb wget2 unzip python scons git
 
-#      - name: Download Godot
-#        run: |
-#          wget2 https://archive.hugo.pro/builds/godot/master/editor/godot-linux-nightly-x86_64.zip
-#          unzip godot-linux-nightly-x86_64.zip
-#          rm godot-linux-nightly-x86_64.zip
-#          mv godot godot.linuxbsd.tools.64s
-
-#      - name: Download Godot(ZIP)
-#        run: |
-#          wget2 https://github.com/godotengine/godot/archive/3.2.zip
-#          unzip 3.2.zip
-#          rm 3.2.zip
-
-
+      - name: Configure Data
+        run: |
+          echo "[rendering]" >> project.godot
+          echo "threads/thread_model=2" >> project.godot
+          
       - name: Download Godot(GIT)
         run: |
           git clone https://github.com/godotengine/godot.git

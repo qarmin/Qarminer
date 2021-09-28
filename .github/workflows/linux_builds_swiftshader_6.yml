@@ -1,4 +1,4 @@
-name: 🐧 SwiftShader 3 Add Tree
+name: 🐧 SwiftShader 6 Multithread Physics
 on: [push, pull_request]
 
 jobs:
@@ -25,7 +25,8 @@ jobs:
 
       - name: Configure Data
         run: |
-          sed -i 's/var add_to_tree: bool = false/var add_to_tree: bool = true/' FunctionExecutor.gd
+          echo "[physics]" >> project.godot
+          echo "2d/thread_model=2" >> project.godot
           
       - name: Download Godot(GIT)
         run: |

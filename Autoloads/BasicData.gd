@@ -3,7 +3,8 @@ extends Node
 ### Contains basic data about disabled things like functions etc.
 
 var regression_test_project: bool = false  # Set it to true in RegressionTestProject
-var classes: Array = []  # List of all allowed classes
+var base_classes: Array = []  # List of all allowed classes which can be used as Class.something else
+var argument_classes: Array = []  # Allowed classes that can be used as arguments, in normal usage this and base_classes are equal, but it is needed for custom classes e.g. custom_classes are [A,B] but this can be executed A.f(C)
 var allowed_thing: Dictionary = {}  # List of all classes with
 
 # Globablly disabled functions for all classes
@@ -11,7 +12,7 @@ var function_exceptions: Array = [
 	###
 	### GODOT 4.0 CRASHES
 	###
-	"set_texture", #46828
+	"set_texture",  #46828
 	"save_scene",
 	"_activate",
 	"get_singleton",
@@ -20,7 +21,7 @@ var function_exceptions: Array = [
 	"compress_from_channels",  # Image
 	"open_midi_inputs",
 	"load_threaded_request",
-	"generate_lod", # 53011
+	"generate_lod",  # 53011
 	###
 	### Crashes TODO
 	###
@@ -28,12 +29,11 @@ var function_exceptions: Array = [
 	"poll",  # FREEZE
 	"_thread_done",  #
 	###
-	### Dummy Rasterizer(CRASHES)
+	### Dummy Rasterize
 	###
-	"create_debug_tangents", #53182
-	"create_from_mesh", #53181
-#	"set_data",  # ImageTexture
-#	"set_YCbCr_imgs",  # CameraFeed
+	"create_debug_tangents",  #53182
+	"create_from_mesh",  #53181
+	"remove_line",  # 49571 - Memory leak
 	###
 	### Image functions(CRASHES)
 	###
@@ -53,6 +53,11 @@ var function_exceptions: Array = [
 	###
 	### Reported crashes
 	###
+	"_submenu_timeout",  #53164
+	"set_call_mode",  #53120
+	"set_basic_type",  #53120
+	"unparent_bone_and_rest",  #52875 Freeze
+	"create_action",  #50769
 	"_direct_state_changed",  #46003 - Not cherrypicked
 	"connect_to_signal",  # 47572 - Not cherrypicked
 	"set_function",  # not cherrypick
@@ -67,11 +72,6 @@ var function_exceptions: Array = [
 	"get_bind_bone",  #47358
 	"get_bind_name",  #47358
 	"get_bind_pose",  #47358
-	###
-	### Crashes due removing values returned by function
-	###
-	"get_main_loop",  # _Engine.get_main_loop - not good idea to remove main loop
-	"get_direct_space_state",
 	###
 	### Not worth to check, because users rarely us this
 	###
@@ -183,8 +183,8 @@ var function_exceptions: Array = [
 	"init_ref",
 	"reference",
 	"unreference",
-	#	"new",
-	#	"duplicate",
+	"new",
+	"duplicate",
 	"queue_free",
 	"free",
 	"remove_and_skip",
@@ -202,6 +202,14 @@ var function_exceptions: Array = [
 	"smooth_polygon_approx",
 ]
 
+var return_value_exceptions: Array = [
+	"get_viewport",  # Node
+	"get_parent",  # Node
+	"get_tree",  # Node but only when adding to tree
+	"get_main_loop",  # _Engine.get_main_loop - not good idea to remove main loop
+	"get_direct_space_state",
+]
+
 # Globally disabled classes which causes bugs
 var disabled_classes: Array = [
 	###
@@ -217,6 +225,10 @@ var disabled_classes: Array = [
 	###
 	"JavaClass",
 	###
+	### Android
+	###
+	"JavaClassWrapper",  # Looks that JavaClassWrapper.new() crashes android
+	###
 	### Just don't use these because they are not normal things
 	###
 	"_Thread",
@@ -229,24 +241,18 @@ var disabled_classes: Array = [
 	###
 	### Godot 4.0
 	###
-	"OS", # Without underscore
-	"Thread", # Without underscore
-	"Mutex", # Without underscore
-	"Semaphore", # Without underscore
-	
-	"TextEdit", # Crashes 52876
-	"CodeEdit", # Also 52876
+	"OS",
+	"Thread",
+	"Semaphore",
+	"Mutex",
+	##
+	"TextEdit",  # Crashes 52876
+	"CodeEdit",  # Also 52876
 	"FontData",  # A lot of crashes 52817
 	"InputEventShortcut",  # 52191
 	"MultiplayerAPI",  # Crashes TODO
-#	"SkeletonModificationStack3D",  # TOO MUCH CRASHES
-#	"SkeletonModification2DPhysicalBones",
-#	"SkeletonModification2DLookAt",
-#	"SkeletonModification2DTwoBoneIK",
-#	"SkeletonModification2DCCDIK",
 	"InputMap",
-	"GPUParticles3D", # 53004
-
+	"GPUParticles3D",  # 53004
 ]
 
 # Exceptions for e.g. float, String or int functions

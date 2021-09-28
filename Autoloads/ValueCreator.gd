@@ -190,18 +190,18 @@ func get_object(object_name: String) -> Object:
 	if object_name == "PhysicsDirectSpaceState3D" || object_name == "PhysicsDirectSpaceState2D":
 		return null
 
-	var a = 0
 	if random:
 		if randi() % 4 == 0:
 			return null
 
 		var arr: Array = ClassDB.get_inheriters_from_class(object_name)
+
 		if arr.is_empty():
 			return null
 
 		var element: String = arr[randi() % arr.size()]
 
-		if ClassDB.can_instantiate(element) && element in BasicData.classes:
+		if ClassDB.can_instantiate(element) && element in BasicData.argument_classes:
 			return ClassDB.instantiate(element)
 		return null
 

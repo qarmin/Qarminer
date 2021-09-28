@@ -1,4 +1,4 @@
-name: 🐧 SwiftShader 3 Add Tree
+name: 🐧 SwiftShader 8 Physics
 on: [push, pull_request]
 
 jobs:
@@ -25,7 +25,7 @@ jobs:
 
       - name: Configure Data
         run: |
-          sed -i 's/var add_to_tree: bool = false/var add_to_tree: bool = true/' FunctionExecutor.gd
+          sed -i 's/aaaa/bbbb/' FunctionExecutor.gd
           
       - name: Download Godot(GIT)
         run: |
@@ -68,7 +68,7 @@ jobs:
           
       - name: Run Godot
         run: |
-          VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json DRI_PRIME=0 xvfb-run ./godot.linuxbsd.tools.64s 3600 --audio-driver Dummy --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json DRI_PRIME=0 xvfb-run ./godot.linuxbsd.tools.64s StressPhysics.tscn 3600 --audio-driver Dummy --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
           tail -n 300 sanitizers_log.txt > project_results.txt
           
       - name: Store project results
