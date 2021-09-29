@@ -12,6 +12,7 @@ var function_exceptions: Array = [
 	###
 	### GODOT 4.0 CRASHES
 	###
+	"as_text", #53224
 	"get_image", # 53214
 	"set_language", #53218
 	"set_texture",  #46828
