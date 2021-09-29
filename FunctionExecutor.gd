@@ -27,7 +27,7 @@ var to_print: String = ""  # Specify what needs to be printed
 
 var number_to_track_variables: int = 0  # Unique number to specify number which is added to variable name to prevent from using variables with same name
 
-var how_many_times_test: int = 100  # How many times, same class will be tested
+var how_many_times_test: int = 30  # How many times, same class will be tested
 var tested_times: int = how_many_times_test  # How many times class is tested now
 var current_tested_element: int = 0  # Which element from array is tested now
 var tested_classes: Array = []  # Array with elements that are tested, in normal situation this equal to base_classes variable
