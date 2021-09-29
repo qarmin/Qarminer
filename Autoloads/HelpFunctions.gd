@@ -188,7 +188,7 @@ func initialize_list_of_available_classes(must_be_instantable: bool = true, allo
 		if !must_be_instantable || ClassDB.can_instance(name_of_class):
 			BasicData.base_classes.push_back(name_of_class)
 
-#	BasicData.base_classes = BasicData.base_classes.slice(300, 400)
+#	BasicData.base_classes = BasicData.base_classes.slice(300, 350)
 
 	print(str(BasicData.base_classes.size()) + " choosen classes from all " + str(full_class_list.size()) + " classes.")
 	print(str(BasicData.argument_classes.size()) + " classes can be used as arguments.")
