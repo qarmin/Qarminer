@@ -35,13 +35,13 @@ func parse_and_return_objects(method_data: Dictionary, name_of_class: String, de
 			TYPE_COLOR:
 				arguments_array.push_back(ValueCreator.get_color())
 			TYPE_COLOR_ARRAY:
-				arguments_array.push_back(ValueCreator.get_pool_color_array())
+				arguments_array.push_back(ValueCreator.get_packed_color_array())
 			TYPE_DICTIONARY:
 				arguments_array.push_back(ValueCreator.get_dictionary())
 			TYPE_INT:
 				arguments_array.push_back(ValueCreator.get_int())
 			TYPE_INT_ARRAY:
-				arguments_array.push_back(ValueCreator.get_pool_int_array())
+				arguments_array.push_back(ValueCreator.get_packed_int32_array())
 			TYPE_NODE_PATH:
 				arguments_array.push_back(ValueCreator.get_nodepath())
 			TYPE_OBJECT:
@@ -54,11 +54,11 @@ func parse_and_return_objects(method_data: Dictionary, name_of_class: String, de
 			TYPE_QUAT:
 				arguments_array.push_back(ValueCreator.get_quat())
 			TYPE_RAW_ARRAY:
-				arguments_array.push_back(ValueCreator.get_pool_byte_array())
+				arguments_array.push_back(ValueCreator.get_packed_byte_array())
 			TYPE_REAL:
 				arguments_array.push_back(ValueCreator.get_float())
 			TYPE_REAL_ARRAY:
-				arguments_array.push_back(ValueCreator.get_pool_real_array())
+				arguments_array.push_back(ValueCreator.get_packed_float32_array())
 			TYPE_RECT2:
 				arguments_array.push_back(ValueCreator.get_rect2())
 			TYPE_RID:
@@ -66,7 +66,7 @@ func parse_and_return_objects(method_data: Dictionary, name_of_class: String, de
 			TYPE_STRING:
 				arguments_array.push_back(ValueCreator.get_string())
 			TYPE_STRING_ARRAY:
-				arguments_array.push_back(ValueCreator.get_pool_string_array())
+				arguments_array.push_back(ValueCreator.get_packed_string_array())
 			TYPE_TRANSFORM:
 				arguments_array.push_back(ValueCreator.get_transform())
 			TYPE_TRANSFORM2D:
@@ -74,13 +74,28 @@ func parse_and_return_objects(method_data: Dictionary, name_of_class: String, de
 			TYPE_VECTOR2:
 				arguments_array.push_back(ValueCreator.get_vector2())
 			TYPE_VECTOR2_ARRAY:
-				arguments_array.push_back(ValueCreator.get_pool_vector2_array())
+				arguments_array.push_back(ValueCreator.get_packed_vector2_array())
 			TYPE_VECTOR3:
 				arguments_array.push_back(ValueCreator.get_vector3())
 			TYPE_VECTOR3_ARRAY:
-				arguments_array.push_back(ValueCreator.get_pool_vector3_array())
+				arguments_array.push_back(ValueCreator.get_packed_vector3_array())
+#			# Godot 4
+#			TYPE_CALLABLE:
+#				arguments_array.push_back(Callable(BoxMesh.new(), "Rar"))
+#			TYPE_VECTOR3I:
+#				arguments_array.push_back(ValueCreator.get_vector3i())
+#			TYPE_VECTOR2I:
+#				arguments_array.push_back(ValueCreator.get_vector2i())
+#			TYPE_STRING_NAME:
+#				arguments_array.push_back(ValueCreator.get_string_name())
+#			TYPE_RECT2I:
+#				arguments_array.push_back(ValueCreator.get_rect2i())
+#			TYPE_FLOAT64_ARRAY:
+#				arguments_array.push_back(ValueCreator.get_packed_float64_array())
+#			TYPE_INT64_ARRAY:
+#				arguments_array.push_back(ValueCreator.get_packed_int64_array())
 			_:
-				assert(false, "Missing type --" + str(argument.type) + "--, needs to be added to project")
+				assert(false, "Missing type --" + str(argument.type) + "-- needs to be added to project")
 
 	if debug_print:
 		print("\n" + name_of_class + "." + method_data["name"] + " --- executing with " + str(arguments_array.size()) + " parameters " + str(arguments_array))
@@ -272,7 +287,49 @@ func return_gdscript_code_which_run_this_object(data) -> String:
 				if i != data.size() - 1:
 					return_string += ", "
 			return_string += "])"
+
+#		#Godot4
+#		TYPE_CALLABLE:
+#			return_string = 'Callable(BoxMesh.new(),"")'
+#		TYPE_STRING_NAME:
+#			return_string = "StringName("
+#			return_string += return_gdscript_code_which_run_this_object(str(data))
+#			return_string += ")"
+#		TYPE_VECTOR2I:
+#			return_string = "Vector2i("
+#			return_string += return_gdscript_code_which_run_this_object(data.x)
+#			return_string += ", "
+#			return_string += return_gdscript_code_which_run_this_object(data.y)
+#			return_string += ")"
+#		TYPE_VECTOR3I:
+#			return_string = "Vector3i("
+#			return_string += return_gdscript_code_which_run_this_object(data.x)
+#			return_string += ", "
+#			return_string += return_gdscript_code_which_run_this_object(data.y)
+#			return_string += ", "
+#			return_string += return_gdscript_code_which_run_this_object(data.z)
+#			return_string += ")"
+#		TYPE_RECT2I:
+#			return_string = "Rect2i("
+#			return_string += return_gdscript_code_which_run_this_object(data.position)
+#			return_string += ", "
+#			return_string += return_gdscript_code_which_run_this_object(data.size)
+#			return_string += ")"
+#		TYPE_FLOAT64_ARRAY:
+#			return_string = "PackedFloat64Array(["
+#			for i in data.size():
+#				return_string += return_gdscript_code_which_run_this_object(data[i])
+#				if i != data.size() - 1:
+#					return_string += ", "
+#			return_string += "])"
+#		TYPE_INT64_ARRAY:
+#			return_string = "PackedInt64Array(["
+#			for i in data.size():
+#				return_string += return_gdscript_code_which_run_this_object(data[i])
+#				if i != data.size() - 1:
+#					return_string += ", "
+#			return_string += "])"
 		_:
-			assert(false, "Missing type --" + str(typeof(data)) + "--, needs to be added to project")
+			assert(false, "Missing type --" + str(typeof(data)) + "-- needs to be added to project")
 
 	return return_string

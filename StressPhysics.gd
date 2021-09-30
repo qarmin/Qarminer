@@ -244,7 +244,7 @@ func create_collision_object(is_2d: bool):
 			if debug_level >= 2:
 				print("-- Created CollisionPolygon2D")
 			var cp = CollisionPolygon2D.new()
-			cp.set_polygon(ValueCreator.get_pool_vector2_array())
+			cp.set_polygon(ValueCreator.get_packed_vector2_array())
 			return cp
 	else:
 		if randi() % 2:
@@ -257,5 +257,5 @@ func create_collision_object(is_2d: bool):
 			if debug_level >= 2:
 				print("-- Created CollisionPolygon")
 			var cp = CollisionPolygon.new()
-			cp.set_polygon(ValueCreator.get_pool_vector2_array())
+			cp.set_polygon(ValueCreator.get_packed_vector2_array())
 			return cp

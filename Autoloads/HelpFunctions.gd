@@ -21,6 +21,9 @@ func check_if_is_allowed(method_data: Dictionary) -> bool:
 		# Editor stuff usually aren't good choice for arguments
 		if name_of_class.find("Editor") != -1 || name_of_class.find("SkinReference") != -1:
 			return false
+		# Godot4
+		if name_of_class.find("SkeletonModification") != -1:
+			return false
 
 		# In case of adding new type, this prevents from crashing due not recognizing this type
 		# In case of removing/rename type, just comment e.g. TYPE_ARRAY and all occurencies on e.g. switch statement with it
@@ -54,6 +57,14 @@ func check_if_is_allowed(method_data: Dictionary) -> bool:
 			|| t == TYPE_VECTOR3
 			|| t == TYPE_VECTOR3_ARRAY
 		):
+			#			# TODOGODOT4
+			#			|| t == TYPE_VECTOR2I
+			#			|| t == TYPE_VECTOR3I
+			#			|| t == TYPE_STRING_NAME
+			#			|| t == TYPE_RECT2I
+			#			|| t == TYPE_FLOAT64_ARRAY
+			#			|| t == TYPE_INT64_ARRAY
+			#			|| t == TYPE_CALLABLE
 			print("MISSING TYPE in function " + method_data["name"] + "  --  Variant type - " + str(t))
 			return false
 
@@ -177,6 +188,9 @@ func initialize_list_of_available_classes(must_be_instantable: bool = true, allo
 		if name_of_class.find("Server") != -1 && !ClassDB.is_parent_class(name_of_class, "Reference"):
 			continue
 		if name_of_class.find("Editor") != -1 && (BasicData.regression_test_project || !allow_editor):
+			continue
+		# Godot4
+		if name_of_class.find("SkeletonModification") != -1:
 			continue
 
 		if !must_be_instantable || ClassDB.can_instance(name_of_class):

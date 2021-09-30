@@ -114,7 +114,7 @@ func get_dictionary() -> Dictionary:
 	return Dictionary({})
 
 
-func get_pool_string_array() -> PoolStringArray:
+func get_packed_string_array() -> PoolStringArray:
 	var array: Array = []
 	if random && randi() % 2:
 		return PoolStringArray(array)
@@ -123,7 +123,7 @@ func get_pool_string_array() -> PoolStringArray:
 	return PoolStringArray(array)
 
 
-func get_pool_int_array() -> PoolIntArray:
+func get_packed_int32_array() -> PoolIntArray:
 	var array: Array = []
 	if random && randi() % 2:
 		return PoolIntArray(array)
@@ -132,7 +132,7 @@ func get_pool_int_array() -> PoolIntArray:
 	return PoolIntArray(array)
 
 
-func get_pool_byte_array() -> PoolByteArray:
+func get_packed_byte_array() -> PoolByteArray:
 	var array: Array = []
 	if random && randi() % 2:
 		return PoolByteArray(array)
@@ -141,7 +141,7 @@ func get_pool_byte_array() -> PoolByteArray:
 	return PoolByteArray(array)
 
 
-func get_pool_real_array() -> PoolRealArray:
+func get_packed_float32_array() -> PoolRealArray:
 	var array: Array = []
 	if random && randi() % 2:
 		return PoolRealArray(array)
@@ -150,7 +150,7 @@ func get_pool_real_array() -> PoolRealArray:
 	return PoolRealArray(array)
 
 
-func get_pool_vector2_array() -> PoolVector2Array:
+func get_packed_vector2_array() -> PoolVector2Array:
 	var array: Array = []
 	if random && randi() % 2:
 		return PoolVector2Array(array)
@@ -159,7 +159,7 @@ func get_pool_vector2_array() -> PoolVector2Array:
 	return PoolVector2Array(array)
 
 
-func get_pool_vector3_array() -> PoolVector3Array:
+func get_packed_vector3_array() -> PoolVector3Array:
 	var array: Array = []
 	if random && randi() % 2:
 		return PoolVector3Array(array)
@@ -168,7 +168,7 @@ func get_pool_vector3_array() -> PoolVector3Array:
 	return PoolVector3Array(array)
 
 
-func get_pool_color_array() -> PoolColorArray:
+func get_packed_color_array() -> PoolColorArray:
 	var array: Array = []
 	if random && randi() % 2:
 		return PoolColorArray(array)

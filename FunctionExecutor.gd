@@ -173,7 +173,8 @@ func tests_all_functions() -> void:
 									print(to_print + remove_function)
 
 						for argument in arguments:
-							HelpFunctions.remove_thing(argument)
+							if argument is Object && argument != null:
+								HelpFunctions.remove_thing(argument)
 
 						if use_always_new_object:
 							HelpFunctions.remove_thing(object)

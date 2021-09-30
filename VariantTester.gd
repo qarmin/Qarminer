@@ -167,13 +167,13 @@ func get_basic_thing(type: int):
 		TYPE_COLOR:
 			thing = ValueCreator.get_color()
 		TYPE_COLOR_ARRAY:
-			thing = ValueCreator.get_pool_color_array()
+			thing = ValueCreator.get_packed_color_array()
 		TYPE_DICTIONARY:
 			thing = ValueCreator.get_dictionary()
 		TYPE_INT:
 			thing = ValueCreator.get_int()
 		TYPE_INT_ARRAY:
-			thing = ValueCreator.get_pool_int_array()
+			thing = ValueCreator.get_packed_int32_array()
 		TYPE_NODE_PATH:
 			thing = ValueCreator.get_nodepath()
 		TYPE_PLANE:
@@ -181,11 +181,11 @@ func get_basic_thing(type: int):
 		TYPE_QUAT:
 			thing = ValueCreator.get_quat()
 		TYPE_RAW_ARRAY:
-			thing = ValueCreator.get_pool_byte_array()
+			thing = ValueCreator.get_packed_byte_array()
 		TYPE_REAL:
 			thing = ValueCreator.get_float()
 		TYPE_REAL_ARRAY:
-			thing = ValueCreator.get_pool_real_array()
+			thing = ValueCreator.get_packed_float32_array()
 		TYPE_RECT2:
 			thing = ValueCreator.get_rect2()
 		TYPE_RID:
@@ -193,7 +193,7 @@ func get_basic_thing(type: int):
 		TYPE_STRING:
 			thing = ValueCreator.get_string()
 		TYPE_STRING_ARRAY:
-			thing = ValueCreator.get_pool_string_array()
+			thing = ValueCreator.get_packed_string_array()
 		TYPE_TRANSFORM:
 			thing = ValueCreator.get_transform()
 		TYPE_TRANSFORM2D:
@@ -201,11 +201,11 @@ func get_basic_thing(type: int):
 		TYPE_VECTOR2:
 			thing = ValueCreator.get_vector2()
 		TYPE_VECTOR2_ARRAY:
-			thing = ValueCreator.get_pool_vector2_array()
+			thing = ValueCreator.get_packed_vector2_array()
 		TYPE_VECTOR3:
 			thing = ValueCreator.get_vector3()
 		TYPE_VECTOR3_ARRAY:
-			thing = ValueCreator.get_pool_vector3_array()
+			thing = ValueCreator.get_packed_vector3_array()
 		TYPE_OBJECT:
 			assert(false, "Object not supported")
 		TYPE_NIL:
