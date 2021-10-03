@@ -17,7 +17,7 @@ var number_of_function_repeats: int = 3  # How many times functions can be repea
 var number_of_classes_repeats: int = 1  # How many times classes will be repeated
 var shuffle_methods: bool = true  # Mix methods to be able to get more random results
 var miss_some_functions: int = true  # Allows to not execute some functions to be able to get more random results
-var remove_returned_value: bool = true  # Removes returned value from function
+var remove_returned_value: bool = false  # Removes returned value from function
 var save_data_to_file: bool = true  # Save data to file(not big performance impact as I exepected)
 var test_one_class_multiple_times: bool = false  # Test same class across multiple frames
 
