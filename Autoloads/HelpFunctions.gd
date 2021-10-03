@@ -158,7 +158,7 @@ func initialize_list_of_available_classes(must_be_instantable: bool = true, allo
 
 	var full_class_list: Array = Array(ClassDB.get_class_list())
 	full_class_list.sort()
-
+	
 	var custom_classes: Array = []
 	var file = File.new()
 	if file.file_exists("res://classes.txt"):
@@ -168,6 +168,7 @@ func initialize_list_of_available_classes(must_be_instantable: bool = true, allo
 			var internal_cname = "_" + cname
 			# The declared class may not exist, and it may be exposed as `_ClassName` rather than `ClassName`.
 			if !ClassDB.class_exists(cname) && !ClassDB.class_exists(internal_cname):
+				printerr("Trying to use non existent custom class \"" + cname +'"')
 				continue
 			if ClassDB.class_exists(internal_cname):
 				cname = internal_cname
