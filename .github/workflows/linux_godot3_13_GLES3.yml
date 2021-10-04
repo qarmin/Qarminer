@@ -1,4 +1,4 @@
-name: 🐧 Godot 3 GLES2 05 Multithread Rendering
+name: 🐧 Godot 3 GLES3 13 Parent
 on:
   push:
   pull_request:
@@ -29,8 +29,7 @@ jobs:
 
       - name: Configure Data
         run: |
-          echo "[rendering]" >> project.godot
-          echo "threads/thread_model=2" >> project.godot
+          sed -i 's/var use_parent_methods: bool = false/var use_parent_methods: bool = true/' FunctionExecutor.gd
           
 
       - name: Download Godot(GIT)
@@ -50,7 +49,7 @@ jobs:
 
       - name: Open Godot Editor
         run: |
-          DRI_PRIME=0 xvfb-run ./godot.x11.tools.64s -e -q --audio-driver Dummy --video-driver GLES2 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          DRI_PRIME=0 xvfb-run ./godot.x11.tools.64s -e -q --audio-driver Dummy --video-driver GLES3 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
           tail -n 300 sanitizers_log.txt > editor_results.txt
 
       - name: Store editor results
@@ -65,7 +64,7 @@ jobs:
 
       - name: Run Project
         run: |
-          DRI_PRIME=0 xvfb-run ./godot.x11.tools.64s FunctionExecutor.tscn 3600 --audio-driver Dummy --video-driver GLES2 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          DRI_PRIME=0 xvfb-run ./godot.x11.tools.64s FunctionExecutor.tscn 3600 --audio-driver Dummy --video-driver GLES3 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
           tail -n 300 sanitizers_log.txt > project_results.txt
 
       - name: Store project results

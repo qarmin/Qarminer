@@ -1,4 +1,4 @@
-name: 🐧 Linux Builds GLES2 06 Multithread Physics
+name: 🐧 Godot 3 GLES2 06 Multithread Physics
 on:
   push:
   pull_request:
@@ -8,7 +8,7 @@ on:
 jobs:
   linux-sanitizer:
     runs-on: "ubuntu-20.04"
-    name: Editor and exported project with sanitizers (target=debug/release, tools=yes/no, debug_symbols=yes, use_ubsan=yes, use_asan=yes)
+    name: Editor and project
 
     steps:
       - uses: actions/checkout@v2
@@ -43,7 +43,7 @@ jobs:
       - name: Compile Godot
         run: |
           cd godot
-          scons p=x11 -j2 use_asan=yes use_ubsan=yes CCFLAGS="-fsanitize=shift,shift-exponent,integer-divide-by-zero,unreachable,vla-bound,null,return,signed-integer-overflow,bounds,float-divide-by-zero,float-cast-overflow,nonnull-attribute,returns-nonnull-attribute,bool,enum,vptr"
+          scons -j2 use_asan=yes use_ubsan=yes CCFLAGS="-fsanitize=shift,shift-exponent,integer-divide-by-zero,unreachable,vla-bound,null,return,signed-integer-overflow,bounds,float-divide-by-zero,float-cast-overflow,nonnull-attribute,returns-nonnull-attribute,bool,enum,vptr"
           cp bin/godot.x11.tools.64s ../
           cd ../
           rm -rf godot
