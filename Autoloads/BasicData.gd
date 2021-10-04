@@ -12,9 +12,12 @@ var function_exceptions: Array = [
 	###
 	### Crashes TODO
 	###
-	"follow_property",  #
+	"get_recognized_extensions_for_type",  # Spam
+	"load",  # Spam - _ResourceLoader
+	"connect_to_signal",  # not cherrypicked
 	"poll",  # FREEZE
 	"_thread_done",  #
+	"set_function",  # Not cherrypicked
 	###
 	### Dummy Rasterize
 	###
@@ -40,20 +43,12 @@ var function_exceptions: Array = [
 	###
 	### Reported crashes
 	###
-	"get_data",  #53214
-	"_text_changed",  #53194
-	"_submenu_timeout",  #53164
-	"set_call_mode",  #53120
-	"set_basic_type",  #53120
-	"unparent_bone_and_rest",  #52875 Freeze
+	"light_unwrap",  #52929
 	"create_action",  #50769
-	"_direct_state_changed",  #46003 - Not cherrypicked
-	"connect_to_signal",  # 47572 - Not cherrypicked
-	"set_function",  # not cherrypick
 	"_editor_settings_changed",  # 45979
 	"set_script",  #46120
 	"set_icon",  #46189
-	"set_editor_hint",  #46252
+	"set_editor_hint",  #46252 - Fixed only for master(due compatibility)
 	"set_probe_data",  #46570
 	"add_vertex",  #47066
 	"create_shape_owner",  #47135
@@ -234,6 +229,11 @@ var disabled_classes: Array = [
 	"Thread",
 	"Semaphore",
 	"Mutex",
+	###
+	### TODO
+	###
+	"_ResourceLoader",  #Spams
+	"ResourceLoader",  #Spams
 ]
 
 # Exceptions for e.g. float, String or int functions

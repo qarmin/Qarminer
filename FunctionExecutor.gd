@@ -10,9 +10,10 @@ extends Node
 
 var debug_print: bool = true
 var exiting: bool = false  # Exit after 1 loop?
-var add_to_tree: bool = false  # Adds nodes to tree, freeze godot when removing a lot of nodes
+var add_to_tree: bool = true  # Adds nodes to tree, freeze godot when removing a lot of nodes
+var delay_removing_added_nodes_to_next_frame: bool = false  # This can be used only with add_to_tree option - this will force to render things
 var use_parent_methods: bool = false  # Allows Node2D use Node methods etc. - it is a little slow option which rarely shows
-var use_always_new_object: bool = false  # Don't allow to "remeber" other function effects
+var use_always_new_object: bool = false  # Don't allow to "remember" other function effects
 var number_of_function_repeats: int = 3  # How many times functions can be repeated
 var number_of_classes_repeats: int = 1  # How many times classes will be repeated
 var shuffle_methods: bool = true  # Mix methods to be able to get more random results
@@ -40,6 +41,7 @@ func _ready() -> void:
 	if BasicData.regression_test_project:
 		debug_print = false
 		add_to_tree = false
+		delay_removing_added_nodes_to_next_frame = false
 		use_parent_methods = false
 		use_always_new_object = true
 		number_of_function_repeats = 1
@@ -80,6 +82,10 @@ func _process(_delta: float) -> void:
 
 # Test all functions
 func tests_all_functions() -> void:
+	if delay_removing_added_nodes_to_next_frame && add_to_tree:
+		for i in get_children():
+			i.queue_free()
+
 	if test_one_class_multiple_times:
 		tested_times += 1
 		if tested_times > how_many_times_test:
@@ -177,11 +183,12 @@ func tests_all_functions() -> void:
 								HelpFunctions.remove_thing(argument)
 
 						if use_always_new_object:
-							HelpFunctions.remove_thing(object)
+							if !delay_removing_added_nodes_to_next_frame && add_to_tree && object is Node:
+								HelpFunctions.remove_thing(object)
 
 							object = ClassDB.instance(name_of_class)
 							if add_to_tree:
 								if object is Node:
 									add_child(object)
-
-			HelpFunctions.remove_thing(object)
+			if !delay_removing_added_nodes_to_next_frame && add_to_tree && object is Node:
+				HelpFunctions.remove_thing(object)
