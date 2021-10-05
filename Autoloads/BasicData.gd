@@ -43,6 +43,7 @@ var function_exceptions: Array = [
 	###
 	### Reported crashes
 	###
+	"_draw_soft_mesh", #53437
 	"light_unwrap",  #52929
 	"create_action",  #50769
 	"_editor_settings_changed",  # 45979
