@@ -30,7 +30,7 @@ jobs:
       - name: Configure Data
         run: |
           echo "[physics]" >> project.godot
-          echo "3d/physics_engine="GodotPhysics" >> project.godot
+          echo "3d/physics_engine=\"GodotPhysics\"" >> project.godot
           
 
       - name: Download Godot(GIT)

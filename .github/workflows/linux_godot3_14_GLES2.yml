@@ -31,7 +31,7 @@ jobs:
         run: |
           echo "[physics]" >> project.godot
           echo "2d/thread_model=2" >> project.godot
-          echo "3d/physics_engine="GodotPhysics" >> project.godot
+          echo "3d/physics_engine=\"GodotPhysics\"" >> project.godot
           
 
       - name: Download Godot(GIT)
