@@ -1,4 +1,4 @@
-name: 🐧 Godot 3 GLES2 02 Parent
+name: 🐧 Godot 3 GLES2 02 Normal TS
 on:
   push:
   pull_request:
@@ -29,8 +29,7 @@ jobs:
 
       - name: Configure Data
         run: |
-          sed -i 's/var use_parent_methods: bool = false/var use_parent_methods: bool = true/' FunctionExecutor.gd
-          
+          true
 
       - name: Download Godot(GIT)
         run: |
@@ -42,14 +41,14 @@ jobs:
       - name: Compile Godot
         run: |
           cd godot
-          scons -j2 use_asan=yes use_ubsan=yes CCFLAGS="-fsanitize=shift,shift-exponent,integer-divide-by-zero,unreachable,vla-bound,null,return,signed-integer-overflow,bounds,float-divide-by-zero,float-cast-overflow,nonnull-attribute,returns-nonnull-attribute,bool,enum,vptr"
-          cp bin/godot.x11.tools.64s ../
+          scons -j2 use_tsan=yes
+          cp bin/godot.x11.tools.64.llvms ../
           cd ../
           rm -rf godot
 
       - name: Open Godot Editor
         run: |
-          DRI_PRIME=0 xvfb-run ./godot.x11.tools.64s -e -q --audio-driver Dummy --video-driver GLES2 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          DRI_PRIME=0 xvfb-run ./godot.x11.tools.64.llvms -e -q --audio-driver Dummy --video-driver GLES2 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
           tail -n 300 sanitizers_log.txt > editor_results.txt
 
       - name: Store editor results
@@ -64,7 +63,7 @@ jobs:
 
       - name: Run Project
         run: |
-          DRI_PRIME=0 xvfb-run ./godot.x11.tools.64s FunctionExecutor.tscn 3600 --audio-driver Dummy --video-driver GLES2 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          DRI_PRIME=0 xvfb-run ./godot.x11.tools.64.llvms FunctionExecutor.tscn 3600 --audio-driver Dummy --video-driver GLES2 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
           tail -n 300 sanitizers_log.txt > project_results.txt
 
       - name: Store project results

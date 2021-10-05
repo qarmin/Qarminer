@@ -1,4 +1,4 @@
-name: 🐧 Linux Builds GLES3 11 Parent
+name: 🐧 Godot 3 GLES2 16 One by One
 on:
   push:
   pull_request:
@@ -8,7 +8,7 @@ on:
 jobs:
   linux-sanitizer:
     runs-on: "ubuntu-20.04"
-    name: Editor and exported project with sanitizers (target=debug/release, tools=yes/no, debug_symbols=yes, use_ubsan=yes, use_asan=yes)
+    name: Editor and project
 
     steps:
       - uses: actions/checkout@v2
@@ -29,7 +29,10 @@ jobs:
 
       - name: Configure Data
         run: |
+          sed -i 's/var number_of_function_repeats: int = 3/var number_of_function_repeats: int = 7/' FunctionExecutor.gd
+          sed -i 's/var add_to_tree: bool = false/var add_to_tree: bool = true/' FunctionExecutor.gd
           sed -i 's/var use_parent_methods: bool = false/var use_parent_methods: bool = true/' FunctionExecutor.gd
+          sed -i 's/var test_one_class_multiple_times: bool = false/var test_one_class_multiple_times: bool = true/' FunctionExecutor.gd
           
 
       - name: Download Godot(GIT)
@@ -42,14 +45,14 @@ jobs:
       - name: Compile Godot
         run: |
           cd godot
-          scons p=x11 -j2 use_asan=yes use_ubsan=yes CCFLAGS="-fsanitize=shift,shift-exponent,integer-divide-by-zero,unreachable,vla-bound,null,return,signed-integer-overflow,bounds,float-divide-by-zero,float-cast-overflow,nonnull-attribute,returns-nonnull-attribute,bool,enum,vptr"
+          scons -j2 use_asan=yes use_ubsan=yes CCFLAGS="-fsanitize=shift,shift-exponent,integer-divide-by-zero,unreachable,vla-bound,null,return,signed-integer-overflow,bounds,float-divide-by-zero,float-cast-overflow,nonnull-attribute,returns-nonnull-attribute,bool,enum,vptr"
           cp bin/godot.x11.tools.64s ../
           cd ../
           rm -rf godot
 
       - name: Open Godot Editor
         run: |
-          DRI_PRIME=0 xvfb-run ./godot.x11.tools.64s -e -q --audio-driver Dummy --video-driver GLES3 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          DRI_PRIME=0 xvfb-run ./godot.x11.tools.64s -e -q --audio-driver Dummy --video-driver GLES2 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
           tail -n 300 sanitizers_log.txt > editor_results.txt
 
       - name: Store editor results
@@ -64,7 +67,7 @@ jobs:
 
       - name: Run Project
         run: |
-          DRI_PRIME=0 xvfb-run ./godot.x11.tools.64s FunctionExecutor.tscn 3600 --audio-driver Dummy --video-driver GLES3 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          DRI_PRIME=0 xvfb-run ./godot.x11.tools.64s FunctionExecutor.tscn 15000 --audio-driver Dummy --video-driver GLES2 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
           tail -n 300 sanitizers_log.txt > project_results.txt
 
       - name: Store project results
