@@ -43,7 +43,7 @@ jobs:
       - name: Compile Godot
         run: |
           cd godot
-          scons -j2 use_tsan=yes
+          scons -j2 use_tsan=yes use_llvm=yes
           cp bin/godot.x11.tools.64.llvms ../
           cd ../
           rm -rf godot
