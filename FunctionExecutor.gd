@@ -27,6 +27,7 @@ var file_handler: File = File.new()  # Handles saves to file, in case of testing
 var to_print: String = ""  # Specify what needs to be printed
 
 var number_to_track_variables: int = 0  # Unique number to specify number which is added to variable name to prevent from using variables with same name
+var function_number: int = 0  # Needed to be able to use arguments with unique names
 
 var how_many_times_test: int = 30  # How many times, same class will be tested
 var tested_times: int = how_many_times_test  # How many times class is tested now
@@ -123,6 +124,7 @@ func tests_all_functions() -> void:
 				method_list.shuffle()
 
 			if (debug_print || save_data_to_file) && !use_always_new_object:
+				function_number = 0
 				number_to_track_variables += 1
 				to_print = "\tvar temp_variable" + str(number_to_track_variables) + " = " + HelpFunctions.get_gdscript_class_creation(name_of_class)
 				if add_to_tree:
@@ -136,23 +138,40 @@ func tests_all_functions() -> void:
 
 			for _i in range(number_of_function_repeats):
 				for method_data in method_list:
+					function_number += 1
 					if !miss_some_functions || randi() % 2 == 0:
 						var arguments: Array = ParseArgumentType.parse_and_return_objects(method_data, name_of_class, debug_print)
 
 						if debug_print || save_data_to_file:
+							to_print = ""
+
+							# Handle here objects by creating temporary values
+							for i in arguments.size():
+								if arguments[i] is Object:
+									to_print += (
+										"\tvar temp_argument"
+										+ str(number_to_track_variables)
+										+ "_f"
+										+ str(function_number)
+										+ "_"
+										+ str(i)
+										+ " = "
+										+ ParseArgumentType.return_gdscript_code_which_run_this_object(arguments[i])
+										+ "\n"
+									)
+
 							if use_always_new_object:
-								if save_data_to_file:
-									to_print = "\t"
-								else:
-									to_print = "GDSCRIPT CODE:     "
-								to_print += HelpFunctions.get_gdscript_class_creation(name_of_class)
+								to_print += "\t" + HelpFunctions.get_gdscript_class_creation(name_of_class)
 							else:
-								to_print = "\ttemp_variable" + str(number_to_track_variables)
+								to_print += "\ttemp_variable" + str(number_to_track_variables)
 
 							to_print += "." + method_data["name"] + "("
 
 							for i in arguments.size():
-								to_print += ParseArgumentType.return_gdscript_code_which_run_this_object(arguments[i])
+								if arguments[i] is Object:
+									to_print += "temp_argument" + str(number_to_track_variables) + "_f" + str(function_number) + "_" + str(i)
+								else:
+									to_print += ParseArgumentType.return_gdscript_code_which_run_this_object(arguments[i])
 								if i != arguments.size() - 1:
 									to_print += ", "
 							to_print += ")"
@@ -178,12 +197,29 @@ func tests_all_functions() -> void:
 								if debug_print:
 									print(to_print + remove_function)
 
-						for argument in arguments:
-							if argument is Object && argument != null:
-								HelpFunctions.remove_thing(argument)
+						for i in arguments.size():
+							if arguments[i] is Object && arguments[i] != null:
+								if debug_print || save_data_to_file:
+									if (arguments[i] is Node) || !(arguments[i] is Reference):
+										to_print = "\ttemp_argument" + str(number_to_track_variables) + "_f" + str(function_number) + "_" + str(i)
+										to_print += HelpFunctions.remove_thing_string(arguments[i])
+										if save_data_to_file:
+											file_handler.store_string("\n" + to_print)
+											file_handler.flush()
+										if debug_print:
+											print(to_print)
+								HelpFunctions.remove_thing(arguments[i])
 
 						if use_always_new_object:
 							if !(delay_removing_added_nodes_to_next_frame && add_to_tree && object is Node):
+								if (object is Node) || !(object is Reference):
+									to_print = "\ttemp_variable" + str(number_to_track_variables)
+									to_print += HelpFunctions.remove_thing_string(object)
+									if save_data_to_file:
+										file_handler.store_string("\n" + to_print)
+										file_handler.flush()
+									if debug_print:
+										print(to_print)
 								HelpFunctions.remove_thing(object)
 
 							object = ClassDB.instance(name_of_class)
@@ -191,4 +227,12 @@ func tests_all_functions() -> void:
 								if object is Node:
 									add_child(object)
 			if !(delay_removing_added_nodes_to_next_frame && add_to_tree && object is Node):
+				if (object is Node) || !(object is Reference):
+					to_print = "\ttemp_variable" + str(number_to_track_variables)
+					to_print += HelpFunctions.remove_thing_string(object)
+					if save_data_to_file:
+						file_handler.store_string("\n" + to_print)
+						file_handler.flush()
+					if debug_print:
+						print(to_print)
 				HelpFunctions.remove_thing(object)

@@ -43,7 +43,7 @@ var function_exceptions: Array = [
 	###
 	### Reported crashes
 	###
-	"make_atlas", #51154
+	"make_atlas",  #51154
 	"set_basic_type",  #53456
 	"set_custom_viewport",  #53445
 	"_draw_soft_mesh",  #53437
@@ -239,13 +239,15 @@ var disabled_classes: Array = [
 	"_ResourceLoader",  #Spams
 	"ResourceLoader",  #Spams
 	"SoftBody",  #53437
+	"ProximityGroup",  #53484
+	"ProximityGroup3D",  #53484
 	###
 	### Big numbers - only enabled when arguments can be >100
 	###
-#	"OpenSimplexNoise",
-#	"HeightMapShape",
-#	"BitMap",
-#	"CPUParticles",
+	#	"OpenSimplexNoise",
+	#	"HeightMapShape",
+	#	"BitMap",
+	#	"CPUParticles",
 ]
 
 # Exceptions for e.g. float, String or int functions
