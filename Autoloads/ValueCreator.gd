@@ -188,6 +188,14 @@ func get_object(object_name: String) -> Object:
 
 		var arr: Array = ClassDB.get_inheriters_from_class(object_name)
 
+		# If allowed argument classes is smaller than available arguments then we filter this things, because it would cause too many null returned things
+		if arr.size() > BasicData.argument_classes.size() * 4:
+			var new_arr: Array = []
+			for i in arr:
+				if i in BasicData.argument_classes:
+					new_arr.append(i)
+			arr = new_arr
+
 		if arr.empty():
 			return null
 

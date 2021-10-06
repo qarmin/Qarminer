@@ -43,8 +43,9 @@ var function_exceptions: Array = [
 	###
 	### Reported crashes
 	###
-	"set_custom_viewport", #53445
-	"_draw_soft_mesh", #53437
+	"set_basic_type",  #53456
+	"set_custom_viewport",  #53445
+	"_draw_soft_mesh",  #53437
 	"light_unwrap",  #52929
 	"create_action",  #50769
 	"_editor_settings_changed",  # 45979
@@ -236,6 +237,7 @@ var disabled_classes: Array = [
 	###
 	"_ResourceLoader",  #Spams
 	"ResourceLoader",  #Spams
+	"SoftBody",  #53437
 ]
 
 # Exceptions for e.g. float, String or int functions
