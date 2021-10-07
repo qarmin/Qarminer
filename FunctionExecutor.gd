@@ -83,10 +83,6 @@ func _process(_delta: float) -> void:
 
 # Test all functions
 func tests_all_functions() -> void:
-	if delay_removing_added_nodes_to_next_frame && add_to_tree:
-		for i in get_children():
-			i.queue_free()
-
 	if test_one_class_multiple_times:
 		tested_times += 1
 		if tested_times > how_many_times_test:
@@ -102,6 +98,16 @@ func tests_all_functions() -> void:
 
 	elif save_data_to_file:
 		var _a: int = file_handler.open("res://results.txt", File.WRITE)
+
+	if delay_removing_added_nodes_to_next_frame && add_to_tree:
+		to_print = "\n\tfor i in get_children():\n\t\ti.queue_free()"
+		if save_data_to_file:
+			file_handler.store_string(to_print)
+			file_handler.flush()
+		if debug_print:
+			print(to_print)
+		for i in get_children():
+			i.queue_free()
 
 	for _f in range(number_of_classes_repeats):
 		for name_of_class in tested_classes:
@@ -147,7 +153,7 @@ func tests_all_functions() -> void:
 
 							# Handle here objects by creating temporary values
 							for i in arguments.size():
-								if arguments[i] is Object:
+								if arguments[i] is Object && !(arguments[i] is Reference):
 									to_print += (
 										"\tvar temp_argument"
 										+ str(number_to_track_variables)
@@ -168,7 +174,7 @@ func tests_all_functions() -> void:
 							to_print += "." + method_data["name"] + "("
 
 							for i in arguments.size():
-								if arguments[i] is Object:
+								if arguments[i] is Object && !(arguments[i] is Reference):
 									to_print += "temp_argument" + str(number_to_track_variables) + "_f" + str(function_number) + "_" + str(i)
 								else:
 									to_print += ParseArgumentType.return_gdscript_code_which_run_this_object(arguments[i])
@@ -226,6 +232,7 @@ func tests_all_functions() -> void:
 							if add_to_tree:
 								if object is Node:
 									add_child(object)
+
 			if !(delay_removing_added_nodes_to_next_frame && add_to_tree && object is Node):
 				if (object is Node) || !(object is Reference):
 					to_print = "\ttemp_variable" + str(number_to_track_variables)

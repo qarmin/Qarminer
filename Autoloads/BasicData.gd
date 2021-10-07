@@ -242,12 +242,16 @@ var disabled_classes: Array = [
 	"ProximityGroup",  #53484
 	"ProximityGroup3D",  #53484
 	###
-	### Big numbers - only enabled when arguments can be >100
+	### Big numbers - only enabled when arguments can be >100, because can freeze entire project
 	###
 	#	"OpenSimplexNoise",
 	#	"HeightMapShape",
 	#	"BitMap",
 	#	"CPUParticles",
+	###
+	### Exported build - some checks are disabled in exported build due to too big performance impact
+	###
+	"Image",
 ]
 
 # Exceptions for e.g. float, String or int functions
