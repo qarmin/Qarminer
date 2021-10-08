@@ -69,6 +69,8 @@ func _ready() -> void:
 #	for i in BasicData.allowed_thing.keys():
 #		assert(i == BasicData.base_classes[index])
 #		index += 1
+	if save_data_to_file:
+		var _a: int = file_handler.open("res://results.txt", File.WRITE)
 
 	if BasicData.regression_test_project:
 		tests_all_functions()
@@ -190,19 +192,6 @@ func tests_all_functions() -> void:
 
 						var ret = object.callv(method_data["name"], arguments)
 
-						if remove_returned_value:
-							if ret is Object && ret != null && !(method_data["name"] in BasicData.return_value_exceptions):
-								HelpFunctions.remove_thing(ret)
-
-								# This code must create duplicate line, because ret type is only known after executing function and cannot be deduced before.
-								var remove_function: String = HelpFunctions.remove_thing_string(object)
-
-								if save_data_to_file:
-									file_handler.store_string("\n" + to_print + remove_function)
-									file_handler.flush()
-								if debug_print:
-									print(to_print + remove_function)
-
 						for i in arguments.size():
 							if arguments[i] is Object && arguments[i] != null:
 								if debug_print || save_data_to_file:
@@ -215,6 +204,23 @@ func tests_all_functions() -> void:
 										if debug_print:
 											print(to_print)
 								HelpFunctions.remove_thing(arguments[i])
+
+						if remove_returned_value:
+							# Looks that argument of function may become its returned value, so
+							# needs to be checked if was not freed before
+							if is_instance_valid(ret):
+								if ret is Object && ret != null && !(method_data["name"] in BasicData.return_value_exceptions):
+									if !(ret is Reference):
+										# This code must create duplicate line, because ret type is only known after executing function and cannot be deduced before.
+										var remove_function: String = HelpFunctions.remove_thing_string(ret)
+
+										if save_data_to_file:
+											file_handler.store_string("\n" + to_print + remove_function)
+											file_handler.flush()
+										if debug_print:
+											print(to_print + remove_function)
+
+									HelpFunctions.remove_thing(ret)
 
 						if use_always_new_object:
 							if !(delay_removing_added_nodes_to_next_frame && add_to_tree && object is Node):

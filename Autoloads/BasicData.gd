@@ -43,6 +43,7 @@ var function_exceptions: Array = [
 	###
 	### Reported crashes
 	###
+	"set_block_signals",  #53553
 	"make_atlas",  #51154
 	"set_basic_type",  #53456
 	"set_custom_viewport",  #53445
