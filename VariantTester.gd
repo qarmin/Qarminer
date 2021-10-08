@@ -179,7 +179,7 @@ func get_basic_thing(type: int):
 		TYPE_PLANE:
 			thing = ValueCreator.get_plane()
 		TYPE_QUAT:
-			thing = ValueCreator.get_quat()
+			thing = ValueCreator.get_quaternion()
 		TYPE_RAW_ARRAY:
 			thing = ValueCreator.get_packed_byte_array()
 		TYPE_REAL:
@@ -195,7 +195,7 @@ func get_basic_thing(type: int):
 		TYPE_STRING_ARRAY:
 			thing = ValueCreator.get_packed_string_array()
 		TYPE_TRANSFORM:
-			thing = ValueCreator.get_transform()
+			thing = ValueCreator.get_transform3d()
 		TYPE_TRANSFORM2D:
 			thing = ValueCreator.get_transform2D()
 		TYPE_VECTOR2:

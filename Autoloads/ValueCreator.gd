@@ -56,7 +56,7 @@ func get_aabb() -> AABB:
 	return AABB(get_vector3(), get_vector3())
 
 
-func get_transform() -> Transform:
+func get_transform3d() -> Transform:
 	return Transform(get_vector3(), get_vector3(), get_vector3(), get_vector3())
 
 
@@ -68,7 +68,7 @@ func get_plane() -> Plane:
 	return Plane(get_vector3(), get_vector3(), get_vector3())
 
 
-func get_quat() -> Quat:
+func get_quaternion() -> Quat:
 	return Quat(get_vector3())
 
 

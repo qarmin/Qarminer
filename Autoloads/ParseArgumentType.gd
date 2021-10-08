@@ -52,7 +52,7 @@ func parse_and_return_objects(method_data: Dictionary, name_of_class: String, de
 			TYPE_PLANE:
 				arguments_array.push_back(ValueCreator.get_plane())
 			TYPE_QUAT:
-				arguments_array.push_back(ValueCreator.get_quat())
+				arguments_array.push_back(ValueCreator.get_quaternion())
 			TYPE_RAW_ARRAY:
 				arguments_array.push_back(ValueCreator.get_packed_byte_array())
 			TYPE_REAL:
@@ -68,7 +68,7 @@ func parse_and_return_objects(method_data: Dictionary, name_of_class: String, de
 			TYPE_STRING_ARRAY:
 				arguments_array.push_back(ValueCreator.get_packed_string_array())
 			TYPE_TRANSFORM:
-				arguments_array.push_back(ValueCreator.get_transform())
+				arguments_array.push_back(ValueCreator.get_transform3d())
 			TYPE_TRANSFORM2D:
 				arguments_array.push_back(ValueCreator.get_transform2D())
 			TYPE_VECTOR2:

@@ -273,7 +273,7 @@ func create_gdscript_arguments(arguments: Array) -> Array:
 				sa.value = get_plane_string()
 			TYPE_QUAT:
 				sa.type = "Quat"
-				sa.value = get_quat_string()
+				sa.value = get_quaternion_string()
 			TYPE_RAW_ARRAY:
 				sa.type = "PoolByteArray"
 				sa.value = "PoolByteArray([])"
@@ -375,7 +375,7 @@ func get_plane_string() -> String:
 	return "Plane(" + get_vector3_string() + ", " + get_vector3_string() + ", " + get_vector3_string() + ")"
 
 
-func get_quat_string() -> String:
+func get_quaternion_string() -> String:
 	return "Quat(" + get_vector3_string() + ")"
 
 
