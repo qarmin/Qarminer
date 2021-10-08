@@ -85,7 +85,7 @@ func _process(delta: float) -> void:
 				+ "choosen.get_parent()#"
 				+ parent_of_node.get_class()
 				+ " - "
-				+ parent_of_node.get_name()
+				+ String(parent_of_node.get_name())
 				+ "\n"
 			)
 			to_print += (
@@ -99,7 +99,7 @@ func _process(delta: float) -> void:
 				+ random_node.get_class()
 				+ "\n"
 			)
-			to_print += "\tvariable" + str(number_of_variables) + "parent.remove_child(variable" + str(number_of_variables) + "choosen\n"
+			to_print += "\tvariable" + str(number_of_variables) + "parent.remove_child(variable" + str(number_of_variables) + "choosen)\n"
 			print(to_print)
 
 		parent_of_node.remove_child(choosen_node)
@@ -147,7 +147,7 @@ func find_all_special_children_names(node: Node) -> Array:
 	var array: Array = []
 	array.append(node.get_name())
 	for child in node.get_children():
-		if child.get_name().begins_with("Special Node"):
+		if String(child.get_name()).begins_with("Special Node"):
 			array.append_array(find_all_special_children_names(child))
 
 	return array

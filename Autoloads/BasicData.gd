@@ -230,13 +230,23 @@ var disabled_classes: Array = [
 	### OS - in normal testing, can broke everything, but can be used in CI
 	###
 	"_OS",
-	###
-	### Godot 4.0
-	###
-	"OS",
-	"Thread",
-	"Semaphore",
-	"Mutex",
+	#	###
+	#	### Godot 4.0
+	#	###
+	#	"OS",
+	#	"Thread",
+	#	"Semaphore",
+	#	"Mutex",
+	#	###
+	#	### Godot 4.0 Additional
+	#	###
+	#	"TextEdit",  # Crashes 52876
+	#	"CodeEdit",  # Also 52876
+	#	"FontData",  # A lot of crashes 52817
+	#	"InputEventShortcut",  # 52191
+	#	"MultiplayerAPI",  # Crashes TODO
+	#	"InputMap",
+	#	"GPUParticles3D",  # 53004
 	###
 	### TODO
 	###

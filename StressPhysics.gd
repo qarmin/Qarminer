@@ -180,15 +180,15 @@ func move_nodes() -> void:
 		elif child is Joint:
 			var nodea: Node = get_child(randi() % get_child_count())
 			var nodeb: Node = get_child(randi() % get_child_count())
-			assert(child.get_node("../" + nodea.get_name()) != null)
-			child.set_node_a("../" + nodea.get_name())
-			child.set_node_b("../" + nodeb.get_name())
+			assert(child.get_node("../" + String(nodea.get_name())) != null)
+			child.set_node_a("../" + String(nodea.get_name()))
+			child.set_node_b("../" + String(nodeb.get_name()))
 		elif child is Joint2D:
 			var nodea: Node = get_child(randi() % get_child_count())
 			var nodeb: Node = get_child(randi() % get_child_count())
-			assert(child.get_node("../" + nodea.get_name()) != null)
-			child.set_node_a("../" + nodea.get_name())
-			child.set_node_b("../" + nodeb.get_name())
+			assert(child.get_node("../" + String(nodea.get_name())) != null)
+			child.set_node_a("../" + String(nodea.get_name()))
+			child.set_node_b("../" + String(nodeb.get_name()))
 
 	if debug_level:
 		print("--- Ended Moving Nodes ---")
