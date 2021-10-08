@@ -43,6 +43,7 @@ var function_exceptions: Array = [
 	###
 	### Reported crashes
 	###
+	"_iter_init",  #53554
 	"set_block_signals",  #53553
 	"make_atlas",  #51154
 	"set_basic_type",  #53456
@@ -76,6 +77,8 @@ var function_exceptions: Array = [
 	###
 	### Slow Function
 	###
+	"create_convex_collision",
+	"create_multiple_convex_collisions",
 	"load_webp_from_buffer",
 	"_update_sky",
 	"interpolate_baked",
@@ -239,9 +242,7 @@ var disabled_classes: Array = [
 	###
 	"_ResourceLoader",  #Spams
 	"ResourceLoader",  #Spams
-	"SoftBody",  #53437
-	"ProximityGroup",  #53484
-	"ProximityGroup3D",  #53484
+	"PackedDataContainer",  #53554 - more crashes
 	###
 	### Big numbers - only enabled when arguments can be >100, because can freeze entire project
 	###
