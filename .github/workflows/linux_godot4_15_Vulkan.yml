@@ -1,4 +1,4 @@
-name: 🐧 SwiftShader Godot 4 Vulkan 01 Normal
+name: 🐧 SwiftShader Godot 4 Vulkan 15 Very Big
 on:
   push:
   pull_request:
@@ -29,7 +29,8 @@ jobs:
 
       - name: Configure Data
         run: |
-          true
+          sed -i 's/ValueCreator.number = 100/ValueCreator.number = 10000/' FunctionExecutor.gd
+          
 
       - name: Download Godot(GIT)
         run: |

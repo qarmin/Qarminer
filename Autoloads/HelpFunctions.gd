@@ -16,13 +16,13 @@ func check_if_is_allowed(method_data: Dictionary) -> bool:
 
 		if name_of_class in BasicData.disabled_classes:
 			return false
-		# This classes are bugged a lot TODOGODOT$
-		if name_of_class.find("SkeletonModification") != -1:
-			continue
 		if name_of_class.find("Server") != -1 && ClassDB.class_exists(name_of_class) && !ClassDB.is_parent_class(name_of_class, "RefCounted"):
 			return false
 		# Editor stuff usually aren't good choice for arguments
 		if name_of_class.find("Editor") != -1 || name_of_class.find("SkinReference") != -1:
+			return false
+		# Godot4
+		if name_of_class.find("SkeletonModification") != -1:
 			return false
 
 		# In case of adding new type, this prevents from crashing due not recognizing this type
@@ -66,7 +66,6 @@ func check_if_is_allowed(method_data: Dictionary) -> bool:
 			|| t == TYPE_CALLABLE
 		):
 			print("MISSING TYPE in function " + method_data["name"] + "  --  Variant type - " + str(t))
-			assert(false)
 			return false
 
 		if name_of_class.is_empty():
@@ -130,8 +129,8 @@ func remove_thing_string(thing: Object) -> String:
 
 # Initialize array which contains only allowed Functions
 func initialize_array_with_allowed_functions(use_parent_methods: bool, disabled_methods: Array):
-	assert(!BasicData.base_classes.is_empty())  #, "Missing initalization of classes")
-	assert(!BasicData.argument_classes.is_empty())  #, "Missing initalization of classes")
+	assert(!BasicData.base_classes.is_empty()) #,"Missing initalization of classes")
+	assert(!BasicData.argument_classes.is_empty()) #,"Missing initalization of classes")
 	var class_info: Dictionary = {}
 
 	for name_of_class in BasicData.base_classes:
@@ -169,6 +168,7 @@ func initialize_list_of_available_classes(must_be_instantable: bool = true, allo
 			var internal_cname = "_" + cname
 			# The declared class may not exist, and it may be exposed as `_ClassName` rather than `ClassName`.
 			if !ClassDB.class_exists(cname) && !ClassDB.class_exists(internal_cname):
+				printerr('Trying to use non existent custom class "' + cname + '"')
 				continue
 			if ClassDB.class_exists(internal_cname):
 				cname = internal_cname
@@ -190,7 +190,7 @@ func initialize_list_of_available_classes(must_be_instantable: bool = true, allo
 			continue
 		if name_of_class.find("Editor") != -1 && (BasicData.regression_test_project || !allow_editor):
 			continue
-		# This classes are bugged a lot TODOGODOT$
+		# Godot4
 		if name_of_class.find("SkeletonModification") != -1:
 			continue
 
@@ -203,7 +203,7 @@ func initialize_list_of_available_classes(must_be_instantable: bool = true, allo
 		if !must_be_instantable || ClassDB.can_instantiate(name_of_class):
 			BasicData.base_classes.push_back(name_of_class)
 
-#	BasicData.base_classes = BasicData.base_classes.slice(300, 400)
+#	BasicData.base_classes = BasicData.base_classes.slice(300, 350)
 
 	print(str(BasicData.base_classes.size()) + " choosen classes from all " + str(full_class_list.size()) + " classes.")
 	print(str(BasicData.argument_classes.size()) + " classes can be used as arguments.")

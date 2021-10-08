@@ -130,7 +130,7 @@ func create_nodes():
 		elif ClassDB.is_parent_class(name_of_class, "Node3D"):
 			is_2d = false
 		else:
-			assert(false)  #, "Used class isn't child of Node2D or Node3D")
+			assert(false) #,"Used class isn't child of Node2D or Node3D")
 
 		created_nodes += 1
 		created_objects += 1
@@ -194,6 +194,7 @@ func move_nodes() -> void:
 			child.set_node_a("../" + String(nodea.get_name()))
 			child.set_node_b("../" + String(nodeb.get_name()))
 		elif child is Joint2D:
+			# Godot4TODO
 			var nodea: Node = get_child(randi() % get_child_count())
 			var nodeb: Node = get_child(randi() % get_child_count())
 			assert(child.get_node("../" + String(nodea.get_name())) != null)

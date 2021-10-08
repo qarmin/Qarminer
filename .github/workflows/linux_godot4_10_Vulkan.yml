@@ -1,4 +1,4 @@
-name: 🐧 SwiftShader Godot 4 Vulkan 10 Physics Multithread
+name: 🐧 SwiftShader Godot 4 Vulkan 10 StressPhysics - Physics Normal
 on:
   push:
   pull_request:
@@ -29,11 +29,7 @@ jobs:
 
       - name: Configure Data
         run: |
-          sed -i 's/var number_of_function_repeats: int = 3/var number_of_function_repeats: int = 7/' FunctionExecutor.gd
-          sed -i 's/var add_to_tree: bool = false/var add_to_tree: bool = true/' FunctionExecutor.gd
-          sed -i 's/var use_parent_methods: bool = false/var use_parent_methods: bool = true/' FunctionExecutor.gd
-          sed -i 's/var test_one_class_multiple_times: bool = false/var test_one_class_multiple_times: bool = true/' FunctionExecutor.gd
-          
+          true
 
       - name: Download Godot(GIT)
         run: |
@@ -76,7 +72,7 @@ jobs:
 
       - name: Run Project
         run: |
-          VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json DRI_PRIME=0 xvfb-run ./godot.linuxbsd.tools.64s FunctionExecutor.tscn 15000 --audio-driver Dummy --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json DRI_PRIME=0 xvfb-run ./godot.linuxbsd.tools.64s StressPhysics.tscn 3600 --audio-driver Dummy --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
           tail -n 300 sanitizers_log.txt > project_results.txt
 
       - name: Store project results

@@ -39,26 +39,24 @@ func get_bool() -> bool:
 
 
 func get_vector2() -> Vector2:
+	if random:
+		if randi() % 2:
+			return Vector2(get_float(), get_float()).normalized()
 	return Vector2(get_float(), get_float())
 
 
-func get_vector2i() -> Vector2i:
-	return Vector2i(get_int(), get_int())
-
-
 func get_vector3() -> Vector3:
+	if random:
+		if randi() % 2:
+			return Vector3(get_float(), get_float(), get_float()).normalized()
 	return Vector3(get_float(), get_float(), get_float())
-
-
-func get_vector3i() -> Vector3i:
-	return Vector3i(get_int(), get_int(), get_int())
 
 
 func get_aabb() -> AABB:
 	return AABB(get_vector3(), get_vector3())
 
 
-func get_transform() -> Transform3D:
+func get_transform3d() -> Transform3D:
 	return Transform3D(get_vector3(), get_vector3(), get_vector3(), get_vector3())
 
 
@@ -70,7 +68,7 @@ func get_plane() -> Plane:
 	return Plane(get_vector3(), get_vector3(), get_vector3())
 
 
-func get_quat() -> Quaternion:
+func get_quaternion() -> Quaternion:
 	return Quaternion(get_vector3())
 
 
@@ -82,15 +80,10 @@ func get_rect2() -> Rect2:
 	return Rect2(get_vector2(), get_vector2())
 
 
-func get_rect2i() -> Rect2i:
-	return Rect2i(get_vector2i(), get_vector2i())
-
-
 func get_color() -> Color:
 	return Color(get_float(), get_float(), get_float())
 
 
-# TODO
 func get_string() -> String:
 	if random:
 		if randi() % 2 == 0:
@@ -100,30 +93,31 @@ func get_string() -> String:
 	return String()
 
 
-func get_string_name() -> StringName:
-	return StringName(get_string())
-
-
-# TODO
 func get_nodepath() -> NodePath:
 	return NodePath(get_string())
 
 
-# TODO
 func get_array() -> Array:
 	var array: Array = []
 	for _i in range(int(min(max_array_size, number))):
-		array.append([])
+		if random && randi() % 2:
+			array.append(randi() % 100)
+		else:
+			array.append([])
 	return Array([])
 
 
-# TODO
 func get_dictionary() -> Dictionary:
+	if random:
+		if randi() % 2:
+			return Dictionary({"roman": 22, 22: 25, BoxShape3D.new(): BoxShape3D.new()})
 	return Dictionary({})
 
 
 func get_packed_string_array() -> PackedStringArray:
 	var array: Array = []
+	if random && randi() % 2:
+		return PackedStringArray(array)
 	for _i in range(int(min(max_array_size, number))):
 		array.append(get_string())
 	return PackedStringArray(array)
@@ -131,13 +125,8 @@ func get_packed_string_array() -> PackedStringArray:
 
 func get_packed_int32_array() -> PackedInt32Array:
 	var array: Array = []
-	for _i in range(int(min(max_array_size, number))):
-		array.append(get_int())
-	return PackedInt32Array(array)
-
-
-func get_packed_int64_array() -> PackedInt32Array:
-	var array: Array = []
+	if random && randi() % 2:
+		return PackedInt32Array(array)
 	for _i in range(int(min(max_array_size, number))):
 		array.append(get_int())
 	return PackedInt32Array(array)
@@ -145,6 +134,8 @@ func get_packed_int64_array() -> PackedInt32Array:
 
 func get_packed_byte_array() -> PackedByteArray:
 	var array: Array = []
+	if random && randi() % 2:
+		return PackedByteArray(array)
 	for _i in range(int(min(max_array_size, number))):
 		array.append(get_int())
 	return PackedByteArray(array)
@@ -152,10 +143,59 @@ func get_packed_byte_array() -> PackedByteArray:
 
 func get_packed_float32_array() -> PackedFloat32Array:
 	var array: Array = []
+	if random && randi() % 2:
+		return PackedFloat32Array(array)
 	for _i in range(int(min(max_array_size, number))):
 		array.append(get_float())
 	return PackedFloat32Array(array)
 
+
+func get_packed_vector2_array() -> PackedVector2Array:
+	var array: Array = []
+	if random && randi() % 2:
+		return PackedVector2Array(array)
+	for _i in range(int(min(max_array_size, number))):
+		array.append(get_vector2())
+	return PackedVector2Array(array)
+
+
+func get_packed_vector3_array() -> PackedVector3Array:
+	var array: Array = []
+	if random && randi() % 2:
+		return PackedVector3Array(array)
+	for _i in range(int(min(max_array_size, number))):
+		array.append(get_vector3())
+	return PackedVector3Array(array)
+
+
+func get_packed_color_array() -> PackedColorArray:
+	var array: Array = []
+	if random && randi() % 2:
+		return PackedColorArray(array)
+	for _i in range(int(min(max_array_size, number))):
+		array.append(get_color())
+	return PackedColorArray(array)
+
+
+# Godot4TODO
+
+func get_string_name() -> StringName:
+	return StringName(get_string())
+
+func get_vector2i() -> Vector2i:
+	return Vector2i(get_int(), get_int())
+
+func get_vector3i() -> Vector3i:
+	return Vector3i(get_int(), get_int(), get_int())
+
+func get_rect2i() -> Rect2i:
+	return Rect2i(get_vector2i(), get_vector2i())
+
+func get_packed_int64_array() -> PackedInt32Array:
+	var array: Array = []
+	for _i in range(int(min(max_array_size, number))):
+		array.append(get_int())
+	return PackedInt32Array(array)
 
 func get_packed_float64_array() -> PackedFloat64Array:
 	var array: Array = []
@@ -164,29 +204,11 @@ func get_packed_float64_array() -> PackedFloat64Array:
 	return PackedFloat64Array(array)
 
 
-func get_packed_vector2_array() -> PackedVector2Array:
-	var array: Array = []
-	for _i in range(int(min(max_array_size, number))):
-		array.append(get_vector2())
-	return PackedVector2Array(array)
 
-
-func get_packed_vector3_array() -> PackedVector3Array:
-	var array: Array = []
-	for _i in range(int(min(max_array_size, number))):
-		array.append(get_vector3())
-	return PackedVector3Array(array)
-
-
-func get_packed_color_array() -> PackedColorArray:
-	var array: Array = []
-	for _i in range(int(min(max_array_size, number))):
-		array.append(get_color())
-	return PackedColorArray(array)
 
 
 func get_object(object_name: String) -> Object:
-	assert(ClassDB.class_exists(object_name))  #, "Class " + object_name + " doesn't exists.")
+	assert(ClassDB.class_exists(object_name)) #,"Class " + object_name + " doesn't exists.")
 	if object_name == "PhysicsDirectSpaceState3D" || object_name == "PhysicsDirectSpaceState2D":
 		return null
 
@@ -195,6 +217,14 @@ func get_object(object_name: String) -> Object:
 			return null
 
 		var arr: Array = ClassDB.get_inheriters_from_class(object_name)
+
+		# If allowed argument classes is smaller than available arguments then we filter this things, because it would cause too many null returned things
+		if arr.size() > BasicData.argument_classes.size() * 4:
+			var new_arr: Array = []
+			for i in arr:
+				if i in BasicData.argument_classes:
+					new_arr.append(i)
+			arr = new_arr
 
 		if arr.is_empty():
 			return null
@@ -214,5 +244,5 @@ func get_object(object_name: String) -> Object:
 				if ClassDB.can_instantiate(i) && (ClassDB.is_parent_class(i, "Node") || ClassDB.is_parent_class(i, "RefCounted")):
 					return ClassDB.instantiate(i)
 
-	assert(false)  #, "Cannot find proper instantable child for " + object_name)
+	assert(false) #,"Cannot find proper instantable child for " + object_name)
 	return null

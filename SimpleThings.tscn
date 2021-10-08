@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://d2wqkfg6kudpf"]
+
+[ext_resource type="Script" path="res://SimpleThings.gd" id="1"]
+
+[node name="SimpleThings" type="Node2D"]
+script = ExtResource( "1" )

@@ -1,4 +1,4 @@
-name: 🐧 SwiftShader Godot 4 Vulkan 03 Add Tree
+name: 🐧 SwiftShader Godot 4 Vulkan 03 Parent
 on:
   push:
   pull_request:
@@ -29,7 +29,7 @@ jobs:
 
       - name: Configure Data
         run: |
-          sed -i 's/var add_to_tree: bool = false/var add_to_tree: bool = true/' FunctionExecutor.gd
+          sed -i 's/var use_parent_methods: bool = false/var use_parent_methods: bool = true/' FunctionExecutor.gd
           
 
       - name: Download Godot(GIT)

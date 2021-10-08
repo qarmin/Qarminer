@@ -47,12 +47,12 @@ func parse_and_return_objects(method_data: Dictionary, name_of_class: String, de
 			TYPE_OBJECT:
 				var obj: Object = ValueCreator.get_object(argument["class_name"])
 				arguments_array.push_back(obj)
-#				assert(obj != null) #, "Failed to create an object of type " + argument["class_name"])
+#				assert(obj != null) #,"Failed to create an object of type " + argument["class_name"])
 
 			TYPE_PLANE:
 				arguments_array.push_back(ValueCreator.get_plane())
 			TYPE_QUATERNION:
-				arguments_array.push_back(ValueCreator.get_quat())
+				arguments_array.push_back(ValueCreator.get_quaternion())
 			TYPE_RAW_ARRAY:
 				arguments_array.push_back(ValueCreator.get_packed_byte_array())
 			TYPE_FLOAT:
@@ -68,7 +68,7 @@ func parse_and_return_objects(method_data: Dictionary, name_of_class: String, de
 			TYPE_STRING_ARRAY:
 				arguments_array.push_back(ValueCreator.get_packed_string_array())
 			TYPE_TRANSFORM3D:
-				arguments_array.push_back(ValueCreator.get_transform())
+				arguments_array.push_back(ValueCreator.get_transform3d())
 			TYPE_TRANSFORM2D:
 				arguments_array.push_back(ValueCreator.get_transform2D())
 			TYPE_VECTOR2:
@@ -79,7 +79,7 @@ func parse_and_return_objects(method_data: Dictionary, name_of_class: String, de
 				arguments_array.push_back(ValueCreator.get_vector3())
 			TYPE_VECTOR3_ARRAY:
 				arguments_array.push_back(ValueCreator.get_packed_vector3_array())
-			# TODOGODOT4 - rename in Qarminer 3.x get_pool to get_packed, and get_pool_real to get_packed_float32
+			# Godot 4
 			TYPE_CALLABLE:
 				arguments_array.push_back(Callable(BoxMesh.new(), "Rar"))
 			TYPE_VECTOR3I:
@@ -95,9 +95,7 @@ func parse_and_return_objects(method_data: Dictionary, name_of_class: String, de
 			TYPE_INT64_ARRAY:
 				arguments_array.push_back(ValueCreator.get_packed_int64_array())
 			_:
-				# TODOGODOT$ Maybe change assert to this in Godot3.x
-				printerr("Missing type --" + str(argument.type) + "--, needs to be added to project")
-				assert(false)
+				assert(false) #,"Missing type --" + str(argument.type) + "-- needs to be added to project")
 
 	if debug_print:
 		print("\n" + name_of_class + "." + method_data["name"] + " --- executing with " + str(arguments_array.size()) + " parameters " + str(arguments_array))
@@ -112,7 +110,7 @@ func return_gdscript_code_which_run_this_object(data) -> String:
 
 	match typeof(data):
 		TYPE_NIL:  # Looks that this means VARIANT not null
-			assert("false")  #, "This is even possible?")
+			assert("false") #,"This is even possible?")
 		TYPE_AABB:
 			return_string = "AABB("
 			return_string += return_gdscript_code_which_run_this_object(data.position)
@@ -289,7 +287,8 @@ func return_gdscript_code_which_run_this_object(data) -> String:
 				if i != data.size() - 1:
 					return_string += ", "
 			return_string += "])"
-		# TODOGODOT4
+
+		#Godot4
 		TYPE_CALLABLE:
 			return_string = 'Callable(BoxMesh.new(),"")'
 		TYPE_STRING_NAME:
@@ -331,7 +330,6 @@ func return_gdscript_code_which_run_this_object(data) -> String:
 					return_string += ", "
 			return_string += "])"
 		_:
-			printerr("Missing type --" + str(typeof(data)) + "--, needs to be added to project")
-			assert(false)
+			assert(false) #,"Missing type --" + str(typeof(data)) + "-- needs to be added to project")
 
 	return return_string

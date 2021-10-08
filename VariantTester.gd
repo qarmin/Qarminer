@@ -143,12 +143,11 @@ func type_to_name(type: int) -> String:
 		TYPE_VECTOR3_ARRAY:
 			name = "PackedVector3Array"
 		TYPE_OBJECT:
-			assert(false)  #, "Object not supported")
+			assert(false) #,"Object not supported")
 		TYPE_NIL:
-			assert(false)  #, "Variant not supported")
+			assert(false) #,"Variant not supported")
 		_:
-			printerr("Missing type --" + str(type) + "--, needs to be added to project")
-			assert(false)
+			assert(false) #,"Missing type --" + str(type) + "--, needs to be added to project")
 
 	return name
 
@@ -174,19 +173,19 @@ func get_basic_thing(type: int):
 		TYPE_INT:
 			thing = ValueCreator.get_int()
 		TYPE_INT32_ARRAY:
-			thing = ValueCreator.get_packed_int_array()
+			thing = ValueCreator.get_packed_int32_array()
 		TYPE_NODE_PATH:
 			thing = ValueCreator.get_nodepath()
 		TYPE_PLANE:
 			thing = ValueCreator.get_plane()
 		TYPE_QUATERNION:
-			thing = ValueCreator.get_quat()
+			thing = ValueCreator.get_quaternion()
 		TYPE_RAW_ARRAY:
 			thing = ValueCreator.get_packed_byte_array()
 		TYPE_FLOAT:
 			thing = ValueCreator.get_float()
 		TYPE_FLOAT32_ARRAY:
-			thing = ValueCreator.get_packed_real_array()
+			thing = ValueCreator.get_packed_float32_array()
 		TYPE_RECT2:
 			thing = ValueCreator.get_rect2()
 		TYPE_RID:
@@ -196,7 +195,7 @@ func get_basic_thing(type: int):
 		TYPE_STRING_ARRAY:
 			thing = ValueCreator.get_packed_string_array()
 		TYPE_TRANSFORM3D:
-			thing = ValueCreator.get_transform()
+			thing = ValueCreator.get_transform3d()
 		TYPE_TRANSFORM2D:
 			thing = ValueCreator.get_transform2D()
 		TYPE_VECTOR2:
@@ -208,11 +207,10 @@ func get_basic_thing(type: int):
 		TYPE_VECTOR3_ARRAY:
 			thing = ValueCreator.get_packed_vector3_array()
 		TYPE_OBJECT:
-			assert(false)  #, "Object not supported")
+			assert(false) #,"Object not supported")
 		TYPE_NIL:
-			assert(false)  #, "Variant not supported")
+			assert(false) #,"Variant not supported")
 		_:
-			printerr("Missing type --" + str(type) + "--, needs to be added to project")
-			assert(false)
+			assert(false) #,"Missing type --" + str(type) + "--, needs to be added to project")
 
 	return thing

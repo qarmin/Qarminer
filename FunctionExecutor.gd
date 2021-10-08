@@ -11,13 +11,14 @@ extends Node
 var debug_print: bool = true
 var exiting: bool = false  # Exit after 1 loop?
 var add_to_tree: bool = false  # Adds nodes to tree, freeze godot when removing a lot of nodes
+var delay_removing_added_nodes_to_next_frame: bool = false  # This can be used only with add_to_tree option - this will force to render things
 var use_parent_methods: bool = false  # Allows Node2D use Node methods etc. - it is a little slow option which rarely shows
-var use_always_new_object: bool = false  # Don't allow to "remeber" other function effects
+var use_always_new_object: bool = false  # Don't allow to "remember" other function effects
 var number_of_function_repeats: int = 3  # How many times functions can be repeated
 var number_of_classes_repeats: int = 1  # How many times classes will be repeated
 var shuffle_methods: bool = true  # Mix methods to be able to get more random results
 var miss_some_functions: int = true  # Allows to not execute some functions to be able to get more random results
-var remove_returned_value: bool = true  # Removes returned value from function
+var remove_returned_value: bool = false  # Removes returned value from function
 var save_data_to_file: bool = true  # Save data to file(not big performance impact as I exepected)
 var test_one_class_multiple_times: bool = false  # Test same class across multiple frames
 
@@ -26,6 +27,7 @@ var file_handler: File = File.new()  # Handles saves to file, in case of testing
 var to_print: String = ""  # Specify what needs to be printed
 
 var number_to_track_variables: int = 0  # Unique number to specify number which is added to variable name to prevent from using variables with same name
+var function_number: int = 0  # Needed to be able to use arguments with unique names
 
 var how_many_times_test: int = 30  # How many times, same class will be tested
 var tested_times: int = how_many_times_test  # How many times class is tested now
@@ -40,6 +42,7 @@ func _ready() -> void:
 	if BasicData.regression_test_project:
 		debug_print = false
 		add_to_tree = false
+		delay_removing_added_nodes_to_next_frame = false
 		use_parent_methods = false
 		use_always_new_object = true
 		number_of_function_repeats = 1
@@ -66,6 +69,8 @@ func _ready() -> void:
 #	for i in BasicData.allowed_thing.keys():
 #		assert(i == BasicData.base_classes[index])
 #		index += 1
+	if save_data_to_file:
+		var _a: int = file_handler.open("res://results.txt", File.WRITE)
 
 	if BasicData.regression_test_project:
 		tests_all_functions()
@@ -96,6 +101,16 @@ func tests_all_functions() -> void:
 	elif save_data_to_file:
 		var _a: int = file_handler.open("res://results.txt", File.WRITE)
 
+	if delay_removing_added_nodes_to_next_frame && add_to_tree:
+		to_print = "\n\tfor i in get_children():\n\t\ti.queue_free()"
+		if save_data_to_file:
+			file_handler.store_string(to_print)
+			file_handler.flush()
+		if debug_print:
+			print(to_print)
+		for i in get_children():
+			i.queue_free()
+
 	for _f in range(number_of_classes_repeats):
 		for name_of_class in tested_classes:
 			if debug_print || save_data_to_file:
@@ -107,7 +122,7 @@ func tests_all_functions() -> void:
 					print(to_print)
 
 			var object: Object = ClassDB.instantiate(name_of_class)
-			assert(object != null) #, "Object must be instantable")
+			assert(object != null) #,"Object must be instantable")
 			if add_to_tree:
 				if object is Node:
 					add_child(object)
@@ -117,6 +132,7 @@ func tests_all_functions() -> void:
 				method_list.shuffle()
 
 			if (debug_print || save_data_to_file) && !use_always_new_object:
+				function_number = 0
 				number_to_track_variables += 1
 				to_print = "\tvar temp_variable" + str(number_to_track_variables) + " = " + HelpFunctions.get_gdscript_class_creation(name_of_class)
 				if add_to_tree:
@@ -130,23 +146,40 @@ func tests_all_functions() -> void:
 
 			for _i in range(number_of_function_repeats):
 				for method_data in method_list:
+					function_number += 1
 					if !miss_some_functions || randi() % 2 == 0:
 						var arguments: Array = ParseArgumentType.parse_and_return_objects(method_data, name_of_class, debug_print)
 
 						if debug_print || save_data_to_file:
+							to_print = ""
+
+							# Handle here objects by creating temporary values
+							for i in arguments.size():
+								if arguments[i] is Object && !(arguments[i] is RefCounted):
+									to_print += (
+										"\tvar temp_argument"
+										+ str(number_to_track_variables)
+										+ "_f"
+										+ str(function_number)
+										+ "_"
+										+ str(i)
+										+ " = "
+										+ ParseArgumentType.return_gdscript_code_which_run_this_object(arguments[i])
+										+ "\n"
+									)
+
 							if use_always_new_object:
-								if save_data_to_file:
-									to_print = "\t"
-								else:
-									to_print = "GDSCRIPT CODE:     "
-								to_print += HelpFunctions.get_gdscript_class_creation(name_of_class)
+								to_print += "\t" + HelpFunctions.get_gdscript_class_creation(name_of_class)
 							else:
-								to_print = "\ttemp_variable" + str(number_to_track_variables)
+								to_print += "\ttemp_variable" + str(number_to_track_variables)
 
 							to_print += "." + method_data["name"] + "("
 
 							for i in arguments.size():
-								to_print += ParseArgumentType.return_gdscript_code_which_run_this_object(arguments[i])
+								if arguments[i] is Object && !(arguments[i] is RefCounted):
+									to_print += "temp_argument" + str(number_to_track_variables) + "_f" + str(function_number) + "_" + str(i)
+								else:
+									to_print += ParseArgumentType.return_gdscript_code_which_run_this_object(arguments[i])
 								if i != arguments.size() - 1:
 									to_print += ", "
 							to_print += ")"
@@ -159,29 +192,60 @@ func tests_all_functions() -> void:
 
 						var ret = object.callv(method_data["name"], arguments)
 
+						for i in arguments.size():
+							if arguments[i] is Object && arguments[i] != null:
+								if debug_print || save_data_to_file:
+									if (arguments[i] is Node) || !(arguments[i] is RefCounted):
+										to_print = "\ttemp_argument" + str(number_to_track_variables) + "_f" + str(function_number) + "_" + str(i)
+										to_print += HelpFunctions.remove_thing_string(arguments[i])
+										if save_data_to_file:
+											file_handler.store_string("\n" + to_print)
+											file_handler.flush()
+										if debug_print:
+											print(to_print)
+								HelpFunctions.remove_thing(arguments[i])
+
 						if remove_returned_value:
-							if ret is Object && ret != null && !(method_data["name"] in BasicData.return_value_exceptions):
-								HelpFunctions.remove_thing(ret)
+							# Looks that argument of function may become its returned value, so
+							# needs to be checked if was not freed before
+							if is_instance_valid(ret):
+								if ret is Object && ret != null && !(method_data["name"] in BasicData.return_value_exceptions):
+									if !(ret is RefCounted):
+										# This code must create duplicate line, because ret type is only known after executing function and cannot be deduced before.
+										var remove_function: String = HelpFunctions.remove_thing_string(ret)
 
-								# This code must create duplicate line, because ret type is only known after executing function and cannot be deduced before.
-								var remove_function: String = HelpFunctions.remove_thing_string(object)
+										if save_data_to_file:
+											file_handler.store_string("\n" + to_print + remove_function)
+											file_handler.flush()
+										if debug_print:
+											print(to_print + remove_function)
 
-								if save_data_to_file:
-									file_handler.store_string("\n" + to_print + remove_function)
-									file_handler.flush()
-								if debug_print:
-									print(to_print + remove_function)
-
-						for argument in arguments:
-							if argument is Object && argument != null:
-								HelpFunctions.remove_thing(argument)
+									HelpFunctions.remove_thing(ret)
 
 						if use_always_new_object:
-							HelpFunctions.remove_thing(object)
+							if !(delay_removing_added_nodes_to_next_frame && add_to_tree && object is Node):
+								if (object is Node) || !(object is RefCounted):
+									to_print = "\ttemp_variable" + str(number_to_track_variables)
+									to_print += HelpFunctions.remove_thing_string(object)
+									if save_data_to_file:
+										file_handler.store_string("\n" + to_print)
+										file_handler.flush()
+									if debug_print:
+										print(to_print)
+								HelpFunctions.remove_thing(object)
 
 							object = ClassDB.instantiate(name_of_class)
 							if add_to_tree:
 								if object is Node:
 									add_child(object)
 
-			HelpFunctions.remove_thing(object)
+			if !(delay_removing_added_nodes_to_next_frame && add_to_tree && object is Node):
+				if (object is Node) || !(object is RefCounted):
+					to_print = "\ttemp_variable" + str(number_to_track_variables)
+					to_print += HelpFunctions.remove_thing_string(object)
+					if save_data_to_file:
+						file_handler.store_string("\n" + to_print)
+						file_handler.flush()
+					if debug_print:
+						print(to_print)
+				HelpFunctions.remove_thing(object)

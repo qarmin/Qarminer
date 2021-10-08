@@ -1,4 +1,4 @@
-name: 🐧 SwiftShader Godot 4 Vulkan 06 Multithread Physics
+name: 🐧 SwiftShader Godot 4 Vulkan 06 Multithread Rendering
 on:
   push:
   pull_request:
@@ -29,8 +29,8 @@ jobs:
 
       - name: Configure Data
         run: |
-          echo "[physics]" >> project.godot
-          echo "2d/thread_model=2" >> project.godot
+          echo "[rendering]" >> project.godot
+          echo "threads/thread_model=2" >> project.godot
           
 
       - name: Download Godot(GIT)

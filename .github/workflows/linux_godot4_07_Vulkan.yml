@@ -1,4 +1,4 @@
-name: 🐧 SwiftShader Godot 4 Vulkan 07 All
+name: 🐧 SwiftShader Godot 4 Vulkan 07 Multithread Rendering TS
 on:
   push:
   pull_request:
@@ -31,9 +31,6 @@ jobs:
         run: |
           echo "[rendering]" >> project.godot
           echo "threads/thread_model=2" >> project.godot
-          echo "[physics]" >> project.godot
-          echo "2d/thread_model=2" >> project.godot
-          sed -i 's/var add_to_tree: bool = false/var add_to_tree: bool = true/' FunctionExecutor.gd
           
 
       - name: Download Godot(GIT)

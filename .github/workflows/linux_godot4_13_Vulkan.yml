@@ -1,4 +1,4 @@
-name: 🐧 SwiftShader Godot 4 Vulkan 01 Normal
+name: 🐧 SwiftShader Godot 4 Vulkan 13 Delaying
 on:
   push:
   pull_request:
@@ -29,7 +29,10 @@ jobs:
 
       - name: Configure Data
         run: |
-          true
+          sed -i 's/var add_to_tree: bool = false/var add_to_tree: bool = true/' FunctionExecutor.gd
+          sed -i 's/var use_parent_methods: bool = false/var use_parent_methods: bool = true/' FunctionExecutor.gd
+          sed -i 's/var delay_removing_added_nodes_to_next_frame: bool = false/var delay_removing_added_nodes_to_next_frame: bool = true/' FunctionExecutor.gd
+          
 
       - name: Download Godot(GIT)
         run: |

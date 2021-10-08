@@ -1,4 +1,4 @@
-name: 🐧 SwiftShader Godot 4 Vulkan 02 Parent
+name: 🐧 SwiftShader Godot 4 Vulkan 02 Normal TS
 on:
   push:
   pull_request:
@@ -29,8 +29,7 @@ jobs:
 
       - name: Configure Data
         run: |
-          sed -i 's/var use_parent_methods: bool = false/var use_parent_methods: bool = true/' FunctionExecutor.gd
-          
+          true
 
       - name: Download Godot(GIT)
         run: |

@@ -10,8 +10,10 @@ var allowed_thing: Dictionary = {}  # List of all classes with
 # Globablly disabled functions for all classes
 var function_exceptions: Array = [
 	###
-	### GODOT 4.0 CRASHES
+	### Godot 4.0
 	###
+	"set_texture_offsets", #TODO
+	"get_pyramid_shape_rid", # TODO
 	"as_text", #53224
 	"get_image", # 53214
 	"set_language", #53218
@@ -28,9 +30,12 @@ var function_exceptions: Array = [
 	###
 	### Crashes TODO
 	###
-	"follow_property",  #
+	"get_recognized_extensions_for_type",  # Spam
+	"load",  # Spam - _ResourceLoader
+	"connect_to_signal",  # not cherrypicked
 	"poll",  # FREEZE
 	"_thread_done",  #
+	"set_function",  # Not cherrypicked
 	###
 	### Dummy Rasterize
 	###
@@ -56,18 +61,18 @@ var function_exceptions: Array = [
 	###
 	### Reported crashes
 	###
-	"_submenu_timeout",  #53164
-	"set_call_mode",  #53120
-	"set_basic_type",  #53120
-	"unparent_bone_and_rest",  #52875 Freeze
+	"_iter_init",  #53554
+	"set_block_signals",  #53553
+	"make_atlas",  #51154
+	"set_basic_type",  #53456
+	"set_custom_viewport",  #53445
+	"_draw_soft_mesh",  #53437
+	"light_unwrap",  #52929
 	"create_action",  #50769
-	"_direct_state_changed",  #46003 - Not cherrypicked
-	"connect_to_signal",  # 47572 - Not cherrypicked
-	"set_function",  # not cherrypick
 	"_editor_settings_changed",  # 45979
 	"set_script",  #46120
 	"set_icon",  #46189
-	"set_editor_hint",  #46252
+	"set_editor_hint",  #46252 - Fixed only for master(due compatibility)
 	"set_probe_data",  #46570
 	"add_vertex",  #47066
 	"create_shape_owner",  #47135
@@ -90,6 +95,8 @@ var function_exceptions: Array = [
 	###
 	### Slow Function
 	###
+	"create_convex_collision",
+	"create_multiple_convex_collisions",
 	"load_webp_from_buffer",
 	"_update_sky",
 	"interpolate_baked",
@@ -248,7 +255,9 @@ var disabled_classes: Array = [
 	"Thread",
 	"Semaphore",
 	"Mutex",
-	##
+	###
+	### Godot 4.0 Additional
+	###
 	"TextEdit",  # Crashes 52876
 	"CodeEdit",  # Also 52876
 	"FontData",  # A lot of crashes 52817
@@ -256,6 +265,23 @@ var disabled_classes: Array = [
 	"MultiplayerAPI",  # Crashes TODO
 	"InputMap",
 	"GPUParticles3D",  # 53004
+	###
+	### TODO
+	###
+	"_ResourceLoader",  #Spams
+	"ResourceLoader",  #Spams
+	"PackedDataContainer",  #53554 - more crashes
+	###
+	### Big numbers - only enabled when arguments can be >100, because can freeze entire project
+	###
+	#	"OpenSimplexNoise",
+	#	"HeightMapShape3D",
+	#	"BitMap",
+	#	"CPUParticles3D",
+	###
+	### Exported build - some checks are disabled in exported build due to too big performance impact
+	###
+	"Image",
 ]
 
 # Exceptions for e.g. float, String or int functions

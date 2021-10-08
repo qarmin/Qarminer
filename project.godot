@@ -27,6 +27,11 @@ HelpFunctions="*res://Autoloads/HelpFunctions.gd"
 
 file_logging/enable_file_logging.pc=false
 
+[memory]
+
+limits/message_queue/max_size_kb=262144
+limits/command_queue/multithreading_queue_size_kb=4096
+
 [network]
 
 limits/debugger_stdout/max_errors_per_second=5

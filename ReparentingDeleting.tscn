@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://ymrjhu0ebkk2"]
+
+[ext_resource type="Script" path="res://ReparentingDeleting.gd" id="1"]
+
+[node name="ReparentingDeleting" type="Node"]
+script = ExtResource( "1" )

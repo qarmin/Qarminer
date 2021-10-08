@@ -1,4 +1,4 @@
-name: 🐧 SwiftShader Godot 4 Vulkan 05 Multithread Rendering
+name: 🐧 SwiftShader Godot 4 Vulkan 05 More Repeats
 on:
   push:
   pull_request:
@@ -29,8 +29,7 @@ jobs:
 
       - name: Configure Data
         run: |
-          echo "[rendering]" >> project.godot
-          echo "threads/thread_model=2" >> project.godot
+          sed -i 's/var number_of_repeats: int = 3/var number_of_repeats: int = 20/' FunctionExecutor.gd
           
 
       - name: Download Godot(GIT)
