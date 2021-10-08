@@ -95,7 +95,7 @@ func parse_and_return_objects(method_data: Dictionary, name_of_class: String, de
 			TYPE_INT64_ARRAY:
 				arguments_array.push_back(ValueCreator.get_packed_int64_array())
 			_:
-				assert(false) #,"Missing type --" + str(argument.type) + "-- needs to be added to project")
+				assert(false)  #,"Missing type --" + str(argument.type) + "-- needs to be added to project")
 
 	if debug_print:
 		print("\n" + name_of_class + "." + method_data["name"] + " --- executing with " + str(arguments_array.size()) + " parameters " + str(arguments_array))
@@ -110,7 +110,7 @@ func return_gdscript_code_which_run_this_object(data) -> String:
 
 	match typeof(data):
 		TYPE_NIL:  # Looks that this means VARIANT not null
-			assert("false") #,"This is even possible?")
+			assert("false")  #,"This is even possible?")
 		TYPE_AABB:
 			return_string = "AABB("
 			return_string += return_gdscript_code_which_run_this_object(data.position)
@@ -330,6 +330,6 @@ func return_gdscript_code_which_run_this_object(data) -> String:
 					return_string += ", "
 			return_string += "])"
 		_:
-			assert(false) #,"Missing type --" + str(typeof(data)) + "-- needs to be added to project")
+			assert(false)  #,"Missing type --" + str(typeof(data)) + "-- needs to be added to project")
 
 	return return_string

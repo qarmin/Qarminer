@@ -12,11 +12,16 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
-	"set_texture_offsets", #TODO
-	"get_pyramid_shape_rid", # TODO
-	"as_text", #53224
-	"get_image", # 53214
-	"set_language", #53218
+	"popup_centered_ratio",  #53566
+	"get_pyramid_shape_rid",  # 53564
+	"set_stream",  #52853
+	"shaped_text_draw_outline",  #53562
+	"import_post",  #53561
+	"set_input_as_handled",  #53560
+	"add_node",  #53558
+	"as_text",  #53224
+	"get_image",  # 53214
+	"set_language",  #53218
 	"set_texture",  #46828
 	"save_scene",
 	"_activate",
@@ -27,6 +32,7 @@ var function_exceptions: Array = [
 	"open_midi_inputs",
 	"load_threaded_request",
 	"generate_lod",  # 53011
+	"create_font",  # TODO TextServerAdvanced
 	###
 	### Crashes TODO
 	###
@@ -265,12 +271,18 @@ var disabled_classes: Array = [
 	"MultiplayerAPI",  # Crashes TODO
 	"InputMap",
 	"GPUParticles3D",  # 53004
+	"VisibleOnScreenEnabler3D",  #53565
+	"VisibleOnScreenEnabler2D",  #53565
+	"AudioStreamPlayer3D",  #53567
+	"AudioStreamPlayer2D",  #53567
+	"VideoPlayer",  #53568
 	###
 	### TODO
 	###
 	"_ResourceLoader",  #Spams
 	"ResourceLoader",  #Spams
 	"PackedDataContainer",  #53554 - more crashes
+	"TextServerExtension",  #53562 - probably more crashes
 	###
 	### Big numbers - only enabled when arguments can be >100, because can freeze entire project
 	###

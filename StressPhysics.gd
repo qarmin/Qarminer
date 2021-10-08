@@ -130,7 +130,7 @@ func create_nodes():
 		elif ClassDB.is_parent_class(name_of_class, "Node3D"):
 			is_2d = false
 		else:
-			assert(false) #,"Used class isn't child of Node2D or Node3D")
+			assert(false)  #,"Used class isn't child of Node2D or Node3D")
 
 		created_nodes += 1
 		created_objects += 1

@@ -143,11 +143,11 @@ func type_to_name(type: int) -> String:
 		TYPE_VECTOR3_ARRAY:
 			name = "PackedVector3Array"
 		TYPE_OBJECT:
-			assert(false) #,"Object not supported")
+			assert(false)  #,"Object not supported")
 		TYPE_NIL:
-			assert(false) #,"Variant not supported")
+			assert(false)  #,"Variant not supported")
 		_:
-			assert(false) #,"Missing type --" + str(type) + "--, needs to be added to project")
+			assert(false)  #,"Missing type --" + str(type) + "--, needs to be added to project")
 
 	return name
 
@@ -207,10 +207,10 @@ func get_basic_thing(type: int):
 		TYPE_VECTOR3_ARRAY:
 			thing = ValueCreator.get_packed_vector3_array()
 		TYPE_OBJECT:
-			assert(false) #,"Object not supported")
+			assert(false)  #,"Object not supported")
 		TYPE_NIL:
-			assert(false) #,"Variant not supported")
+			assert(false)  #,"Variant not supported")
 		_:
-			assert(false) #,"Missing type --" + str(type) + "--, needs to be added to project")
+			assert(false)  #,"Missing type --" + str(type) + "--, needs to be added to project")
 
 	return thing

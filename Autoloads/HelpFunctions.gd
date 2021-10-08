@@ -129,8 +129,8 @@ func remove_thing_string(thing: Object) -> String:
 
 # Initialize array which contains only allowed Functions
 func initialize_array_with_allowed_functions(use_parent_methods: bool, disabled_methods: Array):
-	assert(!BasicData.base_classes.is_empty()) #,"Missing initalization of classes")
-	assert(!BasicData.argument_classes.is_empty()) #,"Missing initalization of classes")
+	assert(!BasicData.base_classes.is_empty())  #,"Missing initalization of classes")
+	assert(!BasicData.argument_classes.is_empty())  #,"Missing initalization of classes")
 	var class_info: Dictionary = {}
 
 	for name_of_class in BasicData.base_classes:

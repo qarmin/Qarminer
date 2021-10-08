@@ -122,7 +122,7 @@ func tests_all_functions() -> void:
 					print(to_print)
 
 			var object: Object = ClassDB.instantiate(name_of_class)
-			assert(object != null) #,"Object must be instantable")
+			assert(object != null)  #,"Object must be instantable")
 			if add_to_tree:
 				if object is Node:
 					add_child(object)
