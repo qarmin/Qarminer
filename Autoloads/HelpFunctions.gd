@@ -56,7 +56,6 @@ func check_if_is_allowed(method_data: Dictionary) -> bool:
 			|| t == TYPE_VECTOR2_ARRAY
 			|| t == TYPE_VECTOR3
 			|| t == TYPE_VECTOR3_ARRAY
-		):
 			#			# TODOGODOT4
 			#			|| t == TYPE_VECTOR2I
 			#			|| t == TYPE_VECTOR3I
@@ -65,6 +64,7 @@ func check_if_is_allowed(method_data: Dictionary) -> bool:
 			#			|| t == TYPE_FLOAT64_ARRAY
 			#			|| t == TYPE_INT64_ARRAY
 			#			|| t == TYPE_CALLABLE
+		):
 			print("MISSING TYPE in function " + method_data["name"] + "  --  Variant type - " + str(t))
 			return false
 
@@ -194,6 +194,7 @@ func initialize_list_of_available_classes(must_be_instantable: bool = true, allo
 		if name_of_class.find("SkeletonModification") != -1:
 			continue
 
+		# This step allows using in custom classes arguments from non custom classes
 		if !must_be_instantable || ClassDB.can_instance(name_of_class):
 			BasicData.argument_classes.push_back(name_of_class)
 
