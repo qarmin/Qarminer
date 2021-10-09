@@ -1,4 +1,4 @@
-name: 🐧 Godot 3 GLES2 09 All
+name: 🐧 Godot 3 GLES2 09 StressPhysics - Physics Normal
 on:
   push:
   pull_request:
@@ -29,12 +29,7 @@ jobs:
 
       - name: Configure Data
         run: |
-          echo "[rendering]" >> project.godot
-          echo "threads/thread_model=2" >> project.godot
-          echo "[physics]" >> project.godot
-          echo "2d/thread_model=2" >> project.godot
-          sed -i 's/var add_to_tree: bool = false/var add_to_tree: bool = true/' FunctionExecutor.gd
-          
+          true
 
       - name: Download Godot(GIT)
         run: |
@@ -50,6 +45,15 @@ jobs:
           cp bin/godot.x11.tools.64s ../
           cd ../
           rm -rf godot
+
+      # Download, unzip and setup SwiftShader library
+      - name: Download SwiftShader
+        run: |
+          wget https://github.com/qarmin/gtk_library_store/releases/download/3.24.0/swiftshader3.zip
+          unzip swiftshader3.zip
+          rm swiftshader3.zip
+          curr="$(pwd)/libvk_swiftshader.so"
+          sed -i "s|PATH_TO_CHANGE|$curr|" vk_swiftshader_icd.json
 
       - name: Open Godot Editor
         run: |
@@ -68,7 +72,7 @@ jobs:
 
       - name: Run Project
         run: |
-          DRI_PRIME=0 xvfb-run ./godot.x11.tools.64s FunctionExecutor.tscn 3600 --audio-driver Dummy --video-driver GLES2 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          DRI_PRIME=0 xvfb-run ./godot.x11.tools.64s StressPhysics.tscn 3600 --audio-driver Dummy --video-driver GLES2 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
           tail -n 300 sanitizers_log.txt > project_results.txt
 
       - name: Store project results

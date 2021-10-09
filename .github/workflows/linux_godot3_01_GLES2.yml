@@ -1,4 +1,4 @@
-name: 🐧 Godot 3 GLES2 01 Normal
+name: 🐧 Godot 3 GLES2 01 Default
 on:
   push:
   pull_request:
@@ -45,6 +45,15 @@ jobs:
           cp bin/godot.x11.tools.64s ../
           cd ../
           rm -rf godot
+
+      # Download, unzip and setup SwiftShader library
+      - name: Download SwiftShader
+        run: |
+          wget https://github.com/qarmin/gtk_library_store/releases/download/3.24.0/swiftshader3.zip
+          unzip swiftshader3.zip
+          rm swiftshader3.zip
+          curr="$(pwd)/libvk_swiftshader.so"
+          sed -i "s|PATH_TO_CHANGE|$curr|" vk_swiftshader_icd.json
 
       - name: Open Godot Editor
         run: |
