@@ -253,6 +253,7 @@ var disabled_classes: Array = [
 	"_ResourceLoader",  #Spams
 	"ResourceLoader",  #Spams
 	"PackedDataContainer",  #53554 - more crashes
+	"ProximityGroup", # Not cherrypicked yet
 	###
 	### Big numbers - only enabled when arguments can be >100, because can freeze entire project
 	###
