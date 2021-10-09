@@ -12,6 +12,15 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
+	"get_property_list", #53604
+	"set_projector", #53604
+	"set_instance_count", #53603
+	"set_use_colors", #53603
+	"set_transform_format", #53603
+	"push_input", #53601
+	"is_input_handled", #53600
+	"commit", #53191
+	"commit_to_arrays", #53191
 	"popup_centered_ratio",  #53566
 	"get_pyramid_shape_rid",  # 53564
 	"set_stream",  #52853
