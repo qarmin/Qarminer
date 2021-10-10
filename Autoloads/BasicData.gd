@@ -12,15 +12,19 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
-	"get_property_list", #53604
-	"set_projector", #53604
-	"set_instance_count", #53603
-	"set_use_colors", #53603
-	"set_transform_format", #53603
-	"push_input", #53601
-	"is_input_handled", #53600
-	"commit", #53191
-	"commit_to_arrays", #53191
+	"set_pre_process_time",  # CPUParticles3D Freeze - disable also in Godot 3
+	"add_source",  #53624
+	"set_source_id",  #53624
+	"get_property_list",  #53604
+	"set_projector",  #53604
+	"set_instance_count",  #53603
+	"set_use_colors",  #53603
+	"set_transform_format",  #53603
+	"push_input",  #53601
+	"push_unhandled_input",  # Probably same as above, but TODO
+	"is_input_handled",  #53600
+	"commit",  #53191
+	"commit_to_arrays",  #53191
 	"popup_centered_ratio",  #53566
 	"get_pyramid_shape_rid",  # 53564
 	"set_stream",  #52853
@@ -32,16 +36,15 @@ var function_exceptions: Array = [
 	"get_image",  # 53214
 	"set_language",  #53218
 	"set_texture",  #46828
-	"save_scene",
-	"_activate",
-	"get_singleton",
-	"set_singleton",
-	"get_menu",
+	"_activate",  #45984
+	#"get_singleton", # TODO
+	#"set_singleton", # TODO
+	#"get_menu", # TODO
 	"compress_from_channels",  # Image
-	"open_midi_inputs",
-	"load_threaded_request",
+	"open_midi_inputs",  #52821
+	"load_threaded_request",  #46762
 	"generate_lod",  # 53011
-	"create_font",  # TODO TextServerAdvanced
+	"create_font",  # TODO TextServerAdvanced - probably memory leak
 	###
 	### Crashes TODO
 	###
