@@ -10,20 +10,12 @@ var allowed_thing: Dictionary = {}  # List of all classes with
 # Globablly disabled functions for all classes
 var function_exceptions: Array = [
 	###
-	### Crashes TODO
+	### Other TODO
 	###
 	"get_recognized_extensions_for_type",  # Spam
 	"load",  # Spam - _ResourceLoader
-	"connect_to_signal",  # not cherrypicked
 	"poll",  # FREEZE
-	"_thread_done",  #
-	"set_function",  # Not cherrypicked
-	###
-	### Dummy Rasterize
-	###
-	"create_debug_tangents",  #53182
-	"create_from_mesh",  #53181
-	"remove_line",  # 49571 - Memory leak
+	#"set_function",  # Not cherrypicked
 	###
 	### Image functions(CRASHES)
 	###
@@ -43,6 +35,13 @@ var function_exceptions: Array = [
 	###
 	### Reported crashes
 	###
+	"create_debug_tangents",  #53182
+	"create_from_mesh",  #53181
+	"remove_line",  # 49571 - Memory leak
+	"connect_to_signal",  # 53622
+	"set_extra_cull_margin", # 53623
+	"_thread_done", #53621
+	"set_physics_enabled", #53620
 	"_iter_init",  #53554
 	"set_block_signals",  #53553
 	"make_atlas",  #51154
