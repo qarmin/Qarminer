@@ -56,6 +56,7 @@ func check_if_is_allowed(method_data: Dictionary) -> bool:
 			|| t == TYPE_VECTOR2_ARRAY
 			|| t == TYPE_VECTOR3
 			|| t == TYPE_VECTOR3_ARRAY
+		):
 			#			# TODOGODOT4
 			#			|| t == TYPE_VECTOR2I
 			#			|| t == TYPE_VECTOR3I
@@ -64,7 +65,6 @@ func check_if_is_allowed(method_data: Dictionary) -> bool:
 			#			|| t == TYPE_FLOAT64_ARRAY
 			#			|| t == TYPE_INT64_ARRAY
 			#			|| t == TYPE_CALLABLE
-		):
 			print("MISSING TYPE in function " + method_data["name"] + "  --  Variant type - " + str(t))
 			return false
 

@@ -1,4 +1,4 @@
-name: 🐧 Godot 3 GLES2 16 Always New | Parent
+name: 🐧 Godot 3 GLES2 16 Always New | Parent | Add to tree
 on:
   push:
   pull_request:
@@ -30,6 +30,7 @@ jobs:
       - name: Configure Data
         run: |
           sed -i 's/use_always_new_object: bool = false/use_always_new_object: bool = true/' FunctionExecutor.gd
+          sed -i 's/add_to_tree: bool = false/add_to_tree: bool = true/' FunctionExecutor.gd
           sed -i 's/var use_parent_methods: bool = false/var use_parent_methods: bool = true/' FunctionExecutor.gd
           
 

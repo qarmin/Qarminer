@@ -19,19 +19,18 @@ var function_exceptions: Array = [
 	###
 	### Image functions(CRASHES)
 	###
-	"compress",
-	"decompress",
-	"convert",
-	"save_png_to_buffer",  # uses decompress
+	"decompress", #50787
+	"convert", # 46479
+	"save_png_to_buffer",  # 50787
 	###
 	### Input crashes, still are some problems
 	###
-	"_gui_input",
-	"_input",
-	"_unhandled_input",
-	"_unhandled_key_input",
-	"_vp_input",
-	"_vp_unhandled_input",
+#	"_gui_input",
+#	"_input",
+#	"_unhandled_input",
+#	"_unhandled_key_input",
+#	"_vp_input",
+#	"_vp_unhandled_input",
 	###
 	### Reported crashes
 	###
@@ -39,9 +38,9 @@ var function_exceptions: Array = [
 	"create_from_mesh",  #53181
 	"remove_line",  # 49571 - Memory leak
 	"connect_to_signal",  # 53622
-	"set_extra_cull_margin", # 53623
-	"_thread_done", #53621
-	"set_physics_enabled", #53620
+	"set_extra_cull_margin",  # 53623
+	"_thread_done",  #53621
+	"set_physics_enabled",  #53620
 	"_iter_init",  #53554
 	"set_block_signals",  #53553
 	"make_atlas",  #51154
@@ -239,6 +238,10 @@ var disabled_classes: Array = [
 	#	###
 	#	### Godot 4.0 Additional
 	#	###
+	#	"TextServer", # RefCounted Server
+	#	"TextServerAdvanced", # RefCounted Server
+	#	"TextServerExtension", # RefCounted Server
+	#	"TextServer", # RefCounted Server
 	#	"TextEdit",  # Crashes 52876
 	#	"CodeEdit",  # Also 52876
 	#	"FontData",  # A lot of crashes 52817
@@ -252,7 +255,7 @@ var disabled_classes: Array = [
 	"_ResourceLoader",  #Spams
 	"ResourceLoader",  #Spams
 	"PackedDataContainer",  #53554 - more crashes
-	"ProximityGroup", # Not cherrypicked yet
+	"ProximityGroup",  # Not cherrypicked yet
 	###
 	### Big numbers - only enabled when arguments can be >100, because can freeze entire project
 	###
