@@ -210,6 +210,21 @@ func get_basic_thing(type: int):
 			assert(false)  #,"Object not supported")
 		TYPE_NIL:
 			assert(false)  #,"Variant not supported")
+		# TODO Godot4
+		TYPE_CALLABLE:
+			thing = Callable(BoxMesh.new(), "Rar")
+		TYPE_VECTOR3I:
+			thing = ValueCreator.get_vector3i()
+		TYPE_VECTOR2I:
+			thing = ValueCreator.get_vector2i()
+		TYPE_STRING_NAME:
+			thing = ValueCreator.get_string_name()
+		TYPE_RECT2I:
+			thing = ValueCreator.get_rect2i()
+		TYPE_FLOAT64_ARRAY:
+			thing = ValueCreator.get_packed_float64_array()
+		TYPE_INT64_ARRAY:
+			thing = ValueCreator.get_packed_int64_array()
 		_:
 			assert(false)  #,"Missing type --" + str(type) + "--, needs to be added to project")
 

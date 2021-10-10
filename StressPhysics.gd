@@ -170,14 +170,14 @@ func move_nodes() -> void:
 				child.set_position(ValueCreator.get_vector3())
 
 		if child is CharacterBody3D:
-			child.set_linear_velocity(ValueCreator.get_vector3())
+#			child.set_linear_velocity(ValueCreator.get_vector3())
 			child.set_up_direction(ValueCreator.get_vector3())
 			child.set_floor_stop_on_slope_enabled(ValueCreator.get_bool())
 			child.set_max_slides(ValueCreator.get_int())
 			child.set_floor_max_angle(ValueCreator.get_bool())
 			child.move_and_slide()
 		elif child is CharacterBody2D:
-			child.set_linear_velocity(ValueCreator.get_vector2())
+#			child.set_linear_velocity(ValueCreator.get_vector2())
 			child.set_up_direction(ValueCreator.get_vector2())
 			child.set_floor_stop_on_slope_enabled(ValueCreator.get_bool())
 			child.set_max_slides(ValueCreator.get_int())
@@ -194,7 +194,6 @@ func move_nodes() -> void:
 			child.set_node_a("../" + String(nodea.get_name()))
 			child.set_node_b("../" + String(nodeb.get_name()))
 		elif child is Joint2D:
-			# Godot4TODO
 			var nodea: Node = get_child(randi() % get_child_count())
 			var nodeb: Node = get_child(randi() % get_child_count())
 			assert(child.get_node("../" + String(nodea.get_name())) != null)

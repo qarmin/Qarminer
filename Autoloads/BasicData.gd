@@ -12,6 +12,11 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
+	"add_bone", #53646
+	"set_bone_children", #53646
+	"global_pose_z_forward_to_bone_forward", #53646
+	"lightmap_unwrap",  # 52929
+	"get_render_info",  #53644
 	"set_pre_process_time",  # CPUParticles3D Freeze - disable also in Godot 3
 	"add_source",  #53624
 	"set_source_id",  #53624
@@ -46,27 +51,18 @@ var function_exceptions: Array = [
 	"generate_lod",  # 53011
 	"create_font",  # TODO TextServerAdvanced - probably memory leak
 	###
-	### Crashes TODO
+	### Other TODO
 	###
 	"get_recognized_extensions_for_type",  # Spam
 	"load",  # Spam - _ResourceLoader
-	"connect_to_signal",  # not cherrypicked
 	"poll",  # FREEZE
-	"_thread_done",  #
-	"set_function",  # Not cherrypicked
-	###
-	### Dummy Rasterize
-	###
-	"create_debug_tangents",  #53182
-	"create_from_mesh",  #53181
-	"remove_line",  # 49571 - Memory leak
+	#"set_function",  # Not cherrypicked
 	###
 	### Image functions(CRASHES)
 	###
-	"compress",
-	"decompress",
-	"convert",
-	"save_png_to_buffer",  # uses decompress
+	"decompress",  #50787
+	"convert",  # 46479
+	"save_png_to_buffer",  # 50787
 	###
 	### Input crashes, still are some problems
 	###
@@ -79,6 +75,13 @@ var function_exceptions: Array = [
 	###
 	### Reported crashes
 	###
+	"create_debug_tangents",  #53182
+	"create_from_mesh",  #53181
+	"remove_line",  # 49571 - Memory leak
+	"connect_to_signal",  # 53622
+	"set_extra_cull_margin",  # 53623
+	"_thread_done",  #53621
+	"set_physics_enabled",  #53620
 	"_iter_init",  #53554
 	"set_block_signals",  #53553
 	"make_atlas",  #51154
@@ -276,6 +279,10 @@ var disabled_classes: Array = [
 	###
 	### Godot 4.0 Additional
 	###
+	"TextServer",  # RefCounted Server
+	"TextServerAdvanced",  # RefCounted Server
+	"TextServerExtension",  # RefCounted Server
+	"TextServer",  # RefCounted Server
 	"TextEdit",  # Crashes 52876
 	"CodeEdit",  # Also 52876
 	"FontData",  # A lot of crashes 52817
@@ -288,13 +295,14 @@ var disabled_classes: Array = [
 	"AudioStreamPlayer3D",  #53567
 	"AudioStreamPlayer2D",  #53567
 	"VideoPlayer",  #53568
+	"SoftDynamicBody3D",  # TODO, softbody crashes
 	###
 	### TODO
 	###
 	"_ResourceLoader",  #Spams
 	"ResourceLoader",  #Spams
 	"PackedDataContainer",  #53554 - more crashes
-	"TextServerExtension",  #53562 - probably more crashes
+	"ProximityGroup3D",  # Not cherrypicked yet
 	###
 	### Big numbers - only enabled when arguments can be >100, because can freeze entire project
 	###

@@ -103,23 +103,15 @@ func tests_all_functions() -> void:
 
 	if delay_removing_added_nodes_to_next_frame && add_to_tree:
 		to_print = "\n\tfor i in get_children():\n\t\ti.queue_free()"
-		if save_data_to_file:
-			file_handler.store_string(to_print)
-			file_handler.flush()
-		if debug_print:
-			print(to_print)
+		save_to_file_to_screen("\n" + to_print, to_print)
 		for i in get_children():
 			i.queue_free()
 
-	for _f in range(number_of_classes_repeats):
-		for name_of_class in tested_classes:
+	for name_of_class in tested_classes:
+		for _f in range(number_of_classes_repeats):
 			if debug_print || save_data_to_file:
 				to_print = "\n######################################## " + name_of_class + " ########################################"
-				if save_data_to_file:
-					file_handler.store_string(to_print)
-					file_handler.flush()
-				if debug_print:
-					print(to_print)
+				save_to_file_to_screen("\n" + to_print, to_print)
 
 			var object: Object = ClassDB.instantiate(name_of_class)
 			assert(object != null)  #,"Object must be instantable")
@@ -138,17 +130,21 @@ func tests_all_functions() -> void:
 				if add_to_tree:
 					if object is Node:
 						to_print += "\n\tadd_child(temp_variable" + str(number_to_track_variables) + ")"
-				if save_data_to_file:
-					file_handler.store_string("\n" + to_print)
-					file_handler.flush()
-				if debug_print:
-					print(to_print)
+				save_to_file_to_screen("\n" + to_print, to_print)
 
 			for _i in range(number_of_function_repeats):
 				for method_data in method_list:
 					function_number += 1
 					if !miss_some_functions || randi() % 2 == 0:
 						var arguments: Array = ParseArgumentType.parse_and_return_objects(method_data, name_of_class, debug_print)
+
+						if use_always_new_object && (debug_print || save_data_to_file):
+							number_to_track_variables += 1
+							to_print = "\tvar temp_variable" + str(number_to_track_variables) + " = " + HelpFunctions.get_gdscript_class_creation(name_of_class)
+							if add_to_tree:
+								if object is Node:
+									to_print += "\n\tadd_child(temp_variable" + str(number_to_track_variables) + ")"
+							save_to_file_to_screen("\n" + to_print, to_print)
 
 						if debug_print || save_data_to_file:
 							to_print = ""
@@ -168,11 +164,7 @@ func tests_all_functions() -> void:
 										+ "\n"
 									)
 
-							if use_always_new_object:
-								to_print += "\t" + HelpFunctions.get_gdscript_class_creation(name_of_class)
-							else:
-								to_print += "\ttemp_variable" + str(number_to_track_variables)
-
+							to_print += "\ttemp_variable" + str(number_to_track_variables)
 							to_print += "." + method_data["name"] + "("
 
 							for i in arguments.size():
@@ -184,11 +176,7 @@ func tests_all_functions() -> void:
 									to_print += ", "
 							to_print += ")"
 
-							if save_data_to_file:
-								file_handler.store_string("\n" + to_print)
-								file_handler.flush()
-							if debug_print:
-								print(to_print)
+							save_to_file_to_screen("\n" + to_print, to_print)
 
 						var ret = object.callv(method_data["name"], arguments)
 
@@ -198,11 +186,7 @@ func tests_all_functions() -> void:
 									if (arguments[i] is Node) || !(arguments[i] is RefCounted):
 										to_print = "\ttemp_argument" + str(number_to_track_variables) + "_f" + str(function_number) + "_" + str(i)
 										to_print += HelpFunctions.remove_thing_string(arguments[i])
-										if save_data_to_file:
-											file_handler.store_string("\n" + to_print)
-											file_handler.flush()
-										if debug_print:
-											print(to_print)
+										save_to_file_to_screen("\n" + to_print, to_print)
 								HelpFunctions.remove_thing(arguments[i])
 
 						if remove_returned_value:
@@ -213,12 +197,7 @@ func tests_all_functions() -> void:
 									if !(ret is RefCounted):
 										# This code must create duplicate line, because ret type is only known after executing function and cannot be deduced before.
 										var remove_function: String = HelpFunctions.remove_thing_string(ret)
-
-										if save_data_to_file:
-											file_handler.store_string("\n" + to_print + remove_function)
-											file_handler.flush()
-										if debug_print:
-											print(to_print + remove_function)
+										save_to_file_to_screen(to_print + remove_function, to_print + remove_function)
 
 									HelpFunctions.remove_thing(ret)
 
@@ -227,11 +206,7 @@ func tests_all_functions() -> void:
 								if (object is Node) || !(object is RefCounted):
 									to_print = "\ttemp_variable" + str(number_to_track_variables)
 									to_print += HelpFunctions.remove_thing_string(object)
-									if save_data_to_file:
-										file_handler.store_string("\n" + to_print)
-										file_handler.flush()
-									if debug_print:
-										print(to_print)
+									save_to_file_to_screen("\n" + to_print, to_print)
 								HelpFunctions.remove_thing(object)
 
 							object = ClassDB.instantiate(name_of_class)
@@ -243,9 +218,13 @@ func tests_all_functions() -> void:
 				if (object is Node) || !(object is RefCounted):
 					to_print = "\ttemp_variable" + str(number_to_track_variables)
 					to_print += HelpFunctions.remove_thing_string(object)
-					if save_data_to_file:
-						file_handler.store_string("\n" + to_print)
-						file_handler.flush()
-					if debug_print:
-						print(to_print)
+					save_to_file_to_screen("\n" + to_print, to_print)
 				HelpFunctions.remove_thing(object)
+
+
+func save_to_file_to_screen(text_to_save_to_file: String, text_to_print_on_screen: String) -> void:
+	if save_data_to_file:
+		file_handler.store_string(text_to_save_to_file)
+		file_handler.flush()
+	if debug_print:
+		print(text_to_print_on_screen)

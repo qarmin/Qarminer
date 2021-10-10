@@ -16,7 +16,7 @@ func check_if_is_allowed(method_data: Dictionary) -> bool:
 
 		if name_of_class in BasicData.disabled_classes:
 			return false
-		if name_of_class.find("Server") != -1:
+		if name_of_class.find("Server") != -1 && ClassDB.class_exists(name_of_class) && !ClassDB.is_parent_class(name_of_class, "RefCounted"):
 			return false
 		# Editor stuff usually aren't good choice for arguments
 		if name_of_class.find("Editor") != -1 || name_of_class.find("SkinReference") != -1:
@@ -186,8 +186,7 @@ func initialize_list_of_available_classes(must_be_instantable: bool = true, allo
 			if !ClassDB.is_parent_class(name_of_class, "Node") && !ClassDB.is_parent_class(name_of_class, "RefCounted"):
 				continue
 
-		# TODOGODOT4
-		if name_of_class.find("Server") != -1:
+		if name_of_class.find("Server") != -1 && !ClassDB.is_parent_class(name_of_class, "RefCounted"):
 			continue
 		if name_of_class.find("Editor") != -1 && (BasicData.regression_test_project || !allow_editor):
 			continue
@@ -195,6 +194,7 @@ func initialize_list_of_available_classes(must_be_instantable: bool = true, allo
 		if name_of_class.find("SkeletonModification") != -1:
 			continue
 
+		# This step allows using in custom classes arguments from non custom classes
 		if !must_be_instantable || ClassDB.can_instantiate(name_of_class):
 			BasicData.argument_classes.push_back(name_of_class)
 

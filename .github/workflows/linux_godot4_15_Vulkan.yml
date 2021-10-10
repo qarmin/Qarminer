@@ -1,4 +1,4 @@
-name: 🐧 Godot 4 Vulkan 15 Remove returned | Parent
+name: 🐧 Godot 4 Vulkan 15 Always New | Parent
 on:
   push:
   pull_request:
@@ -29,7 +29,7 @@ jobs:
 
       - name: Configure Data
         run: |
-          sed -i 's/remove_returned_value: bool = false/remove_returned_value: bool = true/' FunctionExecutor.gd
+          sed -i 's/use_always_new_object: bool = false/use_always_new_object: bool = true/' FunctionExecutor.gd
           sed -i 's/var use_parent_methods: bool = false/var use_parent_methods: bool = true/' FunctionExecutor.gd
           
 
