@@ -19,18 +19,18 @@ var function_exceptions: Array = [
 	###
 	### Image functions(CRASHES)
 	###
-	"decompress", #50787
-	"convert", # 46479
+	"decompress",  #50787
+	"convert",  # 46479
 	"save_png_to_buffer",  # 50787
 	###
 	### Input crashes, still are some problems
 	###
-#	"_gui_input",
-#	"_input",
-#	"_unhandled_input",
-#	"_unhandled_key_input",
-#	"_vp_input",
-#	"_vp_unhandled_input",
+	"_gui_input",
+	"_input",
+	"_unhandled_input",
+	"_unhandled_key_input",
+	"_vp_input",
+	"_vp_unhandled_input",
 	###
 	### Reported crashes
 	###
