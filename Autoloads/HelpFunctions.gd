@@ -1,6 +1,16 @@
 extends Node
 
 
+func add_excluded_too_big_functions(add_it: bool) -> void:
+	if add_it:
+		BasicData.function_exceptions.append_array(BasicData.too_big_arguments)
+
+
+func add_excluded_too_big_classes(add_it: bool) -> void:
+	if add_it:
+		BasicData.disabled_classes.append_array(BasicData.too_big_classes)
+
+
 # Checks if function can be executed
 # Looks at its arguments and method type
 # This is useful when e.g. adding/renaming type Transform -> Transform3D
