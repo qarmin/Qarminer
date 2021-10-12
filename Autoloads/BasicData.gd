@@ -12,9 +12,13 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
-	"add_bone", #53646
-	"set_bone_children", #53646
-	"global_pose_z_forward_to_bone_forward", #53646
+	"set_clip_children",  #53667
+	"set_base",  #53723
+	"set_polygon",  #53722
+	"set_trail_section_subdivisions",  #53719
+	"add_bone",  #53646
+	"set_bone_children",  #53646
+	"global_pose_z_forward_to_bone_forward",  #53646
 	"lightmap_unwrap",  # 52929
 	"get_render_info",  #53644
 	"set_pre_process_time",  # CPUParticles3D Freeze - disable also in Godot 3
@@ -296,6 +300,9 @@ var disabled_classes: Array = [
 	"AudioStreamPlayer2D",  #53567
 	"VideoPlayer",  #53568
 	"SoftDynamicBody3D",  # TODO, softbody crashes
+	"ImageTexture3D",  #53721
+	"TileMap",  #53724
+	"XRCamera3D",  #53725
 	###
 	### TODO
 	###
