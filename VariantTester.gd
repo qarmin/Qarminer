@@ -210,7 +210,7 @@ func get_basic_thing(type: int):
 			assert(false, "Object not supported")
 		TYPE_NIL:
 			assert(false, "Variant not supported")
-		# TODO Godot4
+#		# TODOGODOT4
 #		TYPE_CALLABLE:
 #			thing = Callable(BoxMesh.new(), "Rar")
 #		TYPE_VECTOR3I:

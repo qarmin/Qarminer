@@ -177,7 +177,7 @@ func get_packed_color_array() -> PoolColorArray:
 	return PoolColorArray(array)
 
 
-# Godot4TODO
+# TODOGODOT4
 
 #func get_string_name() -> StringName:
 #	return StringName(get_string())

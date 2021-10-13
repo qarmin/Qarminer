@@ -297,7 +297,7 @@ func create_gdscript_arguments(arguments: Array) -> Array:
 				sa.value = "PoolStringArray([])"
 			TYPE_TRANSFORM:
 				sa.type = "Transform"
-				sa.value = get_transform_string()
+				sa.value = get_transform3D_string()
 			TYPE_TRANSFORM2D:
 				sa.type = "Transform2D"
 				sa.value = get_transform2D_string()
@@ -313,6 +313,28 @@ func create_gdscript_arguments(arguments: Array) -> Array:
 			TYPE_VECTOR3_ARRAY:
 				sa.type = "PoolVector3Array"
 				sa.value = "PoolVector3Array([])"
+#			# TODOGODOT4
+#			TYPE_CALLABLE:
+#				sa.type = "Callable"
+#				sa.value = "Callable.new()"
+#			TYPE_VECTOR3I:
+#				sa.type = "Vector3i"
+#				sa.value = get_vector3i_string()
+#			TYPE_VECTOR2I:
+#				sa.type = "Vector2i"
+#				sa.value = get_vector2i_string()
+#			TYPE_STRING_NAME:
+#				sa.type = "StringName"
+#				sa.value = StringName(get_string_string())
+#			TYPE_RECT2I:
+#				sa.type = "Rect2i"
+#				sa.value = get_rect2i_string()
+#			TYPE_FLOAT64_ARRAY:
+#				sa.type = "PackedFloat64Array"
+#				sa.value = "PackedFloat64Array([])"
+#			TYPE_INT64_ARRAY:
+#				sa.type = "PackedInt64Array"
+#				sa.value = "PackedInt64Array([])"
 			_:
 				assert(false, "Missing type --" + str(argument["type"]) + "--, needs to be added to project")
 		argument_array.append(sa)
@@ -363,7 +385,7 @@ func get_aabb_string() -> String:
 	return "AABB(" + get_vector3_string() + ", " + get_vector3_string() + ")"
 
 
-func get_transform_string() -> String:
+func get_transform3D_string() -> String:
 	return "Transform(" + get_vector3_string() + ", " + get_vector3_string() + ", " + get_vector3_string() + ", " + get_vector3_string() + ")"
 
 

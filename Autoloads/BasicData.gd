@@ -262,6 +262,7 @@ var disabled_classes: Array = [
 	### OS - in normal testing, can broke everything, but can be used in CI
 	###
 	"_OS",
+	## TODOGODOT4
 	#	###
 	#	### Godot 4.0
 	#	###

@@ -216,5 +216,9 @@ func initialize_list_of_available_classes(must_be_instantable: bool = true, allo
 
 #	BasicData.base_classes = BasicData.base_classes.slice(300, 350)
 
+	if BasicData.base_classes.size() == 0:
+		print("There is no choosen classes!!!!!!!!!!!!!!!!!!!")
+		get_tree().quit()
+
 	print(str(BasicData.base_classes.size()) + " choosen classes from all " + str(full_class_list.size()) + " classes.")
 	print(str(BasicData.argument_classes.size()) + " classes can be used as arguments.")
