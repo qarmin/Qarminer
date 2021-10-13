@@ -21,6 +21,8 @@ var function_exceptions: Array = [
 	###
 	### Reported crashes
 	###
+	"replace_by", #53775
+	"bake", #53774
 	"create_debug_tangents",  #53182
 	"create_from_mesh",  #53181
 	"remove_line",  # 49571 - Memory leak
@@ -51,7 +53,7 @@ var function_exceptions: Array = [
 	"convert",  # 46479
 	"save_png_to_buffer",  # 50787
 	###
-	### Not worth to check, because users rarely us this
+	### Not worth to check, cause a lot of crashes but it is very unlikelly that users will use them
 	###
 	"propagate_notification",
 	"notification",
