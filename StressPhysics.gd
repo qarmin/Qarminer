@@ -170,14 +170,14 @@ func move_nodes() -> void:
 				child.set_position(ValueCreator.get_vector3())
 
 		if child is CharacterBody3D:
-#			child.set_linear_velocity(ValueCreator.get_vector3())
+			child.set_motion_velocity(ValueCreator.get_vector3())
 			child.set_up_direction(ValueCreator.get_vector3())
 			child.set_floor_stop_on_slope_enabled(ValueCreator.get_bool())
 			child.set_max_slides(ValueCreator.get_int())
 			child.set_floor_max_angle(ValueCreator.get_bool())
 			child.move_and_slide()
 		elif child is CharacterBody2D:
-#			child.set_linear_velocity(ValueCreator.get_vector2())
+			child.set_motion_velocity(ValueCreator.get_vector2())
 			child.set_up_direction(ValueCreator.get_vector2())
 			child.set_floor_stop_on_slope_enabled(ValueCreator.get_bool())
 			child.set_max_slides(ValueCreator.get_int())

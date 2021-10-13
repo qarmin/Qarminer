@@ -59,6 +59,10 @@ func _ready() -> void:
 		ValueCreator.random = true
 		ValueCreator.number = 100
 
+	# Adds additional arguments to excluded items
+	HelpFunctions.add_excluded_too_big_functions(ValueCreator.number > 100)
+	HelpFunctions.add_excluded_too_big_classes(ValueCreator.number > 100)
+
 	# Initialize array of objects at the end
 	HelpFunctions.initialize_list_of_available_classes(true, true, [])
 	HelpFunctions.initialize_array_with_allowed_functions(use_parent_methods, BasicData.function_exceptions)

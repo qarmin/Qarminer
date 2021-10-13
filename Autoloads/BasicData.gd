@@ -55,20 +55,7 @@ var function_exceptions: Array = [
 	"generate_lod",  # 53011
 	"create_font",  # TODO TextServerAdvanced - probably memory leak
 	###
-	### Other TODO
-	###
-	"get_recognized_extensions_for_type",  # Spam
-	"load",  # Spam - _ResourceLoader
-	"poll",  # FREEZE
-	#"set_function",  # Not cherrypicked
-	###
-	### Image functions(CRASHES)
-	###
-	"decompress",  #50787
-	"convert",  # 46479
-	"save_png_to_buffer",  # 50787
-	###
-	### Input crashes, still are some problems
+	### Input crashes, still are some problems TODO
 	###
 	"_gui_input",
 	"_input",
@@ -105,6 +92,9 @@ var function_exceptions: Array = [
 	"get_bind_bone",  #47358
 	"get_bind_name",  #47358
 	"get_bind_pose",  #47358
+	"decompress",  #50787
+	"convert",  # 46479
+	"save_png_to_buffer",  # 50787
 	###
 	### Not worth to check, because users rarely us this
 	###
@@ -113,6 +103,8 @@ var function_exceptions: Array = [
 	###
 	### Error spam when using it TODO
 	###
+	"get_recognized_extensions_for_type",  # Spam
+	"load",  # Spam - _ResourceLoader
 	"add_sphere",
 	"_update_inputs",
 	"update_bitmask_region",
@@ -120,6 +112,7 @@ var function_exceptions: Array = [
 	###
 	### Slow Function
 	###
+	"set_pre_process_time",
 	"create_convex_collision",
 	"create_multiple_convex_collisions",
 	"load_webp_from_buffer",
@@ -180,6 +173,7 @@ var function_exceptions: Array = [
 	###
 	### Godot freeze or run very cslow
 	###
+	"poll",
 	"delay_usec",
 	"delay_msec",
 	"wait_to_finish",
@@ -235,6 +229,46 @@ var function_exceptions: Array = [
 	#####
 	"smooth_polyline_approx",
 	"smooth_polygon_approx",
+]
+
+# List of all functions that can freeze Godot when working with really big numbers
+var too_big_arguments: Array = [
+	"get_seamless_image",
+	"generate_rsa",  # TODO
+	"set_map_width",
+	"get_image",
+	"set_width",
+	"set_height",
+	"create",
+	"set_radial_segments",
+	"set_subdivide_depth",
+	"set_custom_aabb",
+	"set_subdivide_height",
+	"set_subdivide_width",
+	"set_rect",
+	"set_sides",
+	"set_ring_sides",
+	"",
+	"",
+	"",
+	"",
+	"",
+	"",
+	"",
+	# Spam
+	"_get_custom_data_array",
+	"_get_color_array",
+	"",
+	"",
+]
+# List of all functions that can freeze Godot when working with really big numbers
+var too_big_classes: Array = [
+	"VisibleOnScreenEnabler2D",
+	"VisibleOnScreenEnabler3D",
+	"VisibilityEnabler3D",
+	"VisibleOnScreenNotifier2D",
+	"VisibleOnScreenNotifier3D",
+	"VisibleOnScreenNotifier3D",
 ]
 
 var return_value_exceptions: Array = [
@@ -306,17 +340,12 @@ var disabled_classes: Array = [
 	###
 	### TODO
 	###
+	"ImmediateMesh",  #53623
+	"ItemList",  # Big numbers
 	"_ResourceLoader",  #Spams
 	"ResourceLoader",  #Spams
 	"PackedDataContainer",  #53554 - more crashes
 	"ProximityGroup3D",  # Not cherrypicked yet
-	###
-	### Big numbers - only enabled when arguments can be >100, because can freeze entire project
-	###
-	#	"OpenSimplexNoise",
-	#	"HeightMapShape3D",
-	#	"BitMap",
-	#	"CPUParticles3D",
 	###
 	### Exported build - some checks are disabled in exported build due to too big performance impact
 	###

@@ -1,6 +1,16 @@
 extends Node
 
 
+func add_excluded_too_big_functions(add_it: bool) -> void:
+	if add_it:
+		BasicData.function_exceptions.append_array(BasicData.too_big_arguments)
+
+
+func add_excluded_too_big_classes(add_it: bool) -> void:
+	if add_it:
+		BasicData.disabled_classes.append_array(BasicData.too_big_classes)
+
+
 # Checks if function can be executed
 # Looks at its arguments and method type
 # This is useful when e.g. adding/renaming type Transform3D -> Transform3D
@@ -204,12 +214,7 @@ func initialize_list_of_available_classes(must_be_instantable: bool = true, allo
 		if !must_be_instantable || ClassDB.can_instantiate(name_of_class):
 			BasicData.base_classes.push_back(name_of_class)
 
-#	BasicData.base_classes = BasicData.base_classes.slice(450, 6000)
-
-	# TODOGODOT4
-	if BasicData.base_classes.size() == 0:
-		print("There is no choosen classes  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-		get_tree().quit()
+#	BasicData.base_classes = BasicData.base_classes.slice(300, 350)
 
 	print(str(BasicData.base_classes.size()) + " choosen classes from all " + str(full_class_list.size()) + " classes.")
 	print(str(BasicData.argument_classes.size()) + " classes can be used as arguments.")
