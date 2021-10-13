@@ -286,6 +286,7 @@ var disabled_classes: Array = [
 	###
 	### TODO
 	###
+	"ImmediateGeometry", #53623
 	"ItemList",  # Big numbers
 	"_ResourceLoader",  #Spams
 	"ResourceLoader",  #Spams

@@ -8,6 +8,7 @@ This reporsitory constains many tools:
 - Testing Physics nodes
 - Variant Tester - test functions in builtin Godot classes like String
 - Reparenting/Deleting - tool to reparent and delete randomly nodes
+- Simple Things - creates and deletes objects
 
 Qarminer can test functions with random data(used for fuzzing - just look into CI of this project) or always with same(used as simple check in Godot CI)
 
@@ -37,10 +38,14 @@ Same as Function Tester it tests functions but on builtin classes like e.g. Stri
 Tool which randomly reparents and delete nodes.  
 It is improved version with logging of RegressionTestProject
 
+### Simple Things
+Tool which creates objects and deletes objects.  
+It is used to early catch most important and the easiest to fix bugs.
+
 ## 4.0 version
 4.0 version is available in 4.0 branch.  
-Conversion project from 3.x to 4.0 is quite easy and require only to use project converter - https://github.com/godotengine/godot/pull/51950.
-
+Conversion project from 3.x to 4.0 is quite easy and require to use project converter - https://github.com/godotengine/godot/pull/51950.  
+Later only uncommenting some code which handle additional types like Callable or Signal is required
 
 ## LICENSE
 MIT

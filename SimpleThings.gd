@@ -9,7 +9,7 @@ var number: int = 0
 
 func _ready():
 	if save_to_file:
-		file_handler.open("simple_things.txt", File.WRITE)
+		file_handler.open("results.txt", File.WRITE)
 	HelpFunctions.initialize_list_of_available_classes()
 
 
