@@ -12,6 +12,7 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
+	"get_tiles_to_be_removed_on_change", # TODO
 	"set_clip_children",  #53667
 	"set_base",  #53723
 	"set_polygon",  #53722
