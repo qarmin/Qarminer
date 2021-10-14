@@ -9,10 +9,12 @@ var allowed_thing: Dictionary = {}  # List of all classes with
 
 # Globablly disabled functions for all classes
 var function_exceptions: Array = [
+	
 	###
 	### Godot 4.0
 	###
-	"get_tiles_to_be_removed_on_change", # TODO
+	"get_tiles_to_be_removed_on_change", # 53809
+	"make_polygons_from_outlines", #53808
 	"set_clip_children",  #53667
 	"set_base",  #53723
 	"set_polygon",  #53722
@@ -318,6 +320,7 @@ var disabled_classes: Array = [
 	###
 	### Godot 4.0 Additional
 	###
+	"Engine", # This should be added also to Godot 3
 	"TextServer",  # RefCounted Server
 	"TextServerAdvanced",  # RefCounted Server
 	"TextServerExtension",  # RefCounted Server
@@ -334,7 +337,7 @@ var disabled_classes: Array = [
 	"AudioStreamPlayer3D",  #53567
 	"AudioStreamPlayer2D",  #53567
 	"VideoPlayer",  #53568
-	"SoftDynamicBody3D",  # TODO, softbody crashes
+	#"SoftDynamicBody3D",  # TODO, softbody crashes
 	"ImageTexture3D",  #53721
 	"TileMap",  #53724
 	"XRCamera3D",  #53725
