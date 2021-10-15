@@ -13,6 +13,8 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
+	"get_custom_monitor", # TODO crashes only in exported build
+	"_main_gutter_draw_callback", #53863
 	"clear_glyphs", #53846
 	"render_range", #53842
 	"set_texture_offsets", #53841
