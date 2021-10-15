@@ -13,12 +13,16 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
+	"clear_glyphs", #53846
+	"render_range", #53842
+	"set_texture_offsets", #53841
+	"get_indexed", #53840
+	"set_disable_mode", #53838
 	"get_tiles_to_be_removed_on_change", # 53809
 	"make_polygons_from_outlines", #53808
 	"set_clip_children",  #53667
 	"set_base",  #53723
 	"set_polygon",  #53722
-	"set_trail_section_subdivisions",  #53719
 	"add_bone",  #53646
 	"set_bone_children",  #53646
 	"global_pose_z_forward_to_bone_forward",  #53646
@@ -32,31 +36,22 @@ var function_exceptions: Array = [
 	"set_instance_count",  #53603
 	"set_use_colors",  #53603
 	"set_transform_format",  #53603
-	"push_input",  #53601
-	"push_unhandled_input",  # Probably same as above, but TODO
-	"is_input_handled",  #53600
+	#"push_unhandled_input",  # Probably same as above, but TODO
 	"commit",  #53191
 	"commit_to_arrays",  #53191
 	"popup_centered_ratio",  #53566
-	"get_pyramid_shape_rid",  # 53564
 	"set_stream",  #52853
 	"shaped_text_draw_outline",  #53562
 	"import_post",  #53561
 	"set_input_as_handled",  #53560
 	"add_node",  #53558
 	"as_text",  #53224
-	"get_image",  # 53214
 	"set_language",  #53218
 	"set_texture",  #46828
 	"_activate",  #45984
-	#"get_singleton", # TODO
-	#"set_singleton", # TODO
-	#"get_menu", # TODO
 	"compress_from_channels",  # Image
 	"open_midi_inputs",  #52821
 	"load_threaded_request",  #46762
-	"generate_lod",  # 53011
-	"create_font",  # TODO TextServerAdvanced - probably memory leak
 	###
 	### Input crashes, still are some problems TODO
 	###
@@ -325,21 +320,17 @@ var disabled_classes: Array = [
 	"TextServerAdvanced",  # RefCounted Server
 	"TextServerExtension",  # RefCounted Server
 	"TextServer",  # RefCounted Server
-	"TextEdit",  # Crashes 52876
-	"CodeEdit",  # Also 52876
-	"FontData",  # A lot of crashes 52817
-	"InputEventShortcut",  # 52191
-	"MultiplayerAPI",  # Crashes TODO
+	"EngineDebugger", # Crashes in exported project, not very usable
 	"InputMap",
-	"GPUParticles3D",  # 53004
+	
+	"FontData", # 53846
+	"MultiplayerAPI",  # Crashes TODO
 	"VisibleOnScreenEnabler3D",  #53565
 	"VisibleOnScreenEnabler2D",  #53565
 	"AudioStreamPlayer3D",  #53567
 	"AudioStreamPlayer2D",  #53567
 	"VideoPlayer",  #53568
-	#"SoftDynamicBody3D",  # TODO, softbody crashes
 	"ImageTexture3D",  #53721
-	"TileMap",  #53724
 	"XRCamera3D",  #53725
 	###
 	### TODO
