@@ -13,6 +13,7 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
+	"generate_lod", #53876
 	"_broadcast", #53873
 	"get_word_under_caret", # 53872
 	"get_custom_monitor", # TODO crashes only in exported build
