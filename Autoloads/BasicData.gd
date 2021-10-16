@@ -13,6 +13,8 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
+	"_broadcast", #53873
+	"get_word_under_caret", # 53872
 	"get_custom_monitor", # TODO crashes only in exported build
 	"_main_gutter_draw_callback", #53863
 	"clear_glyphs", #53846
