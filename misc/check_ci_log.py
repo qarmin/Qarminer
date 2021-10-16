@@ -27,6 +27,8 @@ if (
     or file_contents.find("Segmentation fault (core dumped)") != -1
     or file_contents.find("Aborted (core dumped)") != -1
     or file_contents.find("(core dumped)") != -1
+    or file_contents.find("Aborted") != -1
+    or file_contents.find("Assertion") != -1
 ):
     print("FATAL ERROR: Godot has been crashed.")
     sys.exit(1)
