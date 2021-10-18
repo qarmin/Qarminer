@@ -1,4 +1,4 @@
-name: 🐧 Godot 3 Exported
+name: 🐧 Godot 3 Exported Debug
 on:
   push:
   pull_request:
@@ -45,14 +45,14 @@ jobs:
           scons -j2 use_asan=yes use_ubsan=yes CCFLAGS="-fsanitize=shift,shift-exponent,integer-divide-by-zero,unreachable,vla-bound,null,return,signed-integer-overflow,bounds,float-divide-by-zero,float-cast-overflow,nonnull-attribute,returns-nonnull-attribute,bool,enum,vptr"
           cp bin/godot.x11.tools.64s ../
           git clean -xqdf
-          scons -j2 tools=no target=release debug_symbols=yes use_asan=yes use_ubsan=yes optimize=none CCFLAGS="-DDEBUG_METHODS_ENABLED -fsanitize=shift,shift-exponent,integer-divide-by-zero,unreachable,vla-bound,null,return,signed-integer-overflow,bounds,float-divide-by-zero,float-cast-overflow,nonnull-attribute,returns-nonnull-attribute,bool,enum,vptr"
-          cp bin/godot.x11.opt.64s ../
+          scons -j2 tools=no target=debug debug_symbols=yes use_asan=yes use_ubsan=yes optimize=none CCFLAGS="-fsanitize=shift,shift-exponent,integer-divide-by-zero,unreachable,vla-bound,null,return,signed-integer-overflow,bounds,float-divide-by-zero,float-cast-overflow,nonnull-attribute,returns-nonnull-attribute,bool,enum,vptr"
+          cp bin/godot.x11.debug.64s ../
           cd ../
           rm -rf godot
 
       - name: Exporting project
         run: |
-          curr="$(pwd)/godot.x11.opt.64s"
+          curr="$(pwd)/godot.x11.debug.64s"
           sed -i "s|PATH_TO_CHANGE|$curr|" export_presets.cfg
           DRI_PRIME=0 xvfb-run ./godot.x11.tools.64s --audio-driver Dummy --export-debug "Linux/X11" test_project 2>&1 | tee exporting.txt || true
 
