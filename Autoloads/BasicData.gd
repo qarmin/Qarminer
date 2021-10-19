@@ -21,8 +21,8 @@ var function_exceptions: Array = [
 	###
 	### Reported crashes
 	###
-	"replace_by", #53775
-	"bake", #53774
+	"replace_by",  #53775
+	"bake",  #53774
 	"create_debug_tangents",  #53182
 	"create_from_mesh",  #53181
 	"remove_line",  # 49571 - Memory leak
@@ -289,7 +289,7 @@ var disabled_classes: Array = [
 	###
 	### TODO
 	###
-	"ImmediateGeometry", #53623
+	"ImmediateGeometry",  #53623
 	"ItemList",  # Big numbers
 	"_ResourceLoader",  #Spams
 	"ResourceLoader",  #Spams

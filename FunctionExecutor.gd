@@ -9,7 +9,7 @@ extends Node
 ### - clean memory, instance other objects etc. until there is no other classes to check
 ### - waits for new frame to starts everything from start
 
-var debug_print: bool = true # Switch to turn off printed things to screen
+var debug_print: bool = true  # Switch to turn off printed things to screen
 var exiting: bool = false  # Close app after first run
 var add_to_tree: bool = false  # Adds nodes to tree
 var delay_removing_added_nodes_to_next_frame: bool = false  # Delaying removing nodes added to tree to next frame, which force to render it
@@ -32,7 +32,7 @@ var to_print: String = ""  # Specify what needs to be printed
 var number_to_track_variables: int = 0  # Unique number to specify number which is added to variable name to prevent from using variables with same name
 var function_number: int = 0  # Needed to be able to use arguments with unique names
 
-var how_many_times_test: int = 30  # How many times, same class will be tested
+var how_many_times_test: int = 30  # How many times, same class will be tested(works only with test_one_class_multiple_times enabled)
 var tested_times: int = how_many_times_test  # How many times class is tested now
 var current_tested_element: int = 0  # Which element from array is tested now
 var tested_classes: Array = []  # Array with elements that are tested, in normal situation this equal to base_classes variable
@@ -108,7 +108,7 @@ func tests_all_functions() -> void:
 	elif save_data_to_file:
 		var _a: int = file_handler.open("res://results.txt", File.WRITE)
 
-	if delay_removing_added_nodes_to_next_frame && add_to_tree:
+	if (delay_removing_added_nodes_to_next_frame && add_to_tree) || (delay_removing_added_arguments_to_next_frame && add_arguments_to_tree):
 		to_print = "\n\tfor i in get_children():\n\t\ti.queue_free()"
 		save_to_file_to_screen("\n" + to_print, to_print)
 		for i in get_children():
@@ -153,23 +153,22 @@ func tests_all_functions() -> void:
 									to_print += "\n\tadd_child(temp_variable" + str(number_to_track_variables) + ")"
 							save_to_file_to_screen("\n" + to_print, to_print)
 
+						if add_arguments_to_tree:
+							for argument in arguments:
+								if argument is Node:
+									add_child(argument)
+
 						if debug_print || save_data_to_file:
 							to_print = ""
 
 							# Handle here objects by creating temporary values
 							for i in arguments.size():
 								if arguments[i] is Object && !(arguments[i] is Reference):
-									to_print += (
-										"\tvar temp_argument"
-										+ str(number_to_track_variables)
-										+ "_f"
-										+ str(function_number)
-										+ "_"
-										+ str(i)
-										+ " = "
-										+ ParseArgumentType.return_gdscript_code_which_run_this_object(arguments[i])
-										+ "\n"
-									)
+									var temp_name: String = "temp_argument" + str(number_to_track_variables) + "_f" + str(function_number) + "_" + str(i)
+									to_print += ("\tvar " + temp_name + " = " + ParseArgumentType.return_gdscript_code_which_run_this_object(arguments[i]) + "\n")
+									if add_arguments_to_tree:
+										if arguments[i] is Node:
+											to_print += "\tadd_child(" + temp_name + ")\n"
 
 							to_print += "\ttemp_variable" + str(number_to_track_variables)
 							to_print += "." + method_data["name"] + "("
@@ -188,13 +187,14 @@ func tests_all_functions() -> void:
 						var ret = object.callv(method_data["name"], arguments)
 
 						for i in arguments.size():
-							if arguments[i] is Object && arguments[i] != null:
-								if debug_print || save_data_to_file:
-									if (arguments[i] is Node) || !(arguments[i] is Reference):
-										to_print = "\ttemp_argument" + str(number_to_track_variables) + "_f" + str(function_number) + "_" + str(i)
-										to_print += HelpFunctions.remove_thing_string(arguments[i])
-										save_to_file_to_screen("\n" + to_print, to_print)
-								HelpFunctions.remove_thing(arguments[i])
+							if !(delay_removing_added_arguments_to_next_frame && add_arguments_to_tree && arguments[i] is Node):
+								if arguments[i] is Object && arguments[i] != null:
+									if debug_print || save_data_to_file:
+										if (arguments[i] is Node) || !(arguments[i] is Reference):
+											to_print = "\ttemp_argument" + str(number_to_track_variables) + "_f" + str(function_number) + "_" + str(i)
+											to_print += HelpFunctions.remove_thing_string(arguments[i])
+											save_to_file_to_screen("\n" + to_print, to_print)
+									HelpFunctions.remove_thing(arguments[i])
 
 						if remove_returned_value:
 							# Looks that argument of function may become its returned value, so
