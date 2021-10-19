@@ -21,6 +21,7 @@ var function_exceptions: Array = [
 	###
 	### Reported crashes
 	###
+	"lightmap_unwrap",  # 52929
 	"replace_by",  #53775
 	"bake",  #53774
 	"create_debug_tangents",  #53182
