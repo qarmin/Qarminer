@@ -1,26 +1,29 @@
 extends Node
 
-### TODO Update this
 ### Script:
-### - takes all available classes
-### - checks if method is allowed
-### - checks each argument if is allowed(in case e.g. adding new, to prevent crashes due not recognizing types)
-### - print info if needed to console
-### - execute function with parameters
+### - finds all available classes and methods which can be used(e.g. types of arguments are checked)
+### - for all classes in list(all classes or only one depends on list) instance them
+### - adds them to tree if needed
+### - creates aruments
+### - executes functions with provided arguments
+### - clean memory, instance other objects etc. until there is no other classes to check
+### - waits for new frame to starts everything from start
 
-var debug_print: bool = true
-var exiting: bool = false  # Exit after 1 loop?
-var add_to_tree: bool = false  # Adds nodes to tree, freeze godot when removing a lot of nodes
-var delay_removing_added_nodes_to_next_frame: bool = false  # This can be used only with add_to_tree option - this will force to render things
-var use_parent_methods: bool = false  # Allows Node2D use Node methods etc. - it is a little slow option which rarely shows
+var debug_print: bool = true # Switch to turn off printed things to screen
+var exiting: bool = false  # Close app after first run
+var add_to_tree: bool = false  # Adds nodes to tree
+var delay_removing_added_nodes_to_next_frame: bool = false  # Delaying removing nodes added to tree to next frame, which force to render it
+var add_arguments_to_tree: bool = false  # Adds nodes which are used as arguments to tree
+var delay_removing_added_arguments_to_next_frame: bool = false  # Delaying removing arguments(nodes added to tree) to next frame, which force to render it
+var use_parent_methods: bool = false  # Allows to use parent methods e.g. Sprite can use Node.queue_free()
 var use_always_new_object: bool = false  # Don't allow to "remember" other function effects
-var number_of_function_repeats: int = 3  # How many times functions can be repeated
-var number_of_classes_repeats: int = 1  # How many times classes will be repeated
-var shuffle_methods: bool = true  # Mix methods to be able to get more random results
+var number_of_function_repeats: int = 3  # How many times all functions will be executed in single class
+var number_of_classes_repeats: int = 1  # How much times class will be instanced in row(one after one)
+var shuffle_methods: bool = true  # Mix method execution order to be able to get more random results
 var miss_some_functions: int = true  # Allows to not execute some functions to be able to get more random results
-var remove_returned_value: bool = false  # Removes returned value from function
+var remove_returned_value: bool = false  # Removes returned value from function(not recommended as default option, because can cause hard to reproduce bugs)
 var save_data_to_file: bool = true  # Save data to file(not big performance impact as I exepected)
-var test_one_class_multiple_times: bool = false  # Test same class across multiple frames
+var test_one_class_multiple_times: bool = false  # Test same class across multiple frames - helpful to find this one class which cause problems
 
 var file_handler: File = File.new()  # Handles saves to file, in case of testing one class, entire log is saved to it
 
