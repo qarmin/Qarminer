@@ -321,12 +321,15 @@ var disabled_classes: Array = [
 	### Godot 4.0 Additional
 	###
 	"Engine", # This should be added also to Godot 3
+	"GodotSharp", # TODO, also to Godot 3 add 
+	
 	"TextServer",  # RefCounted Server
 	"TextServerAdvanced",  # RefCounted Server
 	"TextServerExtension",  # RefCounted Server
 	"TextServer",  # RefCounted Server
 	"EngineDebugger", # Crashes in exported project, not very usable
 	"InputMap",
+	
 	
 	"FontData", # 53846
 	"MultiplayerAPI",  # Crashes TODO
