@@ -265,6 +265,10 @@ var disabled_classes: Array = [
 	### OS - in normal testing, can broke everything, but can be used in CI
 	###
 	"_OS",
+	###
+	### Mono
+	###
+	"_GodotSharp",
 	## TODOGODOT4
 	#	###
 	#	### Godot 4.0
@@ -273,6 +277,7 @@ var disabled_classes: Array = [
 	#	"Thread",
 	#	"Semaphore",
 	#	"Mutex",
+	#	"GodotSharp",
 	#	###
 	#	### Godot 4.0 Additional
 	#	###
