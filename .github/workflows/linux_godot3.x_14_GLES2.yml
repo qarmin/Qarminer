@@ -1,9 +1,9 @@
-name: 🐧 Godot 3 GLES2 10 Big Numbers | Parent
+name: 🐧 Godot 3.x GLES2 14 Remove returned | Parent
 on:
   push:
   pull_request:
   schedule:
-    - cron: '0 0 * * *'
+    - cron: '0 0 6 * *'
 
 jobs:
   linux-sanitizer:
@@ -29,7 +29,7 @@ jobs:
 
       - name: Configure Data
         run: |
-          sed -i 's/ValueCreator.number = 100/ValueCreator.number = 10000/' FunctionExecutor.gd
+          sed -i 's/remove_returned_value: bool = false/remove_returned_value: bool = true/' FunctionExecutor.gd
           sed -i 's/var use_parent_methods: bool = false/var use_parent_methods: bool = true/' FunctionExecutor.gd
           
 

@@ -1,9 +1,9 @@
-name: 🐧 Godot 3 GLES2 01 Default
+name: 🐧 Godot 3.x GLES2 12 Small Numbers | Parent
 on:
   push:
   pull_request:
   schedule:
-    - cron: '0 0 * * *'
+    - cron: '0 0 6 * *'
 
 jobs:
   linux-sanitizer:
@@ -29,7 +29,9 @@ jobs:
 
       - name: Configure Data
         run: |
-          true
+          sed -i 's/ValueCreator.number = 100/ValueCreator.number = 5/' FunctionExecutor.gd
+          sed -i 's/var use_parent_methods: bool = false/var use_parent_methods: bool = true/' FunctionExecutor.gd
+          
 
       - name: Download Godot(GIT)
         run: |

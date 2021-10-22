@@ -1,12 +1,12 @@
-name: 🐧 Godot 3 Exported Release, Debug Methods
+name: 🐧 Godot 3.x Exported Release, Debug Methods
 on:
   push:
   pull_request:
   schedule:
-    - cron: '0 0 * * *'
+    - cron: '0 0 1 * *'
 
 jobs:
-  linux-sanitizer:
+  linux-exported-release-methods:
     runs-on: "ubuntu-20.04"
     name: Editor and project
 

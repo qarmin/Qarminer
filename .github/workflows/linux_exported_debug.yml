@@ -1,4 +1,4 @@
-name: 🐧 Godot 3 Exported Debug
+name: 🐧 Godot 3.x Exported Debug
 on:
   push:
   pull_request:
@@ -6,7 +6,7 @@ on:
     - cron: '0 0 * * *'
 
 jobs:
-  linux-sanitizer:
+  linux-exported-debug:
     runs-on: "ubuntu-20.04"
     name: Editor and project
 
