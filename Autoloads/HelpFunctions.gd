@@ -11,6 +11,21 @@ func add_excluded_too_big_classes(add_it: bool) -> void:
 		BasicData.disabled_classes.append_array(BasicData.too_big_classes)
 
 
+# TODOGODOT4 - this probably will hide internal childs in Godot 4
+# Disable nodes with internal child, because can cause strange crashes when executing e.g. notification
+func disable_nodes_with_internal_child() -> void:
+	var f = Array(ClassDB.get_class_list())
+	f.sort()
+	var list = []
+	for i in f:
+		if ClassDB.can_instance(i) && ClassDB.is_parent_class(i, "Node"):
+			var rr = ClassDB.instance(i)
+			if rr.get_child_count() > 0:
+				list.append(i)
+			remove_thing(rr)
+	BasicData.disabled_classes.append_array(list)
+
+
 # Checks if function can be executed
 # Looks at its arguments and method type
 # This is useful when e.g. adding/renaming type Transform -> Transform3D
@@ -137,24 +152,39 @@ func remove_thing_string(thing: Object) -> String:
 		return ""
 
 
-# Initialize array which contains only allowed Functions
+# Initialize array which contains only allowed functions
+# If BasicData.allowed_functions is not set, every possible functions is checked
 func initialize_array_with_allowed_functions(use_parent_methods: bool, disabled_methods: Array):
 	assert(!BasicData.base_classes.empty(), "Missing initalization of classes")
 	assert(!BasicData.argument_classes.empty(), "Missing initalization of classes")
 	var class_info: Dictionary = {}
 
-	for name_of_class in BasicData.base_classes:
-		var old_method_list: Array = []
-		var new_method_list: Array = []
+	if BasicData.allowed_functions.empty():
+		for name_of_class in BasicData.base_classes:
+			var old_method_list: Array = []
+			var new_method_list: Array = []
+			old_method_list = ClassDB.class_get_method_list(name_of_class, !use_parent_methods)
+			old_method_list = remove_disabled_methods(old_method_list, disabled_methods)
+			for method_data in old_method_list:
+				if !check_if_is_allowed(method_data):
+					continue
+				new_method_list.append(method_data)
 
-		old_method_list = ClassDB.class_get_method_list(name_of_class, !use_parent_methods)
-		old_method_list = remove_disabled_methods(old_method_list, disabled_methods)
-		for method_data in old_method_list:
-			if !check_if_is_allowed(method_data):
-				continue
-			new_method_list.append(method_data)
+			class_info[name_of_class] = new_method_list
+	else:
+		for name_of_class in BasicData.base_classes:
+			var old_method_list: Array = []
+			var new_method_list: Array = []
+			old_method_list = ClassDB.class_get_method_list(name_of_class, !use_parent_methods)
+			for method_data in old_method_list:
+				if !(method_data["name"] in BasicData.allowed_functions):
+					continue
+				if !check_if_is_allowed(method_data):
+					continue
+				new_method_list.append(method_data)
 
-		class_info[name_of_class] = new_method_list
+			class_info[name_of_class] = new_method_list
+
 	BasicData.allowed_thing = class_info
 
 
@@ -214,7 +244,7 @@ func initialize_list_of_available_classes(must_be_instantable: bool = true, allo
 		if !must_be_instantable || ClassDB.can_instance(name_of_class):
 			BasicData.base_classes.push_back(name_of_class)
 
-#	BasicData.base_classes = BasicData.base_classes.slice(300, 350)
+#	BasicData.base_classes = BasicData.base_classes.slice(0, 10)
 
 	if BasicData.base_classes.size() == 0:
 		print("There is no choosen classes!!!!!!!!!!!!!!!!!!!")
