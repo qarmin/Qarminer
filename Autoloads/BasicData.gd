@@ -205,18 +205,9 @@ var too_big_arguments: Array = [
 	"set_rect",
 	"set_sides",
 	"set_ring_sides",
-	"",
-	"",
-	"",
-	"",
-	"",
-	"",
-	"",
 	# Spam
 	"_get_custom_data_array",
 	"_get_color_array",
-	"",
-	"",
 ]
 # List of all functions that can freeze Godot when working with really big numbers
 var too_big_classes: Array = [
@@ -246,6 +237,7 @@ var disabled_classes: Array = [
 	"GDScript",  # Broke script
 	"SceneTree",
 	"JNISingleton",  # Freeze - who use it?
+	"Engine",  # Crashes only in Godot 4 but not really usable
 	###
 	### JavaClass is only functions that returns Null when using JavaClass.new().get_class
 	###

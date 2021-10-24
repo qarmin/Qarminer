@@ -6,33 +6,34 @@ var number: float = 0.0
 var random: bool = false
 var should_be_always_valid: bool = true  # Generate only valid values e.g. to Node generate Node2D instead
 
-var max_array_size: int = 15
+var max_array_size: int = 25
 
 
 func _ready() -> void:
 	randomize()
 
 
+# TODO re-enable when notification will be available
 func get_int() -> int:
 	if random:
 		if int(number) == 0:
 			return 0
-		while true:
-			var temp_number: int = (randi() % int(number)) - int(number / 2.0)
-			if !(
-				temp_number
-				in [
-					26,
-					41,
-					13,
-					10,
-					26,
-					33,
-					11,
-					32,
-					30,
-				]
-			):  # TODO this are reported notification crashes
+#		while true:
+		var temp_number: int = (randi() % int(number)) - int(number / 2.0)
+#			if !(
+#				temp_number
+#				in [
+#					26,
+#					41,
+#					13,
+#					10,
+#					26,
+#					33,
+#					11,
+#					32,
+#					30,
+#				]
+#			):  # TODO this are reported notification crashes
 #			if !(temp_number in [
 #				26, # 54100
 #				41, # 54094
@@ -44,7 +45,7 @@ func get_int() -> int:
 #				32, # TODO
 #				30, # TODO
 #				]):  # TODO this are reported notification crashes
-				return temp_number
+		return temp_number
 
 	else:
 		return int(number)
@@ -231,6 +232,15 @@ func get_packed_color_array() -> PoolColorArray:
 #	for _i in range(int(min(max_array_size, number))):
 #		array.append(get_float())
 #	return PackedFloat64Array(array)
+#
+#func get_packed_float64_array() -> PackedFloat64Array:
+#	var array: Array = []
+#	for _i in range(int(min(max_array_size, number))):
+#		array.append(get_float())
+#	return PackedFloat64Array(array)
+#
+#func get_signal() -> Signal:
+#	return Signal()
 
 
 func get_object(object_name: String) -> Object:
