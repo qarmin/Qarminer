@@ -19,6 +19,7 @@ var use_parent_methods: bool = false  # Allows to use parent methods e.g. Sprite
 var use_always_new_object: bool = false  # Don't allow to "remember" other function effects
 var number_of_function_repeats: int = 3  # How many times all functions will be executed in single class
 var number_of_classes_repeats: int = 1  # How much times class will be instanced in row(one after one)
+var allow_to_use_notification: bool = false  # Allows to use notification function in classes,to use this, parent methods must be enabled
 var shuffle_methods: bool = true  # Mix method execution order to be able to get more random results
 var miss_some_functions: int = true  # Allows to not execute some functions to be able to get more random results
 var remove_returned_value: bool = false  # Removes returned value from function(not recommended as default option, because can cause hard to reproduce bugs)
@@ -55,6 +56,7 @@ func _ready() -> void:
 		remove_returned_value = false
 		save_data_to_file = false
 		test_one_class_multiple_times = false
+		allow_to_use_notification = false
 
 		ValueCreator.random = false  # Results in RegressionTestProject must be always reproducible
 		ValueCreator.number = 100
@@ -62,20 +64,29 @@ func _ready() -> void:
 		ValueCreator.random = true
 		ValueCreator.number = 100
 
+	if allow_to_use_notification:
+		BasicData.function_exceptions.erase("notification")
+		BasicData.function_exceptions.erase("propagate_notification")
+		HelpFunctions.disable_nodes_with_internal_child()  # notification may free internal child
+
 	# Adds additional arguments to excluded items
-	HelpFunctions.add_excluded_too_big_functions(ValueCreator.number > 100)
+	HelpFunctions.add_excluded_too_big_functions(ValueCreator.number > 40)
 	HelpFunctions.add_excluded_too_big_classes(ValueCreator.number > 100)
 
 	# Initialize array of objects at the end
 	HelpFunctions.initialize_list_of_available_classes(true, true, [])
 	HelpFunctions.initialize_array_with_allowed_functions(use_parent_methods, BasicData.function_exceptions)
 	tested_classes = BasicData.base_classes.duplicate(true)
-#	# Not needed always
+
+#	# Debug check if all methods exists in choosen classes
 #	assert(BasicData.allowed_thing.size() == BasicData.base_classes.size())
-#	var index : int = 0
+#	var index: int = 0
 #	for i in BasicData.allowed_thing.keys():
 #		assert(i == BasicData.base_classes[index])
+#		for met in BasicData.allowed_thing[i]:
+#			assert(ClassDB.class_has_method(i, met["name"]))
 #		index += 1
+
 	if save_data_to_file:
 		var _a: int = file_handler.open("res://results.txt", File.WRITE)
 

@@ -180,7 +180,6 @@ var function_exceptions: Array = [
 	"raise",
 	"add_child",
 	"add_child_below_node",
-	"add_sibling",
 	#####
 	##### Goost
 	##### TODO: these take too long to execute, does not make sense to limit number of iterations ether.
@@ -310,4 +309,10 @@ var disabled_classes: Array = [
 # Exceptions for e.g. float, String or int functions
 var variant_exceptions: Array = [
 # TODO
+]
+
+# User defined allowed functions, empty means that this won't work
+var allowed_functions: Array = [
+#	"notification",
+#	"propagate_notification",
 ]
