@@ -9,22 +9,22 @@ var allowed_thing: Dictionary = {}  # List of all classes with
 
 # Globablly disabled functions for all classes
 var function_exceptions: Array = [
-	
 	###
 	### Godot 4.0
 	###
-	"generate_lod", #53876
-	"_broadcast", #53873
-	"get_word_under_caret", # 53872
-	"get_custom_monitor", # TODO crashes only in exported build
-	"_main_gutter_draw_callback", #53863
-	"clear_glyphs", #53846
-	"render_range", #53842
-	"set_texture_offsets", #53841
-	"get_indexed", #53840
-	"set_disable_mode", #53838
-	"get_tiles_to_be_removed_on_change", # 53809
-	"make_polygons_from_outlines", #53808
+	"map_pattern",  #54103
+	"generate_lod",  #53876
+	"_broadcast",  #53873
+	"get_word_under_caret",  # 53872
+	"get_custom_monitor",  # TODO crashes only in exported build
+	"_main_gutter_draw_callback",  #53863
+	"clear_glyphs",  #53846
+	"render_range",  #53842
+	"set_texture_offsets",  #53841
+	"get_indexed",  #53840
+	"set_disable_mode",  #53838
+	"get_tiles_to_be_removed_on_change",  # 53809
+	"make_polygons_from_outlines",  #53808
 	"set_clip_children",  #53667
 	"set_base",  #53723
 	"set_polygon",  #53722
@@ -320,18 +320,15 @@ var disabled_classes: Array = [
 	###
 	### Godot 4.0 Additional
 	###
-	"Engine", # This should be added also to Godot 3
-	"GodotSharp", # TODO, also to Godot 3 add 
-	
+	"Engine",  # This should be added also to Godot 3
+	"GodotSharp",  # TODO, also to Godot 3 add
 	"TextServer",  # RefCounted Server
 	"TextServerAdvanced",  # RefCounted Server
 	"TextServerExtension",  # RefCounted Server
 	"TextServer",  # RefCounted Server
-	"EngineDebugger", # Crashes in exported project, not very usable
+	"EngineDebugger",  # Crashes in exported project, not very usable
 	"InputMap",
-	
-	
-	"FontData", # 53846
+	"FontData",  # 53846
 	"MultiplayerAPI",  # Crashes TODO
 	"VisibleOnScreenEnabler3D",  #53565
 	"VisibleOnScreenEnabler2D",  #53565
@@ -357,5 +354,8 @@ var disabled_classes: Array = [
 
 # Exceptions for e.g. float, String or int functions
 var variant_exceptions: Array = [
-# TODO
+	"to_float64_array",  #54182
+	"to_int64_array",  #54181
+	"to_float32_array",  #54182
+	"to_int32_array",  #54181
 ]

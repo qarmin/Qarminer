@@ -5,13 +5,10 @@ var use_always_new_object: bool = false  # Don't allow to "remeber" other functi
 
 var expr: Expression = Expression.new()
 
+var temp_gdscript_file: File = File.new()
+var loaded_gdscript
+
 var thing
-#func _ready() -> void:
-#	print(Vector2(2,1).length())
-#	assert(expr.parse("Vector2(2,1).length()") == OK)
-#	print(expr.execute())
-#	assert(!expr.has_execute_failed())
-#	print("TEST PASSED")
 
 
 func _process(delta) -> void:
@@ -20,7 +17,7 @@ func _process(delta) -> void:
 	else:
 		ValueCreator.random = true
 
-	ValueCreator.number = 5
+	ValueCreator.number = 1000
 	ValueCreator.should_be_always_valid = true
 
 	tests_all_functions()
@@ -38,54 +35,51 @@ func tests_all_functions() -> void:
 		var method_list: Array = ClassDB.get_variant_method_list(type)
 
 		# Removes excluded methods
-		method_list = BasicData.remove_disabled_methods(method_list, BasicData.variant_exceptions)
+		# TODOGODOT4
+		method_list = HelpFunctions.remove_disabled_methods(method_list, BasicData.variant_exceptions)
 
 		for method_data in method_list:
-			if randi() % 2:
-				if !BasicData.check_if_is_allowed(method_data):
-					continue
+			# TODOGODOT4
+			if !HelpFunctions.check_if_is_allowed(method_data):
+				continue
 
-				var is_there_object: bool = false
-				for arg in method_data["args"]:
-					if arg["type"] == TYPE_OBJECT || arg["type"] == TYPE_NIL:
-						is_there_object = true
-						break
-				if is_there_object:
-					continue
+				# TODO allow use object, it is supported now
+			var is_there_object: bool = false
+			# TODO allow use object, it is supported now
+			for arg in method_data["args"]:
+				if arg["type"] == TYPE_OBJECT || arg["type"] == TYPE_NIL:
+					print("Object in " + arg["name"])
+					assert(false)
+					is_there_object = true
+					break
+			if is_there_object:
+				continue
+			var arguments: Array = ParseArgumentType.parse_and_return_objects(method_data, type_to_name(type), debug_print)
 
-				var arguments: Array = ParseArgumentType.parse_and_return_objects(method_data, type_to_name(type), debug_print)
-
-				var argument_string: String = ""
-				for i in range(arguments.size()):
-					argument_string += ParseArgumentType.return_gdscript_code_which_run_this_object(arguments[i])
-					if i != arguments.size() - 1:
-						argument_string += ", "
-
-				if debug_print:
-					var to_print: String = "GDSCRIPT CODE:     "
-					to_print += ParseArgumentType.return_gdscript_code_which_run_this_object(thing)
-					to_print += "." + method_data["name"] + "(" + argument_string + ")"
-					print(to_print)
+			var argument_string: String = ""
+			for i in range(arguments.size()):
+				argument_string += ParseArgumentType.return_gdscript_code_which_run_this_object(arguments[i])
+				if i != arguments.size() - 1:
+					argument_string += ", "
+			if debug_print:
+#					var to_print: String = "GDSCRIPT CODE:     "
+				var to_print: String = "\t"
+				to_print += ParseArgumentType.return_gdscript_code_which_run_this_object(thing)
+				to_print += "." + method_data["name"] + "(" + argument_string + ")"
+				print(to_print)
 
 				#					print(ParseArgumentType.return_gdscript_code_which_run_this_object(arguments))
 				#					print(argument_string)
 				#					print("thing." + method_data["name"] + "(" + argument_string + ")")
 
-				if expr.parse("thing." + method_data["name"] + "(" + argument_string + ")") != OK:
-					printerr("ERROR: " + expr.get_error_text())
-					#					assert(false)
-					continue
-				expr.execute([], self)
-				assert(!expr.has_execute_failed())
+				# TODO Add support for removing object variables if needed
+			temp_gdscript_file.open("temp_gdscript.gd", File.WRITE)
+			temp_gdscript_file.store_string("static func test_function() -> void:\n\t")
+			temp_gdscript_file.store_string(ParseArgumentType.return_gdscript_code_which_run_this_object(thing) + "." + method_data["name"] + "(" + argument_string + ")")
+			temp_gdscript_file.flush()
 
-				if use_always_new_object:
-					thing = get_basic_thing(type)
-
-				for argument in arguments:
-					if argument is Node:
-						argument.queue_free()
-					elif argument is Object && !(argument is RefCounted):
-						argument.free()
+			loaded_gdscript = load("temp_gdscript.gd")
+			loaded_gdscript.test_function()
 
 
 func type_to_name(type: int) -> String:
@@ -142,6 +136,25 @@ func type_to_name(type: int) -> String:
 			name = "Vector3"
 		TYPE_VECTOR3_ARRAY:
 			name = "PackedVector3Array"
+
+		# TODOGODOT4
+		TYPE_VECTOR2I:
+			name = "Vector2i"
+		TYPE_VECTOR3I:
+			name = "Vector3i"
+		TYPE_RECT2I:
+			name = "Rect2i"
+		TYPE_STRING_NAME:
+			name = "StringName"
+		TYPE_CALLABLE:
+			name = "Callable"
+		TYPE_SIGNAL:
+			name = "Signal"
+		TYPE_FLOAT64_ARRAY:
+			thing = "PackedFloat64Array"
+		TYPE_INT64_ARRAY:
+			thing = "PackedInt64Array"
+
 		TYPE_OBJECT:
 			assert(false)  #,"Object not supported")
 		TYPE_NIL:
@@ -225,6 +238,9 @@ func get_basic_thing(type: int):
 			thing = ValueCreator.get_packed_float64_array()
 		TYPE_INT64_ARRAY:
 			thing = ValueCreator.get_packed_int64_array()
+		TYPE_SIGNAL:
+			thing = ValueCreator.get_signal()
+		# TODOGODOT4
 		_:
 			assert(false)  #,"Missing type --" + str(type) + "--, needs to be added to project")
 

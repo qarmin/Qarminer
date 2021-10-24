@@ -168,7 +168,7 @@ func _process(delta: float) -> void:
 # exactly same number of nodes in replacement.
 func find_all_special_children_names(node: Node) -> Array:
 	var array: Array = []
-	array.append(String(node.get_name())) # TODOGODOT4
+	array.append(String(node.get_name()))  # TODOGODOT4
 	for child in node.get_children():
 		if String(child.get_name()).begins_with("Special Node"):
 			array.append_array(find_all_special_children_names(child))

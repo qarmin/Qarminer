@@ -329,6 +329,8 @@ func return_gdscript_code_which_run_this_object(data) -> String:
 				if i != data.size() - 1:
 					return_string += ", "
 			return_string += "])"
+		TYPE_SIGNAL:
+			return_string = "Signal()"  # TODO, not sure
 		_:
 			assert(false)  #,"Missing type --" + str(typeof(data)) + "-- needs to be added to project")
 

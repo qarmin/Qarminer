@@ -210,6 +210,10 @@ func get_packed_float64_array() -> PackedFloat64Array:
 	return PackedFloat64Array(array)
 
 
+func get_signal() -> Signal:
+	return Signal()
+
+
 func get_object(object_name: String) -> Object:
 	assert(ClassDB.class_exists(object_name))  #,"Class " + object_name + " doesn't exists.")
 	if object_name == "PhysicsDirectSpaceState3D" || object_name == "PhysicsDirectSpaceState2D":

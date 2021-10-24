@@ -15,6 +15,7 @@ Node2D.gd
 Node2D.tscn
 Resources/
 mono_crash*
+temp_gdscript.gd
 
 # Config
 classes.txt
