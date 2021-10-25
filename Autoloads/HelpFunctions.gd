@@ -31,9 +31,6 @@ func check_if_is_allowed(method_data: Dictionary) -> bool:
 		# Editor stuff usually aren't good choice for arguments
 		if name_of_class.find("Editor") != -1 || name_of_class.find("SkinReference") != -1:
 			return false
-		# Godot4
-		if name_of_class.find("SkeletonModification") != -1:
-			return false
 
 		# In case of adding new type, this prevents from crashing due not recognizing this type
 		# In case of removing/rename type, just comment e.g. TYPE_ARRAY and all occurencies on e.g. switch statement with it
@@ -197,11 +194,6 @@ func initialize_list_of_available_classes(must_be_instantable: bool = true, allo
 				continue
 
 		if name_of_class.find("Server") != -1 && !ClassDB.is_parent_class(name_of_class, "RefCounted"):
-			continue
-		if name_of_class.find("Editor") != -1 && (BasicData.regression_test_project || !allow_editor):
-			continue
-		# Godot4
-		if name_of_class.find("SkeletonModification") != -1:
 			continue
 
 		# This step allows using in custom classes arguments from non custom classes

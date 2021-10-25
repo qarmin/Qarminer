@@ -12,7 +12,10 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
-	
+	"set_is_setup", # Just don't use, in SkeletonModification crashes
+	"set_bone_index", # 54235
+	"set_modification_count", #54234
+	"add_modification", # 54233
 	"set_selection_mode", #54195
 	"map_pattern",  #54103
 	"generate_lod",  #53876
