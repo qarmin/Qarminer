@@ -205,6 +205,9 @@ var too_big_arguments: Array = [
 	"set_rect",
 	"set_sides",
 	"set_ring_sides",
+	"create_convex_shape",
+	"create_trimesh_shape",
+	"get_method_list",
 	# Spam
 	"_get_custom_data_array",
 	"_get_color_array",

@@ -38,6 +38,8 @@ var tested_times: int = how_many_times_test  # How many times class is tested no
 var current_tested_element: int = 0  # Which element from array is tested now
 var tested_classes: Array = []  # Array with elements that are tested, in normal situation this equal to base_classes variable
 
+var timer : int
+var timer_file_handler : File = File.new()
 
 # Prepare options for desired type of test
 func _ready() -> void:
@@ -89,6 +91,7 @@ func _ready() -> void:
 
 	if save_data_to_file:
 		var _a: int = file_handler.open("res://results.txt", File.WRITE)
+		var _b: int = timer_file_handler.open("res://timer.txt", File.WRITE)
 
 	if BasicData.regression_test_project:
 		tests_all_functions()
@@ -195,7 +198,14 @@ func tests_all_functions() -> void:
 
 							save_to_file_to_screen("\n" + to_print, to_print)
 
+						if save_data_to_file:
+							timer = OS.get_ticks_usec()
+
 						var ret = object.callv(method_data["name"], arguments)
+
+						if save_data_to_file:
+							timer_file_handler.store_string(str(OS.get_ticks_usec() - timer) + " us - " + name_of_class + "." + method_data["name"]+"\n")
+							timer_file_handler.flush()
 
 						for i in arguments.size():
 							if !(delay_removing_added_arguments_to_next_frame && add_arguments_to_tree && arguments[i] is Node):
