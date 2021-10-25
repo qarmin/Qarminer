@@ -88,6 +88,12 @@ jobs:
           name: last-run-functions
           path: results.txt
 
+      - name: Store timer results
+        uses: actions/upload-artifact@v2
+        with:
+          name: timer
+          path: timer.txt
+
       - name: Check Log
         run: |
           misc/check_ci_log.py sanitizers_log.txt
