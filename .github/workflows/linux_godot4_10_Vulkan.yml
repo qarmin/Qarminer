@@ -3,7 +3,7 @@ on:
   push:
   pull_request:
   schedule:
-    - cron: '0 0 * * *'
+    - cron: '0 0 6 * *'
 
 jobs:
   linux-sanitizer:
@@ -88,6 +88,12 @@ jobs:
         with:
           name: last-run-functions
           path: results.txt
+
+      - name: Store timer results
+        uses: actions/upload-artifact@v2
+        with:
+          name: timer
+          path: timer.txt
 
       - name: Check Log
         run: |
