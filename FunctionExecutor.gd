@@ -26,7 +26,7 @@ var remove_returned_value: bool = false  # Removes returned value from function(
 var save_data_to_file: bool = true  # Save data to file(not big performance impact as I exepected)
 var test_one_class_multiple_times: bool = false  # Test same class across multiple frames - helpful to find this one class which cause problems
 
-var save_resources_to_file  :bool = true
+var save_resources_to_file: bool = false
 
 var file_handler: File = File.new()  # Handles saves to file, in case of testing one class, entire log is saved to it
 
@@ -40,8 +40,9 @@ var tested_times: int = how_many_times_test  # How many times class is tested no
 var current_tested_element: int = 0  # Which element from array is tested now
 var tested_classes: Array = []  # Array with elements that are tested, in normal situation this equal to base_classes variable
 
-var timer : int
-var timer_file_handler : File = File.new()
+var timer: int
+var timer_file_handler: File = File.new()
+
 
 # Prepare options for desired type of test
 func _ready() -> void:
@@ -68,21 +69,25 @@ func _ready() -> void:
 		ValueCreator.random = true
 		ValueCreator.number = 100
 
-	if save_resources_to_file:  
-		var dir : Directory = Directory.new()
-		var fil : File = File.new()
-		if dir.open("res://test_resources") == OK:
-			dir.list_dir_begin()
-			var file_name : String = dir.get_next()
-			while file_name != "":
-				if file_name != ".." && file_name != ".":
-					dir.remove("res://test_resources/" + file_name)
-				file_name = dir.get_next()
-			var ret2 : int = dir.remove("res://test_resources")
-			assert(ret2 == OK)
-			
-		var ret : int = dir.make_dir("res://test_resources")
+	if save_resources_to_file:
+		var dir: Directory = Directory.new()
+		var fil: File = File.new()
+
+		for base_dir in ["res://test_resources/.import/", "res://test_resources/.godot/", "res://test_resources/"]:
+			if dir.open(base_dir) == OK:
+				dir.list_dir_begin()
+				var file_name: String = dir.get_next()
+				while file_name != "":
+					if file_name != ".." && file_name != ".":
+						var rr: int = dir.remove(base_dir + file_name)
+						assert(rr == OK)
+					file_name = dir.get_next()
+				var ret2: int = dir.remove(base_dir)
+				assert(ret2 == OK)
+
+		var ret: int = dir.make_dir("res://test_resources")
 		File.new().open("res://test_resources/.gdignore", File.WRITE)
+		File.new().open("res://test_resources/project.godot", File.WRITE)
 		assert(ret == OK)
 
 	if allow_to_use_notification:
@@ -223,15 +228,8 @@ func tests_all_functions() -> void:
 						var ret = object.callv(method_data["name"], arguments)
 
 						if save_data_to_file:
-							timer_file_handler.store_string(str(OS.get_ticks_usec() - timer) + " us - " + name_of_class + "." + method_data["name"]+"\n")
+							timer_file_handler.store_string(str(OS.get_ticks_usec() - timer) + " us - " + name_of_class + "." + method_data["name"] + "\n")
 							timer_file_handler.flush()
-							
-						if save_resources_to_file:
-							var res_path : String = "res://test_resources/" +str(number_to_track_variables) + "_" + str(function_number) + ".tres"
-							if object is Resource:
-								var retu : int = ResourceSaver.save(res_path,object)
-								assert(retu == OK)
-							
 
 						for i in arguments.size():
 							if !(delay_removing_added_arguments_to_next_frame && add_arguments_to_tree && arguments[i] is Node):
@@ -268,6 +266,12 @@ func tests_all_functions() -> void:
 								if object is Node:
 									add_child(object)
 
+			if save_resources_to_file:
+				var res_path: String = "res://test_resources/" + str(number_to_track_variables)  + ".tres"
+				if object is Resource:
+					if !(name_of_class in ["PluginScript"]):
+						var retu: int = ResourceSaver.save(res_path, object)
+	#								assert(retu == OK)
 			if !(delay_removing_added_nodes_to_next_frame && add_to_tree && object is Node):
 				if (object is Node) || !(object is Reference):
 					to_print = "\ttemp_variable" + str(number_to_track_variables)
