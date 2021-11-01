@@ -12,11 +12,11 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
-	"set_is_setup", # Just don't use, in SkeletonModification crashes
-	"set_bone_index", # 54235
-	"set_modification_count", #54234
-	"add_modification", # 54233
-	"set_selection_mode", #54195
+	"set_is_setup",  # Just don't use, in SkeletonModification crashes
+	"set_bone_index",  # 54235
+	"set_modification_count",  #54234
+	"add_modification",  # 54233
+	"set_selection_mode",  #54195
 	"map_pattern",  #54103
 	"generate_lod",  #53876
 	"_broadcast",  #53873
@@ -342,6 +342,9 @@ var disabled_classes: Array = [
 	"VideoPlayer",  #53568
 	"ImageTexture3D",  #53721
 	"XRCamera3D",  #53725
+	"CurveTexture",  #54477
+	"CurveXYZTexture",  #54477
+	"FogMaterial",  #54478
 	###
 	### TODO
 	###

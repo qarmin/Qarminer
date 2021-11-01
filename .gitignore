@@ -16,8 +16,10 @@ Node2D.tscn
 Resources/
 mono_crash*
 temp_gdscript.gd
+test_resources/
 
 # Config
 classes.txt
 results.txt
 simple_things.txt
+timer.txt
