@@ -201,7 +201,7 @@ func initialize_list_of_available_classes(must_be_instantable: bool = true, allo
 
 	var custom_classes: Array = []
 	var file = File.new()
-	
+
 	# Compatibility tool
 	if file.file_exists("res://classes.txt"):
 		file.open("res://classes.txt", File.READ)
@@ -218,7 +218,7 @@ func initialize_list_of_available_classes(must_be_instantable: bool = true, allo
 				printerr('Trying to use non instantable custom class "' + cname + '"')
 			custom_classes.push_back(cname)
 		file.close()
-	
+
 	# Default mode TODO
 	if file.file_exists("settings.txt"):
 		true
