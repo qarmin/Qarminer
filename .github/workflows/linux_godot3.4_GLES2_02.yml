@@ -1,4 +1,4 @@
-name: 🐧 Godot 3.x GLES2 15 Always New | Parent
+name: 🐧 Godot 3.4 GLES2 02 Parent
 on:
   push:
   pull_request:
@@ -29,7 +29,6 @@ jobs:
 
       - name: Configure Data
         run: |
-          sed -i 's/use_always_new_object: bool = false/use_always_new_object: bool = true/' FunctionExecutor.gd
           sed -i 's/var use_parent_methods: bool = false/var use_parent_methods: bool = true/' FunctionExecutor.gd
           
 
@@ -37,7 +36,7 @@ jobs:
         run: |
           git clone https://github.com/godotengine/godot.git
           cd godot
-          git checkout 3.x
+          git checkout 3.4
           cd ../
 
       - name: Compile Godot

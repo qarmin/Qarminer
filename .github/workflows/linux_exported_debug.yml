@@ -1,9 +1,9 @@
-name: 🐧 Godot 3.x Exported Debug
+name: 🐧 Godot 3.4 Exported Debug
 on:
   push:
   pull_request:
   schedule:
-    - cron: '0 0 * * *'
+    - cron: '0 0 1 * *'
 
 jobs:
   linux-exported-debug:
@@ -36,7 +36,7 @@ jobs:
         run: |
           git clone https://github.com/godotengine/godot.git
           cd godot
-          git checkout 3.x
+          git checkout 3.4
           cd ../
 
       - name: Compile Godot

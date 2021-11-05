@@ -1,4 +1,4 @@
-name: 🐧 Godot 3.x GLES2 12 Small Numbers | Parent
+name: 🐧 Godot 3.4 GLES2 12 Small Numbers | Parent
 on:
   push:
   pull_request:
@@ -37,7 +37,7 @@ jobs:
         run: |
           git clone https://github.com/godotengine/godot.git
           cd godot
-          git checkout 3.x
+          git checkout 3.4
           cd ../
 
       - name: Compile Godot

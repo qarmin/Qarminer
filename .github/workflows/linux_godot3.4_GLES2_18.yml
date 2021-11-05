@@ -1,4 +1,4 @@
-name: 🐧 Godot 3.x GLES2 07 One by One | Parent | Add to tree
+name: 🐧 Godot 3.4 GLES2 18 Parent | Add arguments to tree | Delaying
 on:
   push:
   pull_request:
@@ -29,16 +29,16 @@ jobs:
 
       - name: Configure Data
         run: |
-          sed -i 's/var add_to_tree: bool = false/var add_to_tree: bool = true/' FunctionExecutor.gd
           sed -i 's/var use_parent_methods: bool = false/var use_parent_methods: bool = true/' FunctionExecutor.gd
-          sed -i 's/var test_one_class_multiple_times: bool = false/var test_one_class_multiple_times: bool = true/' FunctionExecutor.gd
+          sed -i 's/add_arguments_to_tree: bool = false/add_arguments_to_tree: bool = true/' FunctionExecutor.gd
+          sed -i 's/delay_removing_added_arguments_to_next_frame: bool = false/delay_removing_added_arguments_to_next_frame: bool = true/' FunctionExecutor.gd
           
 
       - name: Download Godot(GIT)
         run: |
           git clone https://github.com/godotengine/godot.git
           cd godot
-          git checkout 3.x
+          git checkout 3.4
           cd ../
 
       - name: Compile Godot
@@ -75,7 +75,7 @@ jobs:
 
       - name: Run Project
         run: |
-          DRI_PRIME=0 xvfb-run ./godot.x11.tools.64s FunctionExecutor.tscn 15000 --audio-driver Dummy --video-driver GLES2 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          DRI_PRIME=0 xvfb-run ./godot.x11.tools.64s FunctionExecutor.tscn 3600 --audio-driver Dummy --video-driver GLES2 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
           tail -n 300 sanitizers_log.txt > project_results.txt
 
       - name: Store project results
