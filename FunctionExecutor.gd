@@ -1,26 +1,32 @@
 extends Node
 
-### TODO Update this
 ### Script:
-### - takes all available classes
-### - checks if method is allowed
-### - checks each argument if is allowed(in case e.g. adding new, to prevent crashes due not recognizing types)
-### - print info if needed to console
-### - execute function with parameters
+### - finds all available classes and methods which can be used(e.g. types of arguments are checked)
+### - for all classes in list(all classes or only one depends on list) instantiate them
+### - adds them to tree if needed
+### - creates aruments
+### - executes functions with provided arguments
+### - clean memory, instantiate other objects etc. until there is no other classes to check
+### - waits for new frame to starts everything from start
 
-var debug_print: bool = true
-var exiting: bool = false  # Exit after 1 loop?
-var add_to_tree: bool = false  # Adds nodes to tree, freeze godot when removing a lot of nodes
-var delay_removing_added_nodes_to_next_frame: bool = false  # This can be used only with add_to_tree option - this will force to render things
-var use_parent_methods: bool = false  # Allows Node2D use Node methods etc. - it is a little slow option which rarely shows
+var debug_print: bool = true  # Switch to turn off printed things to screen
+var exiting: bool = false  # Close app after first run
+var add_to_tree: bool = false  # Adds nodes to tree
+var delay_removing_added_nodes_to_next_frame: bool = false  # Delaying removing nodes added to tree to next frame, which force to render it
+var add_arguments_to_tree: bool = false  # Adds nodes which are used as arguments to tree
+var delay_removing_added_arguments_to_next_frame: bool = false  # Delaying removing arguments(nodes added to tree) to next frame, which force to render it
+var use_parent_methods: bool = false  # Allows to use parent methods e.g. Sprite2D can use Node.queue_free()
 var use_always_new_object: bool = false  # Don't allow to "remember" other function effects
-var number_of_function_repeats: int = 3  # How many times functions can be repeated
-var number_of_classes_repeats: int = 1  # How many times classes will be repeated
-var shuffle_methods: bool = true  # Mix methods to be able to get more random results
+var number_of_function_repeats: int = 3  # How many times all functions will be executed in single class
+var number_of_classes_repeats: int = 1  # How much times class will be instanced in row(one after one)
+var allow_to_use_notification: bool = false  # Allows to use notification function in classes,to use this, parent methods must be enabled
+var shuffle_methods: bool = true  # Mix method execution order to be able to get more random results
 var miss_some_functions: int = true  # Allows to not execute some functions to be able to get more random results
-var remove_returned_value: bool = false  # Removes returned value from function
+var remove_returned_value: bool = false  # Removes returned value from function(not recommended as default option, because can cause hard to reproduce bugs)
 var save_data_to_file: bool = true  # Save data to file(not big performance impact as I exepected)
-var test_one_class_multiple_times: bool = false  # Test same class across multiple frames
+var test_one_class_multiple_times: bool = false  # Test same class across multiple frames - helpful to find this one class which cause problems
+
+var save_resources_to_file: bool = false
 
 var file_handler: File = File.new()  # Handles saves to file, in case of testing one class, entire log is saved to it
 
@@ -29,10 +35,13 @@ var to_print: String = ""  # Specify what needs to be printed
 var number_to_track_variables: int = 0  # Unique number to specify number which is added to variable name to prevent from using variables with same name
 var function_number: int = 0  # Needed to be able to use arguments with unique names
 
-var how_many_times_test: int = 30  # How many times, same class will be tested
+var how_many_times_test: int = 30  # How many times, same class will be tested(works only with test_one_class_multiple_times enabled)
 var tested_times: int = how_many_times_test  # How many times class is tested now
 var current_tested_element: int = 0  # Which element from array is tested now
 var tested_classes: Array = []  # Array with elements that are tested, in normal situation this equal to base_classes variable
+
+var timer: int
+var timer_file_handler: File = File.new()
 
 
 # Prepare options for desired type of test
@@ -52,6 +61,7 @@ func _ready() -> void:
 		remove_returned_value = false
 		save_data_to_file = false
 		test_one_class_multiple_times = false
+		allow_to_use_notification = false
 
 		ValueCreator.random = false  # Results in RegressionTestProject must be always reproducible
 		ValueCreator.number = 100
@@ -59,24 +69,53 @@ func _ready() -> void:
 		ValueCreator.random = true
 		ValueCreator.number = 100
 
+	if save_resources_to_file:
+		var dir: Directory = Directory.new()
+		var fil: File = File.new()
+
+		for base_dir in ["res://test_resources/.import/", "res://test_resources/.godot/", "res://test_resources/"]:
+			if dir.open(base_dir) == OK:
+				dir.list_dir_begin()
+				var file_name: String = dir.get_next()
+				while file_name != "":
+					if file_name != ".." && file_name != ".":
+						var rr: int = dir.remove(base_dir + file_name)
+						assert(rr == OK)
+					file_name = dir.get_next()
+				var ret2: int = dir.remove(base_dir)
+				assert(ret2 == OK)
+
+		var ret: int = dir.make_dir("res://test_resources")
+		File.new().open("res://test_resources/.gdignore", File.WRITE)
+		File.new().open("res://test_resources/project.godot", File.WRITE)
+		assert(ret == OK)
+
+	if allow_to_use_notification:
+		BasicData.function_exceptions.erase("notification")
+		BasicData.function_exceptions.erase("propagate_notification")
+		HelpFunctions.disable_nodes_with_internal_child()  # notification may free internal child
+
 	# Adds additional arguments to excluded items
-	HelpFunctions.add_excluded_too_big_functions(ValueCreator.number > 100)
+	HelpFunctions.add_excluded_too_big_functions(ValueCreator.number > 40)
 	HelpFunctions.add_excluded_too_big_classes(ValueCreator.number > 100)
 
 	# Initialize array of objects at the end
 	HelpFunctions.initialize_list_of_available_classes(true, true, [])
-	#BasicData.base_classes = ["GPUParticles3D"]
 	HelpFunctions.initialize_array_with_allowed_functions(use_parent_methods, BasicData.function_exceptions)
-
 	tested_classes = BasicData.base_classes.duplicate(true)
-#	# Not needed always
+
+#	# Debug check if all methods exists in choosen classes
 #	assert(BasicData.allowed_thing.size() == BasicData.base_classes.size())
-#	var index : int = 0
+#	var index: int = 0
 #	for i in BasicData.allowed_thing.keys():
 #		assert(i == BasicData.base_classes[index])
+#		for met in BasicData.allowed_thing[i]:
+#			assert(ClassDB.class_has_method(i, met["name"]))
 #		index += 1
+
 	if save_data_to_file:
 		var _a: int = file_handler.open("res://results.txt", File.WRITE)
+		var _b: int = timer_file_handler.open("res://timer.txt", File.WRITE)
 
 	if BasicData.regression_test_project:
 		tests_all_functions()
@@ -107,7 +146,7 @@ func tests_all_functions() -> void:
 	elif save_data_to_file:
 		var _a: int = file_handler.open("res://results.txt", File.WRITE)
 
-	if delay_removing_added_nodes_to_next_frame && add_to_tree:
+	if (delay_removing_added_nodes_to_next_frame && add_to_tree) || (delay_removing_added_arguments_to_next_frame && add_arguments_to_tree):
 		to_print = "\n\tfor i in get_children():\n\t\ti.queue_free()"
 		save_to_file_to_screen("\n" + to_print, to_print)
 		for i in get_children():
@@ -152,23 +191,22 @@ func tests_all_functions() -> void:
 									to_print += "\n\tadd_child(temp_variable" + str(number_to_track_variables) + ")"
 							save_to_file_to_screen("\n" + to_print, to_print)
 
+						if add_arguments_to_tree:
+							for argument in arguments:
+								if argument is Node:
+									add_child(argument)
+
 						if debug_print || save_data_to_file:
 							to_print = ""
 
 							# Handle here objects by creating temporary values
 							for i in arguments.size():
 								if arguments[i] is Object && !(arguments[i] is RefCounted):
-									to_print += (
-										"\tvar temp_argument"
-										+ str(number_to_track_variables)
-										+ "_f"
-										+ str(function_number)
-										+ "_"
-										+ str(i)
-										+ " = "
-										+ ParseArgumentType.return_gdscript_code_which_run_this_object(arguments[i])
-										+ "\n"
-									)
+									var temp_name: String = "temp_argument" + str(number_to_track_variables) + "_f" + str(function_number) + "_" + str(i)
+									to_print += ("\tvar " + temp_name + " = " + ParseArgumentType.return_gdscript_code_which_run_this_object(arguments[i]) + "\n")
+									if add_arguments_to_tree:
+										if arguments[i] is Node:
+											to_print += "\tadd_child(" + temp_name + ")\n"
 
 							to_print += "\ttemp_variable" + str(number_to_track_variables)
 							to_print += "." + method_data["name"] + "("
@@ -184,16 +222,24 @@ func tests_all_functions() -> void:
 
 							save_to_file_to_screen("\n" + to_print, to_print)
 
+						if save_data_to_file:
+							timer = Time.get_ticks_usec()
+
 						var ret = object.callv(method_data["name"], arguments)
 
+						if save_data_to_file:
+							timer_file_handler.store_string(str(Time.get_ticks_usec() - timer) + " us - " + name_of_class + "." + method_data["name"] + "\n")
+							timer_file_handler.flush()
+
 						for i in arguments.size():
-							if arguments[i] is Object && arguments[i] != null:
-								if debug_print || save_data_to_file:
-									if (arguments[i] is Node) || !(arguments[i] is RefCounted):
-										to_print = "\ttemp_argument" + str(number_to_track_variables) + "_f" + str(function_number) + "_" + str(i)
-										to_print += HelpFunctions.remove_thing_string(arguments[i])
-										save_to_file_to_screen("\n" + to_print, to_print)
-								HelpFunctions.remove_thing(arguments[i])
+							if !(delay_removing_added_arguments_to_next_frame && add_arguments_to_tree && arguments[i] is Node):
+								if arguments[i] is Object && arguments[i] != null:
+									if debug_print || save_data_to_file:
+										if (arguments[i] is Node) || !(arguments[i] is RefCounted):
+											to_print = "\ttemp_argument" + str(number_to_track_variables) + "_f" + str(function_number) + "_" + str(i)
+											to_print += HelpFunctions.remove_thing_string(arguments[i])
+											save_to_file_to_screen("\n" + to_print, to_print)
+									HelpFunctions.remove_thing(arguments[i])
 
 						if remove_returned_value:
 							# Looks that argument of function may become its returned value, so
@@ -220,6 +266,12 @@ func tests_all_functions() -> void:
 								if object is Node:
 									add_child(object)
 
+			if save_resources_to_file:
+				var res_path: String = "res://test_resources/" + str(number_to_track_variables) + ".tres"
+				if object is Resource:
+					if !(name_of_class in ["PluginScript"]):
+						var retu: int = ResourceSaver.save(res_path, object)
+			#								assert(retu == OK)
 			if !(delay_removing_added_nodes_to_next_frame && add_to_tree && object is Node):
 				if (object is Node) || !(object is RefCounted):
 					to_print = "\ttemp_variable" + str(number_to_track_variables)

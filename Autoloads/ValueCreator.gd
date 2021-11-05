@@ -6,20 +6,50 @@ var number: float = 0.0
 var random: bool = false
 var should_be_always_valid: bool = true  # Generate only valid values e.g. to Node generate Node2D instead
 
-var max_array_size: int = 15
+var max_array_size: int = 25
 
 
 func _ready() -> void:
 	randomize()
 
 
+# TODO re-enable when notification will be available
 func get_int() -> int:
 	if random:
 		if int(number) == 0:
 			return 0
-		return (randi() % int(number)) - int(number / 2.0)
+#		while true:
+		var temp_number: int = (randi() % int(number)) - int(number / 2.0)
+#			if !(
+#				temp_number
+#				in [
+#					26,
+#					41,
+#					13,
+#					10,
+#					26,
+#					33,
+#					11,
+#					32,
+#					30,
+#				]
+#			):  # TODO this are reported notification crashes
+#			if !(temp_number in [
+#				26, # 54100
+#				41, # 54094
+#				13, # 54142
+#				10, # 54093
+#				26, # 54100
+#				33, # 54168
+#				11, # 54169
+#				32, # TODO
+#				30, # TODO
+#				]):  # TODO this are reported notification crashes
+		return temp_number
+
 	else:
 		return int(number)
+	return 0
 
 
 func get_float() -> float:
@@ -72,6 +102,7 @@ func get_quaternion() -> Quaternion:
 	return Quaternion(get_vector3())
 
 
+# TODOGODOT4
 func get_basis() -> Basis:
 	return Basis(get_vector3(), get_vector3(), get_vector3())
 
@@ -177,7 +208,7 @@ func get_packed_color_array() -> PackedColorArray:
 	return PackedColorArray(array)
 
 
-# Godot4TODO
+# TODOGODOT4
 
 
 func get_string_name() -> StringName:
@@ -196,11 +227,11 @@ func get_rect2i() -> Rect2i:
 	return Rect2i(get_vector2i(), get_vector2i())
 
 
-func get_packed_int64_array() -> PackedInt32Array:
+func get_packed_int64_array() -> PackedInt64Array:
 	var array: Array = []
 	for _i in range(int(min(max_array_size, number))):
 		array.append(get_int())
-	return PackedInt32Array(array)
+	return PackedInt64Array(array)
 
 
 func get_packed_float64_array() -> PackedFloat64Array:

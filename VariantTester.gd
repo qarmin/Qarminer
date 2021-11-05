@@ -20,11 +20,17 @@ func _process(delta) -> void:
 	ValueCreator.number = 1000
 	ValueCreator.should_be_always_valid = true
 
+	HelpFunctions.initialize_list_of_available_classes()
+
 	tests_all_functions()
+
+
+var max_numbers: Array = [2, 5, 10, 100, 1000, 10000, 100000]
 
 
 # Test all functions
 func tests_all_functions() -> void:
+	ValueCreator.number = max_numbers[randi() % max_numbers.size()]
 	for type in range(TYPE_MAX):
 		if type == TYPE_NIL || type == TYPE_OBJECT:
 			continue
@@ -34,26 +40,12 @@ func tests_all_functions() -> void:
 		thing = get_basic_thing(type)
 		var method_list: Array = ClassDB.get_variant_method_list(type)
 
-		# Removes excluded methods
-		# TODOGODOT4
 		method_list = HelpFunctions.remove_disabled_methods(method_list, BasicData.variant_exceptions)
 
 		for method_data in method_list:
-			# TODOGODOT4
 			if !HelpFunctions.check_if_is_allowed(method_data):
 				continue
 
-				# TODO allow use object, it is supported now
-			var is_there_object: bool = false
-			# TODO allow use object, it is supported now
-			for arg in method_data["args"]:
-				if arg["type"] == TYPE_OBJECT || arg["type"] == TYPE_NIL:
-					print("Object in " + arg["name"])
-					assert(false)
-					is_there_object = true
-					break
-			if is_there_object:
-				continue
 			var arguments: Array = ParseArgumentType.parse_and_return_objects(method_data, type_to_name(type), debug_print)
 
 			var argument_string: String = ""
@@ -62,24 +54,27 @@ func tests_all_functions() -> void:
 				if i != arguments.size() - 1:
 					argument_string += ", "
 			if debug_print:
-#					var to_print: String = "GDSCRIPT CODE:     "
+#				var to_print: String = "GDSCRIPT CODE:     "
 				var to_print: String = "\t"
 				to_print += ParseArgumentType.return_gdscript_code_which_run_this_object(thing)
 				to_print += "." + method_data["name"] + "(" + argument_string + ")"
 				print(to_print)
 
-				#					print(ParseArgumentType.return_gdscript_code_which_run_this_object(arguments))
-				#					print(argument_string)
-				#					print("thing." + method_data["name"] + "(" + argument_string + ")")
-
-				# TODO Add support for removing object variables if needed
 			temp_gdscript_file.open("temp_gdscript.gd", File.WRITE)
 			temp_gdscript_file.store_string("static func test_function() -> void:\n\t")
+			# TODO create temporary variables
 			temp_gdscript_file.store_string(ParseArgumentType.return_gdscript_code_which_run_this_object(thing) + "." + method_data["name"] + "(" + argument_string + ")")
+			# TODO Remove files which needs to be removed
 			temp_gdscript_file.flush()
+
+			# TODO, save to files which things are printed to screen
 
 			loaded_gdscript = load("temp_gdscript.gd")
 			loaded_gdscript.test_function()
+
+			for argument in arguments:
+				if argument is Object:
+					HelpFunctions.remove_thing(argument)
 
 
 func type_to_name(type: int) -> String:
@@ -136,7 +131,6 @@ func type_to_name(type: int) -> String:
 			name = "Vector3"
 		TYPE_VECTOR3_ARRAY:
 			name = "PackedVector3Array"
-
 		# TODOGODOT4
 		TYPE_VECTOR2I:
 			name = "Vector2i"
@@ -154,7 +148,6 @@ func type_to_name(type: int) -> String:
 			thing = "PackedFloat64Array"
 		TYPE_INT64_ARRAY:
 			thing = "PackedInt64Array"
-
 		TYPE_OBJECT:
 			assert(false)  #,"Object not supported")
 		TYPE_NIL:
@@ -223,7 +216,7 @@ func get_basic_thing(type: int):
 			assert(false)  #,"Object not supported")
 		TYPE_NIL:
 			assert(false)  #,"Variant not supported")
-		# TODO Godot4
+		# TODOGODOT4
 		TYPE_CALLABLE:
 			thing = Callable(BoxMesh.new(), "Rar")
 		TYPE_VECTOR3I:
@@ -240,7 +233,6 @@ func get_basic_thing(type: int):
 			thing = ValueCreator.get_packed_int64_array()
 		TYPE_SIGNAL:
 			thing = ValueCreator.get_signal()
-		# TODOGODOT4
 		_:
 			assert(false)  #,"Missing type --" + str(type) + "--, needs to be added to project")
 

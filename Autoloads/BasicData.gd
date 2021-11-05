@@ -74,6 +74,9 @@ var function_exceptions: Array = [
 	###
 	### Reported crashes
 	###
+	"lightmap_unwrap",  # 52929
+	"replace_by",  #53775
+	"bake",  #53774
 	"create_debug_tangents",  #53182
 	"create_from_mesh",  #53181
 	"remove_line",  # 49571 - Memory leak
@@ -104,7 +107,7 @@ var function_exceptions: Array = [
 	"convert",  # 46479
 	"save_png_to_buffer",  # 50787
 	###
-	### Not worth to check, because users rarely us this
+	### Not worth to check, cause a lot of crashes but it is very unlikelly that users will use them
 	###
 	"propagate_notification",
 	"notification",
@@ -230,7 +233,6 @@ var function_exceptions: Array = [
 	"raise",
 	"add_child",
 	"add_sibling",
-	"add_sibling",
 	#####
 	##### Goost
 	##### TODO: these take too long to execute, does not make sense to limit number of iterations ether.
@@ -256,18 +258,12 @@ var too_big_arguments: Array = [
 	"set_rect",
 	"set_sides",
 	"set_ring_sides",
-	"",
-	"",
-	"",
-	"",
-	"",
-	"",
-	"",
+	"create_convex_shape",
+	"create_trimesh_shape",
+	"get_method_list",
 	# Spam
 	"_get_custom_data_array",
 	"_get_color_array",
-	"",
-	"",
 ]
 # List of all functions that can freeze Godot when working with really big numbers
 var too_big_classes: Array = [
@@ -297,6 +293,7 @@ var disabled_classes: Array = [
 	"GDScript",  # Broke script
 	"SceneTree",
 	"JNISingleton",  # Freeze - who use it?
+	"Engine",  # Crashes only in Godot 4 but not really usable
 	###
 	### JavaClass is only functions that returns Null when using JavaClass.new().get_class
 	###
@@ -316,12 +313,17 @@ var disabled_classes: Array = [
 	###
 	"_OS",
 	###
+	### Mono
+	###
+	"_GodotSharp",
+	###
 	### Godot 4.0
 	###
 	"OS",
 	"Thread",
 	"Semaphore",
 	"Mutex",
+	"GodotSharp",
 	###
 	### Godot 4.0 Additional
 	###
@@ -366,4 +368,10 @@ var variant_exceptions: Array = [
 	"to_int64_array",  #54181
 	"to_float32_array",  #54182
 	"to_int32_array",  #54181
+]
+
+# User defined allowed functions, empty means that this won't work
+var allowed_functions: Array = [
+#	"notification",
+#	"propagate_notification",
 ]

@@ -1,4 +1,4 @@
-name: 🐧 Godot 4  01 Default
+name: 🐧 Godot 4 Vulkan 01 Default
 on:
   push:
   pull_request:
@@ -57,7 +57,7 @@ jobs:
 
       - name: Open Godot Editor
         run: |
-          VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json DRI_PRIME=0 xvfb-run ./godot.linuxbsd.tools.64s -e -q --audio-driver Dummy --video-driver  --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json DRI_PRIME=0 xvfb-run ./godot.linuxbsd.tools.64s -e -q --audio-driver Dummy  --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
           tail -n 300 sanitizers_log.txt > editor_results.txt
 
       - name: Store editor results

@@ -1,6 +1,6 @@
 ## Qarminer
 Qarminer is fuzzer which finds crashes, memory leaks and undefined behaviors in Godot Engine.  
-It is also used to fuzz Godot modules(C++, Rust etc.).
+It can be used to fuzz Godot modules(C++, Rust etc.), already found several crashes in [Goost](https://github.com/goostengine/goost), [Godex](https://github.com/GodotECS/godex/) or [Godot Voxel](https://github.com/Zylann/godot_voxel).
 
 This reporsitory constains many tools:
 - Executing every single function randomly(or not)

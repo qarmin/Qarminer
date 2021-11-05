@@ -41,7 +41,7 @@ func _ready() -> void:
 		if ClassDB.is_parent_class(name_of_class, "Node"):
 			temp_classes.append(name_of_class)
 	BasicData.base_classes = temp_classes
-	BasicData.base_classes = ["AnimatedSprite2D"]
+#	BasicData.base_classes = ["AnimatedSprite2D"]
 
 #	if debug_enabled:
 #		var to_print: String = 'DEBUG: List of classes used in ReparentingDeleting scene"' + str(BasicData.base_classes.size()) + '":\n'
@@ -168,7 +168,7 @@ func _process(delta: float) -> void:
 # exactly same number of nodes in replacement.
 func find_all_special_children_names(node: Node) -> Array:
 	var array: Array = []
-	array.append(String(node.get_name()))  # TODOGODOT4
+	array.append(String(node.get_name()))
 	for child in node.get_children():
 		if String(child.get_name()).begins_with("Special Node"):
 			array.append_array(find_all_special_children_names(child))

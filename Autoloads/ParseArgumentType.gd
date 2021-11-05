@@ -45,8 +45,13 @@ func parse_and_return_objects(method_data: Dictionary, name_of_class: String, de
 			TYPE_NODE_PATH:
 				arguments_array.push_back(ValueCreator.get_nodepath())
 			TYPE_OBJECT:
-				var obj: Object = ValueCreator.get_object(argument["class_name"])
-				arguments_array.push_back(obj)
+				# TODOGODOT4
+				if String(argument["class_name"]).is_empty():
+					var obj: Object = ValueCreator.get_object("Object")
+					arguments_array.push_back(obj)
+				else:
+					var obj: Object = ValueCreator.get_object(argument["class_name"])
+					arguments_array.push_back(obj)
 #				assert(obj != null) #,"Failed to create an object of type " + argument["class_name"])
 
 			TYPE_PLANE:
@@ -79,7 +84,7 @@ func parse_and_return_objects(method_data: Dictionary, name_of_class: String, de
 				arguments_array.push_back(ValueCreator.get_vector3())
 			TYPE_VECTOR3_ARRAY:
 				arguments_array.push_back(ValueCreator.get_packed_vector3_array())
-			# Godot 4
+			# TODOGODOT4
 			TYPE_CALLABLE:
 				arguments_array.push_back(Callable(BoxMesh.new(), "Rar"))
 			TYPE_VECTOR3I:
@@ -94,6 +99,8 @@ func parse_and_return_objects(method_data: Dictionary, name_of_class: String, de
 				arguments_array.push_back(ValueCreator.get_packed_float64_array())
 			TYPE_INT64_ARRAY:
 				arguments_array.push_back(ValueCreator.get_packed_int64_array())
+			TYPE_SIGNAL:
+				arguments_array.push_back(ValueCreator.get_signal())
 			_:
 				assert(false)  #,"Missing type --" + str(argument.type) + "-- needs to be added to project")
 
@@ -288,7 +295,7 @@ func return_gdscript_code_which_run_this_object(data) -> String:
 					return_string += ", "
 			return_string += "])"
 
-		#Godot4
+		# TODOGODOT4
 		TYPE_CALLABLE:
 			return_string = 'Callable(BoxMesh.new(),"")'
 		TYPE_STRING_NAME:

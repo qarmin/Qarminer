@@ -36,3 +36,7 @@ limits/command_queue/multithreading_queue_size_kb=4096
 
 limits/debugger_stdout/max_errors_per_second=5
 limits/debugger_stdout/max_warnings_per_second=5
+
+[rendering]
+
+vulkan/rendering/back_end.mobile=0
