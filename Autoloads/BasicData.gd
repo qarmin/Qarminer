@@ -2,7 +2,9 @@ extends Node
 
 ### Contains basic data about disabled things like functions etc.
 
-var regression_test_project: bool = false  # Set it to true in RegressionTestProject
+var custom_classes: Array = []  # List of all allowed classes that user choosed
+
+var all_available_classes: Array = []  # List of all classes that are instantable
 var base_classes: Array = []  # List of all allowed classes which can be used as Class.something else
 var argument_classes: Array = []  # Allowed classes that can be used as arguments, in normal usage this and base_classes are equal, but it is needed for custom classes e.g. custom_classes are [A,B] but this can be executed A.f(C)
 var allowed_thing: Dictionary = {}  # List of all classes with
@@ -299,6 +301,37 @@ var disabled_classes: Array = [
 	### Exported build - some checks are disabled in exported build due to too big performance impact
 	###
 	"Image",
+	#	###
+	#	### Godot 4.0
+	#	###
+	#	"OS",
+	#	"Thread",
+	#	"Semaphore",
+	#	"Mutex",
+	#	"GodotSharp",
+	#	###
+	#	### Godot 4.0 Additional
+	#	###
+	#	"Engine",  # This should be added also to Godot 3
+	#	"GodotSharp",  # TODO, also to Godot 3 add
+	#	"TextServer",  # RefCounted Server
+	#	"TextServerAdvanced",  # RefCounted Server
+	#	"TextServerExtension",  # RefCounted Server
+	#	"TextServer",  # RefCounted Server
+	#	"EngineDebugger",  # Crashes in exported project, not very usable
+	#	"InputMap",
+	#	"FontData",  # 53846
+	#	"MultiplayerAPI",  # Crashes TODO
+	#	"VisibleOnScreenEnabler3D",  #53565
+	#	"VisibleOnScreenEnabler2D",  #53565
+	#	"AudioStreamPlayer3D",  #53567
+	#	"AudioStreamPlayer2D",  #53567
+	#	"VideoPlayer",  #53568
+	#	"ImageTexture3D",  #53721
+	#	"XRCamera3D",  #53725
+	#	"CurveTexture",  #54477
+	#	"CurveXYZTexture",  #54477
+	#	"FogMaterial",  #54478
 ]
 
 # Exceptions for e.g. float, String or int functions

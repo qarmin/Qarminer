@@ -4,7 +4,6 @@ extends Node
 
 var number: float = 0.0
 var random: bool = false
-var should_be_always_valid: bool = true  # Generate only valid values e.g. to Node generate Node2D instead
 
 var max_array_size: int = 25
 
@@ -19,7 +18,7 @@ func get_int() -> int:
 		if int(number) == 0:
 			return 0
 #		while true:
-		var temp_number: int = (randi() % int(number)) - int(number / 2.0)
+		var temp_number: int = (randi() % int(number * 2)) - int(number)
 #			if !(
 #				temp_number
 #				in [
@@ -49,12 +48,14 @@ func get_int() -> int:
 
 	else:
 		return int(number)
-	return 0
+
+
+#	return 0
 
 
 func get_float() -> float:
 	if random:
-		return (randf() * number) - (number / 2.0)
+		return (randf() * number * 2) - (number)
 	else:
 		return number
 

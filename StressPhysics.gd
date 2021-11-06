@@ -32,13 +32,8 @@ var created_objects = 0
 
 # Function collects names of nodes which will be later used to create its instances
 func _ready() -> void:
-	if BasicData.regression_test_project:
-		ValueCreator.random = false  # Results in RegressionTestProject must be always reproducible
-	else:
-		ValueCreator.random = true
-
+	ValueCreator.random = true
 	ValueCreator.number = 10
-	ValueCreator.should_be_always_valid = false
 
 	HelpFunctions.initialize_list_of_available_classes()
 	HelpFunctions.initialize_array_with_allowed_functions(false, BasicData.function_exceptions)

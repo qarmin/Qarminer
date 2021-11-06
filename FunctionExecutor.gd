@@ -23,10 +23,10 @@ var allow_to_use_notification: bool = false  # Allows to use notification functi
 var shuffle_methods: bool = true  # Mix method execution order to be able to get more random results
 var miss_some_functions: int = true  # Allows to not execute some functions to be able to get more random results
 var remove_returned_value: bool = false  # Removes returned value from function(not recommended as default option, because can cause hard to reproduce bugs)
-var save_data_to_file: bool = true  # Save data to file(not big performance impact as I exepected)
-var test_one_class_multiple_times: bool = false  # Test same class across multiple frames - helpful to find this one class which cause problems
+var save_data_to_file: bool = true  # Save results to file
+var test_one_class_multiple_times: bool = false  # Test same class across multiple frames - helpful to find one class which cause problems
 
-var save_resources_to_file: bool = false
+var save_resources_to_file: bool = false  # Saves created resources to files
 
 var file_handler: File = File.new()  # Handles saves to file, in case of testing one class, entire log is saved to it
 
@@ -35,47 +35,26 @@ var to_print: String = ""  # Specify what needs to be printed
 var number_to_track_variables: int = 0  # Unique number to specify number which is added to variable name to prevent from using variables with same name
 var function_number: int = 0  # Needed to be able to use arguments with unique names
 
-var how_many_times_test: int = 30  # How many times, same class will be tested(works only with test_one_class_multiple_times enabled)
-var tested_times: int = how_many_times_test  # How many times class is tested now
+var how_many_times_test_one_class: int = 30  # How many times, same class will be tested(works only with test_one_class_multiple_times enabled)
+var tested_times: int = how_many_times_test_one_class  # How many times class is tested now
 var current_tested_element: int = 0  # Which element from array is tested now
 var tested_classes: Array = []  # Array with elements that are tested, in normal situation this equal to base_classes variable
 
-var timer: int
+var timer: int = 0  # Checks how much things are executed
 var timer_file_handler: File = File.new()
 
 
 # Prepare options for desired type of test
 func _ready() -> void:
-	ValueCreator.should_be_always_valid = false
-
-	if BasicData.regression_test_project:
-		debug_print = false
-		add_to_tree = false
-		delay_removing_added_nodes_to_next_frame = false
-		use_parent_methods = false
-		use_always_new_object = true
-		number_of_function_repeats = 1
-		number_of_classes_repeats = 1
-		shuffle_methods = false
-		miss_some_functions = false
-		remove_returned_value = false
-		save_data_to_file = false
-		test_one_class_multiple_times = false
-		allow_to_use_notification = false
-
-		ValueCreator.random = false  # Results in RegressionTestProject must be always reproducible
-		ValueCreator.number = 100
-	else:
-		ValueCreator.random = true
-		ValueCreator.number = 100
+	ValueCreator.random = true
+	ValueCreator.number = 100
 
 	if save_resources_to_file:
 		var dir: Directory = Directory.new()
-		var fil: File = File.new()
 
 		for base_dir in ["res://test_resources/.import/", "res://test_resources/.godot/", "res://test_resources/"]:
 			if dir.open(base_dir) == OK:
-				dir.list_dir_begin()
+				var _unused = dir.list_dir_begin()
 				var file_name: String = dir.get_next()
 				while file_name != "":
 					if file_name != ".." && file_name != ".":
@@ -86,8 +65,10 @@ func _ready() -> void:
 				assert(ret2 == OK)
 
 		var ret: int = dir.make_dir("res://test_resources")
-		File.new().open("res://test_resources/.gdignore", File.WRITE)
-		File.new().open("res://test_resources/project.godot", File.WRITE)
+		assert(ret == OK)
+		ret = File.new().open("res://test_resources/.gdignore", File.WRITE)
+		assert(ret == OK)
+		ret = File.new().open("res://test_resources/project.godot", File.WRITE)
 		assert(ret == OK)
 
 	if allow_to_use_notification:
@@ -99,8 +80,29 @@ func _ready() -> void:
 	HelpFunctions.add_excluded_too_big_functions(ValueCreator.number > 40)
 	HelpFunctions.add_excluded_too_big_classes(ValueCreator.number > 100)
 
-	# Initialize array of objects at the end
-	HelpFunctions.initialize_list_of_available_classes(true, true, [])
+	# Load data from file if available
+	debug_print = Settings.load_setting("debug_print", TYPE_BOOL, debug_print)
+	exiting = Settings.load_setting("exiting", TYPE_BOOL, exiting)
+	add_to_tree = Settings.load_setting("add_to_tree", TYPE_BOOL, add_to_tree)
+	delay_removing_added_nodes_to_next_frame = Settings.load_setting("delay_removing_added_nodes_to_next_frame", TYPE_BOOL, delay_removing_added_nodes_to_next_frame)
+	add_arguments_to_tree = Settings.load_setting("add_arguments_to_tree", TYPE_BOOL, add_arguments_to_tree)
+	delay_removing_added_arguments_to_next_frame = Settings.load_setting("delay_removing_added_arguments_to_next_frame", TYPE_BOOL, delay_removing_added_arguments_to_next_frame)
+	use_parent_methods = Settings.load_setting("use_parent_methods", TYPE_BOOL, use_parent_methods)
+	use_always_new_object = Settings.load_setting("use_always_new_object", TYPE_BOOL, use_always_new_object)
+	number_of_function_repeats = Settings.load_setting("number_of_function_repeats", TYPE_INT, number_of_function_repeats)
+	number_of_classes_repeats = Settings.load_setting("number_of_classes_repeats", TYPE_INT, number_of_classes_repeats)
+	allow_to_use_notification = Settings.load_setting("allow_to_use_notification", TYPE_BOOL, allow_to_use_notification)
+	shuffle_methods = Settings.load_setting("shuffle_methods", TYPE_BOOL, shuffle_methods)
+	miss_some_functions = Settings.load_setting("miss_some_functions", TYPE_BOOL, miss_some_functions)
+	remove_returned_value = Settings.load_setting("remove_returned_value", TYPE_BOOL, remove_returned_value)
+	save_data_to_file = Settings.load_setting("save_data_to_file", TYPE_BOOL, save_data_to_file)
+	test_one_class_multiple_times = Settings.load_setting("test_one_class_multiple_times", TYPE_BOOL, test_one_class_multiple_times)
+	save_resources_to_file = Settings.load_setting("save_resources_to_file", TYPE_BOOL, save_resources_to_file)
+	how_many_times_test_one_class = Settings.load_setting("how_many_times_test_one_class", TYPE_INT, how_many_times_test_one_class)
+
+	# Initialize array of objects
+#	BasicData.custom_classes = []  # Here can be choosen any classes that user want to use
+	HelpFunctions.initialize_list_of_available_classes()
 	HelpFunctions.initialize_array_with_allowed_functions(use_parent_methods, BasicData.function_exceptions)
 	tested_classes = BasicData.base_classes.duplicate(true)
 
@@ -117,22 +119,18 @@ func _ready() -> void:
 		var _a: int = file_handler.open("res://results.txt", File.WRITE)
 		var _b: int = timer_file_handler.open("res://timer.txt", File.WRITE)
 
-	if BasicData.regression_test_project:
-		tests_all_functions()
-
 
 func _process(_delta: float) -> void:
-	if !BasicData.regression_test_project:
-		tests_all_functions()
-		if exiting:
-			get_tree().quit()
+	tests_all_functions()
+	if exiting:
+		get_tree().quit()
 
 
 # Test all functions
 func tests_all_functions() -> void:
 	if test_one_class_multiple_times:
 		tested_times += 1
-		if tested_times > how_many_times_test:
+		if tested_times > how_many_times_test_one_class:
 			tested_times = 0
 			tested_classes.clear()
 			tested_classes.append(BasicData.base_classes[current_tested_element])
@@ -267,11 +265,11 @@ func tests_all_functions() -> void:
 									add_child(object)
 
 			if save_resources_to_file:
-				var res_path: String = "res://test_resources/" + str(number_to_track_variables)  + ".tres"
+				var res_path: String = "res://test_resources/" + str(number_to_track_variables) + ".tres"
 				if object is Resource:
 					if !(name_of_class in ["PluginScript"]):
-						var retu: int = ResourceSaver.save(res_path, object)
-	#								assert(retu == OK)
+						var _retu: int = ResourceSaver.save(res_path, object)
+			#								assert(retu == OK)
 			if !(delay_removing_added_nodes_to_next_frame && add_to_tree && object is Node):
 				if (object is Node) || !(object is Reference):
 					to_print = "\ttemp_variable" + str(number_to_track_variables)
