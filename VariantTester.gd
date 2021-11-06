@@ -14,7 +14,6 @@ var thing
 func _process(delta) -> void:
 	ValueCreator.random = true
 	ValueCreator.number = 1000
-	ValueCreator.should_be_always_valid = true
 
 	HelpFunctions.initialize_list_of_available_classes()
 

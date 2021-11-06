@@ -46,8 +46,6 @@ var timer_file_handler: File = File.new()
 
 # Prepare options for desired type of test
 func _ready() -> void:
-	ValueCreator.should_be_always_valid = false
-
 	ValueCreator.random = true
 	ValueCreator.number = 100
 

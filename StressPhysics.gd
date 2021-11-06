@@ -34,7 +34,6 @@ var created_objects = 0
 func _ready() -> void:
 	ValueCreator.random = true
 	ValueCreator.number = 10
-	ValueCreator.should_be_always_valid = false
 
 	HelpFunctions.initialize_list_of_available_classes()
 	HelpFunctions.initialize_array_with_allowed_functions(false, BasicData.function_exceptions)

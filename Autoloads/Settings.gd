@@ -110,6 +110,12 @@ func load_basic_settings_from_file() -> void:
 	var allowed_functions: Array = load_setting("allowed_functions", TYPE_ARRAY, [])
 	BasicData.allowed_functions = allowed_functions
 
+	var value_random: bool = load_setting("value_random", TYPE_BOOL, ValueCreator.random)
+	ValueCreator.random = value_random
+
+	var value_max: int = load_setting("value_max", TYPE_INT, ValueCreator.number)
+	ValueCreator.number = value_max
+
 
 func print_text(text: String, line_number: int) -> void:
 	if DEBUG_PRINT:
@@ -137,15 +143,15 @@ func load_setting(setting_name: String, value_type: int, default_value):
 					elif val.to_lower() == "false":
 						print("INFO: Properly loaded setting '" + setting_name + "' with value 'false'.")
 						return false
-					print("ERROR: Expected 'true' or 'false' value for '" + setting_name + "', found '" + val + "'")
+					printerr("ERROR: Expected 'true' or 'false' value for '" + setting_name + "', found '" + val + "'")
 
 				elif value_type == TYPE_INT:
 					print("INFO: Properly loaded setting '" + setting_name + "' with value '" + settings[setting_name].to_int() + "'.")
 					return settings[setting_name].to_int()
 				else:
-					print("ERROR: Expected Int, Float or Bool settings for '" + setting_name + "', found '" + settings[setting_name] + "'")
+					printerr("ERROR: Expected Int, Float or Bool settings for '" + setting_name + "', found '" + settings[setting_name] + "'")
 			else:
-				print("ERROR: Unsupported setting for '" + setting_name + "', found '" + settings[setting_name] + "'")
+				printerr("ERROR: Unsupported setting for '" + setting_name + "', found '" + settings[setting_name] + "'")
 	return default_value
 
 

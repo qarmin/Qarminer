@@ -10,6 +10,9 @@ disabled_classes_replace: Array # Replace classes which will be ignored with pro
 disabled_classes_append: Array # Adds additional classes to be ignored
 disabled_classes_remove: Array # Removes provided classes from ignored
 allowed_functions: Array # Only allows to use this functions
+value_max: int # Set maximum usable value by arguments
+value_random: bool # If true, generate random value <-value_max, value_max> if false, always will return `value_max`
+
 
 ## FunctionExecutor tool:
 
