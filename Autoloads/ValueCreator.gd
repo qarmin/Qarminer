@@ -221,17 +221,11 @@ func get_packed_color_array() -> PoolColorArray:
 #func get_rect2i() -> Rect2i:
 #	return Rect2i(get_vector2i(), get_vector2i())
 #
-#func get_packed_int64_array() -> PackedInt32Array:
+#func get_packed_int64_array() -> PackedInt64Array:
 #	var array: Array = []
 #	for _i in range(int(min(max_array_size, number))):
 #		array.append(get_int())
-#	return PackedInt32Array(array)
-#
-#func get_packed_float64_array() -> PackedFloat64Array:
-#	var array: Array = []
-#	for _i in range(int(min(max_array_size, number))):
-#		array.append(get_float())
-#	return PackedFloat64Array(array)
+#	return PackedInt64Array(array)
 #
 #func get_packed_float64_array() -> PackedFloat64Array:
 #	var array: Array = []

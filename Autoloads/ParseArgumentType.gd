@@ -45,7 +45,7 @@ func parse_and_return_objects(method_data: Dictionary, name_of_class: String, de
 			TYPE_NODE_PATH:
 				arguments_array.push_back(ValueCreator.get_nodepath())
 			TYPE_OBJECT:
-				if argument["class_name"].empty():
+				if String(argument["class_name"]).empty():
 					var obj: Object = ValueCreator.get_object("Object")
 					arguments_array.push_back(obj)
 				else:

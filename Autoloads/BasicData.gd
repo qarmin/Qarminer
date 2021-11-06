@@ -263,29 +263,6 @@ var disabled_classes: Array = [
 	### Mono
 	###
 	"_GodotSharp",
-	## TODOGODOT4
-	#	###
-	#	### Godot 4.0
-	#	###
-	#	"OS",
-	#	"Thread",
-	#	"Semaphore",
-	#	"Mutex",
-	#	"GodotSharp",
-	#	###
-	#	### Godot 4.0 Additional
-	#	###
-	#	"TextServer", # RefCounted Server
-	#	"TextServerAdvanced", # RefCounted Server
-	#	"TextServerExtension", # RefCounted Server
-	#	"TextServer", # RefCounted Server
-	#	"TextEdit",  # Crashes 52876
-	#	"CodeEdit",  # Also 52876
-	#	"FontData",  # A lot of crashes 52817
-	#	"InputEventShortcut",  # 52191
-	#	"MultiplayerAPI",  # Crashes TODO
-	#	"InputMap",
-	#	"GPUParticles3D",  # 53004
 	###
 	### TODO
 	###
@@ -299,6 +276,37 @@ var disabled_classes: Array = [
 	### Exported build - some checks are disabled in exported build due to too big performance impact
 	###
 	"Image",
+#	###
+#	### Godot 4.0
+#	###
+#	"OS",
+#	"Thread",
+#	"Semaphore",
+#	"Mutex",
+#	"GodotSharp",
+#	###
+#	### Godot 4.0 Additional
+#	###
+#	"Engine",  # This should be added also to Godot 3
+#	"GodotSharp",  # TODO, also to Godot 3 add
+#	"TextServer",  # RefCounted Server
+#	"TextServerAdvanced",  # RefCounted Server
+#	"TextServerExtension",  # RefCounted Server
+#	"TextServer",  # RefCounted Server
+#	"EngineDebugger",  # Crashes in exported project, not very usable
+#	"InputMap",
+#	"FontData",  # 53846
+#	"MultiplayerAPI",  # Crashes TODO
+#	"VisibleOnScreenEnabler3D",  #53565
+#	"VisibleOnScreenEnabler2D",  #53565
+#	"AudioStreamPlayer3D",  #53567
+#	"AudioStreamPlayer2D",  #53567
+#	"VideoPlayer",  #53568
+#	"ImageTexture3D",  #53721
+#	"XRCamera3D",  #53725
+#	"CurveTexture",  #54477
+#	"CurveXYZTexture",  #54477
+#	"FogMaterial",  #54478
 ]
 
 # Exceptions for e.g. float, String or int functions
