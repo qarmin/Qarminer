@@ -1,0 +1,67 @@
+# List of all available settings which can be set
+
+## General:
+
+custom_classes: Array # Allows only use only provided by user classes(arguments will not take this into account)
+function_exceptions_replace: Array # Replace functions which will be ignored with provided by user
+function_exceptions_append: Array # Adds additional functions to be ignored
+function_exceptions_remove: Array # Removes provided functions from ignored
+disabled_classes_replace: Array # Replace classes which will be ignored with provided by user
+disabled_classes_append: Array # Adds additional classes to be ignored
+disabled_classes_remove: Array # Removes provided classes from ignored
+allowed_functions: Array # Only allows to use this functions
+
+## FunctionExecutor tool:
+
+debug_print: bool  # Switch to turn off printed things to screen
+exiting: bool  # Close app after first run
+add_to_tree: bool  # Adds nodes to tree
+delay_removing_added_nodes_to_next_frame: bool  # Delaying removing nodes added to tree to next frame, which force to render it
+add_arguments_to_tree: bool  # Adds nodes which are used as arguments to tree
+delay_removing_added_arguments_to_next_frame: bool  # Delaying removing arguments(nodes added to tree) to next frame, which force to render it
+use_parent_methods: bool  # Allows to use parent methods e.g. Sprite can use Node.queue_free()
+use_always_new_object: bool  # Don't allow to "remember" other function effects
+number_of_function_repeats: int  # How many times all functions will be executed in single class
+number_of_classes_repeats: int  # How much times class will be instanced in row(one after one)
+allow_to_use_notification: bool  # Allows to use notification function in classes,to use this, parent methods must be enabled
+shuffle_methods: bool  # Mix method execution order to be able to get more random results
+miss_some_functions: int  # Allows to not execute some functions to be able to get more random results
+remove_returned_value: bool  # Removes returned value from function(not recommended as default option, because can cause hard to reproduce bugs)
+save_data_to_file: bool  # Save results to file
+test_one_class_multiple_times: bool  # Test same class across multiple frames - helpful to find one class which cause problems
+save_resources_to_file: bool # Saves created resources to files
+
+
+
+# Usage Example
+# All settings needs to be saved in settings.txt, which is placed under res://(which is just main fuzzer folder)
+# # at the beginning means that this line will be ignored
+# Empty lines also are ignored
+
+# Settings which takes bool, float or int value, must be wrote in this way
+add_to_tree: false
+# which means that add_to_tree was set to false
+
+# Settings which takes an array of strings as arguments, must be wrote in this way
+custom_classes:
+class1
+class2
+class3
+# and this will create an array with 3 elements.
+
+# Errors about parsing and end results are printed to console
+
+# Example of settings.txt file
+add_to_tree: true
+allow_to_use_notification: false
+allowed_functions: # Comments at the end of line are supported
+remove_from_tree
+add_node
+print
+
+shuffle_methods: false
+
+
+
+
+

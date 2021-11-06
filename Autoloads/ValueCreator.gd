@@ -49,7 +49,9 @@ func get_int() -> int:
 
 	else:
 		return int(number)
-	return 0
+
+
+#	return 0
 
 
 func get_float() -> float:
