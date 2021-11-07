@@ -102,7 +102,7 @@ func process_nodes() -> void:
 		get_tree().quit()
 	create_nodes()
 	move_nodes()
-#	random_functions()
+	random_functions()
 	delete_nodes()
 	if debug_level:
 		print("--- Ended Processing Data ---")
