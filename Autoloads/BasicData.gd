@@ -319,8 +319,8 @@ var disabled_classes: Array = [
 	###
 	### Godot 4.0
 	###
-	"OS",
-	"Thread",
+	#"OS",
+	#"Thread",
 	"Semaphore",
 	"Mutex",
 	"GodotSharp",
@@ -351,11 +351,11 @@ var disabled_classes: Array = [
 	### TODO
 	###
 	"ImmediateMesh",  #53623
-	"ItemList",  # Big numbers
+	#"ItemList",  # Big numbers
 	"_ResourceLoader",  #Spams
 	"ResourceLoader",  #Spams
 	"PackedDataContainer",  #53554 - more crashes
-	"ProximityGroup3D",  # Not cherrypicked yet
+	#"ProximityGroup3D",  # Not cherrypicked yet
 	###
 	### Exported build - some checks are disabled in exported build due to too big performance impact
 	###

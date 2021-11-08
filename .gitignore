@@ -18,6 +18,7 @@ mono_crash*
 temp_gdscript.gd
 temp_resources/
 test_resources/
+test_gdscript/
 # Config
 classes.txt
 results.txt
