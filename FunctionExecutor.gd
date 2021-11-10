@@ -11,11 +11,11 @@ extends Node
 
 var debug_print: bool = true  # Switch to turn off printed things to screen
 var exiting: bool = false  # Close app after first run
-var add_to_tree: bool = false  # Adds nodes to tree
-var delay_removing_added_nodes_to_next_frame: bool = false  # Delaying removing nodes added to tree to next frame, which force to render it
+var add_to_tree: bool = true  # Adds nodes to tree
+var delay_removing_added_nodes_to_next_frame: bool = true  # Delaying removing nodes added to tree to next frame, which force to render it
 var add_arguments_to_tree: bool = false  # Adds nodes which are used as arguments to tree
 var delay_removing_added_arguments_to_next_frame: bool = false  # Delaying removing arguments(nodes added to tree) to next frame, which force to render it
-var use_parent_methods: bool = false  # Allows to use parent methods e.g. Sprite2D can use Node.queue_free()
+var use_parent_methods: bool = true  # Allows to use parent methods e.g. Sprite2D can use Node.queue_free()
 var use_always_new_object: bool = false  # Don't allow to "remember" other function effects
 var number_of_function_repeats: int = 3  # How many times all functions will be executed in single class
 var number_of_classes_repeats: int = 1  # How much times class will be instanced in row(one after one)
@@ -101,6 +101,7 @@ func _ready() -> void:
 
 	# Initialize array of objects at the end
 	HelpFunctions.initialize_list_of_available_classes(true, true, [])
+	BasicData.base_classes = ["NavigationRegion3D","CSGBox3D"]
 	HelpFunctions.initialize_array_with_allowed_functions(use_parent_methods, BasicData.function_exceptions)
 	tested_classes = BasicData.base_classes.duplicate(true)
 

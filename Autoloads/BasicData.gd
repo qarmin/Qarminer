@@ -12,6 +12,9 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
+	"bake_navigation_mesh", # TODO too hard to find for now
+	"_update_shape", # TODO, probably crashes exported build
+	"set_visibility_range_begin", #54655
 	"set_is_setup",  # Just don't use, in SkeletonModification crashes
 	"set_bone_index",  # 54235
 	"set_modification_count",  #54234
