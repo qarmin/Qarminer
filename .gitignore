@@ -13,6 +13,8 @@ CSharp/
 GDScript/
 Node2D.gd
 Node2D.tscn
+Node.gd
+Node.tscn
 Resources/
 mono_crash*
 temp_gdscript.gd
