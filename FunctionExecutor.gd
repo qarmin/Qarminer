@@ -43,6 +43,9 @@ var tested_classes: Array = []  # Array with elements that are tested, in normal
 var timer: int = 0  # Checks how much things are executed
 var timer_file_handler: File = File.new()
 
+var memory_usage_file_handler: File = File.new()
+var memory_before: float = 0.0
+
 
 # Prepare options for desired type of test
 func _ready() -> void:
@@ -118,6 +121,7 @@ func _ready() -> void:
 	if save_data_to_file:
 		var _a: int = file_handler.open("res://results.txt", File.WRITE)
 		var _b: int = timer_file_handler.open("res://timer.txt", File.WRITE)
+		var _c: int = memory_usage_file_handler.open("res://memory_usage.txt", File.WRITE)
 
 
 func _process(_delta: float) -> void:
@@ -143,6 +147,13 @@ func tests_all_functions() -> void:
 
 	elif save_data_to_file:
 		var _a: int = file_handler.open("res://results.txt", File.WRITE)
+
+	# Prevent from using by this files more than 1GB of disk
+	if save_data_to_file:
+		if timer_file_handler.get_position() > 1000000000:
+			var _b: int = timer_file_handler.open("res://timer.txt", File.WRITE)
+		if memory_usage_file_handler.get_position() > 1000000000:
+			var _c: int = memory_usage_file_handler.open("res://memory_usage.txt", File.WRITE)
 
 	if (delay_removing_added_nodes_to_next_frame && add_to_tree) || (delay_removing_added_arguments_to_next_frame && add_arguments_to_tree):
 		to_print = "\n\tfor i in get_children():\n\t\ti.queue_free()"
@@ -223,11 +234,15 @@ func tests_all_functions() -> void:
 						if save_data_to_file:
 							timer = OS.get_ticks_usec()
 
+						save_memory_file("Before: " + name_of_class + "." + method_data["name"] + " ", false)
+
 						var ret = object.callv(method_data["name"], arguments)
+
+						save_memory_file("After:  " + name_of_class + "." + method_data["name"] + " ", true)
 
 						if save_data_to_file:
 							timer_file_handler.store_string(str(OS.get_ticks_usec() - timer) + " us - " + name_of_class + "." + method_data["name"] + "\n")
-							timer_file_handler.flush()
+							# timer_file_handler.flush() # Don't need to be flushed immendiatelly
 
 						for i in arguments.size():
 							if !(delay_removing_added_arguments_to_next_frame && add_arguments_to_tree && arguments[i] is Node):
@@ -284,3 +299,19 @@ func save_to_file_to_screen(text_to_save_to_file: String, text_to_print_on_scree
 		file_handler.flush()
 	if debug_print:
 		print(text_to_print_on_screen)
+
+
+func save_memory_file(text: String, show_difference: bool) -> void:
+	if save_data_to_file || debug_print:
+		var current_memory: float = Performance.get_monitor(Performance.MEMORY_STATIC) / 1048576.0
+		var difference: String = ""
+		if show_difference:
+			difference = " (difference " + str(current_memory - memory_before) + " MB)"
+		var upd_text: String = text + str(current_memory) + " MB" + difference
+		memory_before = current_memory
+		if save_data_to_file:
+			memory_usage_file_handler.store_string(upd_text + "\n")
+			# memory_usage_file_handler.flush() # Don't need to be flushed immendiatelly
+#		if debug_print: # Not really usable, but can be enabled if needed
+#			print(upd_text)
+# big usage of memory can be searched by this regex "difference 0.[1-9]" or even "difference [1-9]"
