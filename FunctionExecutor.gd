@@ -24,7 +24,7 @@ var shuffle_methods: bool = true  # Mix method execution order to be able to get
 var miss_some_functions: int = true  # Allows to not execute some functions to be able to get more random results
 var remove_returned_value: bool = false  # Removes returned value from function(not recommended as default option, because can cause hard to reproduce bugs)
 var save_data_to_file: bool = true  # Save results to file
-var test_one_class_multiple_times: bool = false  # Test same class across multiple frames - helpful to find one class which cause problems
+var test_one_class_multiple_times: bool = true  # Test same class across multiple frames - helpful to find one class which cause problems
 
 var save_resources_to_file: bool = false  # Saves created resources to files
 
@@ -222,8 +222,9 @@ func tests_all_functions() -> void:
 
 						if save_data_to_file:
 							timer = OS.get_ticks_usec()
-
+						print_memory_usage("BEFORE:")
 						var ret = object.callv(method_data["name"], arguments)
+						print_memory_usage("AFTER:")
 
 						if save_data_to_file:
 							timer_file_handler.store_string(str(OS.get_ticks_usec() - timer) + " us - " + name_of_class + "." + method_data["name"] + "\n")
@@ -277,6 +278,13 @@ func tests_all_functions() -> void:
 					save_to_file_to_screen("\n" + to_print, to_print)
 				HelpFunctions.remove_thing(object)
 
+func print_memory_usage(where : String) -> void:
+	print(where)
+	print("MEM_DYNAMIC: " + str(Performance.get_monitor(Performance.MEMORY_DYNAMIC)/(1024*1024)) + " MB")
+	print("MEM_STATIC: " + str(Performance.get_monitor(Performance.MEMORY_STATIC)/(1024*1024)) + " MB")
+	print("MEM_DYNAMIC_MAX: " + str(Performance.get_monitor(Performance.MEMORY_DYNAMIC_MAX)/(1024*1024)) + " MB")
+	print("MEM_STATIC_MAX: " + str(Performance.get_monitor(Performance.MEMORY_STATIC_MAX)/(1024*1024)) + " MB")
+	pass
 
 func save_to_file_to_screen(text_to_save_to_file: String, text_to_print_on_screen: String) -> void:
 	if save_data_to_file:
