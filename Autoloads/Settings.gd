@@ -1,7 +1,7 @@
 extends Node
 
 const SETTINGS_FILE_NAME: String = "res://settings.txt"
-const DEBUG_PRINT: bool = false  # Enable to validate your scipt
+const DEBUG_PRINT: bool = true  # Enable to validate your scipt
 var settings: Dictionary = {}
 
 
@@ -33,6 +33,10 @@ func _init() -> void:
 			print_text("INFO: Found empty line", line_number)
 			continue
 
+		# Removes comments
+		if line.find("#") != -1:
+			line = line.substr(0, line.find("#")).strip_edges()
+
 		# Contains info about setting which needs to be changed
 		if line.find(":") != -1:
 			var before_colon: String = line.substr(0, line.find(":")).strip_edges()
@@ -40,9 +44,6 @@ func _init() -> void:
 			if before_colon == "":
 				print_text("ERROR: Missing setting name", line_number)
 				continue
-			# Remove comment in value
-			if after_colon.find("#") != -1:
-				after_colon = after_colon.substr(0, after_colon.find("#")).strip_edges()
 
 			if current_setting != "":
 				if !temp_array_with_settings.empty():
@@ -62,9 +63,6 @@ func _init() -> void:
 		# Normal setting
 		else:
 			if current_setting != "":
-				line = line.strip_edges()
-				if line.find("#") != -1:
-					line = line.substr(0, line.find("#")).strip_edges()
 				temp_array_with_settings.append(line)
 				print_text("INFO: Found for array setting '" + current_setting + "' value '" + line + "'", line_number)
 			else:
@@ -163,18 +161,19 @@ func load_deprecated_classes() -> void:
 	if file.file_exists("res://classes.txt"):
 		file.open("res://classes.txt", File.READ)
 		while !file.eof_reached():
-			var cname = file.get_line()
-			var internal_cname = "_" + cname
-			# The declared class may not exist, and it may be exposed as `_ClassName` rather than `ClassName`, this is not needed by Godot 4.x.
-			if !ClassDB.class_exists(cname) && !ClassDB.class_exists(internal_cname):
-				printerr('Trying to use non existent custom class "' + cname + '"')
-				continue
-			if ClassDB.class_exists(internal_cname):
-				cname = internal_cname
-			if !ClassDB.can_instance(cname):
-				printerr('Trying to use non instantable custom class "' + cname + '"')
-				continue
-			custom_classes.push_back(cname)
+			var cname = file.get_line().strip_edges()
+			if !cname.empty():
+				var internal_cname = "_" + cname
+				# The declared class may not exist, and it may be exposed as `_ClassName` rather than `ClassName`, this is not needed by Godot 4.x.
+				if !ClassDB.class_exists(cname) && !ClassDB.class_exists(internal_cname):
+					printerr('Trying to use non existent custom class "' + cname + '"')
+					continue
+				if ClassDB.class_exists(internal_cname):
+					cname = internal_cname
+				if !ClassDB.can_instance(cname):
+					printerr('Trying to use non instantable custom class "' + cname + '"')
+					continue
+				custom_classes.push_back(cname)
 		file.close()
 
 	BasicData.custom_classes = custom_classes
