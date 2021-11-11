@@ -106,6 +106,7 @@ func _ready() -> void:
 	# Initialize array of objects
 #	BasicData.custom_classes = []  # Here can be choosen any classes that user want to use
 	HelpFunctions.initialize_list_of_available_classes()
+#	BasicData.base_classes = BasicData.base_classes.slice(32,33)
 	HelpFunctions.initialize_array_with_allowed_functions(use_parent_methods, BasicData.function_exceptions)
 	tested_classes = BasicData.base_classes.duplicate(true)
 

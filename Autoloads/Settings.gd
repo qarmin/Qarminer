@@ -123,7 +123,7 @@ func print_text(text: String, line_number: int) -> void:
 
 
 func load_setting(setting_name: String, value_type: int, default_value):
-	print("Checking " + setting_name)
+#	print("Checking " + setting_name)
 	if settings.has(setting_name):
 		if settings[setting_name] is Array:
 			if value_type == TYPE_ARRAY:
