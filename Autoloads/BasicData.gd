@@ -318,6 +318,5 @@ var variant_exceptions: Array = [
 
 # User defined allowed functions, empty means that this won't work
 var allowed_functions: Array = [
-#	"notification",
-#	"propagate_notification",
+"debug_print_sdf_top_down",
 ]

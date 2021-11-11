@@ -9,10 +9,13 @@ extends Node
 ### - clean memory, instance other objects etc. until there is no other classes to check
 ### - waits for new frame to starts everything from start
 
+var before : int = 0
+var valid : bool = false
+
 var debug_print: bool = true  # Switch to turn off printed things to screen
 var exiting: bool = false  # Close app after first run
-var add_to_tree: bool = false  # Adds nodes to tree
-var delay_removing_added_nodes_to_next_frame: bool = false  # Delaying removing nodes added to tree to next frame, which force to render it
+var add_to_tree: bool = true  # Adds nodes to tree
+var delay_removing_added_nodes_to_next_frame: bool = true  # Delaying removing nodes added to tree to next frame, which force to render it
 var add_arguments_to_tree: bool = false  # Adds nodes which are used as arguments to tree
 var delay_removing_added_arguments_to_next_frame: bool = false  # Delaying removing arguments(nodes added to tree) to next frame, which force to render it
 var use_parent_methods: bool = false  # Allows to use parent methods e.g. Sprite can use Node.queue_free()
@@ -24,7 +27,7 @@ var shuffle_methods: bool = true  # Mix method execution order to be able to get
 var miss_some_functions: int = true  # Allows to not execute some functions to be able to get more random results
 var remove_returned_value: bool = false  # Removes returned value from function(not recommended as default option, because can cause hard to reproduce bugs)
 var save_data_to_file: bool = true  # Save results to file
-var test_one_class_multiple_times: bool = true  # Test same class across multiple frames - helpful to find one class which cause problems
+var test_one_class_multiple_times: bool = false  # Test same class across multiple frames - helpful to find one class which cause problems
 
 var save_resources_to_file: bool = false  # Saves created resources to files
 
@@ -105,7 +108,9 @@ func _ready() -> void:
 	HelpFunctions.initialize_list_of_available_classes()
 	HelpFunctions.initialize_array_with_allowed_functions(use_parent_methods, BasicData.function_exceptions)
 	tested_classes = BasicData.base_classes.duplicate(true)
-
+	for i in BasicData.allowed_thing:
+		for j in BasicData.allowed_thing[i]:
+			print("\""+j["name"] + "\",")
 #	# Debug check if all methods exists in choosen classes
 #	assert(BasicData.allowed_thing.size() == BasicData.base_classes.size())
 #	var index: int = 0
@@ -138,11 +143,11 @@ func tests_all_functions() -> void:
 			current_tested_element += 1
 			current_tested_element = current_tested_element % BasicData.base_classes.size()
 
-			if save_data_to_file:
-				var _a: int = file_handler.open("res://results.txt", File.WRITE)
-
-	elif save_data_to_file:
-		var _a: int = file_handler.open("res://results.txt", File.WRITE)
+#			if save_data_to_file:
+#				var _a: int = file_handler.open("res://results.txt", File.WRITE)
+#
+#	elif save_data_to_file:
+#		var _a: int = file_handler.open("res://results.txt", File.WRITE)
 
 	if (delay_removing_added_nodes_to_next_frame && add_to_tree) || (delay_removing_added_arguments_to_next_frame && add_arguments_to_tree):
 		to_print = "\n\tfor i in get_children():\n\t\ti.queue_free()"
@@ -280,11 +285,20 @@ func tests_all_functions() -> void:
 
 func print_memory_usage(where : String) -> void:
 	print(where)
+	print(before)
+	print(Performance.get_monitor(Performance.MEMORY_STATIC)/(1024*1024))
+	if valid:
+		if before + 2 < Performance.get_monitor(Performance.MEMORY_STATIC)/(1024*1024):
+			pass
+#			get_tree().quit()
+	
 	print("MEM_DYNAMIC: " + str(Performance.get_monitor(Performance.MEMORY_DYNAMIC)/(1024*1024)) + " MB")
 	print("MEM_STATIC: " + str(Performance.get_monitor(Performance.MEMORY_STATIC)/(1024*1024)) + " MB")
 	print("MEM_DYNAMIC_MAX: " + str(Performance.get_monitor(Performance.MEMORY_DYNAMIC_MAX)/(1024*1024)) + " MB")
 	print("MEM_STATIC_MAX: " + str(Performance.get_monitor(Performance.MEMORY_STATIC_MAX)/(1024*1024)) + " MB")
-	pass
+	
+	before = Performance.get_monitor(Performance.MEMORY_STATIC)/(1024*1024)
+	valid = true
 
 func save_to_file_to_screen(text_to_save_to_file: String, text_to_print_on_screen: String) -> void:
 	if save_data_to_file:
