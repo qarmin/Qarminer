@@ -22,7 +22,7 @@ ValueCreator="*res://Autoloads/ValueCreator.gd"
 AutoClose="*res://Autoloads/AutoClose.gd"
 ParseArgumentType="*res://Autoloads/ParseArgumentType.gd"
 HelpFunctions="*res://Autoloads/HelpFunctions.gd"
-Settings="*res://Autoloads/Settings.gd"
+SettingsLoader="*res://Autoloads/SettingsLoader.gd"
 
 [logging]
 

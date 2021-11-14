@@ -93,6 +93,12 @@ jobs:
           name: timer
           path: timer.txt
 
+      - name: Store memory usage results
+        uses: actions/upload-artifact@v2
+        with:
+          name: memory-usage
+          path: memory_usage.txt
+
       - name: Check Log
         run: |
           misc/check_ci_log.py sanitizers_log.txt
