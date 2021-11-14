@@ -11,6 +11,14 @@ func add_excluded_too_big_classes(add_it: bool) -> void:
 		BasicData.disabled_classes.append_array(BasicData.too_big_classes)
 
 
+func find_things_from_first_array_not_in_second(arr1: Array, arr2: Array) -> Array:
+	var new_arr: Array = []
+	for i in arr1:
+		if !(i in arr2):
+			new_arr.append(i)
+	return new_arr
+
+
 # TODOGODOT4 - this probably will hide internal childs in Godot 4
 # Disable nodes with internal child, because can cause strange crashes when executing e.g. notification
 func disable_nodes_with_internal_child() -> void:
@@ -45,9 +53,6 @@ func check_if_is_allowed(method_data: Dictionary) -> bool:
 			return false
 		# Editor stuff usually aren't good choice for arguments
 		if name_of_class.find("Editor") != -1 || name_of_class.find("SkinReference") != -1:
-			return false
-		# Godot4
-		if name_of_class.find("SkeletonModification") != -1:
 			return false
 
 		# In case of adding new type, this prevents from crashing due not recognizing this type
@@ -95,14 +100,6 @@ func check_if_is_allowed(method_data: Dictionary) -> bool:
 
 		if name_of_class.is_empty():
 			continue
-
-		#This is only for RegressionTestProject, because it needs for now clear visual info what is going on screen, but some nodes broke view
-		if BasicData.regression_test_project:
-			# That means that this is constant, not class
-			if !ClassDB.class_exists(name_of_class):
-				continue
-			if !ClassDB.is_parent_class(name_of_class, "Node") && !ClassDB.is_parent_class(name_of_class, "RefCounted"):
-				return false
 
 	return true
 
@@ -189,74 +186,38 @@ func initialize_array_with_allowed_functions(use_parent_methods: bool, disabled_
 
 
 # Returns all available classes to use
-func initialize_list_of_available_classes(must_be_instantable: bool = true, allow_editor: bool = true, available_classes: Array = []) -> void:
-	if !available_classes.is_empty():
-		available_classes.sort()
-		BasicData.base_classes = available_classes
-		BasicData.argument_classes = available_classes
-		return
-
+func initialize_list_of_available_classes() -> void:
 	var full_class_list: Array = Array(ClassDB.get_class_list())
 	full_class_list.sort()
-
-	var custom_classes: Array = []
-	var file = File.new()
-
-	# Compatibility tool
-	if file.file_exists("res://classes.txt"):
-		file.open("res://classes.txt", File.READ)
-		while !file.eof_reached():
-			var cname = file.get_line()
-			var internal_cname = "_" + cname
-			# The declared class may not exist, and it may be exposed as `_ClassName` rather than `ClassName`.
-			if !ClassDB.class_exists(cname) && !ClassDB.class_exists(internal_cname):
-				printerr('Trying to use non existent custom class "' + cname + '"')
-				continue
-			if ClassDB.class_exists(internal_cname):
-				cname = internal_cname
-			if !ClassDB.can_instantiate(cname):
-				printerr('Trying to use non instantable custom class "' + cname + '"')
-			custom_classes.push_back(cname)
-		file.close()
-
-	# Default mode TODO
-	if file.file_exists("settings.txt"):
-		true
 
 	for name_of_class in full_class_list:
 		if name_of_class in BasicData.disabled_classes:
 			continue
 
-		# This only checks basic nodes and refcounted things
-		# Other objects may broke view, so remove this check in 4.0
-		# when there is no even 1 visually normal scene
-		if BasicData.regression_test_project:
-			if !ClassDB.is_parent_class(name_of_class, "Node") && !ClassDB.is_parent_class(name_of_class, "RefCounted"):
-				continue
-
 		if name_of_class.find("Server") != -1 && !ClassDB.is_parent_class(name_of_class, "RefCounted"):
 			continue
-		if name_of_class.find("Editor") != -1 && (BasicData.regression_test_project || !allow_editor):
-			continue
-		# Godot4
-		if name_of_class.find("SkeletonModification") != -1:
+		if name_of_class.find("Editor") != -1:
 			continue
 
-		# This step allows using in custom classes arguments from non custom classes
-		if !must_be_instantable || ClassDB.can_instantiate(name_of_class):
-			BasicData.argument_classes.push_back(name_of_class)
+		if ClassDB.can_instantiate(name_of_class):
+			BasicData.all_available_classes.push_back(name_of_class)
 
-		if !custom_classes.is_empty() and !(name_of_class in custom_classes):
-			continue
+	BasicData.argument_classes = BasicData.all_available_classes.duplicate()
+	BasicData.base_classes = BasicData.all_available_classes.duplicate()
 
-		if !must_be_instantable || ClassDB.can_instantiate(name_of_class):
-			BasicData.base_classes.push_back(name_of_class)
+	leave_custom_classes_if_needed(full_class_list.size())
 
-#	BasicData.base_classes = BasicData.base_classes.slice(0, 10)
+
+func leave_custom_classes_if_needed(how_much_all_classes: int) -> void:
+	if !BasicData.custom_classes.is_empty():
+		BasicData.base_classes = []
+		for name_of_class in BasicData.custom_classes:
+			if BasicData.all_available_classes.has(name_of_class):
+				BasicData.base_classes.append(name_of_class)
 
 	if BasicData.base_classes.size() == 0:
-		print("There is no choosen classes!!!!!!!!!!!!!!!!!!!")
+		print("There is no classes available!!!!!!!!!!!!!!!!!!!")
 		get_tree().quit()
 
-	print(str(BasicData.base_classes.size()) + " choosen classes from all " + str(full_class_list.size()) + " classes.")
+	print(str(BasicData.base_classes.size()) + " choosen classes from all " + str(how_much_all_classes) + " classes.")
 	print(str(BasicData.argument_classes.size()) + " classes can be used as arguments.")

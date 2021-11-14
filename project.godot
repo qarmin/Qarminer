@@ -22,6 +22,7 @@ ValueCreator="*res://Autoloads/ValueCreator.gd"
 AutoClose="*res://Autoloads/AutoClose.gd"
 ParseArgumentType="*res://Autoloads/ParseArgumentType.gd"
 HelpFunctions="*res://Autoloads/HelpFunctions.gd"
+SettingsLoader="*res://Autoloads/SettingsLoader.gd"
 
 [logging]
 
@@ -36,7 +37,3 @@ limits/command_queue/multithreading_queue_size_kb=4096
 
 limits/debugger_stdout/max_errors_per_second=5
 limits/debugger_stdout/max_warnings_per_second=5
-
-[rendering]
-
-vulkan/rendering/back_end.mobile=0

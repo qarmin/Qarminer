@@ -34,7 +34,7 @@ func _ready() -> void:
 	if save_data_to_file:
 		var _a: int = file_handler.open("res://results.txt", File.WRITE)
 
-	HelpFunctions.initialize_list_of_available_classes(true, true, [])
+	HelpFunctions.initialize_list_of_available_classes()
 
 	var temp_classes: Array = []
 	for name_of_class in BasicData.base_classes:

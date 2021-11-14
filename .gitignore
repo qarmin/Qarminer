@@ -11,18 +11,20 @@ logs/
 .godot/
 CSharp/
 GDScript/
-Node.tscn
-Node.gd
 Node2D.gd
 Node2D.tscn
+Node.gd
+Node.tscn
 Resources/
 mono_crash*
 temp_gdscript.gd
-temp_resources/
-test_resources/
-test_gdscript/
-# Config
+
+# Config or produced files
 classes.txt
 results.txt
 simple_things.txt
 timer.txt
+settings.txt
+test_resources/
+test_gdscript/
+memory_usage.txt

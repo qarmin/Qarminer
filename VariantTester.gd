@@ -12,13 +12,8 @@ var thing
 
 
 func _process(delta) -> void:
-	if BasicData.regression_test_project:
-		ValueCreator.random = false  # Results in RegressionTestProject must be always reproducible
-	else:
-		ValueCreator.random = true
-
+	ValueCreator.random = true
 	ValueCreator.number = 1000
-	ValueCreator.should_be_always_valid = true
 
 	HelpFunctions.initialize_list_of_available_classes()
 

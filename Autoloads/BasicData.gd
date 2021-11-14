@@ -2,22 +2,27 @@ extends Node
 
 ### Contains basic data about disabled things like functions etc.
 
-var regression_test_project: bool = false  # Set it to true in RegressionTestProject
+var custom_classes: Array = []  # List of all allowed classes that user choosed
+
+var all_available_classes: Array = []  # List of all classes that are instantable
 var base_classes: Array = []  # List of all allowed classes which can be used as Class.something else
 var argument_classes: Array = []  # Allowed classes that can be used as arguments, in normal usage this and base_classes are equal, but it is needed for custom classes e.g. custom_classes are [A,B] but this can be executed A.f(C)
 var allowed_thing: Dictionary = {}  # List of all classes with
 
 # Globablly disabled functions for all classes
+
+# Godot 4 Converter
 var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
-	"bake_navigation_mesh", # TODO too hard to find for now
-	"_update_shape", # TODO, probably crashes exported build
-	"set_visibility_range_begin", #54655
+	"bake_navigation_mesh",  # TODO too hard to find for now
+	"_update_shape",  # TODO, probably crashes exported build
+	"set_visibility_range_begin_margin",  #54655
+	"set_visibility_range_begin",  #54655
 	"set_is_setup",  # Just don't use, in SkeletonModification crashes
 	"set_bone_index",  # 54235
-	"set_modification_count",  #54234
+	"set_modification_count",  #54234, 54966
 	"add_modification",  # 54233
 	"set_selection_mode",  #54195
 	"map_pattern",  #54103
@@ -320,6 +325,19 @@ var disabled_classes: Array = [
 	###
 	"_GodotSharp",
 	###
+	### TODO
+	###
+	"ImmediateMesh",  #53623
+	"ItemList",  # Big numbers
+	"_ResourceLoader",  #Spams
+	"ResourceLoader",  #Spams
+	"PackedDataContainer",  #53554 - more crashes
+	"ProximityGroup3D",  # Not cherrypicked yet
+	###
+	### Exported build - some checks are disabled in exported build due to too big performance impact
+	###
+	"Image",
+	###
 	### Godot 4.0
 	###
 	#"OS",
@@ -350,27 +368,11 @@ var disabled_classes: Array = [
 	"CurveTexture",  #54477
 	"CurveXYZTexture",  #54477
 	"FogMaterial",  #54478
-	###
-	### TODO
-	###
-	"ImmediateMesh",  #53623
-	#"ItemList",  # Big numbers
-	"_ResourceLoader",  #Spams
-	"ResourceLoader",  #Spams
-	"PackedDataContainer",  #53554 - more crashes
-	#"ProximityGroup3D",  # Not cherrypicked yet
-	###
-	### Exported build - some checks are disabled in exported build due to too big performance impact
-	###
-	"Image",
 ]
 
 # Exceptions for e.g. float, String or int functions
 var variant_exceptions: Array = [
-	"to_float64_array",  #54182
-	"to_int64_array",  #54181
-	"to_float32_array",  #54182
-	"to_int32_array",  #54181
+# TODO
 ]
 
 # User defined allowed functions, empty means that this won't work
