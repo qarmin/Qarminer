@@ -13,7 +13,7 @@ var thing
 
 func _process(delta) -> void:
 	ValueCreator.random = true
-	ValueCreator.number = 1000
+	ValueCreator.number = 10000
 
 	HelpFunctions.initialize_list_of_available_classes()
 
@@ -28,7 +28,7 @@ func tests_all_functions() -> void:
 	ValueCreator.number = max_numbers[randi() % max_numbers.size()]
 	for type in range(TYPE_MAX):
 		if type == TYPE_NIL || type == TYPE_OBJECT:
-			continue
+			continue  # TODO Add support for objects
 		if debug_print:
 			print("\n#################### " + type_to_name(type) + " ####################")
 

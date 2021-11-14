@@ -28,7 +28,7 @@ func _ready() -> void:
 
 	for base_dir in ["res://test_gdscript/.import/", "res://test_gdscript/.godot/", "res://test_gdscript/"]:
 		if dir.open(base_dir) == OK:
-			var _unused = dir.list_dir_begin()
+			var _unused = dir.list_dir_begin(true, false)
 			var file_name: String = dir.get_next()
 			while file_name != "":
 				if file_name != ".." && file_name != ".":

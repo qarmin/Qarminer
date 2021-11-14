@@ -10,6 +10,7 @@ var argument_classes: Array = []  # Allowed classes that can be used as argument
 var allowed_thing: Dictionary = {}  # List of all classes with
 
 # Globablly disabled functions for all classes
+# TODOGODOT4
 var function_exceptions: Array = [
 	###
 	### Input crashes, still are some problems TODO
@@ -185,6 +186,7 @@ var function_exceptions: Array = [
 	#####
 	##### Goost
 	##### TODO: these take too long to execute, does not make sense to limit number of iterations ether.
+	##### TODO - remove this and put it into setting file
 	#####
 	"smooth_polyline_approx",
 	"smooth_polygon_approx",
@@ -233,6 +235,7 @@ var return_value_exceptions: Array = [
 ]
 
 # Globally disabled classes which causes bugs
+# TODOGODOT4
 var disabled_classes: Array = [
 	###
 	### Crashes, Freezes
@@ -278,46 +281,16 @@ var disabled_classes: Array = [
 	### Exported build - some checks are disabled in exported build due to too big performance impact
 	###
 	"Image",
-	#	###
-	#	### Godot 4.0
-	#	###
-	#	"OS",
-	#	"Thread",
-	#	"Semaphore",
-	#	"Mutex",
-	#	"GodotSharp",
-	#	###
-	#	### Godot 4.0 Additional
-	#	###
-	#	"Engine",  # This should be added also to Godot 3
-	#	"GodotSharp",  # TODO, also to Godot 3 add
-	#	"TextServer",  # RefCounted Server
-	#	"TextServerAdvanced",  # RefCounted Server
-	#	"TextServerExtension",  # RefCounted Server
-	#	"TextServer",  # RefCounted Server
-	#	"EngineDebugger",  # Crashes in exported project, not very usable
-	#	"InputMap",
-	#	"FontData",  # 53846
-	#	"MultiplayerAPI",  # Crashes TODO
-	#	"VisibleOnScreenEnabler3D",  #53565
-	#	"VisibleOnScreenEnabler2D",  #53565
-	#	"AudioStreamPlayer3D",  #53567
-	#	"AudioStreamPlayer2D",  #53567
-	#	"VideoPlayer",  #53568
-	#	"ImageTexture3D",  #53721
-	#	"XRCamera3D",  #53725
-	#	"CurveTexture",  #54477
-	#	"CurveXYZTexture",  #54477
-	#	"FogMaterial",  #54478
+	# TODOGODOT4 - update here exluded list from Godot4
 ]
 
 # Exceptions for e.g. float, String or int functions
+# TODOGODOT4
 var variant_exceptions: Array = [
-# TODO
+# TO FIND
 ]
 
 # User defined allowed functions, empty means that this won't work
 var allowed_functions: Array = [
-#	"notification",
-#	"propagate_notification",
+# TO FIND
 ]
