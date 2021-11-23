@@ -83,7 +83,6 @@ func parse_and_return_objects(method_data: Dictionary, name_of_class: String, de
 				arguments_array.push_back(ValueCreator.get_vector3())
 			TYPE_VECTOR3_ARRAY:
 				arguments_array.push_back(ValueCreator.get_packed_vector3_array())
-			# TODOGODOT4
 			TYPE_CALLABLE:
 				arguments_array.push_back(Callable(BoxMesh.new(), "Rar"))
 			TYPE_VECTOR3I:
@@ -293,8 +292,6 @@ func return_gdscript_code_which_run_this_object(data) -> String:
 				if i != data.size() - 1:
 					return_string += ", "
 			return_string += "])"
-
-		# TODOGODOT4
 		TYPE_CALLABLE:
 			return_string = 'Callable(BoxMesh.new(),"")'
 		TYPE_STRING_NAME:

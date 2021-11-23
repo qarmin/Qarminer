@@ -28,11 +28,8 @@ func _ready() -> void:
 
 	for base_dir in ["res://test_gdscript/.import/", "res://test_gdscript/.godot/", "res://test_gdscript/"]:
 		if dir.open(base_dir) == OK:
-			print(base_dir)
-			# Godot 4 Converter
-			var _unused = dir.list_dir_begin(true, true)
+			var _unused = dir.list_dir_begin(!(true), !(false))
 			var file_name: String = dir.get_next()
-			print(file_name)
 			while file_name != "":
 				if file_name != ".." && file_name != ".":
 					var rr: int = dir.remove(base_dir + file_name)

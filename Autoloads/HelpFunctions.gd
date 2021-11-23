@@ -86,7 +86,6 @@ func check_if_is_allowed(method_data: Dictionary) -> bool:
 			|| t == TYPE_VECTOR2_ARRAY
 			|| t == TYPE_VECTOR3
 			|| t == TYPE_VECTOR3_ARRAY
-			# TODOGODOT4
 			|| t == TYPE_VECTOR2I
 			|| t == TYPE_VECTOR3I
 			|| t == TYPE_STRING_NAME

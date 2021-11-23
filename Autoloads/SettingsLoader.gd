@@ -1,19 +1,17 @@
 extends Node
 
-var SETTINGS_FILE_NAME: String = "res://settings.txt"
+const SETTINGS_FILE_NAME: String = "res://settings.txt"
 const DEBUG_PRINT: bool = true  # Enable to validate your scipt
 var settings: Dictionary = {}
 
 
-# Godot 4 convert
 # Loads settings from file
 func _init():
 	load_deprecated_classes()
 
 	var file_handler: File = File.new()
-	if !file_handler.file_exists("res://settings.txt"):
+	if !file_handler.file_exists(SETTINGS_FILE_NAME):
 		print("Setting file doesn't exists, so it cannot be loaded.")
-		file_handler.close()
 	else:
 		var res: int = file_handler.open(SETTINGS_FILE_NAME, File.READ)
 		if res != OK:

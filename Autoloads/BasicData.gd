@@ -10,33 +10,16 @@ var argument_classes: Array = []  # Allowed classes that can be used as argument
 var allowed_thing: Dictionary = {}  # List of all classes with
 
 # Globablly disabled functions for all classes
-
-# Godot 4 Converter
+# TODOGODOT4
 var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
-	"bake_navigation_mesh",  # TODO too hard to find for now
-	"_update_shape",  # TODO, probably crashes exported build
 	"set_visibility_range_begin_margin",  #54655
 	"set_visibility_range_begin",  #54655
-	"set_is_setup",  # Just don't use, in SkeletonModification crashes
-	"set_bone_index",  # 54235
-	"set_modification_count",  #54234, 54966
-	"add_modification",  # 54233
-	"set_selection_mode",  #54195
 	"map_pattern",  #54103
-	"generate_lod",  #53876
 	"_broadcast",  #53873
-	"get_word_under_caret",  # 53872
-	"get_custom_monitor",  # TODO crashes only in exported build
-	"_main_gutter_draw_callback",  #53863
-	"clear_glyphs",  #53846
-	"render_range",  #53842
-	"set_texture_offsets",  #53841
 	"get_indexed",  #53840
-	"set_disable_mode",  #53838
-	"get_tiles_to_be_removed_on_change",  # 53809
 	"make_polygons_from_outlines",  #53808
 	"set_clip_children",  #53667
 	"set_base",  #53723
@@ -45,31 +28,25 @@ var function_exceptions: Array = [
 	"set_bone_children",  #53646
 	"global_pose_z_forward_to_bone_forward",  #53646
 	"lightmap_unwrap",  # 52929
-	"get_render_info",  #53644
-	"set_pre_process_time",  # CPUParticles3D Freeze - disable also in Godot 3
-	"add_source",  #53624
-	"set_source_id",  #53624
 	"get_property_list",  #53604
 	"set_projector",  #53604
-	"set_instance_count",  #53603
-	"set_use_colors",  #53603
-	"set_transform_format",  #53603
-	#"push_unhandled_input",  # Probably same as above, but TODO
 	"commit",  #53191
 	"commit_to_arrays",  #53191
 	"popup_centered_ratio",  #53566
 	"set_stream",  #52853
 	"shaped_text_draw_outline",  #53562
-	"import_post",  #53561
 	"set_input_as_handled",  #53560
 	"add_node",  #53558
-	"as_text",  #53224
 	"set_language",  #53218
 	"set_texture",  #46828
 	"_activate",  #45984
 	"compress_from_channels",  # Image
 	"open_midi_inputs",  #52821
 	"load_threaded_request",  #46762
+	"bake_navigation_mesh",  # TODO too hard to find for now
+	"set_is_setup",  # Just don't use, in SkeletonModification crashes
+	"_update_shape",  # TODO, probably crashes exported build
+	"get_custom_monitor",  # TODO crashes only in exported build
 	###
 	### Input crashes, still are some problems TODO
 	###
@@ -244,6 +221,7 @@ var function_exceptions: Array = [
 	#####
 	##### Goost
 	##### TODO: these take too long to execute, does not make sense to limit number of iterations ether.
+	##### TODO - remove this and put it into setting file
 	#####
 	"smooth_polyline_approx",
 	"smooth_polygon_approx",
@@ -292,6 +270,7 @@ var return_value_exceptions: Array = [
 ]
 
 # Globally disabled classes which causes bugs
+# TODOGODOT4
 var disabled_classes: Array = [
 	###
 	### Crashes, Freezes
@@ -337,26 +316,25 @@ var disabled_classes: Array = [
 	### Exported build - some checks are disabled in exported build due to too big performance impact
 	###
 	"Image",
-	###
+	# TODOGODOT4 - update here exluded list from Godot4
+		###
 	### Godot 4.0
 	###
-	#"OS",
-	#"Thread",
+	"OS",
+	"Thread",
 	"Semaphore",
 	"Mutex",
 	"GodotSharp",
 	###
 	### Godot 4.0 Additional
 	###
-	"Engine",  # This should be added also to Godot 3
-	"GodotSharp",  # TODO, also to Godot 3 add
 	"TextServer",  # RefCounted Server
 	"TextServerAdvanced",  # RefCounted Server
 	"TextServerExtension",  # RefCounted Server
 	"TextServer",  # RefCounted Server
 	"EngineDebugger",  # Crashes in exported project, not very usable
 	"InputMap",
-	"FontData",  # 53846
+	"FontData",  # 53846 # Enable later
 	"MultiplayerAPI",  # Crashes TODO
 	"VisibleOnScreenEnabler3D",  #53565
 	"VisibleOnScreenEnabler2D",  #53565
@@ -365,18 +343,16 @@ var disabled_classes: Array = [
 	"VideoPlayer",  #53568
 	"ImageTexture3D",  #53721
 	"XRCamera3D",  #53725
-	"CurveTexture",  #54477
-	"CurveXYZTexture",  #54477
 	"FogMaterial",  #54478
 ]
 
 # Exceptions for e.g. float, String or int functions
+# TODOGODOT4
 var variant_exceptions: Array = [
-# TODO
+# TO FIND
 ]
 
 # User defined allowed functions, empty means that this won't work
 var allowed_functions: Array = [
-#	"notification",
-#	"propagate_notification",
+# TO FIND
 ]

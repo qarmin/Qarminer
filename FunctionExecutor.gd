@@ -57,7 +57,7 @@ func _ready() -> void:
 
 		for base_dir in ["res://test_resources/.import/", "res://test_resources/.godot/", "res://test_resources/"]:
 			if dir.open(base_dir) == OK:
-				var _unused = dir.list_dir_begin(true,true)
+				var _unused = dir.list_dir_begin(!(true), !(false))
 				var file_name: String = dir.get_next()
 				while file_name != "":
 					if file_name != ".." && file_name != ".":
@@ -170,7 +170,7 @@ func tests_all_functions() -> void:
 				save_to_file_to_screen("\n" + to_print, to_print)
 
 			var object: Object = ClassDB.instantiate(name_of_class)
-			assert(object != null) #,"Object must be instantable")
+			assert(object != null)  #,"Object must be instantable")
 			if add_to_tree:
 				if object is Node:
 					add_child(object)
