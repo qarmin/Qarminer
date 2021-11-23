@@ -15,6 +15,8 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
+	"set_mesh", # 55266
+	"set_use_all_surfaces", # 55266
 	"set_visibility_range_begin_margin",  #54655
 	"set_visibility_range_begin",  #54655
 	"map_pattern",  #54103
