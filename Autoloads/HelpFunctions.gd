@@ -127,7 +127,7 @@ func remove_disabled_methods(method_list: Array, exceptions: Array) -> Array:
 				index = method_index
 				break
 		if index != -1:
-			new_method_list.remove(index)
+			new_method_list.remove_at(index)
 	return new_method_list
 
 
