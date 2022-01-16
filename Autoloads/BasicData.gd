@@ -281,6 +281,9 @@ var disabled_classes: Array = [
 	### Exported build - some checks are disabled in exported build due to too big performance impact
 	###
 	"Image",
+	# Backported Navigation changes also backport bugged classes
+	"NavigationAgent2D",
+	"NavigationAgent",
 	# TODOGODOT4 - update here exluded list from Godot4
 ]
 

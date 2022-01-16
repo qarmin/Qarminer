@@ -124,6 +124,9 @@ func _ready() -> void:
 		var _a: int = file_handler.open("res://results.txt", File.WRITE)
 		var _b: int = timer_file_handler.open("res://timer.txt", File.WRITE)
 		var _c: int = memory_usage_file_handler.open("res://memory_usage.txt", File.WRITE)
+		var current_memory: float = Performance.get_monitor(Performance.MEMORY_STATIC) / 1048576.0
+		memory_before = current_memory
+		memory_usage_file_handler.store_string("When,Class,Function,Current Memory Usage,Difference\n")
 
 
 func _process(_delta: float) -> void:
@@ -156,6 +159,7 @@ func tests_all_functions() -> void:
 			var _b: int = timer_file_handler.open("res://timer.txt", File.WRITE)
 		if memory_usage_file_handler.get_position() > 1000000000:
 			var _c: int = memory_usage_file_handler.open("res://memory_usage.txt", File.WRITE)
+			memory_usage_file_handler.store_string("When,Class,Function,Current Memory Usage,Difference\n")
 
 	if (delay_removing_added_nodes_to_next_frame && add_to_tree) || (delay_removing_added_arguments_to_next_frame && add_arguments_to_tree):
 		to_print = "\n\tfor i in get_children():\n\t\ti.queue_free()"
@@ -236,11 +240,11 @@ func tests_all_functions() -> void:
 						if save_data_to_file:
 							timer = OS.get_ticks_usec()
 
-						save_memory_file("Before: " + name_of_class + "." + method_data["name"] + " ", false)
+						save_memory_file("Before," + name_of_class + "," + method_data["name"] + ",")
 
 						var ret = object.callv(method_data["name"], arguments)
 
-						save_memory_file("After:  " + name_of_class + "." + method_data["name"] + " ", true)
+						save_memory_file("After," + name_of_class + "," + method_data["name"] + ",")
 
 						if save_data_to_file:
 							timer_file_handler.store_string(str(OS.get_ticks_usec() - timer) + " us - " + name_of_class + "." + method_data["name"] + "\n")
@@ -303,16 +307,13 @@ func save_to_file_to_screen(text_to_save_to_file: String, text_to_print_on_scree
 		print(text_to_print_on_screen)
 
 
-func save_memory_file(text: String, show_difference: bool) -> void:
+func save_memory_file(text: String) -> void:
 	if save_data_to_file || debug_print:
 		var current_memory: float = Performance.get_monitor(Performance.MEMORY_STATIC) / 1048576.0
-		var difference: String = ""
-		if show_difference:
-			difference = " (difference " + str(current_memory - memory_before) + " MB)"
-		var upd_text: String = text + str(current_memory) + " MB" + difference
+		var upd_text: String = text + str(current_memory) + "," + str(current_memory - memory_before) + "\n"
 		memory_before = current_memory
 		if save_data_to_file:
-			memory_usage_file_handler.store_string(upd_text + "\n")
+			memory_usage_file_handler.store_string(upd_text)
 			# memory_usage_file_handler.flush() # Don't need to be flushed immendiatelly
 #		if debug_print: # Not really usable, but can be enabled if needed
 #			print(upd_text)
