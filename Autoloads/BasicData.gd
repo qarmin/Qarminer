@@ -15,6 +15,7 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
+	"generate_scene", # 57130
 	"set_mesh", # 55266
 	"set_use_all_surfaces", # 55266
 	"set_visibility_range_begin_margin",  #54655

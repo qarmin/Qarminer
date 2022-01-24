@@ -86,13 +86,13 @@ func type_to_name(type: int) -> String:
 			name = "bool"
 		TYPE_COLOR:
 			name = "Color"
-		TYPE_COLOR_ARRAY:
+		TYPE_PACKED_COLOR_ARRAY:
 			name = "PackedColorArray"
 		TYPE_DICTIONARY:
 			name = "Dictionary"
 		TYPE_INT:
 			name = "int"
-		TYPE_INT32_ARRAY:
+		TYPE_PACKED_INT32_ARRAY:
 			name = "PackedInt32Array"
 		TYPE_NODE_PATH:
 			name = "NodePath"
@@ -100,11 +100,11 @@ func type_to_name(type: int) -> String:
 			name = "Plane"
 		TYPE_QUATERNION:
 			name = "Quaternion"
-		TYPE_RAW_ARRAY:
+		TYPE_PACKED_BYTE_ARRAY:
 			name = "PackedByteArray"
 		TYPE_FLOAT:
 			name = "float"
-		TYPE_FLOAT32_ARRAY:
+		TYPE_PACKED_FLOAT32_ARRAY:
 			name = "PackedFloat32Array"
 		TYPE_RECT2:
 			name = "Rect2"
@@ -112,7 +112,7 @@ func type_to_name(type: int) -> String:
 			name = "RID"
 		TYPE_STRING:
 			name = "String"
-		TYPE_STRING_ARRAY:
+		TYPE_PACKED_STRING_ARRAY:
 			name = "PackedStringArray"
 		TYPE_TRANSFORM3D:
 			name = "Transform3D"
@@ -124,7 +124,7 @@ func type_to_name(type: int) -> String:
 			name = "PackedVector2Array"
 		TYPE_VECTOR3:
 			name = "Vector3"
-		TYPE_VECTOR3_ARRAY:
+		TYPE_PACKED_VECTOR3_ARRAY:
 			name = "PackedVector3Array"
 		TYPE_VECTOR2I:
 			name = "Vector2i"
@@ -138,9 +138,9 @@ func type_to_name(type: int) -> String:
 			name = "Callable"
 		TYPE_SIGNAL:
 			name = "Signal"
-		TYPE_FLOAT64_ARRAY:
+		TYPE_PACKED_FLOAT64_ARRAY:
 			thing = "PackedFloat64Array"
-		TYPE_INT64_ARRAY:
+		TYPE_PACKED_INT64_ARRAY:
 			thing = "PackedInt64Array"
 		TYPE_OBJECT:
 			assert(false)  #,"Object not supported")
@@ -166,13 +166,13 @@ func get_basic_thing(type: int):
 			thing = ValueCreator.get_bool()
 		TYPE_COLOR:
 			thing = ValueCreator.get_color()
-		TYPE_COLOR_ARRAY:
+		TYPE_PACKED_COLOR_ARRAY:
 			thing = ValueCreator.get_packed_color_array()
 		TYPE_DICTIONARY:
 			thing = ValueCreator.get_dictionary()
 		TYPE_INT:
 			thing = ValueCreator.get_int()
-		TYPE_INT32_ARRAY:
+		TYPE_PACKED_INT32_ARRAY:
 			thing = ValueCreator.get_packed_int32_array()
 		TYPE_NODE_PATH:
 			thing = ValueCreator.get_nodepath()
@@ -180,11 +180,11 @@ func get_basic_thing(type: int):
 			thing = ValueCreator.get_plane()
 		TYPE_QUATERNION:
 			thing = ValueCreator.get_quaternion()
-		TYPE_RAW_ARRAY:
+		TYPE_PACKED_BYTE_ARRAY:
 			thing = ValueCreator.get_packed_byte_array()
 		TYPE_FLOAT:
 			thing = ValueCreator.get_float()
-		TYPE_FLOAT32_ARRAY:
+		TYPE_PACKED_FLOAT32_ARRAY:
 			thing = ValueCreator.get_packed_float32_array()
 		TYPE_RECT2:
 			thing = ValueCreator.get_rect2()
@@ -192,7 +192,7 @@ func get_basic_thing(type: int):
 			thing = RID()
 		TYPE_STRING:
 			thing = ValueCreator.get_string()
-		TYPE_STRING_ARRAY:
+		TYPE_PACKED_STRING_ARRAY:
 			thing = ValueCreator.get_packed_string_array()
 		TYPE_TRANSFORM3D:
 			thing = ValueCreator.get_transform3d()
@@ -204,7 +204,7 @@ func get_basic_thing(type: int):
 			thing = ValueCreator.get_packed_vector2_array()
 		TYPE_VECTOR3:
 			thing = ValueCreator.get_vector3()
-		TYPE_VECTOR3_ARRAY:
+		TYPE_PACKED_VECTOR3_ARRAY:
 			thing = ValueCreator.get_packed_vector3_array()
 		TYPE_OBJECT:
 			assert(false)  #,"Object not supported")
@@ -220,9 +220,9 @@ func get_basic_thing(type: int):
 			thing = ValueCreator.get_string_name()
 		TYPE_RECT2I:
 			thing = ValueCreator.get_rect2i()
-		TYPE_FLOAT64_ARRAY:
+		TYPE_PACKED_FLOAT64_ARRAY:
 			thing = ValueCreator.get_packed_float64_array()
-		TYPE_INT64_ARRAY:
+		TYPE_PACKED_INT64_ARRAY:
 			thing = ValueCreator.get_packed_int64_array()
 		TYPE_SIGNAL:
 			thing = ValueCreator.get_signal()

@@ -34,13 +34,13 @@ func parse_and_return_objects(method_data: Dictionary, name_of_class: String, de
 				arguments_array.push_back(ValueCreator.get_bool())
 			TYPE_COLOR:
 				arguments_array.push_back(ValueCreator.get_color())
-			TYPE_COLOR_ARRAY:
+			TYPE_PACKED_COLOR_ARRAY:
 				arguments_array.push_back(ValueCreator.get_packed_color_array())
 			TYPE_DICTIONARY:
 				arguments_array.push_back(ValueCreator.get_dictionary())
 			TYPE_INT:
 				arguments_array.push_back(ValueCreator.get_int())
-			TYPE_INT32_ARRAY:
+			TYPE_PACKED_INT32_ARRAY:
 				arguments_array.push_back(ValueCreator.get_packed_int32_array())
 			TYPE_NODE_PATH:
 				arguments_array.push_back(ValueCreator.get_nodepath())
@@ -57,11 +57,11 @@ func parse_and_return_objects(method_data: Dictionary, name_of_class: String, de
 				arguments_array.push_back(ValueCreator.get_plane())
 			TYPE_QUATERNION:
 				arguments_array.push_back(ValueCreator.get_quaternion())
-			TYPE_RAW_ARRAY:
+			TYPE_PACKED_BYTE_ARRAY:
 				arguments_array.push_back(ValueCreator.get_packed_byte_array())
 			TYPE_FLOAT:
 				arguments_array.push_back(ValueCreator.get_float())
-			TYPE_FLOAT32_ARRAY:
+			TYPE_PACKED_FLOAT32_ARRAY:
 				arguments_array.push_back(ValueCreator.get_packed_float32_array())
 			TYPE_RECT2:
 				arguments_array.push_back(ValueCreator.get_rect2())
@@ -69,7 +69,7 @@ func parse_and_return_objects(method_data: Dictionary, name_of_class: String, de
 				arguments_array.push_back(RID())
 			TYPE_STRING:
 				arguments_array.push_back(ValueCreator.get_string())
-			TYPE_STRING_ARRAY:
+			TYPE_PACKED_STRING_ARRAY:
 				arguments_array.push_back(ValueCreator.get_packed_string_array())
 			TYPE_TRANSFORM3D:
 				arguments_array.push_back(ValueCreator.get_transform3d())
@@ -77,11 +77,11 @@ func parse_and_return_objects(method_data: Dictionary, name_of_class: String, de
 				arguments_array.push_back(ValueCreator.get_transform2D())
 			TYPE_VECTOR2:
 				arguments_array.push_back(ValueCreator.get_vector2())
-			TYPE_VECTOR2_ARRAY:
+			TYPE_PACKED_VECTOR2_ARRAY:
 				arguments_array.push_back(ValueCreator.get_packed_vector2_array())
 			TYPE_VECTOR3:
 				arguments_array.push_back(ValueCreator.get_vector3())
-			TYPE_VECTOR3_ARRAY:
+			TYPE_PACKED_VECTOR3_ARRAY:
 				arguments_array.push_back(ValueCreator.get_packed_vector3_array())
 			TYPE_CALLABLE:
 				arguments_array.push_back(Callable(BoxMesh.new(), "Rar"))
@@ -93,9 +93,9 @@ func parse_and_return_objects(method_data: Dictionary, name_of_class: String, de
 				arguments_array.push_back(ValueCreator.get_string_name())
 			TYPE_RECT2I:
 				arguments_array.push_back(ValueCreator.get_rect2i())
-			TYPE_FLOAT64_ARRAY:
+			TYPE_PACKED_FLOAT64_ARRAY:
 				arguments_array.push_back(ValueCreator.get_packed_float64_array())
-			TYPE_INT64_ARRAY:
+			TYPE_PACKED_INT64_ARRAY:
 				arguments_array.push_back(ValueCreator.get_packed_int64_array())
 			TYPE_SIGNAL:
 				arguments_array.push_back(ValueCreator.get_signal())
@@ -152,7 +152,7 @@ func return_gdscript_code_which_run_this_object(data) -> String:
 			return_string += ", "
 			return_string += return_gdscript_code_which_run_this_object(data.a)
 			return_string += ")"
-		TYPE_COLOR_ARRAY:
+		TYPE_PACKED_COLOR_ARRAY:
 			return_string = "PackedColorArray(["
 			for i in data.size():
 				return_string += return_gdscript_code_which_run_this_object(data[i])
@@ -170,7 +170,7 @@ func return_gdscript_code_which_run_this_object(data) -> String:
 			return_string += "}"
 		TYPE_INT:
 			return_string = str(data)
-		TYPE_INT32_ARRAY:
+		TYPE_PACKED_INT32_ARRAY:
 			return_string = "PackedInt32Array(["
 			for i in data.size():
 				return_string += return_gdscript_code_which_run_this_object(data[i])
@@ -217,7 +217,7 @@ func return_gdscript_code_which_run_this_object(data) -> String:
 			return_string += ", "
 			return_string += return_gdscript_code_which_run_this_object(data.w)
 			return_string += ")"
-		TYPE_RAW_ARRAY:
+		TYPE_PACKED_BYTE_ARRAY:
 			return_string = "PackedByteArray(["
 			for i in data.size():
 				return_string += return_gdscript_code_which_run_this_object(data[i])
@@ -226,7 +226,7 @@ func return_gdscript_code_which_run_this_object(data) -> String:
 			return_string += "])"
 		TYPE_FLOAT:
 			return_string = str(data)
-		TYPE_FLOAT32_ARRAY:
+		TYPE_PACKED_FLOAT32_ARRAY:
 			return_string = "PackedFloat32Array(["
 			for i in data.size():
 				return_string += return_gdscript_code_which_run_this_object(data[i])
@@ -243,7 +243,7 @@ func return_gdscript_code_which_run_this_object(data) -> String:
 			return_string = "RID()"
 		TYPE_STRING:
 			return_string = '"' + data + '"'
-		TYPE_STRING_ARRAY:
+		TYPE_PACKED_STRING_ARRAY:
 			return_string = "PackedStringArray(["
 			for i in data.size():
 				return_string += return_gdscript_code_which_run_this_object(data[i])
@@ -270,7 +270,7 @@ func return_gdscript_code_which_run_this_object(data) -> String:
 			return_string += ", "
 			return_string += return_gdscript_code_which_run_this_object(data.y)
 			return_string += ")"
-		TYPE_VECTOR2_ARRAY:
+		TYPE_PACKED_VECTOR2_ARRAY:
 			return_string = "PackedVector2Array(["
 			for i in data.size():
 				return_string += return_gdscript_code_which_run_this_object(data[i])
@@ -285,7 +285,7 @@ func return_gdscript_code_which_run_this_object(data) -> String:
 			return_string += ", "
 			return_string += return_gdscript_code_which_run_this_object(data.z)
 			return_string += ")"
-		TYPE_VECTOR3_ARRAY:
+		TYPE_PACKED_VECTOR3_ARRAY:
 			return_string = "PackedVector3Array(["
 			for i in data.size():
 				return_string += return_gdscript_code_which_run_this_object(data[i])
@@ -318,14 +318,14 @@ func return_gdscript_code_which_run_this_object(data) -> String:
 			return_string += ", "
 			return_string += return_gdscript_code_which_run_this_object(data.size)
 			return_string += ")"
-		TYPE_FLOAT64_ARRAY:
+		TYPE_PACKED_FLOAT64_ARRAY:
 			return_string = "PackedFloat64Array(["
 			for i in data.size():
 				return_string += return_gdscript_code_which_run_this_object(data[i])
 				if i != data.size() - 1:
 					return_string += ", "
 			return_string += "])"
-		TYPE_INT64_ARRAY:
+		TYPE_PACKED_INT64_ARRAY:
 			return_string = "PackedInt64Array(["
 			for i in data.size():
 				return_string += return_gdscript_code_which_run_this_object(data[i])

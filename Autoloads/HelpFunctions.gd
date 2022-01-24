@@ -65,33 +65,33 @@ func check_if_is_allowed(method_data: Dictionary) -> bool:
 			|| t == TYPE_BASIS
 			|| t == TYPE_BOOL
 			|| t == TYPE_COLOR
-			|| t == TYPE_COLOR_ARRAY
+			|| t == TYPE_PACKED_COLOR_ARRAY
 			|| t == TYPE_DICTIONARY
 			|| t == TYPE_INT
-			|| t == TYPE_INT32_ARRAY
+			|| t == TYPE_PACKED_INT32_ARRAY
 			|| t == TYPE_NODE_PATH
 			|| t == TYPE_OBJECT
 			|| t == TYPE_PLANE
 			|| t == TYPE_QUATERNION
-			|| t == TYPE_RAW_ARRAY
+			|| t == TYPE_PACKED_BYTE_ARRAY
 			|| t == TYPE_FLOAT
-			|| t == TYPE_FLOAT32_ARRAY
+			|| t == TYPE_PACKED_FLOAT32_ARRAY
 			|| t == TYPE_RECT2
 			|| t == TYPE_RID
 			|| t == TYPE_STRING
-			|| t == TYPE_STRING_ARRAY
+			|| t == TYPE_PACKED_STRING_ARRAY
 			|| t == TYPE_TRANSFORM3D
 			|| t == TYPE_TRANSFORM2D
 			|| t == TYPE_VECTOR2
-			|| t == TYPE_VECTOR2_ARRAY
+			|| t == TYPE_PACKED_VECTOR2_ARRAY
 			|| t == TYPE_VECTOR3
-			|| t == TYPE_VECTOR3_ARRAY
+			|| t == TYPE_PACKED_VECTOR3_ARRAY
 			|| t == TYPE_VECTOR2I
 			|| t == TYPE_VECTOR3I
 			|| t == TYPE_STRING_NAME
 			|| t == TYPE_RECT2I
-			|| t == TYPE_FLOAT64_ARRAY
-			|| t == TYPE_INT64_ARRAY
+			|| t == TYPE_PACKED_FLOAT64_ARRAY
+			|| t == TYPE_PACKED_INT64_ARRAY
 			|| t == TYPE_CALLABLE
 		):
 			print("MISSING TYPE in function " + method_data["name"] + "  --  Variant type - " + str(t))
