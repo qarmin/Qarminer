@@ -15,6 +15,7 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
+	"_update_hover", # 57710
 	"generate_scene", # 57130
 	"set_mesh", # 55266
 	"set_use_all_surfaces", # 55266
