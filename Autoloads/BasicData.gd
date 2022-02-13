@@ -15,6 +15,8 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
+	"remove_tab", # 58048
+	"set_tab_count", # 58047
 	"_update_hover", # 57710
 	"generate_scene", # 57130
 	"set_mesh", # 55266
