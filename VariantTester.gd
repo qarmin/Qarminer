@@ -120,7 +120,7 @@ func type_to_name(type: int) -> String:
 			name = "Transform2D"
 		TYPE_VECTOR2:
 			name = "Vector2"
-		TYPE_VECTOR2_ARRAY:
+		TYPE_PACKED_VECTOR2_ARRAY:
 			name = "PackedVector2Array"
 		TYPE_VECTOR3:
 			name = "Vector3"
@@ -200,7 +200,7 @@ func get_basic_thing(type: int):
 			thing = ValueCreator.get_transform2D()
 		TYPE_VECTOR2:
 			thing = ValueCreator.get_vector2()
-		TYPE_VECTOR2_ARRAY:
+		TYPE_PACKED_VECTOR2_ARRAY:
 			thing = ValueCreator.get_packed_vector2_array()
 		TYPE_VECTOR3:
 			thing = ValueCreator.get_vector3()
