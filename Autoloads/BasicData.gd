@@ -24,6 +24,7 @@ var function_exceptions: Array = [
 	###
 	### Reported crashes
 	###
+	"reset_instance_physics_interpolation", #58293
 	"lightmap_unwrap",  # 52929
 	"replace_by",  #53775
 	"bake",  #53774
