@@ -179,9 +179,9 @@ func move_nodes() -> void:
 			child.set_floor_max_angle(ValueCreator.get_bool())
 			child.move_and_slide()
 		elif child is RigidDynamicBody3D:
-			child.add_force(ValueCreator.get_vector3(), ValueCreator.get_vector3())
+			child.add_constant_force(ValueCreator.get_vector3(), ValueCreator.get_vector3())
 		elif child is RigidDynamicBody2D:
-			child.add_force(ValueCreator.get_vector2(), ValueCreator.get_vector2())
+			child.add_constant_force(ValueCreator.get_vector2(), ValueCreator.get_vector2())
 		elif child is Joint3D:
 			var nodea: Node = get_child(randi() % get_child_count())
 			var nodeb: Node = get_child(randi() % get_child_count())
