@@ -15,19 +15,10 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
-	"remove_tab", # 58048
-	"set_tab_count", # 58047
-	"_update_hover", # 57710
-	"generate_scene", # 57130
-	"set_mesh", # 55266
-	"set_use_all_surfaces", # 55266
 	"set_visibility_range_begin_margin",  #54655
 	"set_visibility_range_begin",  #54655
-	"map_pattern",  #54103
 	"_broadcast",  #53873
 	"get_indexed",  #53840
-	"make_polygons_from_outlines",  #53808
-	"set_clip_children",  #53667
 	"set_base",  #53723
 	"set_polygon",  #53722
 	"add_bone",  #53646
@@ -39,13 +30,11 @@ var function_exceptions: Array = [
 	"commit",  #53191
 	"commit_to_arrays",  #53191
 	"popup_centered_ratio",  #53566
-	"set_stream",  #52853
 	"shaped_text_draw_outline",  #53562
 	"set_input_as_handled",  #53560
 	"add_node",  #53558
 	"set_language",  #53218
 	"set_texture",  #46828
-	"_activate",  #45984
 	"compress_from_channels",  # Image
 	"open_midi_inputs",  #52821
 	"load_threaded_request",  #46762
@@ -67,36 +56,17 @@ var function_exceptions: Array = [
 	###
 	"lightmap_unwrap",  # 52929
 	"replace_by",  #53775
-	"bake",  #53774
-	"create_debug_tangents",  #53182
-	"create_from_mesh",  #53181
-	"remove_line",  # 49571 - Memory leak
-	"connect_to_signal",  # 53622
 	"set_extra_cull_margin",  # 53623
-	"_thread_done",  #53621
-	"set_physics_enabled",  #53620
-	"_iter_init",  #53554
 	"set_block_signals",  #53553
 	"make_atlas",  #51154
-	"set_basic_type",  #53456
-	"set_custom_viewport",  #53445
-	"_draw_soft_mesh",  #53437
 	"light_unwrap",  #52929
-	"create_action",  #50769
 	"_editor_settings_changed",  # 45979
 	"set_script",  #46120
 	"set_icon",  #46189
 	"set_editor_hint",  #46252 - Fixed only for master(due compatibility)
 	"set_probe_data",  #46570
 	"add_vertex",  #47066
-	"create_shape_owner",  #47135
-	"shape_owner_get_owner",  #47135
-	"get_bind_bone",  #47358
-	"get_bind_name",  #47358
-	"get_bind_pose",  #47358
-	"decompress",  #50787
 	"convert",  # 46479
-	"save_png_to_buffer",  # 50787
 	###
 	### Not worth to check, cause a lot of crashes but it is very unlikelly that users will use them
 	###
