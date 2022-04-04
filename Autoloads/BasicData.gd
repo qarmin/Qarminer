@@ -24,6 +24,9 @@ var function_exceptions: Array = [
 	###
 	### Reported crashes
 	###
+	"get_bind_bone", # Fixed only in master
+	"get_bind_name", # Fixed only in master
+	"get_bind_pose", # Fixed only in master
 	"create_from_mesh", # TODO
 	"reset_instance_physics_interpolation", #58293
 	"lightmap_unwrap",  # 52929
