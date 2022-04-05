@@ -130,7 +130,7 @@ func load_setting(setting_name: String, value_type: int, default_value):
 		else:
 			if settings[setting_name] is String:
 				if value_type == TYPE_REAL:
-					print("INFO: Properly loaded setting '" + setting_name + "' with value '" + settings[setting_name].to_float() + "'.")
+					print("INFO: Properly loaded setting '" + setting_name + "' with value '" + settings[setting_name] + "'.")
 					return settings[setting_name].to_float()
 				elif value_type == TYPE_BOOL:
 					var val: String = settings[setting_name]
@@ -143,7 +143,7 @@ func load_setting(setting_name: String, value_type: int, default_value):
 					printerr("ERROR: Expected 'true' or 'false' value for '" + setting_name + "', found '" + val + "'")
 
 				elif value_type == TYPE_INT:
-					print("INFO: Properly loaded setting '" + setting_name + "' with value '" + settings[setting_name].to_int() + "'.")
+					print("INFO: Properly loaded setting '" + setting_name + "' with value '" + settings[setting_name] + "'.")
 					return settings[setting_name].to_int()
 				else:
 					printerr("ERROR: Expected Int, Float or Bool settings for '" + setting_name + "', found '" + settings[setting_name] + "'")

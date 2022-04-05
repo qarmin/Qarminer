@@ -257,6 +257,7 @@ var disabled_classes: Array = [
 	###
 	### TODO
 	###
+	"ParallaxBackground", # TODO threading problem, cannot reproduce
 	"ImmediateGeometry",  #53623
 	"ItemList",  # Big numbers
 	"_ResourceLoader",  #Spams
