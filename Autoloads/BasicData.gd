@@ -15,6 +15,8 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
+	"get_seamless_image",#59915
+	"_generate_texture", #59915
 	"set_visibility_range_begin_margin",  #54655
 	"set_visibility_range_begin",  #54655
 	"_broadcast",  #53873
@@ -320,6 +322,8 @@ var disabled_classes: Array = [
 	"ImageTexture3D",  #53721
 	"XRCamera3D",  #53725
 	"FogMaterial",  #54478
+	"AudioStreamGenerator", # TODO threading crash 
+	"AudioStreamGeneratorPlayback", # TODO threading crash
 ]
 
 # Exceptions for e.g. float, String or int functions
