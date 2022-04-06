@@ -24,6 +24,8 @@ var function_exceptions: Array = [
 	###
 	### Reported crashes
 	###
+	"remove_line", #59935
+	"bake_navigation_mesh", # Threading problem, needs to find exact steps to reproduce
 	"get_bind_bone", # Fixed only in master
 	"get_bind_name", # Fixed only in master
 	"get_bind_pose", # Fixed only in master
