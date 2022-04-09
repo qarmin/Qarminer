@@ -46,6 +46,10 @@ var timer_file_handler: File = File.new()
 var memory_usage_file_handler: File = File.new()
 var memory_before: float = 0.0
 
+# This setting allow to decrease number of executed functions on object, to be able to easily find the smallest subset of functions
+# that will cause problem with Godot
+var maximum_executed_functions_on_object : int = -1 
+var currently_executed_functions_on_object : int = 0
 
 # Prepare options for desired type of test
 func _ready() -> void:
@@ -102,6 +106,7 @@ func _ready() -> void:
 	test_one_class_multiple_times = SettingsLoader.load_setting("test_one_class_multiple_times", TYPE_BOOL, test_one_class_multiple_times)
 	save_resources_to_file = SettingsLoader.load_setting("save_resources_to_file", TYPE_BOOL, save_resources_to_file)
 	how_many_times_test_one_class = SettingsLoader.load_setting("how_many_times_test_one_class", TYPE_INT, how_many_times_test_one_class)
+	maximum_executed_functions_on_object = SettingsLoader.load_setting("maximum_executed_functions_on_object", TYPE_INT, maximum_executed_functions_on_object)
 
 	# Initialize array of objects
 #	BasicData.custom_classes = []  # Here can be choosen any classes that user want to use
@@ -165,6 +170,7 @@ func tests_all_functions() -> void:
 
 	for name_of_class in tested_classes:
 		for _f in range(number_of_classes_repeats):
+			currently_executed_functions_on_object = 0
 			if debug_print || save_data_to_file:
 				to_print = "\n######################################## " + name_of_class + " ########################################"
 				save_to_file_to_screen("\n" + to_print, to_print)
@@ -192,6 +198,9 @@ func tests_all_functions() -> void:
 				for method_data in method_list:
 					function_number += 1
 					if !miss_some_functions || randi() % 2 == 0:
+						currently_executed_functions_on_object += 1
+						if maximum_executed_functions_on_object >= 0 && currently_executed_functions_on_object > maximum_executed_functions_on_object:
+							break
 						var arguments: Array = ParseArgumentType.parse_and_return_objects(method_data, name_of_class, debug_print)
 
 						if use_always_new_object && (debug_print || save_data_to_file):
