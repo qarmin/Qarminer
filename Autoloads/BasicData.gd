@@ -326,6 +326,7 @@ var disabled_classes: Array = [
 	"AudioStreamGenerator", # TODO threading crash 
 	"AudioStreamGeneratorPlayback", # TODO threading crash
 	"NoiseTexture", #59915
+	"VideoStreamPlayer", #53568
 ]
 
 # Exceptions for e.g. float, String or int functions
