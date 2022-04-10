@@ -48,8 +48,9 @@ var memory_before: float = 0.0
 
 # This setting allow to decrease number of executed functions on object, to be able to easily find the smallest subset of functions
 # that will cause problem with Godot
-var maximum_executed_functions_on_object : int = -1 
-var currently_executed_functions_on_object : int = 0
+var maximum_executed_functions_on_object: int = -1
+var currently_executed_functions_on_object: int = 0
+
 
 # Prepare options for desired type of test
 func _ready() -> void:

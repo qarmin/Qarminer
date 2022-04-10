@@ -3,6 +3,93 @@ extends Node
 ### Scripts to arguments and return needed info about them.
 
 
+func parse_and_return_functions_to_create_object(method_data: Dictionary, name_of_class: String, debug_print: bool = false) -> Array:
+	var arguments_array: Array = []
+
+	for argument in method_data["args"]:
+		match argument.type:
+			TYPE_NIL:  # Looks that this means VARIANT not null
+				arguments_array.push_back('ValueCreator.get_object("Object")')
+			TYPE_AABB:
+				arguments_array.push_back("ValueCreator.get_aabb()")
+			TYPE_ARRAY:
+				arguments_array.push_back("ValueCreator.get_array()")
+			TYPE_BASIS:
+				arguments_array.push_back("ValueCreator.get_basis()")
+			TYPE_BOOL:
+				arguments_array.push_back("ValueCreator.get_bool()")
+			TYPE_COLOR:
+				arguments_array.push_back("ValueCreator.get_color()")
+			TYPE_COLOR_ARRAY:
+				arguments_array.push_back("ValueCreator.get_packed_color_array()")
+			TYPE_DICTIONARY:
+				arguments_array.push_back("ValueCreator.get_dictionary()")
+			TYPE_INT:
+				arguments_array.push_back("ValueCreator.get_int()")
+			TYPE_INT_ARRAY:
+				arguments_array.push_back("ValueCreator.get_packed_int32_array()")
+			TYPE_NODE_PATH:
+				arguments_array.push_back("ValueCreator.get_nodepath()")
+			TYPE_OBJECT:
+				if String(argument["class_name"]).empty():
+					arguments_array.push_back('ValueCreator.get_object("Object")')
+				else:
+					arguments_array.push_back('ValueCreator.get_object("' + argument["class_name"] + '")')
+			TYPE_PLANE:
+				arguments_array.push_back("ValueCreator.get_plane()")
+			TYPE_QUAT:
+				arguments_array.push_back("ValueCreator.get_quaternion()")
+			TYPE_RAW_ARRAY:
+				arguments_array.push_back("ValueCreator.get_packed_byte_array()")
+			TYPE_REAL:
+				arguments_array.push_back("ValueCreator.get_float()")
+			TYPE_REAL_ARRAY:
+				arguments_array.push_back("ValueCreator.get_packed_float32_array()")
+			TYPE_RECT2:
+				arguments_array.push_back("ValueCreator.get_rect2()")
+			TYPE_RID:
+				arguments_array.push_back("RID()")
+			TYPE_STRING:
+				arguments_array.push_back("ValueCreator.get_string()")
+			TYPE_STRING_ARRAY:
+				arguments_array.push_back("ValueCreator.get_packed_string_array()")
+			TYPE_TRANSFORM:
+				arguments_array.push_back("ValueCreator.get_transform3d()")
+			TYPE_TRANSFORM2D:
+				arguments_array.push_back("ValueCreator.get_transform2D()")
+			TYPE_VECTOR2:
+				arguments_array.push_back("ValueCreator.get_vector2()")
+			TYPE_VECTOR2_ARRAY:
+				arguments_array.push_back("ValueCreator.get_packed_vector2_array()")
+			TYPE_VECTOR3:
+				arguments_array.push_back("ValueCreator.get_vector3()")
+			TYPE_VECTOR3_ARRAY:
+				arguments_array.push_back("ValueCreator.get_packed_vector3_array()")
+#			# TODOGODOT4
+#			TYPE_CALLABLE:
+#				arguments_array.push_back(Callable(BoxMesh.new(), "Rar"))
+#			TYPE_VECTOR3I:
+#				arguments_array.push_back('ValueCreator.get_vector3i()')
+#			TYPE_VECTOR2I:
+#				arguments_array.push_back('ValueCreator.get_vector2i()')
+#			TYPE_STRING_NAME:
+#				arguments_array.push_back('ValueCreator.get_string_name()')
+#			TYPE_RECT2I:
+#				arguments_array.push_back('ValueCreator.get_rect2i()')
+#			TYPE_FLOAT64_ARRAY:
+#				arguments_array.push_back('ValueCreator.get_packed_float64_array()')
+#			TYPE_INT64_ARRAY:
+#				arguments_array.push_back('ValueCreator.get_packed_int64_array()')
+#			TYPE_SIGNAL:
+#				arguments_array.push_back('ValueCreator.get_signal()')
+			_:
+				assert(false, "Missing type --" + str(argument.type) + "-- needs to be added to project")
+
+	if debug_print:
+		print("\n" + name_of_class + "." + method_data["name"] + " --- executing with " + str(arguments_array.size()) + " parameters " + str(arguments_array))
+	return arguments_array
+
+
 func parse_and_return_objects(method_data: Dictionary, name_of_class: String, debug_print: bool = false) -> Array:
 	var arguments_array: Array = []
 

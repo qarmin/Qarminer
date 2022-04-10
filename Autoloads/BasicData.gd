@@ -24,13 +24,13 @@ var function_exceptions: Array = [
 	###
 	### Reported crashes
 	###
-	"remove_line", #59935
-	"bake_navigation_mesh", # Threading problem, needs to find exact steps to reproduce
-	"get_bind_bone", # Fixed only in master
-	"get_bind_name", # Fixed only in master
-	"get_bind_pose", # Fixed only in master
-	"create_from_mesh", # TODO
-	"reset_instance_physics_interpolation", #58293
+	"remove_line",  #59935
+	"bake_navigation_mesh",  # Threading problem, needs to find exact steps to reproduce
+	"get_bind_bone",  # Fixed only in master
+	"get_bind_name",  # Fixed only in master
+	"get_bind_pose",  # Fixed only in master
+	"create_from_mesh",  # TODO
+	"reset_instance_physics_interpolation",  #58293
 	"lightmap_unwrap",  # 52929
 	"replace_by",  #53775
 	"set_extra_cull_margin",  # 53623
@@ -259,7 +259,7 @@ var disabled_classes: Array = [
 	###
 	### TODO
 	###
-	"ParallaxBackground", # TODO threading problem, cannot reproduce
+	"ParallaxBackground",  # TODO threading problem, cannot reproduce
 	"ImmediateGeometry",  #53623
 	"ItemList",  # Big numbers
 	"_ResourceLoader",  #Spams
