@@ -208,18 +208,21 @@ func get_packed_color_array() -> PackedColorArray:
 	return PackedColorArray(array)
 
 
-
 func get_string_name() -> StringName:
 	return StringName(get_string())
+
 
 func get_vector2i() -> Vector2i:
 	return Vector2i(get_int(), get_int())
 
+
 func get_vector3i() -> Vector3i:
 	return Vector3i(get_int(), get_int(), get_int())
 
+
 func get_rect2i() -> Rect2i:
 	return Rect2i(get_vector2i(), get_vector2i())
+
 
 func get_packed_int64_array() -> PackedInt64Array:
 	var array: Array = []
@@ -227,11 +230,13 @@ func get_packed_int64_array() -> PackedInt64Array:
 		array.append(get_int())
 	return PackedInt64Array(array)
 
+
 func get_packed_float64_array() -> PackedFloat64Array:
 	var array: Array = []
 	for _i in range(int(min(max_array_size, number))):
 		array.append(get_float())
 	return PackedFloat64Array(array)
+
 
 func get_signal() -> Signal:
 	return Signal()
