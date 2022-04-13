@@ -15,6 +15,7 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
+	"select_all", #60207
 	"set_custom_viewport",  #60052
 	"get_seamless_image",  #59915
 	"_generate_texture",  #59915
