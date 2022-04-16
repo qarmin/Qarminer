@@ -24,6 +24,7 @@ var function_exceptions: Array = [
 	###
 	### Reported crashes
 	###
+	"process_action",  #60297
 	"remove_line",  #59935
 	"bake_navigation_mesh",  # Threading problem, needs to find exact steps to reproduce
 	"get_bind_bone",  # Fixed only in master
@@ -120,7 +121,7 @@ var function_exceptions: Array = [
 	"execute",
 	"alert",  # Stupid alert window opens
 	###
-	### Godot freeze or run very cslow
+	### Godot freeze or run very slow
 	###
 	"poll",
 	"delay_usec",

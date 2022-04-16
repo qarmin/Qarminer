@@ -11,7 +11,6 @@ func _ready() -> void:
 	randomize()
 
 
-# TODO re-enable when notification will be available
 func get_int() -> int:
 	if int(number) == 0:
 		return 0
