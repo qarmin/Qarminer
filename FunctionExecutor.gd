@@ -54,7 +54,6 @@ var currently_executed_functions_on_object: int = 0
 
 # Prepare options for desired type of test
 func _ready() -> void:
-	ValueCreator.random = true
 	ValueCreator.number = 100
 
 	if save_resources_to_file:

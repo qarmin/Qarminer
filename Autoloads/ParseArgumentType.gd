@@ -96,21 +96,18 @@ func parse_and_return_objects(method_data: Dictionary, name_of_class: String, de
 	for argument in method_data["args"]:
 		match argument.type:
 			TYPE_NIL:  # Looks that this means VARIANT not null
-				if ValueCreator.random == false:
-					arguments_array.push_back(false)
+				if randi() % 3:
+					arguments_array.push_back(ValueCreator.get_array())
+				elif randi() % 3:
+					arguments_array.push_back(ValueCreator.get_object("Object"))
+				elif randi() % 3:
+					arguments_array.push_back(ValueCreator.get_dictionary())
+				elif randi() % 3:
+					arguments_array.push_back(ValueCreator.get_string())
+				elif randi() % 3:
+					arguments_array.push_back(ValueCreator.get_int())
 				else:
-					if randi() % 3:
-						arguments_array.push_back(ValueCreator.get_array())
-					elif randi() % 3:
-						arguments_array.push_back(ValueCreator.get_object("Object"))
-					elif randi() % 3:
-						arguments_array.push_back(ValueCreator.get_dictionary())
-					elif randi() % 3:
-						arguments_array.push_back(ValueCreator.get_string())
-					elif randi() % 3:
-						arguments_array.push_back(ValueCreator.get_int())
-					else:
-						arguments_array.push_back(ValueCreator.get_basis())
+					arguments_array.push_back(ValueCreator.get_basis())
 			TYPE_AABB:
 				arguments_array.push_back(ValueCreator.get_aabb())
 			TYPE_ARRAY:

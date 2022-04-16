@@ -107,9 +107,6 @@ func load_basic_settings_from_file() -> void:
 	var allowed_functions: Array = load_setting("allowed_functions", TYPE_ARRAY, [])
 	BasicData.allowed_functions = allowed_functions
 
-	var value_random: bool = load_setting("value_random", TYPE_BOOL, ValueCreator.random)
-	ValueCreator.random = value_random
-
 	var value_max: int = load_setting("value_max", TYPE_INT, ValueCreator.number)
 	ValueCreator.number = value_max
 

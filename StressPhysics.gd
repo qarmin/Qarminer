@@ -32,7 +32,6 @@ var created_objects = 0
 
 # Function collects names of nodes which will be later used to create its instances
 func _ready() -> void:
-	ValueCreator.random = true
 	ValueCreator.number = 10
 
 	HelpFunctions.initialize_list_of_available_classes()

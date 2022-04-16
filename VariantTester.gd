@@ -12,7 +12,6 @@ var thing
 
 
 func _process(delta) -> void:
-	ValueCreator.random = true
 	ValueCreator.number = 10000
 
 	HelpFunctions.initialize_list_of_available_classes()

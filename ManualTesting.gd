@@ -102,7 +102,6 @@ func _ready():
 	file_handler.store_string(
 		"""extends Node
 func _ready() -> void:
-	ValueCreator.random = true
 	ValueCreator.number = [1,10,100,1000,10000,100000,100000][randi() % 7]
 
 func _process(_delta) -> void:

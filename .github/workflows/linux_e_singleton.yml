@@ -1,4 +1,4 @@
-name: 🐧 Godot 3.x GLES2 01 Default
+name: 🐧 Godot 3.x Singleton Testing
 on:
   push:
   pull_request:

@@ -39,9 +39,9 @@ func disable_nodes_with_internal_child() -> void:
 # This is useful when e.g. adding/renaming type Transform -> Transform3D
 func check_if_is_allowed(method_data: Dictionary) -> bool:
 	# Function is virtual or vararg, so we just skip it
-	if method_data["flags"] == method_data["flags"] | METHOD_FLAG_VIRTUAL:
+	if method_data["flags"] & METHOD_FLAG_VIRTUAL != 0:
 		return false
-	if method_data["flags"] == method_data["flags"] | 128:  # VARARG TODO, Godot issue, add missing flag binding
+	if method_data["flags"] & 128 != 0:  # VARARG TODO, Godot issue, add missing flag binding
 		return false
 
 	for arg in method_data["args"]:
