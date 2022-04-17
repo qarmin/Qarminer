@@ -310,7 +310,18 @@ func return_gdscript_code_which_run_this_object(data) -> String:
 					return_string += ", "
 			return_string += "])"
 		TYPE_REAL:
-			return_string = str(data)
+			if is_inf(data):
+				if data > 0:
+					return_string = "INF"
+				else:
+					return_string = "-INF"
+			elif is_nan(data):
+				if data > 0:
+					return_string = "NAN"
+				else:
+					return_string = "-NAN"
+			else:
+				return_string = str(data)
 		TYPE_REAL_ARRAY:
 			return_string = "PoolRealArray(["
 			for i in data.size():

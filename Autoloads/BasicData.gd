@@ -22,8 +22,24 @@ var function_exceptions: Array = [
 	"_vp_input",
 	"_vp_unhandled_input",
 	###
+	### Freeze
+	###
+	"popup_centered_minsize",  # 60326
+	###
 	### Reported crashes
 	###
+	"set_polygon",  #60325
+	"set_depth",  #60325
+	"set_radius",  #60325
+	"set_inner_radius",  #60325
+	"clip_polyline_with_polygon_2d",  #60324
+	"clip_polygons_2d",  #60324
+	"offset_polyline_2d",  #60324
+	"offset_polygon_2d",  #60324
+	"exclude_polygons_2d",  #60324
+	"intersect_polyline_with_polygon_2d",  #60324
+	"merge_polygons_2d",  #60324
+	"intersect_polygons_2d",  #60324
 	"process_action",  #60297
 	"remove_line",  #59935
 	"bake_navigation_mesh",  # Threading problem, needs to find exact steps to reproduce

@@ -18,6 +18,19 @@ func get_int() -> int:
 
 
 func get_float() -> float:
+	var numm = randi() % 100
+	if numm == 0:
+		return -INF
+	elif numm == 1:
+		return INF
+	elif numm == 2:
+		return NAN
+	elif numm == 3:
+		return -NAN
+	elif numm == 4:
+		return 0.0
+	elif numm == 5:
+		return -0.0
 	return (randf() * number * 2) - (number)
 
 
@@ -72,10 +85,10 @@ func get_color() -> Color:
 
 
 func get_string() -> String:
-	var number = randi() % 4
-	if number == 0:
+	var numm = randi() % 4
+	if numm == 0:
 		return String(".")
-	elif number == 1:
+	elif numm == 1:
 		return str(randi())
 	return String()
 
