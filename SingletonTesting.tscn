@@ -1,4 +1,4 @@
-[gd_scene load_steps=2 format=3 uid="uid://cpk0b1di60s3p"]
+[gd_scene load_steps=2 format=3 uid="uid://c6xt6l30dbt0y"]
 
 [ext_resource type="Script" path="res://SingletonTesting.gd" id="1"]
 

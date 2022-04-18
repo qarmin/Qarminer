@@ -15,7 +15,14 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
-	"select_all", #60207
+	## TODO
+	"find_interaction_profile",  # OpenXRActionMap
+	"find_action_set",
+	###
+	"set_points",  # Already reported
+	"",  # Already reported
+	"",  # Already reported
+	"select_all",  #60207
 	"set_custom_viewport",  #60052
 	"get_seamless_image",  #59915
 	"_generate_texture",  #59915
@@ -43,7 +50,7 @@ var function_exceptions: Array = [
 	"open_midi_inputs",  #52821
 	"load_threaded_request",  #46762
 	"bake_navigation_mesh",  # TODO too hard to find for now
-	"set_is_setup",  # Just don't use, in SkeletonModification crashes
+	"set_is_setup",  # Just don't use, in SkeletonModification crashes a lot without reason
 	"_update_shape",  # TODO, probably crashes exported build
 	"get_custom_monitor",  # TODO crashes only in exported build
 	###
@@ -56,8 +63,37 @@ var function_exceptions: Array = [
 	"_vp_input",
 	"_vp_unhandled_input",
 	###
+	### Freeze
+	###
+	"popup_centered_clamped",  # 60326
+	###
 	### Reported crashes
 	###
+	"set_custom_viewport",  #60052
+	"create_convex_shape",  # TODO
+	"get_debug_mesh",  #60337
+	"set_radial_initial_angle",  #60338
+	"set_outer_radius",  #60325
+	"set_polygon",  #60325
+	"set_depth",  #60325
+	"set_radius",  #60325
+	"set_inner_radius",  #60325
+	"clip_polyline_with_polygon",  #60324
+	"clip_polygons",  #60324
+	"offset_polyline",  #60324
+	"offset_polygon",  #60324
+	"exclude_polygons",  #60324
+	"intersect_polyline_with_polygon",  #60324
+	"merge_polygons",  #60324
+	"intersect_polygons",  #60324
+	"process_action",  #60297
+	"remove_line",  #59935
+	"bake_navigation_mesh",  # Threading problem, needs to find exact steps to reproduce
+	"get_bind_bone",  # Fixed only in master
+	"get_bind_name",  # Fixed only in master
+	"get_bind_pose",  # Fixed only in master
+	"create_from_mesh",  # TODO
+	"reset_instance_physics_interpolation",  #58293
 	"lightmap_unwrap",  # 52929
 	"replace_by",  #53775
 	"set_extra_cull_margin",  # 53623
@@ -147,7 +183,7 @@ var function_exceptions: Array = [
 	"execute",
 	"alert",  # Stupid alert window opens
 	###
-	### Godot freeze or run very cslow
+	### Godot freeze or run very slow
 	###
 	"poll",
 	"delay_usec",
@@ -178,7 +214,7 @@ var function_exceptions: Array = [
 	"callv",
 	"call_func",
 	###
-	### Too dangerous, because add, mix and remove randomly nodes and objects
+	### Too dangerous, because add, mix and remove_at randomly nodes and objects
 	###
 	"replace_by",
 	"create_instance",
@@ -201,7 +237,7 @@ var function_exceptions: Array = [
 	#####
 	##### Goost
 	##### TODO: these take too long to execute, does not make sense to limit number of iterations ether.
-	##### TODO - remove this and put it into setting file
+	##### TODO - remove_at this and put it into setting file
 	#####
 	"smooth_polyline_approx",
 	"smooth_polygon_approx",
@@ -245,7 +281,7 @@ var return_value_exceptions: Array = [
 	"get_viewport",  # Node
 	"get_parent",  # Node
 	"get_tree",  # Node but only when adding to tree
-	"get_main_loop",  # _Engine.get_main_loop - not good idea to remove main loop
+	"get_main_loop",  # _Engine.get_main_loop - not good idea to remove_at main loop
 	"get_direct_space_state",
 ]
 
@@ -286,16 +322,20 @@ var disabled_classes: Array = [
 	###
 	### TODO
 	###
+	"ParallaxBackground",  # TODO threading problem, cannot reproduce
 	"ImmediateMesh",  #53623
 	"ItemList",  # Big numbers
 	"_ResourceLoader",  #Spams
 	"ResourceLoader",  #Spams
 	"PackedDataContainer",  #53554 - more crashes
-	"ProximityGroup3D",  # Not cherrypicked yet
+	"ProximityGroup",  # Not cherrypicked yet
 	###
 	### Exported build - some checks are disabled in exported build due to too big performance impact
 	###
 	"Image",
+	# Backported Node3D changes also backport bugged classes
+	"NavigationAgent2D",
+	"NavigationAgent3D",
 	# TODOGODOT4 - update here exluded list from Godot4
 	###
 	### Godot 4.0
@@ -313,21 +353,16 @@ var disabled_classes: Array = [
 	"TextServerExtension",  # RefCounted Server
 	"TextServer",  # RefCounted Server
 	"EngineDebugger",  # Crashes in exported project, not very usable
-	"InputMap",
+	"InputMap",  # Strange crashes
 	"FontData",  # 53846 # Enable later
 	"MultiplayerAPI",  # Crashes TODO
 	"VisibleOnScreenEnabler3D",  #53565
 	"VisibleOnScreenEnabler2D",  #53565
-	"AudioStreamPlayer3D",  #53567
-	"AudioStreamPlayer2D",  #53567
-	"VideoPlayer",  #53568
 	"ImageTexture3D",  #53721
 	"XRCamera3D",  #53725
 	"FogMaterial",  #54478
 	"AudioStreamGenerator",  # TODO threading crash
 	"AudioStreamGeneratorPlayback",  # TODO threading crash
-	"NoiseTexture",  #59915
-	"VideoStreamPlayer",  #53568
 ]
 
 # Exceptions for e.g. float, String or int functions

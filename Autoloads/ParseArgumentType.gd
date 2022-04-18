@@ -31,6 +31,7 @@ func parse_and_return_functions_to_create_object(method_data: Dictionary, name_o
 			TYPE_NODE_PATH:
 				arguments_array.push_back("ValueCreator.get_nodepath()")
 			TYPE_OBJECT:
+				# GODOT4
 				if String(argument["class_name"]).is_empty():
 					arguments_array.push_back('ValueCreator.get_object("Object")')
 				else:
@@ -56,7 +57,7 @@ func parse_and_return_functions_to_create_object(method_data: Dictionary, name_o
 			TYPE_TRANSFORM3D:
 				arguments_array.push_back("ValueCreator.get_transform3d()")
 			TYPE_TRANSFORM2D:
-				arguments_array.push_back("ValueCreator.get_transform2d()")
+				arguments_array.push_back("ValueCreator.get_transform2D()")
 			TYPE_VECTOR2:
 				arguments_array.push_back("ValueCreator.get_vector2()")
 			TYPE_PACKED_VECTOR2_ARRAY:
@@ -65,7 +66,9 @@ func parse_and_return_functions_to_create_object(method_data: Dictionary, name_o
 				arguments_array.push_back("ValueCreator.get_vector3()")
 			TYPE_PACKED_VECTOR3_ARRAY:
 				arguments_array.push_back("ValueCreator.get_packed_vector3_array()")
+			# TODOGODOT4
 			TYPE_CALLABLE:
+				# GODOT4
 				arguments_array.push_back('Callable(BoxMesh.new(), "Rar")')
 			TYPE_VECTOR3I:
 				arguments_array.push_back("ValueCreator.get_vector3i()")
@@ -95,21 +98,18 @@ func parse_and_return_objects(method_data: Dictionary, name_of_class: String, de
 	for argument in method_data["args"]:
 		match argument.type:
 			TYPE_NIL:  # Looks that this means VARIANT not null
-				if ValueCreator.random == false:
-					arguments_array.push_back(false)
+				if randi() % 3:
+					arguments_array.push_back(ValueCreator.get_array())
+				elif randi() % 3:
+					arguments_array.push_back(ValueCreator.get_object("Object"))
+				elif randi() % 3:
+					arguments_array.push_back(ValueCreator.get_dictionary())
+				elif randi() % 3:
+					arguments_array.push_back(ValueCreator.get_string())
+				elif randi() % 3:
+					arguments_array.push_back(ValueCreator.get_int())
 				else:
-					if randi() % 3:
-						arguments_array.push_back(ValueCreator.get_array())
-					elif randi() % 3:
-						arguments_array.push_back(ValueCreator.get_object("Object"))
-					elif randi() % 3:
-						arguments_array.push_back(ValueCreator.get_dictionary())
-					elif randi() % 3:
-						arguments_array.push_back(ValueCreator.get_string())
-					elif randi() % 3:
-						arguments_array.push_back(ValueCreator.get_int())
-					else:
-						arguments_array.push_back(ValueCreator.get_basis())
+					arguments_array.push_back(ValueCreator.get_basis())
 			TYPE_AABB:
 				arguments_array.push_back(ValueCreator.get_aabb())
 			TYPE_ARRAY:
@@ -169,6 +169,7 @@ func parse_and_return_objects(method_data: Dictionary, name_of_class: String, de
 				arguments_array.push_back(ValueCreator.get_vector3())
 			TYPE_PACKED_VECTOR3_ARRAY:
 				arguments_array.push_back(ValueCreator.get_packed_vector3_array())
+			# TODOGODOT4
 			TYPE_CALLABLE:
 				arguments_array.push_back(Callable(BoxMesh.new(), "Rar"))
 			TYPE_VECTOR3I:
@@ -311,7 +312,18 @@ func return_gdscript_code_which_run_this_object(data) -> String:
 					return_string += ", "
 			return_string += "])"
 		TYPE_FLOAT:
-			return_string = str(data)
+			if is_inf(data):
+				if data > 0:
+					return_string = "INF"
+				else:
+					return_string = "-INF"
+			elif is_nan(data):
+				if data > 0:
+					return_string = "NAN"
+				else:
+					return_string = "-NAN"
+			else:
+				return_string = str(data)
 		TYPE_PACKED_FLOAT32_ARRAY:
 			return_string = "PackedFloat32Array(["
 			for i in data.size():
@@ -378,6 +390,8 @@ func return_gdscript_code_which_run_this_object(data) -> String:
 				if i != data.size() - 1:
 					return_string += ", "
 			return_string += "])"
+
+		# TODOGODOT4
 		TYPE_CALLABLE:
 			return_string = 'Callable(BoxMesh.new(),"")'
 		TYPE_STRING_NAME:

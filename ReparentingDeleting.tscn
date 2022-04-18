@@ -1,4 +1,4 @@
-[gd_scene load_steps=2 format=3 uid="uid://5jc8wm8lvgy0"]
+[gd_scene load_steps=2 format=3 uid="uid://dcwuwcxmng3gy"]
 
 [ext_resource type="Script" path="res://ReparentingDeleting.gd" id="1"]
 

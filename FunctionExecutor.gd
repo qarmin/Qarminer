@@ -54,7 +54,6 @@ var currently_executed_functions_on_object: int = 0
 
 # Prepare options for desired type of test
 func _ready() -> void:
-	ValueCreator.random = true
 	ValueCreator.number = 100
 
 	if save_resources_to_file:
@@ -62,14 +61,14 @@ func _ready() -> void:
 
 		for base_dir in ["res://test_resources/.import/", "res://test_resources/.godot/", "res://test_resources/"]:
 			if dir.open(base_dir) == OK:
-				var _unused = dir.list_dir_begin()
+				var _unused = dir.list_dir_begin()  # TODOGODOT4 fill missing arguments https://github.com/godotengine/godot/pull/40547
 				var file_name: String = dir.get_next()
 				while file_name != "":
 					if file_name != ".." && file_name != ".":
-						var rr: int = dir.remove(base_dir + file_name)
+						var rr: int = dir.remove_at(base_dir + file_name)
 						assert(rr == OK)
 					file_name = dir.get_next()
-				var ret2: int = dir.remove(base_dir)
+				var ret2: int = dir.remove_at(base_dir)
 				assert(ret2 == OK)
 
 		var ret: int = dir.make_dir("res://test_resources")
@@ -130,6 +129,9 @@ func _ready() -> void:
 		var _a: int = file_handler.open("res://results.txt", File.WRITE)
 		var _b: int = timer_file_handler.open("res://timer.txt", File.WRITE)
 		var _c: int = memory_usage_file_handler.open("res://memory_usage.txt", File.WRITE)
+		var current_memory: float = Performance.get_monitor(Performance.MEMORY_STATIC) / 1048576.0
+		memory_before = current_memory
+		memory_usage_file_handler.store_string("When,Class,Function,Current Memory Usage,Difference\n")
 
 
 func _process(_delta: float) -> void:
@@ -162,6 +164,7 @@ func tests_all_functions() -> void:
 			var _b: int = timer_file_handler.open("res://timer.txt", File.WRITE)
 		if memory_usage_file_handler.get_position() > 1000000000:
 			var _c: int = memory_usage_file_handler.open("res://memory_usage.txt", File.WRITE)
+			memory_usage_file_handler.store_string("When,Class,Function,Current Memory Usage,Difference\n")
 
 	if (delay_removing_added_nodes_to_next_frame && add_to_tree) || (delay_removing_added_arguments_to_next_frame && add_arguments_to_tree):
 		to_print = "\n\tfor i in get_children():\n\t\ti.queue_free()"
@@ -202,6 +205,7 @@ func tests_all_functions() -> void:
 						currently_executed_functions_on_object += 1
 						if maximum_executed_functions_on_object >= 0 && currently_executed_functions_on_object > maximum_executed_functions_on_object:
 							break
+
 						var arguments: Array = ParseArgumentType.parse_and_return_objects(method_data, name_of_class, debug_print)
 
 						if use_always_new_object && (debug_print || save_data_to_file):
@@ -246,11 +250,11 @@ func tests_all_functions() -> void:
 						if save_data_to_file:
 							timer = Time.get_ticks_usec()
 
-						save_memory_file("Before: " + name_of_class + "." + method_data["name"] + " ", false)
+						save_memory_file("Before," + name_of_class + "," + method_data["name"] + ",")
 
 						var ret = object.callv(method_data["name"], arguments)
 
-						save_memory_file("After:  " + name_of_class + "." + method_data["name"] + " ", true)
+						save_memory_file("After," + name_of_class + "," + method_data["name"] + ",")
 
 						if save_data_to_file:
 							timer_file_handler.store_string(str(Time.get_ticks_usec() - timer) + " us - " + name_of_class + "." + method_data["name"] + "\n")
@@ -313,16 +317,13 @@ func save_to_file_to_screen(text_to_save_to_file: String, text_to_print_on_scree
 		print(text_to_print_on_screen)
 
 
-func save_memory_file(text: String, show_difference: bool) -> void:
+func save_memory_file(text: String) -> void:
 	if save_data_to_file || debug_print:
 		var current_memory: float = Performance.get_monitor(Performance.MEMORY_STATIC) / 1048576.0
-		var difference: String = ""
-		if show_difference:
-			difference = " (difference " + str(current_memory - memory_before) + " MB)"
-		var upd_text: String = text + str(current_memory) + " MB" + difference
+		var upd_text: String = text + str(current_memory) + "," + str(current_memory - memory_before) + "\n"
 		memory_before = current_memory
 		if save_data_to_file:
-			memory_usage_file_handler.store_string(upd_text + "\n")
+			memory_usage_file_handler.store_string(upd_text)
 			# memory_usage_file_handler.flush() # Don't need to be flushed immendiatelly
 #		if debug_print: # Not really usable, but can be enabled if needed
 #			print(upd_text)

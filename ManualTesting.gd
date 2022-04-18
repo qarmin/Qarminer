@@ -60,11 +60,17 @@ var excluded_functions: Array = [
 	"directional_light_create",
 	"instance_create2",
 	"line_shape_create",
-	#GODO4
 	# CRASHES
 	"cursor_set_custom_image",
 	"joint_clear",
 	"texture_2d_create",
+	"merge_polygons",
+	"skeleton_set_base_transform_2d",
+	"bake_render_uv2godot",
+	"bake_render_uv2",
+	"set_boot_image",
+	"set_id",
+	"",
 	# LEAK
 	"joint_create",
 	"separation_ray_shape_create",
@@ -92,38 +98,15 @@ var excluded_functions: Array = [
 
 func _ready():
 	# Classes that exists also as objects so they can't be used in this tool and must be manually created if needed
-	# GDScript, ResourceLoader, ResourceSaver
-#		"Engine", # Too error prone
-	var list_of_singletons = [
-		"Performance",
-		#		"TextServerManager", # TODO
-		"IP",
-		"ProjectSettings",
-		"Geometry2D",
-		"Geometry3D",
-		"OS",
-		"ClassDB",
-		"Marshalls",
-		"TranslationServer",
-		"Input",
-		"InputMap",
-		"EngineDebugger",
-		"Time",
-		"JavaClassWrapper",
-		"JavaScript",
-		"NavigationMeshGenerator",
-		"VisualScriptCustomNodes",
-		"DisplayServer",
-		"RenderingServer",
-		"AudioServer",
-		"PhysicsServer3D",
-		"PhysicsServer2D",
-		"NavigationServer2D",
-		"NavigationServer3D",
-		"XRServer",
-		"CameraServer",
-	]
+	# GODOT4 change
+	var list_of_singletons = Array(Engine.get_singleton_list())
 	list_of_singletons.sort()
+	list_of_singletons.erase("Geometry2D")  # Already tested and contains a lot of bugs
+	list_of_singletons.erase("Geometry3D")  # Already tested and contains a lot of bugs
+	list_of_singletons.erase("TextServerManager")  # TODO
+	list_of_singletons.erase("Engine")  # TODO
+#	list_of_singletons = list_of_singletons.slice(20,25) # TODO
+	print(list_of_singletons)
 
 	var file_handler = File.new()
 	var ret = file_handler.open("SingletonTesting.gd", File.WRITE)
@@ -132,7 +115,6 @@ func _ready():
 	file_handler.store_string(
 		"""extends Node
 func _ready() -> void:
-	ValueCreator.random = true
 	ValueCreator.number = [1,10,100,1000,10000,100000,100000][randi() % 7]
 
 func _process(_delta) -> void:
@@ -172,8 +154,6 @@ func _process(_delta) -> void:
 			for argument in arguments:
 				argument_number += 1
 				var variable_name = "temp_variable" + str(argument_number)
-				assert(variable_name is String)
-				assert(argument is String)
 				creation_of_arguments += "\tvar " + variable_name + " = " + argument + "\n"
 				creation_of_arguments += '\tprint("var ' + variable_name + ' = " + ParseArgumentType.return_gdscript_code_which_run_this_object(' + variable_name + "))\n"
 
@@ -233,7 +213,6 @@ func f_GDScript() -> void:
 	
 #	print("convert")
 #	convert(null,randi() % TYPE_MAX) # Editor error
-
 	print("cos")
 	cos(ValueCreator.get_float())
 	print("cosh")
@@ -398,5 +377,4 @@ func f_GDScript() -> void:
 	
 #	print("yield")
 #	yield(self,ValueCreator.get_string()) # 
-
 """

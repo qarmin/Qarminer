@@ -25,14 +25,13 @@ var created_objects = 0
 
 # Loop - exit after X frames
 # 	Create some physics nodes and add them to scene tree
-# 	Move nodes with set_position, add_force or similar
+# 	Move nodes with set_position, add_constant_force or similar
 #	Random Functions Executor - will probably show the biggest number of crashes, so for now it is better to disable it and fix rest of crashes. It execute on object all available functions without Object and Node functions.
 #	Delete some nodes - Randomly deletes nodes
 
 
 # Function collects names of nodes which will be later used to create its instances
 func _ready() -> void:
-	ValueCreator.random = true
 	ValueCreator.number = 10
 
 	HelpFunctions.initialize_list_of_available_classes()

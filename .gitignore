@@ -14,7 +14,6 @@ GDScript/
 Node2D.gd
 Node2D.tscn
 Node.gd
-Node.tscn
 Resources/
 mono_crash*
 temp_gdscript.gd
@@ -29,4 +28,6 @@ test_resources/
 test_gdscript/
 memory_usage.txt
 
+#
 SingletonTesting.gd
+Files/

@@ -28,14 +28,14 @@ func _ready() -> void:
 
 	for base_dir in ["res://test_gdscript/.import/", "res://test_gdscript/.godot/", "res://test_gdscript/"]:
 		if dir.open(base_dir) == OK:
-			var _unused = dir.list_dir_begin()
+			var _unused = dir.list_dir_begin()  # TODOGODOT4 fill missing arguments https://github.com/godotengine/godot/pull/40547
 			var file_name: String = dir.get_next()
 			while file_name != "":
 				if file_name != ".." && file_name != ".":
-					var rr: int = dir.remove(base_dir + file_name)
+					var rr: int = dir.remove_at(base_dir + file_name)
 					assert(rr == OK)
 				file_name = dir.get_next()
-			var ret2: int = dir.remove(base_dir)
+			var ret2: int = dir.remove_at(base_dir)
 			assert(ret2 == OK)
 
 	var ret: int = dir.make_dir("res://test_gdscript")
