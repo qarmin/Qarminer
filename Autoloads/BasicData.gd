@@ -28,6 +28,9 @@ var function_exceptions: Array = [
 	###
 	### Reported crashes
 	###
+	"get_debug_mesh", #60337
+	"set_radial_initial_angle", #60338
+	"set_outer_radius", #60325
 	"set_polygon",  #60325
 	"set_depth",  #60325
 	"set_radius",  #60325
