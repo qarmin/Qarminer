@@ -28,6 +28,8 @@ var function_exceptions: Array = [
 	###
 	### Reported crashes
 	###
+	"set_custom_viewport", #60052
+	"create_convex_shape", # TODO
 	"get_debug_mesh", #60337
 	"set_radial_initial_angle", #60338
 	"set_outer_radius", #60325
