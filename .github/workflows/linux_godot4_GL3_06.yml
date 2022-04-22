@@ -1,4 +1,4 @@
-name: 🐧 Godot 4 GL3 06 Big Numbers | Parent | Add to tree
+name: 🐧 Godot 4 GL3 06 Small Numbers | Parent | Add to tree
 on:
   push:
   pull_request:
@@ -29,7 +29,7 @@ jobs:
 
       - name: Configure Data
         run: |
-          sed -i 's/ValueCreator.number = 100/ValueCreator.number = 10000/' FunctionExecutor.gd
+          sed -i 's/ValueCreator.number = 100/ValueCreator.number = 5/' FunctionExecutor.gd
           sed -i 's/var use_parent_methods: bool = false/var use_parent_methods: bool = true/' FunctionExecutor.gd
           sed -i 's/add_to_tree: bool = false/add_to_tree: bool = true/' FunctionExecutor.gd
           

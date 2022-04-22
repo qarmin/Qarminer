@@ -20,6 +20,7 @@ var function_exceptions: Array = [
 	"find_action_set", #60374
 	"set_custom_minimum_size", #60376
 	###
+	"set_size", #60325
 	"_update_texture", #60373
 	"set_points",  # Already reported
 	"select_all",  #60207
