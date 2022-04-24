@@ -16,12 +16,13 @@ var function_exceptions: Array = [
 	### Godot 4.0
 	###
 	## TODO
+	"set_zoom",  # 60492
+	"set_end",  # 60492
 	"find_interaction_profile",  # 60375
-	"find_action_set", #60374
-	"set_custom_minimum_size", #60376
-	###
-	"set_size", #60325
-	"_update_texture", #60373
+	"find_action_set",  #60374
+	"set_custom_minimum_size",  #60376
+	"set_size",  #60325
+	"_update_texture",  #60373
 	"set_points",  # Already reported
 	"select_all",  #60207
 	"set_custom_viewport",  #60052

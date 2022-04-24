@@ -125,4 +125,9 @@ if file_contents.find("Attempted to free invalid ID") != -1:
     #sys.exit(61)
 
 
+if file_contents.find("Killed") != -1:
+    print('ERROR: CI was killed due one of possible bugs')
+    sys.exit(62)
+
+
 sys.exit(0)
