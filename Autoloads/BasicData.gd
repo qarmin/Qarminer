@@ -206,6 +206,7 @@ var function_exceptions: Array = [
 	"print_all_textures_by_size",
 	"print_all_resources",
 	"print_resources_in_use",
+	"print_orphan_nodes",
 	###
 	### Can call other functions and broke everything
 	###
