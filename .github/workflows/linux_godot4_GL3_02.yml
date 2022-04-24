@@ -1,4 +1,4 @@
-name: 🐧 Godot 4 GL3 02 One by One | Parent | Add to tree
+name: 🐧 Godot 4 GL3 02 One by One | Parent | Add to tree | Maximum Tested
 on:
   push:
   pull_request:
@@ -32,6 +32,7 @@ jobs:
           sed -i 's/var add_to_tree: bool = false/var add_to_tree: bool = true/' FunctionExecutor.gd
           sed -i 's/var use_parent_methods: bool = false/var use_parent_methods: bool = true/' FunctionExecutor.gd
           sed -i 's/var test_one_class_multiple_times: bool = false/var test_one_class_multiple_times: bool = true/' FunctionExecutor.gd
+          sed -i 's/var maximum_executed_functions_on_object: int = -1/var maximum_executed_functions_on_object: int = 15/' FunctionExecutor.gd
           
 
       - name: Download Godot(GIT)
