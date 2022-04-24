@@ -28,6 +28,7 @@ var function_exceptions: Array = [
 	###
 	### Reported crashes
 	###
+	"open_midi_inputs",
 	"get_screen_position",
 	"get_screen_size",
 	"get_latin_keyboard_variant",
@@ -288,7 +289,7 @@ var disabled_classes: Array = [
 	###
 	### OS - in normal testing, can broke everything, but can be used in CI
 	###
-#	"_OS",
+	"_OS",
 	###
 	### Mono
 	###
