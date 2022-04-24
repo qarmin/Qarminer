@@ -28,6 +28,10 @@ var function_exceptions: Array = [
 	###
 	### Reported crashes
 	###
+	"get_screen_position",
+	"get_screen_size",
+	"get_latin_keyboard_variant",
+	"set_window_size",
 	"set_zoom", # 60492
 	"set_end", # 60492
 	"find_interaction_profile",  # 60375
@@ -170,6 +174,7 @@ var function_exceptions: Array = [
 	"print_all_textures_by_size",
 	"print_all_resources",
 	"print_resources_in_use",
+	"print_orphan_nodes",
 	###
 	### Can call other functions and broke everything
 	###
@@ -199,6 +204,10 @@ var function_exceptions: Array = [
 	"raise",
 	"add_child",
 	"add_child_below_node",
+	#####
+	##### Crash
+	#####
+	"crash",
 	#####
 	##### Goost
 	##### TODO: these take too long to execute, does not make sense to limit number of iterations ether.
@@ -279,7 +288,7 @@ var disabled_classes: Array = [
 	###
 	### OS - in normal testing, can broke everything, but can be used in CI
 	###
-	"_OS",
+#	"_OS",
 	###
 	### Mono
 	###
