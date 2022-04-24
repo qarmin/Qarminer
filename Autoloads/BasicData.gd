@@ -28,6 +28,12 @@ var function_exceptions: Array = [
 	###
 	### Reported crashes
 	###
+	"set_zoom", # 60492
+	"set_end", # 60492
+	"find_interaction_profile",  # 60375
+	"find_action_set", #60374
+	"set_custom_minimum_size", #60376
+	"set_size", #60325
 	"set_custom_viewport", #60052
 	"create_convex_shape", # TODO
 	"get_debug_mesh", #60337

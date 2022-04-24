@@ -1,9 +1,9 @@
-name: 🐧 Godot 3.x GLES2 08 Remove returned | Parent
+name: 🐧 Godot 3.x GLES2 08 Always New | Parent | Add to tree
 on:
   push:
   pull_request:
   schedule:
-    - cron: '0 0 * * 6'
+    - cron: '0 0 * * *'
 
 jobs:
   linux-sanitizer:
@@ -29,7 +29,8 @@ jobs:
 
       - name: Configure Data
         run: |
-          sed -i 's/remove_returned_value: bool = false/remove_returned_value: bool = true/' FunctionExecutor.gd
+          sed -i 's/use_always_new_object: bool = false/use_always_new_object: bool = true/' FunctionExecutor.gd
+          sed -i 's/add_to_tree: bool = false/add_to_tree: bool = true/' FunctionExecutor.gd
           sed -i 's/var use_parent_methods: bool = false/var use_parent_methods: bool = true/' FunctionExecutor.gd
           
 
