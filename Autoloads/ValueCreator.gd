@@ -20,14 +20,14 @@ func get_int() -> int:
 func get_float() -> float:
 	var numm = randi() % 100
 	if numm == 0:
-		return -INF
-	elif numm == 1:
-		return INF
-	elif numm == 2:
-		return NAN
-	elif numm == 3:
-		return -NAN
-	elif numm == 4:
+#		return -INF # TODO Reenable after fixing  60492, 60466, 60357, 60338, 60326
+#	elif numm == 1:
+#		return INF
+#	elif numm == 2:
+#		return NAN
+#	elif numm == 3:
+#		return -NAN
+#	elif numm == 4:
 		return 0.0
 	elif numm == 5:
 		return -0.0
@@ -110,6 +110,14 @@ func get_array() -> Array:
 func get_dictionary() -> Dictionary:
 	if randi() % 2:
 		return Dictionary({"roman": 22, 22: 25, BoxShape3D.new(): BoxShape3D.new()})
+	elif randi() % 2:
+		var dict = {}
+		var things = ["date","month","day","year"]
+		for i in randi() % 10:
+			var key = things[randi() % things.size()]
+			var value = get_int()
+			dict[key] = value
+		return dict
 	return Dictionary({})
 
 

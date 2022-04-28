@@ -237,6 +237,8 @@ var function_exceptions: Array = [
 	"raise",
 	"add_child",
 	"add_sibling",
+	
+	"crash",
 	#####
 	##### Goost
 	##### TODO: these take too long to execute, does not make sense to limit number of iterations ether.
@@ -343,7 +345,7 @@ var disabled_classes: Array = [
 	###
 	### Godot 4.0
 	###
-	"OS",
+#	"OS",
 	"Thread",
 	"Semaphore",
 	"Mutex",
