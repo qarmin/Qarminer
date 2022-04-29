@@ -15,6 +15,7 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
+	"get_seamless_image", # 60637
 	"set_data", # 60632
 	"get_font_name", # 60632
 	"set_zoom",  # 60492
