@@ -16,7 +16,6 @@ var delay_removing_added_nodes_to_next_frame: bool = false  # Delaying removing 
 var add_arguments_to_tree: bool = false  # Adds nodes which are used as arguments to tree
 var delay_removing_added_arguments_to_next_frame: bool = false  # Delaying removing arguments(nodes added to tree) to next frame, which force to render it
 var use_parent_methods: bool = false  # Allows to use parent methods e.g. Sprite can use Node.queue_free()
-var use_always_new_object: bool = false  # Don't allow to "remember" other function effects
 var number_of_function_repeats: int = 3  # How many times all functions will be executed in single class
 var number_of_classes_repeats: int = 1  # How much times class will be instanced in row(one after one)
 var allow_to_use_notification: bool = false  # Allows to use notification function in classes,to use this, parent methods must be enabled
@@ -95,7 +94,6 @@ func _ready() -> void:
 	add_arguments_to_tree = SettingsLoader.load_setting("add_arguments_to_tree", TYPE_BOOL, add_arguments_to_tree)
 	delay_removing_added_arguments_to_next_frame = SettingsLoader.load_setting("delay_removing_added_arguments_to_next_frame", TYPE_BOOL, delay_removing_added_arguments_to_next_frame)
 	use_parent_methods = SettingsLoader.load_setting("use_parent_methods", TYPE_BOOL, use_parent_methods)
-	use_always_new_object = SettingsLoader.load_setting("use_always_new_object", TYPE_BOOL, use_always_new_object)
 	number_of_function_repeats = SettingsLoader.load_setting("number_of_function_repeats", TYPE_INT, number_of_function_repeats)
 	number_of_classes_repeats = SettingsLoader.load_setting("number_of_classes_repeats", TYPE_INT, number_of_classes_repeats)
 	allow_to_use_notification = SettingsLoader.load_setting("allow_to_use_notification", TYPE_BOOL, allow_to_use_notification)
@@ -189,7 +187,7 @@ func tests_all_functions() -> void:
 			if shuffle_methods:
 				method_list.shuffle()
 
-			if (debug_print || save_data_to_file) && !use_always_new_object:
+			if debug_print || save_data_to_file:
 				function_number = 0
 				number_to_track_variables += 1
 				to_print = "\tvar temp_variable" + str(number_to_track_variables) + " = " + HelpFunctions.get_gdscript_class_creation(name_of_class)
@@ -207,14 +205,6 @@ func tests_all_functions() -> void:
 							break
 
 						var arguments: Array = ParseArgumentType.parse_and_return_objects(method_data, name_of_class, debug_print)
-
-						if use_always_new_object && (debug_print || save_data_to_file):
-							number_to_track_variables += 1
-							to_print = "\tvar temp_variable" + str(number_to_track_variables) + " = " + HelpFunctions.get_gdscript_class_creation(name_of_class)
-							if add_to_tree:
-								if object is Node:
-									to_print += "\n\tadd_child(temp_variable" + str(number_to_track_variables) + ")"
-							save_to_file_to_screen("\n" + to_print, to_print)
 
 						if add_arguments_to_tree:
 							for argument in arguments:
@@ -281,19 +271,6 @@ func tests_all_functions() -> void:
 										save_to_file_to_screen(to_print + remove_function, to_print + remove_function)
 
 									HelpFunctions.remove_thing(ret)
-
-						if use_always_new_object:
-							if !(delay_removing_added_nodes_to_next_frame && add_to_tree && object is Node):
-								if (object is Node) || !(object is Reference):
-									to_print = "\ttemp_variable" + str(number_to_track_variables)
-									to_print += HelpFunctions.remove_thing_string(object)
-									save_to_file_to_screen("\n" + to_print, to_print)
-								HelpFunctions.remove_thing(object)
-
-							object = ClassDB.instance(name_of_class)
-							if add_to_tree:
-								if object is Node:
-									add_child(object)
 
 			if save_resources_to_file:
 				var res_path: String = "res://test_resources/" + str(number_to_track_variables) + ".tres"
