@@ -15,19 +15,14 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
-	## TODO
+	"set_data", # 60632
+	"get_font_name", # 60632
 	"set_zoom",  # 60492
 	"set_end",  # 60492
-	"find_interaction_profile",  # 60375
-	"find_action_set",  #60374
 	"set_custom_minimum_size",  #60376
-	"set_size",  #60325
-	"_update_texture",  #60373
+	"set_size",  # 60326, 60325
 	"set_points",  # Already reported
-	"select_all",  #60207
 	"set_custom_viewport",  #60052
-	"get_seamless_image",  #59915
-	"_generate_texture",  #59915
 	"set_visibility_range_begin_margin",  #54655
 	"set_visibility_range_begin",  #54655
 	"_broadcast",  #53873
@@ -353,13 +348,14 @@ var disabled_classes: Array = [
 	###
 	### Godot 4.0 Additional
 	###
+	#	
 	"TextServer",  # RefCounted Server
 	"TextServerAdvanced",  # RefCounted Server
 	"TextServerExtension",  # RefCounted Server
 	"TextServer",  # RefCounted Server
 	"EngineDebugger",  # Crashes in exported project, not very usable
+	# Functions to be enabled(somewhere)
 	"InputMap",  # Strange crashes
-	"FontData",  # 53846 # Enable later
 	"MultiplayerAPI",  # Crashes TODO
 	"VisibleOnScreenEnabler3D",  #53565
 	"VisibleOnScreenEnabler2D",  #53565
