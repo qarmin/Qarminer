@@ -206,9 +206,10 @@ var function_exceptions: Array = [
 	"add_child",
 	"add_child_below_node",
 	#####
-	##### Crash
+	##### Crash and Trash
 	#####
 	"crash",
+	"move_to_trash",
 	#####
 	##### Goost
 	##### TODO: these take too long to execute, does not make sense to limit number of iterations ether.
