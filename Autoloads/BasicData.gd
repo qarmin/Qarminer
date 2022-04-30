@@ -15,6 +15,7 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
+	"get_breakpointed_lines", # 60668
 	"get_seamless_image", # 60637
 	"set_data", # 60632
 	"get_font_name", # 60632
@@ -51,6 +52,17 @@ var function_exceptions: Array = [
 	"set_is_setup",  # Just don't use, in SkeletonModification crashes a lot without reason
 	"_update_shape",  # TODO, probably crashes exported build
 	"get_custom_monitor",  # TODO crashes only in exported build
+	"clip_polyline_with_polygon",  #60324
+	"clip_polygons",  #60324
+	"offset_polyline",  #60324
+	"offset_polygon",  #60324
+	"exclude_polygons",  #60324
+	"intersect_polyline_with_polygon",  #60324
+	"merge_polygons",  #60324
+	"intersect_polygons",  #60324
+	"popup_centered_clamped",  # 60326
+
+
 	###
 	### Input crashes, still are some problems TODO
 	###
@@ -63,27 +75,37 @@ var function_exceptions: Array = [
 	###
 	### Freeze
 	###
-	"popup_centered_clamped",  # 60326
+	"popup_centered_minsize",  # 60326
 	###
 	### Reported crashes
 	###
-	"set_custom_viewport",  #60052
-	"create_convex_shape",  # TODO
-	"get_debug_mesh",  #60337
-	"set_radial_initial_angle",  #60338
-	"set_outer_radius",  #60325
+	"set_zoom_min", # 60492
+	"set_zoom_max", # 60492
+	"open_midi_inputs", # 52821
+	"set_window_size", # 60466
+	"set_zoom", # 60492
+	"set_end", # 60492
+	"find_interaction_profile",  # 60375
+	"find_action_set", #60374
+	"set_custom_minimum_size", #60376
+	"set_size", #60325
+	"set_custom_viewport", #60052
+	"create_convex_shape", # TODO
+	"get_debug_mesh", #60337
+	"set_radial_initial_angle", #60338
+	"set_outer_radius", #60325
 	"set_polygon",  #60325
 	"set_depth",  #60325
 	"set_radius",  #60325
 	"set_inner_radius",  #60325
-	"clip_polyline_with_polygon",  #60324
-	"clip_polygons",  #60324
-	"offset_polyline",  #60324
-	"offset_polygon",  #60324
-	"exclude_polygons",  #60324
-	"intersect_polyline_with_polygon",  #60324
-	"merge_polygons",  #60324
-	"intersect_polygons",  #60324
+	"clip_polyline_with_polygon_2d",  #60324
+	"clip_polygons_2d",  #60324
+	"offset_polyline_2d",  #60324
+	"offset_polygon_2d",  #60324
+	"exclude_polygons_2d",  #60324
+	"intersect_polyline_with_polygon_2d",  #60324
+	"merge_polygons_2d",  #60324
+	"intersect_polygons_2d",  #60324
 	"process_action",  #60297
 	"remove_line",  #59935
 	"bake_navigation_mesh",  # Threading problem, needs to find exact steps to reproduce
@@ -213,13 +235,13 @@ var function_exceptions: Array = [
 	"callv",
 	"call_func",
 	###
-	### Too dangerous, because add, mix and remove_at randomly nodes and objects
+	### Too dangerous, because add, mix and remove randomly nodes and objects
 	###
 	"replace_by",
 	"create_instance",
 	"set_owner",
 	"set_root_node",
-	"instantiate",
+	"instance",
 	"init_ref",
 	"reference",
 	"unreference",
@@ -232,13 +254,16 @@ var function_exceptions: Array = [
 	"move_child",
 	"raise",
 	"add_child",
-	"add_sibling",
-	
+	"add_child_below_node",
+	#####
+	##### Crash and Trash
+	#####
 	"crash",
+	"move_to_trash",
 	#####
 	##### Goost
 	##### TODO: these take too long to execute, does not make sense to limit number of iterations ether.
-	##### TODO - remove_at this and put it into setting file
+	##### TODO - remove this and put it into setting file
 	#####
 	"smooth_polyline_approx",
 	"smooth_polygon_approx",
@@ -341,7 +366,7 @@ var disabled_classes: Array = [
 	###
 	### Godot 4.0
 	###
-#	"OS",
+	"OS",
 	"Thread",
 	"Semaphore",
 	"Mutex",
