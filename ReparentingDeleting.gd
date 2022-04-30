@@ -80,7 +80,7 @@ func _process(delta: float) -> void:
 	for i in range(2):
 		number_of_variables += 1
 		var choosen_node_name: String = "Special Node " + str(randi() % number_of_nodes)
-		choosen_node = find_nodes(choosen_node_name, "Node", true, false)[0]
+		choosen_node = find_child(choosen_node_name, true, false)
 		var choosen_node_variable_name: String = "var" + str(number_of_variables) + "choosen"
 		assert(choosen_node != null)
 
@@ -90,7 +90,7 @@ func _process(delta: float) -> void:
 		assert(parent_node != null)
 
 		var random_node_name: String = "Special Node " + str(randi() % number_of_nodes)
-		var random_node: Node = find_nodes(random_node_name, "Node", true, false)[0]
+		var random_node: Node = find_child(random_node_name, true, false)
 		var random_node_variable_name: String = "var" + str(number_of_variables) + "random"
 		assert(random_node != null)
 
@@ -143,7 +143,7 @@ func _process(delta: float) -> void:
 			choosen_node.queue_free()
 			continue
 
-		if choosen_node.find_nodes(random_node.get_name(), "Node", true, false).size() != 0:  # Cannot set as node parent one of its child
+		if choosen_node.find_child(random_node.get_name(), true, false):  # Cannot set as node parent one of its child
 			if debug_enabled:
 				to_print = "\tadd_child(" + choosen_node_variable_name + ")"
 				save_to_file_to_screen("\n" + to_print, to_print)

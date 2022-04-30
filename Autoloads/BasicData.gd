@@ -241,7 +241,7 @@ var function_exceptions: Array = [
 	"create_instance",
 	"set_owner",
 	"set_root_node",
-	"instance",
+	"instantiate",
 	"init_ref",
 	"reference",
 	"unreference",
