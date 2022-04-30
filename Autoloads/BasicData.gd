@@ -28,11 +28,10 @@ var function_exceptions: Array = [
 	###
 	### Reported crashes
 	###
-	"open_midi_inputs",
-	"get_screen_position",
-	"get_screen_size",
-	"get_latin_keyboard_variant",
-	"set_window_size",
+	"set_zoom_min", # 60492
+	"set_zoom_max", # 60492
+	"open_midi_inputs", # 52821
+	"set_window_size", # 60466
 	"set_zoom", # 60492
 	"set_end", # 60492
 	"find_interaction_profile",  # 60375
