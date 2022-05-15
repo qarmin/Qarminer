@@ -15,6 +15,7 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
+	"_generate_texture", # 61044
 	"get_breakpointed_lines", # 60668
 	"get_seamless_image", # 60637
 	"set_data", # 60632
