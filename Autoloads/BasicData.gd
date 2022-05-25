@@ -15,6 +15,7 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
+	"get_spawnable_scene", # 61390
 	"set_process_material",  #61175
 	"_update_texture", # 61044
 	"_generate_texture", # 61044
