@@ -15,6 +15,7 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
+	"set_disable_mode", # 61474
 	"scroll_to_item", # 61444
 	"get_spawnable_scene", # 61390
 	"set_process_material",  #61175
