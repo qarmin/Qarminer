@@ -50,10 +50,17 @@ var memory_before: float = 0.0
 var maximum_executed_functions_on_object: int = -1
 var currently_executed_functions_on_object: int = 0
 
+var parent_child_node: Node = null
+var all_possible_parents: Array = []
+var possible_parent: String = "Node2D"
 
 # Prepare options for desired type of test
 func _ready() -> void:
 	ValueCreator.number = 100
+
+	for i in ClassDB.get_inheriters_from_class("Node"):
+		if ClassDB.can_instance(i):
+			all_possible_parents.push_back(i)
 
 	if save_resources_to_file:
 		var dir: Directory = Directory.new()
@@ -133,6 +140,12 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
+	if parent_child_node:
+		parent_child_node.queue_free()
+	possible_parent = all_possible_parents[randi() % all_possible_parents.size()]
+	parent_child_node = ClassDB.instance(possible_parent)
+	get_parent().add_child(parent_child_node)
+	
 	tests_all_functions()
 	if exiting:
 		get_tree().quit()
@@ -181,7 +194,7 @@ func tests_all_functions() -> void:
 			assert(object != null, "Object must be instantable")
 			if add_to_tree:
 				if object is Node:
-					add_child(object)
+					parent_child_node.add_child(object)
 			var method_list: Array = BasicData.allowed_thing[name_of_class]
 
 			if shuffle_methods:
@@ -193,7 +206,7 @@ func tests_all_functions() -> void:
 				to_print = "\tvar temp_variable" + str(number_to_track_variables) + " = " + HelpFunctions.get_gdscript_class_creation(name_of_class)
 				if add_to_tree:
 					if object is Node:
-						to_print += "\n\tadd_child(temp_variable" + str(number_to_track_variables) + ")"
+						to_print += "\n\tadd_child(temp_variable" + str(number_to_track_variables) + ") # " + possible_parent
 				save_to_file_to_screen("\n" + to_print, to_print)
 
 			for _i in range(number_of_function_repeats):
@@ -209,7 +222,7 @@ func tests_all_functions() -> void:
 						if add_arguments_to_tree:
 							for argument in arguments:
 								if argument is Node:
-									add_child(argument)
+									parent_child_node.add_child(argument)
 
 						if debug_print || save_data_to_file:
 							to_print = ""
