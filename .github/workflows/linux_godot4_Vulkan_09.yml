@@ -1,4 +1,4 @@
-name: 🐧 Godot 4 Vulkan 09 Parent | Add arguments to tree | Delaying
+name: 🐧 Godot 4 Vulkan 09 Add arguments to tree | Delaying
 on:
   push:
   pull_request:
@@ -29,9 +29,8 @@ jobs:
 
       - name: Configure Data
         run: |
-          sed -i 's/var use_parent_methods: bool = false/var use_parent_methods: bool = true/' FunctionExecutor.gd
-          sed -i 's/add_arguments_to_tree: bool = false/add_arguments_to_tree: bool = true/' FunctionExecutor.gd
-          sed -i 's/delay_removing_added_arguments_to_next_frame: bool = false/delay_removing_added_arguments_to_next_frame: bool = true/' FunctionExecutor.gd
+          echo "add_arguments_to_tree: true" >> settings.txt
+          echo "delay_removing_added_arguments_to_next_frame: true" >> settings.txt
           
 
       - name: Download Godot(GIT)

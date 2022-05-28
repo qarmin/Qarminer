@@ -1,4 +1,4 @@
-name: 🐧 Godot 4 Vulkan 10 LLVM | One by One | Parent | Add to tree
+name: 🐧 Godot 4 Vulkan 10 LLVM | One by One | Parent
 on:
   push:
   pull_request:
@@ -29,9 +29,9 @@ jobs:
 
       - name: Configure Data
         run: |
-          sed -i 's/var add_to_tree: bool = false/var add_to_tree: bool = true/' FunctionExecutor.gd
-          sed -i 's/var use_parent_methods: bool = false/var use_parent_methods: bool = true/' FunctionExecutor.gd
-          sed -i 's/var test_one_class_multiple_times: bool = false/var test_one_class_multiple_times: bool = true/' FunctionExecutor.gd
+          echo "add_to_tree: true" >> settings.txt
+          echo "use_parent_methods: true" >> settings.txt
+          echo "test_one_class_multiple_times: true" >> settings.txt
           
 
       - name: Download Godot(GIT)

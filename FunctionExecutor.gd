@@ -83,11 +83,9 @@ func _ready() -> void:
 		BasicData.function_exceptions.erase("propagate_notification")
 		HelpFunctions.disable_nodes_with_internal_child()  # notification may free internal child
 
-	# Adds additional arguments to excluded items
-	HelpFunctions.add_excluded_too_big_functions(ValueCreator.number > 40)
-	HelpFunctions.add_excluded_too_big_classes(ValueCreator.number > 100)
 
 	# Load data from file if available
+	ValueCreator.number = SettingsLoader.load_setting("used_number", TYPE_INT, ValueCreator.number)
 	debug_print = SettingsLoader.load_setting("debug_print", TYPE_BOOL, debug_print)
 	exiting = SettingsLoader.load_setting("exiting", TYPE_BOOL, exiting)
 	add_to_tree = SettingsLoader.load_setting("add_to_tree", TYPE_BOOL, add_to_tree)
@@ -108,6 +106,10 @@ func _ready() -> void:
 	how_many_times_test_one_class = SettingsLoader.load_setting("how_many_times_test_one_class", TYPE_INT, how_many_times_test_one_class)
 	maximum_executed_functions_on_object = SettingsLoader.load_setting("maximum_executed_functions_on_object", TYPE_INT, maximum_executed_functions_on_object)
 
+	# Adds additional arguments to excluded items
+	HelpFunctions.add_excluded_too_big_functions(ValueCreator.number > 40)
+	HelpFunctions.add_excluded_too_big_classes(ValueCreator.number > 100)
+	
 	# Initialize array of objects
 #	BasicData.custom_classes = []  # Here can be choosen any classes that user want to use
 	HelpFunctions.initialize_list_of_available_classes()

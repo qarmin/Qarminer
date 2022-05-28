@@ -1,4 +1,4 @@
-name: 🐧 Godot 4 GL3 04 Delaying | One by One | Parent | Add to tree
+name: 🐧 Godot 4 GL3 04 Delaying | One by One | Parent
 on:
   push:
   pull_request:
@@ -29,10 +29,9 @@ jobs:
 
       - name: Configure Data
         run: |
-          sed -i 's/var add_to_tree: bool = false/var add_to_tree: bool = true/' FunctionExecutor.gd
-          sed -i 's/var use_parent_methods: bool = false/var use_parent_methods: bool = true/' FunctionExecutor.gd
-          sed -i 's/var delay_removing_added_nodes_to_next_frame: bool = false/var delay_removing_added_nodes_to_next_frame: bool = true/' FunctionExecutor.gd
-          sed -i 's/var test_one_class_multiple_times: bool = false/var test_one_class_multiple_times: bool = true/' FunctionExecutor.gd
+          echo "use_parent_methods: true" >> settings.txt
+          echo "delay_removing_added_nodes_to_next_frame: true" >> settings.txt
+          echo "test_one_class_multiple_times: true" >> settings.txt
           
 
       - name: Download Godot(GIT)

@@ -1,4 +1,4 @@
-name: 🐧 Godot 4 GL3 05 Big Numbers | Parent | Add to tree | One by One
+name: 🐧 Godot 4 GL3 05 Big Numbers | Parent | One by One
 on:
   push:
   pull_request:
@@ -29,10 +29,9 @@ jobs:
 
       - name: Configure Data
         run: |
-          sed -i 's/ValueCreator.number = 100/ValueCreator.number = 10000/' FunctionExecutor.gd
-          sed -i 's/var use_parent_methods: bool = false/var use_parent_methods: bool = true/' FunctionExecutor.gd
-          sed -i 's/add_to_tree: bool = false/add_to_tree: bool = true/' FunctionExecutor.gd
-          sed -i 's/var test_one_class_multiple_times: bool = false/var test_one_class_multiple_times: bool = true/' FunctionExecutor.gd
+          echo "used_number: 10000" >> settings.txt
+          echo "use_parent_methods: true" >> settings.txt
+          echo "test_one_class_multiple_times: true" >> settings.txt
           
 
       - name: Download Godot(GIT)
@@ -79,7 +78,7 @@ jobs:
 
       - name: Run Project
         run: |
-          VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json DRI_PRIME=0 timeout -v 14400 xvfb-run ./godot.linuxbsd.tools.64.san FunctionExecutor.tscn 3600 --audio-driver Dummy --video-driver opengl3 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json DRI_PRIME=0 timeout -v 14400 xvfb-run ./godot.linuxbsd.tools.64.san FunctionExecutor.tscn 10000 --audio-driver Dummy --video-driver opengl3 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
           tail -n 300 sanitizers_log.txt > project_results.txt
 
       - name: Store project results
