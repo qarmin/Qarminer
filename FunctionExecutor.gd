@@ -11,7 +11,7 @@ extends Node
 
 var debug_print: bool = true  # Switch to turn off printed things to screen
 var exiting: bool = false  # Close app after first run
-var add_to_tree: bool = false  # Adds nodes to tree
+var add_to_tree: bool = true  # Adds nodes to tree
 var delay_removing_added_nodes_to_next_frame: bool = false  # Delaying removing nodes added to tree to next frame, which force to render it
 var add_arguments_to_tree: bool = false  # Adds nodes which are used as arguments to tree
 var delay_removing_added_arguments_to_next_frame: bool = false  # Delaying removing arguments(nodes added to tree) to next frame, which force to render it
@@ -82,11 +82,8 @@ func _ready() -> void:
 		BasicData.function_exceptions.erase("propagate_notification")
 		HelpFunctions.disable_nodes_with_internal_child()  # notification may free internal child
 
-	# Adds additional arguments to excluded items
-	HelpFunctions.add_excluded_too_big_functions(ValueCreator.number > 40)
-	HelpFunctions.add_excluded_too_big_classes(ValueCreator.number > 100)
-
 	# Load data from file if available
+	ValueCreator.number = SettingsLoader.load_setting("used_number", TYPE_INT, ValueCreator.number)
 	debug_print = SettingsLoader.load_setting("debug_print", TYPE_BOOL, debug_print)
 	exiting = SettingsLoader.load_setting("exiting", TYPE_BOOL, exiting)
 	add_to_tree = SettingsLoader.load_setting("add_to_tree", TYPE_BOOL, add_to_tree)
@@ -105,6 +102,10 @@ func _ready() -> void:
 	save_resources_to_file = SettingsLoader.load_setting("save_resources_to_file", TYPE_BOOL, save_resources_to_file)
 	how_many_times_test_one_class = SettingsLoader.load_setting("how_many_times_test_one_class", TYPE_INT, how_many_times_test_one_class)
 	maximum_executed_functions_on_object = SettingsLoader.load_setting("maximum_executed_functions_on_object", TYPE_INT, maximum_executed_functions_on_object)
+
+	# Adds additional arguments to excluded items
+	HelpFunctions.add_excluded_too_big_functions(ValueCreator.number > 40)
+	HelpFunctions.add_excluded_too_big_classes(ValueCreator.number > 100)
 
 	# Initialize array of objects
 #	BasicData.custom_classes = []  # Here can be choosen any classes that user want to use
