@@ -26,6 +26,10 @@ var function_exceptions: Array = [
 	###
 	"popup_centered_minsize",  # 60326
 	###
+	### Image crashes in release builds
+	###
+	"_screen_input",
+	###
 	### Reported crashes
 	###
 	"set_zoom_min", # 60492
