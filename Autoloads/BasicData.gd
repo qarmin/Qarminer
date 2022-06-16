@@ -15,6 +15,9 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
+	"compress", # 62097
+	"_get_light_textures_data", # 62096
+	"_set_light_textures_data", # 62094
 	"set_disable_mode", # 61474
 	"scroll_to_item", # 61444
 	"get_spawnable_scene", # 61390
