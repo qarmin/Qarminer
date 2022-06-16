@@ -23,6 +23,9 @@ AutoClose="*res://Autoloads/AutoClose.gd"
 ParseArgumentType="*res://Autoloads/ParseArgumentType.gd"
 HelpFunctions="*res://Autoloads/HelpFunctions.gd"
 SettingsLoader="*res://Autoloads/SettingsLoader.gd"
+CSharpValueCreator="*res://CSharpCreate/CSharpValueCreator.gd"
+CSharpParseArgumentType="*res://CSharpCreate/CSharpParseArgumentType.gd"
+CSharpCreateProjectBase="*res://CSharpCreate/CSharpCreateProjectBase.gd"
 
 [logging]
 

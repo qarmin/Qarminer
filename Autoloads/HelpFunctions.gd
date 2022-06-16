@@ -37,7 +37,7 @@ func disable_nodes_with_internal_child() -> void:
 # Checks if function can be executed
 # Looks at its arguments and method type
 # This is useful when e.g. adding/renaming type Transform -> Transform3D
-func check_if_is_allowed(method_data: Dictionary) -> bool:
+func check_if_is_allowed(method_data: Dictionary, csharp_project: bool) -> bool:
 	# Function is virtual or vararg, so we just skip it
 	if method_data["flags"] & METHOD_FLAG_VIRTUAL != 0:
 		return false
@@ -46,6 +46,12 @@ func check_if_is_allowed(method_data: Dictionary) -> bool:
 
 	for arg in method_data["args"]:
 		var name_of_class: String = arg["class_name"]
+
+		if csharp_project:
+			# If checking C# project, disable checking for enums, because they needs to be
+			# converted, but later there is no info that this is enum
+			if !ClassDB.class_exists(name_of_class):
+				return false
 
 		if name_of_class in BasicData.disabled_classes:
 			return false
@@ -119,8 +125,9 @@ func get_gdscript_class_creation(name_of_class: String) -> String:
 
 # Removes disabled methods from list - TODO, for now it do unecessary duplication
 # because passing by reference seems to be broken in 4.0
-func remove_disabled_methods(method_list: Array, exceptions: Array) -> Array:
+func remove_disabled_methods(method_list: Array, exceptions: Array, csharp_project: bool = false) -> Array:
 	var new_method_list: Array = method_list.duplicate(true)
+	
 	for exception in exceptions:
 		var index: int = -1
 		for method_index in range(new_method_list.size()):
@@ -129,6 +136,12 @@ func remove_disabled_methods(method_list: Array, exceptions: Array) -> Array:
 				break
 		if index != -1:
 			new_method_list.remove(index)
+	if csharp_project:
+		var old_method_list = new_method_list.duplicate(true)
+		new_method_list = []
+		for method in old_method_list:
+			if !method["name"].begins_with("_"):
+				new_method_list.append(method) 
 	return new_method_list
 
 
@@ -151,7 +164,7 @@ func remove_thing_string(thing: Object) -> String:
 
 # Initialize array which contains only allowed functions
 # If BasicData.allowed_functions is not set, every possible functions is checked
-func initialize_array_with_allowed_functions(use_parent_methods: bool, disabled_methods: Array):
+func initialize_array_with_allowed_functions(use_parent_methods: bool, disabled_methods: Array, csharp_project: bool = false):
 	assert(!BasicData.base_classes.empty(), "Missing initalization of classes")
 	assert(!BasicData.argument_classes.empty(), "Missing initalization of classes")
 	var class_info: Dictionary = {}
@@ -161,9 +174,9 @@ func initialize_array_with_allowed_functions(use_parent_methods: bool, disabled_
 			var old_method_list: Array = []
 			var new_method_list: Array = []
 			old_method_list = ClassDB.class_get_method_list(name_of_class, !use_parent_methods)
-			old_method_list = remove_disabled_methods(old_method_list, disabled_methods)
+			old_method_list = remove_disabled_methods(old_method_list, disabled_methods, csharp_project)
 			for method_data in old_method_list:
-				if !check_if_is_allowed(method_data):
+				if !check_if_is_allowed(method_data, csharp_project):
 					continue
 				new_method_list.append(method_data)
 
@@ -176,7 +189,7 @@ func initialize_array_with_allowed_functions(use_parent_methods: bool, disabled_
 			for method_data in old_method_list:
 				if !(method_data["name"] in BasicData.allowed_functions):
 					continue
-				if !check_if_is_allowed(method_data):
+				if !check_if_is_allowed(method_data, csharp_project):
 					continue
 				new_method_list.append(method_data)
 
@@ -221,3 +234,21 @@ func leave_custom_classes_if_needed(how_much_all_classes: int) -> void:
 
 	print(str(BasicData.base_classes.size()) + " choosen classes from all " + str(how_much_all_classes) + " classes.")
 	print(str(BasicData.argument_classes.size()) + " classes can be used as arguments.")
+
+func normalize_function_names(function_name: String) -> String:
+
+	assert(function_name.length() > 1)
+	assert(!function_name.ends_with("_"))  # There is i+1 expression which may be out of bounds
+	var started_with_underscore = function_name.begins_with("_")
+	function_name = function_name[0].to_upper() + function_name.substr(1)
+
+	for i in function_name.length():
+		if function_name[i] == "_":
+			function_name[i + 1] = function_name[i + 1].to_upper()
+
+	function_name = function_name.replace("_", "")
+
+#	if started_with_underscore:
+#		function_name = "_" + function_name
+
+	return function_name

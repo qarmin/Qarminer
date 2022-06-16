@@ -326,3 +326,7 @@ var variant_exceptions: Array = [
 var allowed_functions: Array = [
 # TO FIND
 ]
+
+var csharp_function_exceptions: Array = [
+	"ResChanged", # AnimatedSprite
+]
