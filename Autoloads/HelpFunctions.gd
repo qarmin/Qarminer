@@ -37,7 +37,7 @@ func disable_nodes_with_internal_child() -> void:
 # Checks if function can be executed
 # Looks at its arguments and method type
 # This is useful when e.g. adding/renaming type Transform -> Transform3D
-func check_if_is_allowed(method_data: Dictionary, csharp_project: bool) -> bool:
+func check_if_is_allowed(method_data: Dictionary, csharp_project: bool = false) -> bool:
 	# Function is virtual or vararg, so we just skip it
 	if method_data["flags"] & METHOD_FLAG_VIRTUAL != 0:
 		return false
