@@ -13,8 +13,8 @@ config_version=5
 config/name="Qarminer"
 config/description="Tool to automatically test Godot"
 run/main_scene="res://FunctionExecutor.tscn"
-run/flush_stdout_on_print=true
 config/features=PackedStringArray("4.0")
+run/flush_stdout_on_print=true
 
 [autoload]
 

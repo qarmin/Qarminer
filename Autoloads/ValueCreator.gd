@@ -85,11 +85,15 @@ func get_color() -> Color:
 
 
 func get_string() -> String:
-	var numm = randi() % 4
+	var numm = randi() % 6
 	if numm == 0:
 		return String(".")
 	elif numm == 1:
 		return str(randi())
+	elif numm == 2:
+		return "5555"
+	elif numm == 3:
+		return "127.0.0.1"
 	return String()
 
 
