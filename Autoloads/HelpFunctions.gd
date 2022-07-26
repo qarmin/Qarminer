@@ -89,6 +89,8 @@ func check_if_is_allowed(method_data: Dictionary) -> bool:
 			# TODOGODOT4
 			|| t == TYPE_VECTOR2I
 			|| t == TYPE_VECTOR3I
+			|| t == TYPE_VECTOR4
+			|| t == TYPE_VECTOR4I
 			|| t == TYPE_STRING_NAME
 			|| t == TYPE_RECT2I
 			|| t == TYPE_PACKED_FLOAT64_ARRAY
@@ -96,6 +98,7 @@ func check_if_is_allowed(method_data: Dictionary) -> bool:
 			|| t == TYPE_CALLABLE
 		):
 			print("MISSING TYPE in function " + method_data["name"] + "  --  Variant type - " + str(t))
+			assert(false)
 			return false
 
 		if name_of_class.is_empty():

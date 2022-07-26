@@ -215,6 +215,10 @@ extends Node
 #			thing = Callable(BoxMesh.new(), "Rar")
 #		TYPE_VECTOR3I:
 #			thing = ValueCreator.get_vector3i()
+#		TYPE_VECTO4:
+#			thing = ValueCreator.get_vector4()
+#		TYPE_VECTOR4I:
+#			thing = ValueCreator.get_vector4i()
 #		TYPE_VECTOR2I:
 #			thing = ValueCreator.get_vector2i()
 #		TYPE_STRING_NAME:

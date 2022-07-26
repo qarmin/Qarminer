@@ -72,6 +72,10 @@ func parse_and_return_functions_to_create_object(method_data: Dictionary, name_o
 				arguments_array.push_back('Callable(BoxMesh.new(), "Rar")')
 			TYPE_VECTOR3I:
 				arguments_array.push_back("ValueCreator.get_vector3i()")
+			TYPE_VECTOR4:
+				arguments_array.push_back("ValueCreator.get_vector4()")
+			TYPE_VECTOR4I:
+				arguments_array.push_back("ValueCreator.get_vector4i()")
 			TYPE_VECTOR2I:
 				arguments_array.push_back("ValueCreator.get_vector2i()")
 			TYPE_STRING_NAME:
@@ -174,6 +178,10 @@ func parse_and_return_objects(method_data: Dictionary, name_of_class: String, de
 				arguments_array.push_back(Callable(BoxMesh.new(), "Rar"))
 			TYPE_VECTOR3I:
 				arguments_array.push_back(ValueCreator.get_vector3i())
+			TYPE_VECTOR4I:
+				arguments_array.push_back(ValueCreator.get_vector4i())
+			TYPE_VECTOR4:
+				arguments_array.push_back(ValueCreator.get_vector4())
 			TYPE_VECTOR2I:
 				arguments_array.push_back(ValueCreator.get_vector2i())
 			TYPE_STRING_NAME:
@@ -411,6 +419,26 @@ func return_gdscript_code_which_run_this_object(data) -> String:
 			return_string += return_gdscript_code_which_run_this_object(data.y)
 			return_string += ", "
 			return_string += return_gdscript_code_which_run_this_object(data.z)
+			return_string += ")"
+		TYPE_VECTOR4I:
+			return_string = "Vector4i("
+			return_string += return_gdscript_code_which_run_this_object(data.x)
+			return_string += ", "
+			return_string += return_gdscript_code_which_run_this_object(data.y)
+			return_string += ", "
+			return_string += return_gdscript_code_which_run_this_object(data.z)
+			return_string += ", "
+			return_string += return_gdscript_code_which_run_this_object(data.w)
+			return_string += ")"
+		TYPE_VECTOR4:
+			return_string = "Vector4("
+			return_string += return_gdscript_code_which_run_this_object(data.x)
+			return_string += ", "
+			return_string += return_gdscript_code_which_run_this_object(data.y)
+			return_string += ", "
+			return_string += return_gdscript_code_which_run_this_object(data.z)
+			return_string += ", "
+			return_string += return_gdscript_code_which_run_this_object(data.w)
 			return_string += ")"
 		TYPE_RECT2I:
 			return_string = "Rect2i("
