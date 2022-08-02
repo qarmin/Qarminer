@@ -301,7 +301,7 @@ func tests_all_functions() -> void:
 				var res_path: String = "res://test_resources/" + str(number_to_track_variables) + ".tres"
 				if object is Resource:
 					if !(name_of_class in ["PluginScript"]):
-						var _retu: int = ResourceSaver.save(res_path, object)
+						var _retu: int = ResourceSaver.save(object,res_path)
 			#								assert(retu == OK)
 			if !(delay_removing_added_nodes_to_next_frame && add_to_tree && object is Node):
 				if (object is Node) || !(object is RefCounted):
