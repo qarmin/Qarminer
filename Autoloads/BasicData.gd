@@ -15,6 +15,7 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
+	"set_font_names", # 64118
 	"confirm_code_completion", # 62199
 	"update_code_completion_options", # 62199
 	"compress", # 62097
