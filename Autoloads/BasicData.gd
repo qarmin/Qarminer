@@ -15,6 +15,11 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
+	"set_indexed", # 64122
+	"get_mesh_arrays", # 64122
+	"create_outline", # 64122 
+	"generate_triangle_mesh", # 64122
+	"get_faces", # 64122
 	"set_font_names", # 64118
 	"confirm_code_completion", # 62199
 	"update_code_completion_options", # 62199
