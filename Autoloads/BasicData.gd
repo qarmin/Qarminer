@@ -15,6 +15,7 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
+	"from_node", # 65319
 	"set_indexed", # 64122
 	"get_mesh_arrays", # 64122
 	"create_outline", # 64122 
@@ -161,6 +162,9 @@ var function_exceptions: Array = [
 	###
 	### Slow Function
 	###
+	"sample_baked_up_vector",
+	"sample_baked",
+	"convert_to_image",
 	"set_pre_process_time",
 	"create_convex_collision",
 	"create_multiple_convex_collisions",
@@ -392,6 +396,7 @@ var disabled_classes: Array = [
 	### Godot 4.0 Additional
 	###
 	#	
+	"ConfigFile", # 65316
 	"ThemeDB", # Singleton 4
 	"SystemFont", # 64698
 	"TextServer",  # RefCounted Server
