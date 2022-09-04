@@ -1,5 +1,5 @@
 extends Node
-
+#
 #var debug_print: bool = true
 #var use_always_new_object: bool = false  # Don't allow to "remeber" other function effects
 #
@@ -215,7 +215,7 @@ extends Node
 #			thing = Callable(BoxMesh.new(), "Rar")
 #		TYPE_VECTOR3I:
 #			thing = ValueCreator.get_vector3i()
-#		TYPE_VECTO4:
+#		TYPE_VECTOR4:
 #			thing = ValueCreator.get_vector4()
 #		TYPE_VECTOR4I:
 #			thing = ValueCreator.get_vector4i()

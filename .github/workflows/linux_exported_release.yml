@@ -42,10 +42,10 @@ jobs:
         run: |
           cd godot
           scons -j2 use_asan=yes use_ubsan=yes CCFLAGS="-fsanitize=shift,shift-exponent,integer-divide-by-zero,unreachable,vla-bound,null,return,signed-integer-overflow,bounds,float-divide-by-zero,float-cast-overflow,nonnull-attribute,returns-nonnull-attribute,bool,enum,vptr"
-          cp bin/godot.linuxbsd.tools.64.san ../
+          cp bin/godot.linuxbsd.tools.x86_64.san ../
           git clean -xqdf
           scons -j2 tools=no target=release debug_symbols=yes use_asan=yes use_ubsan=yes optimize=none CCFLAGS="-fsanitize=shift,shift-exponent,integer-divide-by-zero,unreachable,vla-bound,null,return,signed-integer-overflow,bounds,float-divide-by-zero,float-cast-overflow,nonnull-attribute,returns-nonnull-attribute,bool,enum,vptr"
-          cp bin/godot.linuxbsd.opt.64.san ../
+          cp bin/godot.linuxbsd.opt.x86_64.san ../
           cd ../
           rm -rf godot
           
@@ -60,9 +60,9 @@ jobs:
           
       - name: Exporting project
         run: |
-          curr="$(pwd)/godot.linuxbsd.opt.64.san"
+          curr="$(pwd)/godot.linuxbsd.opt.x86_64.san"
           sed -i "s|PATH_TO_CHANGE|$curr|" export_presets.cfg
-          VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json DRI_PRIME=0 xvfb-run ./godot.linuxbsd.tools.64.san --audio-driver Dummy --export-debug "Linux/X11" test_project 2>&1 | tee exporting.txt || true
+          VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json DRI_PRIME=0 xvfb-run ./godot.linuxbsd.tools.x86_64.san --audio-driver Dummy --export-debug "Linux/X11" test_project 2>&1 | tee exporting.txt || true
       - name: Store exporting results
         uses: actions/upload-artifact@v2
         with:

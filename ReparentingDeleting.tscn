@@ -3,4 +3,4 @@
 [ext_resource type="Script" path="res://ReparentingDeleting.gd" id="1"]
 
 [node name="ReparentingDeleting" type="Node"]
-script = ExtResource( "1" )
+script = ExtResource("1")

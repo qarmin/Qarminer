@@ -3,4 +3,4 @@
 [ext_resource type="Script" path="res://ManualTesting.gd" id="1"]
 
 [node name="ManualTesting" type="Node2D"]
-script = ExtResource( "1" )
+script = ExtResource("1")
