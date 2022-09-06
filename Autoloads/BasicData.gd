@@ -258,6 +258,7 @@ var function_exceptions: Array = [
 	###
 	### Too dangerous, because add, mix and remove randomly nodes and objects
 	###
+	"to_node",
 	"replace_by",
 	"create_instance",
 	"set_owner",
