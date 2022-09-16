@@ -15,6 +15,7 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
+	"set_process_mode", #61474
 	"_edit_get_rect", #
 	"from_node", # 65319
 	"set_indexed", # 64122
