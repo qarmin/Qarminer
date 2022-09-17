@@ -46,7 +46,7 @@ jobs:
           cd godot
           wget https://patch-diff.githubusercontent.com/raw/godotengine/godot/pull/52075.patch -O 3x.patch
           wget https://patch-diff.githubusercontent.com/raw/godotengine/godot/pull/49053.patch -O 4.patch
-          # git apply 4.patch
+          git apply 4.patch
           scons -j2 use_asan=yes use_ubsan=yes CCFLAGS="-fsanitize=shift,shift-exponent,integer-divide-by-zero,unreachable,vla-bound,null,return,signed-integer-overflow,bounds,float-divide-by-zero,float-cast-overflow,nonnull-attribute,returns-nonnull-attribute,bool,enum,vptr" linker=gold use_llvm=yes
           cp bin/godot.linuxbsd.tools.x86_64.llvm.san ../
           cd ../
