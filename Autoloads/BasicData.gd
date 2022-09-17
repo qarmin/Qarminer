@@ -15,6 +15,8 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
+	"_get_light_textures_data", # 66002
+	"get_seamless_image", # 61044
 	"set_buffer",  # 65964
 	"set_process_mode",  #61474
 	"get_mesh_arrays",  # 64122
