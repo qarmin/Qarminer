@@ -1,4 +1,4 @@
-name: 🐧 Godot 3.x GLES2 02 One by One | Parent | Add to tree | Maximum Tested
+name: 🐧 Godot 4 GL3 01 Default
 on:
   push:
   pull_request:
@@ -29,17 +29,13 @@ jobs:
 
       - name: Configure Data
         run: |
-          echo "add_to_tree: true" >> settings.txt
-          echo "use_parent_methods: true" >> settings.txt
-          echo "test_one_class_multiple_times: true" >> settings.txt
-          echo "maximum_executed_functions_on_object: 15" >> settings.txt
-          
+          true
 
       - name: Download Godot(GIT)
         run: |
           git clone https://github.com/godotengine/godot.git
           cd godot
-          git checkout 3.x
+          git checkout master
           cd ../
 
       - name: Compile Godot
@@ -47,9 +43,9 @@ jobs:
           cd godot
           wget https://patch-diff.githubusercontent.com/raw/godotengine/godot/pull/52075.patch -O 3x.patch
           wget https://patch-diff.githubusercontent.com/raw/godotengine/godot/pull/49053.patch -O 4.patch
-          git apply 3x.patch
+          git apply 4.patch
           scons -j2 use_asan=yes use_ubsan=yes CCFLAGS="-fsanitize=shift,shift-exponent,integer-divide-by-zero,unreachable,vla-bound,null,return,signed-integer-overflow,bounds,float-divide-by-zero,float-cast-overflow,nonnull-attribute,returns-nonnull-attribute,bool,enum,vptr" linker=gold
-          cp bin/godot.x11.tools.64s ../
+          cp bin/godot.linuxbsd.tools.x86_64.san ../
           cd ../
           rm -rf godot
 
@@ -64,7 +60,7 @@ jobs:
 
       - name: Open Godot Editor
         run: |
-          DRI_PRIME=0 xvfb-run ./godot.x11.tools.64s -e --quit --audio-driver Dummy --video-driver GLES2 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          DRI_PRIME=0 xvfb-run ./godot.linuxbsd.tools.x86_64.san -e --quit --audio-driver Dummy --rendering-driver opengl3 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
           tail -n 300 sanitizers_log.txt > editor_results.txt
 
       - name: Store editor results
@@ -79,7 +75,7 @@ jobs:
 
       - name: Run Project
         run: |
-          DRI_PRIME=0 timeout -v 14400 xvfb-run ./godot.x11.tools.64s FunctionExecutor.tscn 10000 --audio-driver Dummy --video-driver GLES2 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          DRI_PRIME=0 timeout -v 14400 xvfb-run ./godot.linuxbsd.tools.x86_64.san FunctionExecutor.tscn 3600 --audio-driver Dummy --rendering-driver opengl3 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
           tail -n 300 sanitizers_log.txt > project_results.txt
 
       - name: Store project results
