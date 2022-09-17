@@ -15,40 +15,24 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
+	"set_buffer", # 65964
 	"set_process_mode", #61474
-	"_edit_get_rect", #
-	"from_node", # 65319
-	"set_indexed", # 64122
 	"get_mesh_arrays", # 64122
-	"create_outline", # 64122 
-	"generate_triangle_mesh", # 64122
-	"get_faces", # 64122
-	"set_font_names", # 64118
 	"confirm_code_completion", # 62199
 	"update_code_completion_options", # 62199
 	"compress", # 62097
-	"_get_light_textures_data", # 62096
-	"_set_light_textures_data", # 62094
 	"set_disable_mode", # 61474
-	"scroll_to_item", # 61444
-	"get_spawnable_scene", # 61390
 	"set_process_material",  #61175
 	"_update_texture", # 61044
 	"_generate_texture", # 61044
-	"get_breakpointed_lines", # 60668
-	"get_seamless_image", # 60637
-	"set_data", # 60632
-	"get_font_name", # 60632
 	"set_zoom",  # 60492
 	"set_end",  # 60492
-	"set_custom_minimum_size",  #60376
 	"set_size",  # 60326, 60325
-	"set_points",  # Already reported
+	"set_points",  # 60337
 	"set_custom_viewport",  #60052
 	"set_visibility_range_begin_margin",  #54655
 	"set_visibility_range_begin",  #54655
 	"_broadcast",  #53873
-	"get_indexed",  #53840
 	"set_base",  #53723
 	"set_polygon",  #53722
 	"add_bone",  #53646
@@ -59,11 +43,9 @@ var function_exceptions: Array = [
 	"set_projector",  #53604
 	"commit",  #53191
 	"commit_to_arrays",  #53191
-	"popup_centered_ratio",  #53566
 	"shaped_text_draw_outline",  #53562
 	"set_input_as_handled",  #53560
 	"add_node",  #53558
-	"set_language",  #53218
 	"set_texture",  #46828
 	"compress_from_channels",  # Image
 	"open_midi_inputs",  #52821
