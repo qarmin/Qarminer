@@ -15,16 +15,16 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
-	"set_buffer", # 65964
-	"set_process_mode", #61474
-	"get_mesh_arrays", # 64122
-	"confirm_code_completion", # 62199
-	"update_code_completion_options", # 62199
-	"compress", # 62097
-	"set_disable_mode", # 61474
+	"set_buffer",  # 65964
+	"set_process_mode",  #61474
+	"get_mesh_arrays",  # 64122
+	"confirm_code_completion",  # 62199
+	"update_code_completion_options",  # 62199
+	"compress",  # 62097
+	"set_disable_mode",  # 61474
 	"set_process_material",  #61175
-	"_update_texture", # 61044
-	"_generate_texture", # 61044
+	"_update_texture",  # 61044
+	"_generate_texture",  # 61044
 	"set_zoom",  # 60492
 	"set_end",  # 60492
 	"set_size",  # 60326, 60325
@@ -63,8 +63,6 @@ var function_exceptions: Array = [
 	"merge_polygons",  #60324
 	"intersect_polygons",  #60324
 	"popup_centered_clamped",  # 60326
-
-
 	###
 	### Input crashes, still are some problems TODO
 	###
@@ -81,21 +79,21 @@ var function_exceptions: Array = [
 	###
 	### Reported crashes
 	###
-	"set_zoom_min", # 60492
-	"set_zoom_max", # 60492
-	"open_midi_inputs", # 52821
-	"set_window_size", # 60466
-	"set_zoom", # 60492
-	"set_end", # 60492
+	"set_zoom_min",  # 60492
+	"set_zoom_max",  # 60492
+	"open_midi_inputs",  # 52821
+	"set_window_size",  # 60466
+	"set_zoom",  # 60492
+	"set_end",  # 60492
 	"find_interaction_profile",  # 60375
-	"find_action_set", #60374
-	"set_custom_minimum_size", #60376
-	"set_size", #60325
-	"set_custom_viewport", #60052
-	"create_convex_shape", # TODO
-	"get_debug_mesh", #60337
-	"set_radial_initial_angle", #60338
-	"set_outer_radius", #60325
+	"find_action_set",  #60374
+	"set_custom_minimum_size",  #60376
+	"set_size",  #60325
+	"set_custom_viewport",  #60052
+	"create_convex_shape",  # TODO
+	"get_debug_mesh",  #60337
+	"set_radial_initial_angle",  #60338
+	"set_outer_radius",  #60325
 	"set_polygon",  #60325
 	"set_depth",  #60325
 	"set_radius",  #60325
@@ -380,10 +378,10 @@ var disabled_classes: Array = [
 	###
 	### Godot 4.0 Additional
 	###
-	#	
-	"ConfigFile", # 65316
-	"ThemeDB", # Singleton 4
-	"SystemFont", # 64698
+	#
+	"ConfigFile",  # 65316
+	"ThemeDB",  # Singleton 4
+	"SystemFont",  # 64698
 	"TextServer",  # RefCounted Server
 	"TextServerAdvanced",  # RefCounted Server
 	"TextServerExtension",  # RefCounted Server

@@ -122,7 +122,7 @@ func get_dictionary() -> Dictionary:
 		return Dictionary({"roman": 22, 22: 25, BoxShape3D.new(): BoxShape3D.new()})
 	elif randi() % 2:
 		var dict = {}
-		var things = ["date","month","day","year"]
+		var things = ["date", "month", "day", "year"]
 		for i in randi() % 10:
 			var key = things[randi() % things.size()]
 			var value = get_int()
@@ -207,7 +207,8 @@ func get_vector2i() -> Vector2i:
 
 func get_vector3i() -> Vector3i:
 	return Vector3i(get_int(), get_int(), get_int())
-	
+
+
 func get_vector4i() -> Vector4i:
 	return Vector4i(get_int(), get_int(), get_int(), get_int())
 
@@ -232,6 +233,10 @@ func get_packed_float64_array() -> PackedFloat64Array:
 
 func get_signal() -> Signal:
 	return Signal()
+
+
+func get_projection() -> Projection:
+	return Projection(get_vector4(), get_vector4(), get_vector4(), get_vector4())
 
 
 func get_object(object_name: String) -> Object:

@@ -83,7 +83,6 @@ func _ready() -> void:
 		BasicData.function_exceptions.erase("propagate_notification")
 		HelpFunctions.disable_nodes_with_internal_child()  # notification may free internal child
 
-
 	# Load data from file if available
 	ValueCreator.number = SettingsLoader.load_setting("used_number", TYPE_INT, ValueCreator.number)
 	debug_print = SettingsLoader.load_setting("debug_print", TYPE_BOOL, debug_print)
@@ -109,7 +108,7 @@ func _ready() -> void:
 	# Adds additional arguments to excluded items
 	HelpFunctions.add_excluded_too_big_functions(ValueCreator.number > 40)
 	HelpFunctions.add_excluded_too_big_classes(ValueCreator.number > 100)
-	
+
 	# Initialize array of objects
 #	BasicData.custom_classes = []  # Here can be choosen any classes that user want to use
 	HelpFunctions.initialize_list_of_available_classes()
@@ -301,7 +300,7 @@ func tests_all_functions() -> void:
 				var res_path: String = "res://test_resources/" + str(number_to_track_variables) + ".tres"
 				if object is Resource:
 					if !(name_of_class in ["PluginScript"]):
-						var _retu: int = ResourceSaver.save(object,res_path)
+						var _retu: int = ResourceSaver.save(object, res_path)
 			#								assert(retu == OK)
 			if !(delay_removing_added_nodes_to_next_frame && add_to_tree && object is Node):
 				if (object is Node) || !(object is RefCounted):
