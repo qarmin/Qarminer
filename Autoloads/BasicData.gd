@@ -15,6 +15,8 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
+	"set_data", #66029
+	"get_face_count", #66029
 	"_get_light_textures_data", # 66002
 	"get_seamless_image", # 61044
 	"set_buffer",  # 65964
