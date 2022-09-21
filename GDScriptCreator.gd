@@ -6,7 +6,7 @@ var things: Array = ["var", "=", "func", "export", "in", "match", "pass", ",", "
 var names: Array = ["Źdźbło", "Kasztan", "Krokiet", "Krokiew", "Krotka"]
 var variants: Array = ["void", "Vector2", "int", "float", "String", "Array"]
 
-var file_handler: File = File.new()
+var file_handler: FileAccess = FileAccess.new()
 
 var number_of_tabs: int = 5
 var string_tabs: String = ""
@@ -24,10 +24,11 @@ func _ready() -> void:
 	classes.sort()
 
 	# Create
-	var dir: Directory = Directory.new()
+	var dir: DirAccess = DirAccess.new()
 
 	for base_dir in ["res://test_gdscript/.import/", "res://test_gdscript/.godot/", "res://test_gdscript/"]:
-		if dir.open(base_dir) == OK:
+		dir = DirAccess.open(base_dir)
+		if dir.get_open_error() == OK:
 			var _unused = dir.list_dir_begin()  # TODOGODOT4 fill missing arguments https://github.com/godotengine/godot/pull/40547
 			var file_name: String = dir.get_next()
 			while file_name != "":
@@ -38,12 +39,13 @@ func _ready() -> void:
 			var ret2: int = dir.remove_at(base_dir)
 			assert(ret2 == OK)
 
+	
 	var ret: int = dir.make_dir("res://test_gdscript")
 	assert(ret == OK)
-	ret = File.new().open("res://test_gdscript/.gdignore", File.WRITE)
-	assert(ret == OK)
-	ret = File.new().open("res://test_gdscript/project.godot", File.WRITE)
-	assert(ret == OK)
+	var fa = FileAccess.new().open("res://test_gdscript/.gdignore", FileAccess.WRITE)
+	assert(fa.get_open_error() == OK)
+	var fa2 = FileAccess.new().open("res://test_gdscript/project.godot", FileAccess.WRITE)
+	assert(fa2.get_open_error() == OK)
 
 
 #func get_thing() -> String:
@@ -63,7 +65,7 @@ func get_random_number():
 func _process(_delta: float) -> void:
 	for _u in range(100):
 		file_number += 1
-		file_handler.open("res://test_gdscript/gdscript" + str(file_number) + ".gd", File.WRITE)
+		file_handler.open("res://test_gdscript/gdscript" + str(file_number) + ".gd", FileAccess.WRITE)
 
 		var gdscript: GDScript = GDScript.new()
 		gdscript.set_source_code('extends Objec\nfunc _process(_delta : float):\n\tprint("PRINT")')

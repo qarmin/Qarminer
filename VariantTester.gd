@@ -5,7 +5,7 @@ var use_always_new_object: bool = false  # Don't allow to "remeber" other functi
 
 var expr: Expression = Expression.new()
 
-var temp_gdscript_file: File = File.new()
+var temp_gdscript_file: FileAccess = FileAccess.new()
 var loaded_gdscript
 
 var thing
@@ -54,7 +54,7 @@ func tests_all_functions() -> void:
 				to_print += "." + method_data["name"] + "(" + argument_string + ")"
 				print(to_print)
 
-			temp_gdscript_file.open("temp_gdscript.gd", File.WRITE)
+			temp_gdscript_file = FileAccess.open("temp_gdscript.gd", FileAccess.WRITE)
 			temp_gdscript_file.store_string("static func test_function() -> void:\n\t")
 			# TODO create temporary variables
 			temp_gdscript_file.store_string(ParseArgumentType.return_gdscript_code_which_run_this_object(thing) + "." + method_data["name"] + "(" + argument_string + ")")

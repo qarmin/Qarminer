@@ -108,8 +108,8 @@ func _ready():
 #	list_of_singletons = list_of_singletons.slice(20,25) # TODO
 	print(list_of_singletons)
 
-	var file_handler = File.new()
-	var ret = file_handler.open("SingletonTesting.gd", File.WRITE)
+	var file_handler = FileAccess.new()
+	var ret = file_handler.open("SingletonTesting.gd", FileAccess.WRITE)
 	assert(ret == OK)
 
 	file_handler.store_string(

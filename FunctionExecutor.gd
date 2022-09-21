@@ -28,7 +28,7 @@ var test_one_class_multiple_times: bool = false  # Test same class across multip
 
 var save_resources_to_file: bool = false  # Saves created resources to files
 
-var file_handler: File = File.new()  # Handles saves to file, in case of testing one class, entire log is saved to it
+var file_handler: FileAccess = FileAccess.new()  # Handles saves to file, in case of testing one class, entire log is saved to it
 
 var to_print: String = ""  # Specify what needs to be printed
 
@@ -41,9 +41,9 @@ var current_tested_element: int = 0  # Which element from array is tested now
 var tested_classes: Array = []  # Array with elements that are tested, in normal situation this equal to base_classes variable
 
 var timer: int = 0  # Checks how much things are executed
-var timer_file_handler: File = File.new()
+var timer_file_handler: FileAccess = FileAccess.new()
 
-var memory_usage_file_handler: File = File.new()
+var memory_usage_file_handler: FileAccess = FileAccess.new()
 var memory_before: float = 0.0
 
 # This setting allow to decrease number of executed functions on object, to be able to easily find the smallest subset of functions
@@ -57,10 +57,11 @@ func _ready() -> void:
 	ValueCreator.number = 100
 
 	if save_resources_to_file:
-		var dir: Directory = Directory.new()
+		var dir: DirAccess = DirAccess.new()
 
 		for base_dir in ["res://test_resources/.import/", "res://test_resources/.godot/", "res://test_resources/"]:
-			if dir.open(base_dir) == OK:
+			dir = DirAccess.open(base_dir)
+			if dir.get_open_error() == OK:
 				var _unused = dir.list_dir_begin()  # TODOGODOT4 fill missing arguments https://github.com/godotengine/godot/pull/40547
 				var file_name: String = dir.get_next()
 				while file_name != "":
@@ -73,10 +74,10 @@ func _ready() -> void:
 
 		var ret: int = dir.make_dir("res://test_resources")
 		assert(ret == OK)
-		ret = File.new().open("res://test_resources/.gdignore", File.WRITE)
-		assert(ret == OK)
-		ret = File.new().open("res://test_resources/project.godot", File.WRITE)
-		assert(ret == OK)
+		var fa = FileAccess.open("res://test_resources/.gdignore", FileAccess.WRITE)
+		assert(fa.get_open_error() == OK)
+		var fa2 = FileAccess.open("res://test_resources/project.godot", FileAccess.WRITE)
+		assert(fa2.get_open_error() == OK)
 
 	if allow_to_use_notification:
 		BasicData.function_exceptions.erase("notification")
@@ -127,9 +128,9 @@ func _ready() -> void:
 #		index += 1
 
 	if save_data_to_file:
-		var _a: int = file_handler.open("res://results.txt", File.WRITE)
-		var _b: int = timer_file_handler.open("res://timer.txt", File.WRITE)
-		var _c: int = memory_usage_file_handler.open("res://memory_usage.txt", File.WRITE)
+		file_handler = FileAccess.open("res://results.txt", FileAccess.WRITE)
+		timer_file_handler = FileAccess.open("res://timer.txt", FileAccess.WRITE)
+		memory_usage_file_handler = FileAccess.open("res://memory_usage.txt", FileAccess.WRITE)
 		var current_memory: float = Performance.get_monitor(Performance.MEMORY_STATIC) / 1048576.0
 		memory_before = current_memory
 		memory_usage_file_handler.store_string("When,Class,Function,Current Memory Usage,Difference\n")
@@ -154,17 +155,17 @@ func tests_all_functions() -> void:
 			current_tested_element = current_tested_element % BasicData.base_classes.size()
 
 			if save_data_to_file:
-				var _a: int = file_handler.open("res://results.txt", File.WRITE)
+				file_handler = FileAccess.open("res://results.txt", FileAccess.WRITE)
 
 	elif save_data_to_file:
-		var _a: int = file_handler.open("res://results.txt", File.WRITE)
+		file_handler = FileAccess.open("res://results.txt", FileAccess.WRITE)
 
 	# Prevent from using by this files more than 1GB of disk
 	if save_data_to_file:
 		if timer_file_handler.get_position() > 1000000000:
-			var _b: int = timer_file_handler.open("res://timer.txt", File.WRITE)
+			timer_file_handler = FileAccess.open("res://timer.txt", FileAccess.WRITE)
 		if memory_usage_file_handler.get_position() > 1000000000:
-			var _c: int = memory_usage_file_handler.open("res://memory_usage.txt", File.WRITE)
+			memory_usage_file_handler = FileAccess.open("res://memory_usage.txt", FileAccess.WRITE)
 			memory_usage_file_handler.store_string("When,Class,Function,Current Memory Usage,Difference\n")
 
 	if (delay_removing_added_nodes_to_next_frame && add_to_tree) || (delay_removing_added_arguments_to_next_frame && add_arguments_to_tree):

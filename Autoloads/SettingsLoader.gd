@@ -9,12 +9,12 @@ var settings: Dictionary = {}
 func _init():
 	load_deprecated_classes()
 
-	var file_handler: File = File.new()
-	if !file_handler.file_exists(SETTINGS_FILE_NAME):
+	var file_handler: FileAccess
+	if !FileAccess.file_exists(SETTINGS_FILE_NAME):
 		print("Setting file doesn't exists, so it cannot be loaded.")
 	else:
-		var res: int = file_handler.open(SETTINGS_FILE_NAME, File.READ)
-		if res != OK:
+		file_handler = FileAccess.open(SETTINGS_FILE_NAME, FileAccess.READ)
+		if file_handler == null:
 			print("Failed to open settings file.")
 		else:
 			var current_setting: String = ""
@@ -151,11 +151,11 @@ func load_setting(setting_name: String, value_type: int, default_value):
 
 func load_deprecated_classes() -> void:
 	var custom_classes: Array = []
-	var file = File.new()
+	var file = FileAccess.new()
 
 	# Compatibility tool
-	if file.file_exists("res://classes.txt"):
-		file.open("res://classes.txt", File.READ)
+	if FileAccess.file_exists("res://classes.txt"):
+		file = FileAccess.open("res://classes.txt", FileAccess.READ)
 		while !file.eof_reached():
 			var cname = file.get_line().strip_edges()
 			if !cname.is_empty():

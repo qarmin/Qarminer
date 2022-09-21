@@ -27,12 +27,12 @@ var to_print: String = ""
 var debug_print: bool = true
 
 var save_data_to_file: bool = true
-var file_handler: File = File.new()
+var file_handler: FileAccess
 
 
 func _ready() -> void:
 	if save_data_to_file:
-		var _a: int = file_handler.open("res://results.txt", File.WRITE)
+		file_handler = FileAccess.open("res://results.txt", FileAccess.WRITE)
 
 	HelpFunctions.initialize_list_of_available_classes()
 

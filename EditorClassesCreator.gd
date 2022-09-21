@@ -21,15 +21,15 @@ func _ready():
 	editor_classes.sort()
 	#print(editor_classes)
 
-	var dir = Directory.new()
+	var dir = DirAccess.new()
 	dir.make_dir("res://Files")
 
 	print("[autoload]")
 	for name_of_class in editor_classes:
 		var argument_number = 0
-		var file_handler: File = File.new()
+		var file_handler: FileAccess = FileAccess.new()
 
-		file_handler.open("res://Files/" + name_of_class + ".gd", File.WRITE)
+		file_handler.open("res://Files/" + name_of_class + ".gd", FileAccess.WRITE)
 		file_handler.store_string(begin_of_file.replace("<<node>>", name_of_class))
 		var functions: String = "\t"
 		for function_data in ClassDB.class_get_method_list(name_of_class, true):
