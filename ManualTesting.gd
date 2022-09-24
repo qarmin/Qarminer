@@ -70,7 +70,13 @@ var excluded_functions: Array = [
 	"bake_render_uv2",
 	"set_boot_image",
 	"set_id",
-	"",
+	"create_local_rendering_device", #  #66372
+	"open_midi_inputs", # 52821
+	"texture_replace", # 66373
+	"texture_2d_update", # 66374
+	"canvas_texture_set_shading_parameters", # 
+	"canvas_texture_set_texture_filter",
+	"canvas_texture_set_texture_repeat",
 	# LEAK
 	"joint_create",
 	"separation_ray_shape_create",
@@ -80,6 +86,25 @@ var excluded_functions: Array = [
 	"box_shape_create",
 	"heightmap_shape_create",
 	"generate_bus_layout",
+	"add_task", # Thread Woker leak
+	"add_group_task", # Thread Woker leak
+	"load_threaded_request", # Leak
+	"texture_2d_layered_create", # RID Leak
+	"texture_3d_create", # RID Leak
+	"texture_proxy_create", # RID leak
+	"texture_2d_placeholder_create", # RID Leak
+	"texture_3d_placeholder_create", # RID Leak
+	"texture_2d_layered_placeholder_create", # RID Leak
+	"mesh_create_from_surfaces", # RID Leak
+	"decal_create", # RID Leak
+	"voxel_gi_create", # RID Leak
+	"lightmap_create", # RID Leak
+	"particles_collision_create", # RID Leak
+	"fog_volume_create", # RID Leak
+	"visibility_notifier_create", # RID Leak
+	"occluder_create", # RID Leak
+	"camera_attributes_create", # RID Leak
+	"canvas_texture_create", # RID Leak
 	#Other
 	"warp_mouse",  # Warping
 	"alert",  # Blocking window
@@ -93,6 +118,10 @@ var excluded_functions: Array = [
 	"delay_usec",
 	"create_process",
 	"create_instance",
+	"move_to_trash",
+	"set_low_processor_usage_mode_sleep_usec", # Sleep
+	"free_rid", # Just no, may free valid rid
+	"set_restart_on_exit",
 ]
 
 
@@ -108,9 +137,8 @@ func _ready():
 #	list_of_singletons = list_of_singletons.slice(20,25) # TODO
 	print(list_of_singletons)
 
-	var file_handler = FileAccess.new()
-	var ret = file_handler.open("SingletonTesting.gd", FileAccess.WRITE)
-	assert(ret == OK)
+	var file_handler = FileAccess.open("SingletonTesting.gd", FileAccess.WRITE)
+	assert(file_handler.is_open())
 
 	file_handler.store_string(
 		"""extends Node
@@ -190,22 +218,37 @@ func f_GDScript() -> void:
 	
 	print("abs")
 	abs(ValueCreator.get_float())
+	print("absf")
+	absf(ValueCreator.get_float())
+	print("absi")
+	absi(ValueCreator.get_float())
 	print("acos")
 	acos(ValueCreator.get_float())
 	print("asin")
 	asin(ValueCreator.get_float())
-	print("assert")
-	assert(true)
-	
 	print("atan")
 	atan(ValueCreator.get_float())
 	print("atan2")
 	atan2(ValueCreator.get_float(),ValueCreator.get_float())
 	
-#	print("bytes2var")
-#	bytes2var(ValueCreator.get_poolbytearray(),ValueCreator.get_bool()) # Editor error
+	print("assert")
+	assert(true)
+	
+	print("bezier_interpolate")
+	bezier_interpolate(ValueCreator.get_float(),ValueCreator.get_float(),ValueCreator.get_float(),ValueCreator.get_float(),ValueCreator.get_float())
+	
+#	print("bytes_to_var")
+#	bytes_to_var(ValueCreator.get_poolbytearray()) # Editor error
+#	print("bytes_to_var_with_objects")
+#	bytes_to_var_with_objects(ValueCreator.get_poolbytearray()) # Editor error
+
 	print("ceil")
 	ceil(ValueCreator.get_float())
+	print("ceilf")
+	ceilf(ValueCreator.get_float())
+	print("ceili")
+	ceili(ValueCreator.get_float())
+	
 	print("char")
 	char(ValueCreator.get_int())
 	print("clamp")
@@ -218,13 +261,13 @@ func f_GDScript() -> void:
 	print("cosh")
 	cosh(ValueCreator.get_float())
 	
-	print("db2linear")
-	db2linear(ValueCreator.get_float())
+	print("db_to_linear")
+	db_to_linear(ValueCreator.get_float())
 	
-	print("deg2rad")
-	deg2rad(ValueCreator.get_float())
-#	print("dict2inst")
-#	dict2inst(ValueCreator.get_dictionary()) # Editor error
+	print("deg_to_rad")
+	deg_to_rad(ValueCreator.get_float())
+#	print("dict_to_inst")
+#	dict_to_inst(ValueCreator.get_dictionary()) # Editor error
 	print("ease")
 	ease(ValueCreator.get_float(),ValueCreator.get_float())
 	print("exp")
@@ -270,8 +313,8 @@ func f_GDScript() -> void:
 	print("lerp_angle")
 	lerp_angle(ValueCreator.get_float(),ValueCreator.get_float(),ValueCreator.get_float())
 	
-	print("linear2db")
-	linear2db(ValueCreator.get_float())
+	print("linear_to_db")
+	linear_to_db(ValueCreator.get_float())
 	print("load")
 	load(ValueCreator.get_string())
 	print("log")
@@ -313,8 +356,8 @@ func f_GDScript() -> void:
 		print("push_warning")
 		push_warning(ValueCreator.get_string())
 		
-	print("rad2deg")
-	rad2deg(ValueCreator.get_float())
+	print("rad_to_deg")
+	rad_to_deg(ValueCreator.get_float())
 	
 	print("randf")
 	randf()
@@ -324,9 +367,7 @@ func f_GDScript() -> void:
 	randomize()
 	print("range")
 	range(ValueCreator.get_int(),ValueCreator.get_int(),max(ValueCreator.get_int(),1))
-	print("range_lerp")
-	range_lerp(ValueCreator.get_float(),ValueCreator.get_float(),ValueCreator.get_float(),ValueCreator.get_float(),ValueCreator.get_float())
-	
+
 	print("round")
 	round(ValueCreator.get_float())
 	print("seed")
@@ -349,8 +390,8 @@ func f_GDScript() -> void:
 	
 	print("str")
 	str(ValueCreator.get_string())
-	print("str2var")
-	str2var(ValueCreator.get_string())
+	print("str_to_var")
+	str_to_var(ValueCreator.get_string())
 	
 	print("tan")
 	tan(ValueCreator.get_float())
@@ -362,10 +403,10 @@ func f_GDScript() -> void:
 	print("typeof")
 	typeof(ValueCreator.get_string())
 	
-	print("var2bytes")
-	var2bytes(ValueCreator.get_bool())
-	print("var2str")
-	var2str(ValueCreator.get_string())
+	print("var_to_bytes")
+	var_to_bytes(ValueCreator.get_bool())
+	print("var_to_str")
+	var_to_str(ValueCreator.get_string())
 	
 	print("weakref")
 	weakref(get_parent())
