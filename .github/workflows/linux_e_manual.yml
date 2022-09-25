@@ -55,16 +55,6 @@ jobs:
           curr="$(pwd)/libvk_swiftshader.so"
           sed -i "s|PATH_TO_CHANGE|$curr|" vk_swiftshader_icd.json
 
-      - name: Store editor results
-        uses: actions/upload-artifact@v2
-        with:
-          name: editor-results
-          path: editor_results.txt
-
-      - name: Check Godot Editor Log
-        run: |
-          misc/check_ci_log.py sanitizers_log.txt
-
       - name: Create Project
         run: |
           VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json DRI_PRIME=0 xvfb-run ./godot.linuxbsd.tools.x86_64.san ManualTesting.tscn --headless || true
