@@ -1,4 +1,4 @@
-name: 🐧 Godot 4 Vulkan 08 Parent | Add to tree | Maximum executed
+name: 🐧 Godot 4 Vulkan Physics
 on:
   push:
   pull_request:
@@ -26,13 +26,6 @@ jobs:
           sudo apt-get install build-essential pkg-config libx11-dev libxcursor-dev \
             libxinerama-dev libgl1-mesa-dev libglu-dev libasound2-dev libpulse-dev libudev-dev libxi-dev libxrandr-dev yasm \
             xvfb wget2 unzip python scons git
-
-      - name: Configure Data
-        run: |
-          echo "use_parent_methods: true" >> settings.txt
-          echo "add_to_tree: true" >> settings.txt
-          echo "maximum_executed_functions_on_object: 5" >> settings.txt
-          
 
       - name: Download Godot(GIT)
         run: |
@@ -76,9 +69,24 @@ jobs:
         run: |
           misc/check_ci_log.py sanitizers_log.txt
 
-      - name: Run Project
+      - name: Run Project StressPhysics - Physics Normal
         run: |
-          VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json DRI_PRIME=0 timeout -v 14400 xvfb-run ./godot.linuxbsd.tools.x86_64.san FunctionExecutor.tscn 10000 --audio-driver Dummy  --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json DRI_PRIME=0 timeout -v 14400 xvfb-run ./godot.linuxbsd.tools.x86_64.san StressPhysics.tscn 3600 --audio-driver Dummy  --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          tail -n 300 sanitizers_log.txt > project_results.txt
+
+      - name: Configure Project Data
+        run: |
+          echo "" > settings.txt
+
+          echo "echo "[rendering]" >> project.godot"
+          echo "echo "threads/thread_model=2" >> project.godot"
+          echo "echo "[physics]" >> project.godot"
+          echo "echo "2d/thread_model=2" >> project.godot"
+          echo "sed -i 's/var add_to_tree: bool = false/var add_to_tree: bool = true/' FunctionExecutor.gd" >> settings.txt
+
+      - name: Run Project Multithread rendering | physics | Add to tree
+        run: |
+          VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json DRI_PRIME=0 timeout -v 14400 xvfb-run ./godot.linuxbsd.tools.x86_64.san FunctionExecutor.tscn 3600 --audio-driver Dummy  --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
           tail -n 300 sanitizers_log.txt > project_results.txt
 
       - name: Store project results
