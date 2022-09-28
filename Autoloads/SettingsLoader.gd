@@ -151,11 +151,10 @@ func load_setting(setting_name: String, value_type: int, default_value):
 
 func load_deprecated_classes() -> void:
 	var custom_classes: Array = []
-	var file = FileAccess.new()
 
 	# Compatibility tool
 	if FileAccess.file_exists("res://classes.txt"):
-		file = FileAccess.open("res://classes.txt", FileAccess.READ)
+		var file: FileAccess = FileAccess.open("res://classes.txt", FileAccess.READ)
 		while !file.eof_reached():
 			var cname = file.get_line().strip_edges()
 			if !cname.is_empty():

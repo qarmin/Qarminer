@@ -6,7 +6,7 @@ var things: Array = ["var", "=", "func", "export", "in", "match", "pass", ",", "
 var names: Array = ["Źdźbło", "Kasztan", "Krokiet", "Krokiew", "Krotka"]
 var variants: Array = ["void", "Vector2", "int", "float", "String", "Array"]
 
-var file_handler: FileAccess = FileAccess.new()
+var file_handler: FileAccess
 
 var number_of_tabs: int = 5
 var string_tabs: String = ""
@@ -23,28 +23,28 @@ func _ready() -> void:
 	classes = Array(ClassDB.get_class_list())
 	classes.sort()
 
-	# Create
-	var dir: DirAccess = DirAccess.new()
-
+	# Remove file
+	var dir: DirAccess = DirAccess.open("res://")
 	for base_dir in ["res://test_gdscript/.import/", "res://test_gdscript/.godot/", "res://test_gdscript/"]:
 		dir = DirAccess.open(base_dir)
-		if dir.get_open_error() == OK:
-			var _unused = dir.list_dir_begin()  # TODOGODOT4 fill missing arguments https://github.com/godotengine/godot/pull/40547
+		if dir != null && dir.get_open_error() == OK:
+			dir.set_include_hidden(true)
+			var unused = dir.list_dir_begin()  # TODOGODOT4 fill missing arguments https://github.com/godotengine/godot/pull/40547
 			var file_name: String = dir.get_next()
 			while file_name != "":
 				if file_name != ".." && file_name != ".":
-					var rr: int = dir.remove_at(base_dir + file_name)
+					var rr: int = dir.remove(base_dir + file_name)
 					assert(rr == OK)
 				file_name = dir.get_next()
-			var ret2: int = dir.remove_at(base_dir)
+			var ret2: int = dir.remove(base_dir)
 			assert(ret2 == OK)
 
 	
 	var ret: int = dir.make_dir("res://test_gdscript")
 	assert(ret == OK)
-	var fa = FileAccess.new().open("res://test_gdscript/.gdignore", FileAccess.WRITE)
+	var fa = FileAccess.open("res://test_gdscript/.gdignore", FileAccess.WRITE)
 	assert(fa.get_open_error() == OK)
-	var fa2 = FileAccess.new().open("res://test_gdscript/project.godot", FileAccess.WRITE)
+	var fa2 = FileAccess.open("res://test_gdscript/project.godot", FileAccess.WRITE)
 	assert(fa2.get_open_error() == OK)
 
 
@@ -65,7 +65,7 @@ func get_random_number():
 func _process(_delta: float) -> void:
 	for _u in range(100):
 		file_number += 1
-		file_handler.open("res://test_gdscript/gdscript" + str(file_number) + ".gd", FileAccess.WRITE)
+		file_handler = FileAccess.open("res://test_gdscript/gdscript" + str(file_number) + ".gd", FileAccess.WRITE)
 
 		var gdscript: GDScript = GDScript.new()
 		gdscript.set_source_code('extends Objec\nfunc _process(_delta : float):\n\tprint("PRINT")')

@@ -107,4 +107,4 @@ jobs:
 
       - name: Check Log
         run: |
-          misc/check_ci_log.py sanitizers_log.txt
+          misc/check_ci_log.py project_results.txt

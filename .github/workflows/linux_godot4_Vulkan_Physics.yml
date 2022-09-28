@@ -71,22 +71,28 @@ jobs:
 
       - name: Run Project StressPhysics - Physics Normal
         run: |
+          echo "======================================== StressPhysics - Physics Normal" 2>&1 | tee sanitizers_log.txt
           VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json DRI_PRIME=0 timeout -v 14400 xvfb-run ./godot.linuxbsd.tools.x86_64.san StressPhysics.tscn 3600 --audio-driver Dummy  --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
           tail -n 300 sanitizers_log.txt > project_results.txt
+
+      - name: Execute random code
+        run: |
+          cp project.godot project.godot.old
+          echo "[rendering]" >> project.godot
+          echo "threads/thread_model=2" >> project.godot
+          echo "[physics]" >> project.godot
+          echo "2d/thread_model=2" >> project.godot
 
       - name: Configure Project Data
         run: |
           echo "" > settings.txt
 
-          echo "echo "[rendering]" >> project.godot"
-          echo "echo "threads/thread_model=2" >> project.godot"
-          echo "echo "[physics]" >> project.godot"
-          echo "echo "2d/thread_model=2" >> project.godot"
-          echo "sed -i 's/var add_to_tree: bool = false/var add_to_tree: bool = true/' FunctionExecutor.gd" >> settings.txt
+          echo "add_to_tree: true" >> settings.txt
 
       - name: Run Project Multithread rendering | physics | Add to tree
         run: |
-          VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json DRI_PRIME=0 timeout -v 14400 xvfb-run ./godot.linuxbsd.tools.x86_64.san FunctionExecutor.tscn 3600 --audio-driver Dummy  --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          echo "======================================== Multithread rendering | physics | Add to tree" 2>&1 | tee sanitizers_log.txt
+          VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json DRI_PRIME=0 timeout -v 14400 xvfb-run ./godot.linuxbsd.tools.x86_64.san StressPhysics.tscn 3600 --audio-driver Dummy  --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
           tail -n 300 sanitizers_log.txt > project_results.txt
 
       - name: Store project results
@@ -115,4 +121,4 @@ jobs:
 
       - name: Check Log
         run: |
-          misc/check_ci_log.py sanitizers_log.txt
+          misc/check_ci_log.py project_results.txt
