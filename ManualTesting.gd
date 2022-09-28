@@ -11,6 +11,7 @@ var excluded_functions: Array = [
 	"mesh_surface_get_format_offset",  #60114
 	"mesh_surface_get_format_stride",  #60114
 	# OTHER
+	"move_to_trash", # Moves to trash
 	"make_sphere_mesh",  # Slow
 	"free",  # Not enabled
 	"warp_mouse_position",  # Warping

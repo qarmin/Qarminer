@@ -1,0 +1,217 @@
+name: 🐧 Godot 3.x GLES3 Normal
+on:
+  push:
+  pull_request:
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+  linux-sanitizer:
+    runs-on: "ubuntu-20.04"
+    name: Editor and project
+
+    steps:
+      - uses: actions/checkout@v2
+
+      # Azure repositories are not reliable, we need to prevent azure giving us packages.
+      - name: Make apt sources.list use the default Ubuntu repositories
+        run: |
+          sudo rm -f /etc/apt/sources.list.d/*
+          sudo cp -f misc/ci/sources.list /etc/apt/sources.list
+          sudo apt-get update
+
+      # Install all packages (except scons)
+      - name: Configure dependencies
+        run: |
+          sudo apt-get install build-essential pkg-config libx11-dev libxcursor-dev \
+            libxinerama-dev libgl1-mesa-dev libglu-dev libasound2-dev libpulse-dev libudev-dev libxi-dev libxrandr-dev yasm \
+            xvfb wget2 unzip python scons git
+
+      - name: Download Godot(GIT)
+        run: |
+          git clone https://github.com/godotengine/godot.git
+          cd godot
+          git checkout 3.x
+          cd ../
+
+      - name: Compile Godot
+        run: |
+          cd godot
+          wget https://patch-diff.githubusercontent.com/raw/godotengine/godot/pull/52075.patch -O 3x.patch
+          wget https://patch-diff.githubusercontent.com/raw/godotengine/godot/pull/49053.patch -O 4.patch
+          git apply 3x.patch
+          scons -j2 use_asan=yes use_ubsan=yes CCFLAGS="-fsanitize=shift,shift-exponent,integer-divide-by-zero,unreachable,vla-bound,null,return,signed-integer-overflow,bounds,float-divide-by-zero,float-cast-overflow,nonnull-attribute,returns-nonnull-attribute,bool,enum,vptr" linker=gold
+          cp bin/godot.x11.tools.64s ../
+          cd ../
+          rm -rf godot
+
+      # Download, unzip and setup SwiftShader library
+      - name: Download SwiftShader
+        run: |
+          wget https://github.com/qarmin/gtk_library_store/releases/download/3.24.0/swiftshader3.zip
+          unzip swiftshader3.zip
+          rm swiftshader3.zip
+          curr="$(pwd)/libvk_swiftshader.so"
+          sed -i "s|PATH_TO_CHANGE|$curr|" vk_swiftshader_icd.json
+
+      - name: Open Godot Editor
+        run: |
+          DRI_PRIME=0 xvfb-run ./godot.x11.tools.64s -e --quit --audio-driver Dummy --video-driver GLES3 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          tail -n 300 sanitizers_log.txt > editor_results.txt
+
+      - name: Store editor results
+        uses: actions/upload-artifact@v2
+        with:
+          name: editor-results
+          path: editor_results.txt
+
+      - name: Check Godot Editor Log
+        run: |
+          misc/check_ci_log.py sanitizers_log.txt
+
+      - name: Configure Project Data
+        run: |
+          echo "" > settings.txt
+
+          echo "add_to_tree: true" >> settings.txt
+          echo "use_parent_methods: true" >> settings.txt
+          echo "test_one_class_multiple_times: true" >> settings.txt
+          echo "maximum_executed_functions_on_object: 15" >> settings.txt
+
+      - name: Run Project One by One | Parent | Add to tree | Maximum Tested
+        run: |
+          echo "======================================== One by One | Parent | Add to tree | Maximum Tested" 2>&1 | tee sanitizers_log.txt
+          DRI_PRIME=0 timeout -v 14400 xvfb-run ./godot.x11.tools.64s FunctionExecutor.tscn 1800 --audio-driver Dummy --video-driver GLES3 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          tail -n 300 sanitizers_log.txt > project_results.txt
+
+      - name: Run Project Default
+        run: |
+          echo "======================================== Default" 2>&1 | tee sanitizers_log.txt
+          DRI_PRIME=0 timeout -v 14400 xvfb-run ./godot.x11.tools.64s FunctionExecutor.tscn 1800 --audio-driver Dummy --video-driver GLES3 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          tail -n 300 sanitizers_log.txt > project_results.txt
+
+      - name: Configure Project Data
+        run: |
+          echo "" > settings.txt
+
+          echo "add_to_tree: true" >> settings.txt
+          echo "use_parent_methods: true" >> settings.txt
+          echo "delay_removing_added_nodes_to_next_frame: true" >> settings.txt
+          echo "maximum_executed_functions_on_object: 15" >> settings.txt
+
+      - name: Run Project Delaying | Parent | Add to tree | Maximum Tested
+        run: |
+          echo "======================================== Delaying | Parent | Add to tree | Maximum Tested" 2>&1 | tee sanitizers_log.txt
+          DRI_PRIME=0 timeout -v 14400 xvfb-run ./godot.x11.tools.64s FunctionExecutor.tscn 1800 --audio-driver Dummy --video-driver GLES3 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          tail -n 300 sanitizers_log.txt > project_results.txt
+
+      - name: Configure Project Data
+        run: |
+          echo "" > settings.txt
+
+          echo "use_parent_methods: true" >> settings.txt
+          echo "delay_removing_added_nodes_to_next_frame: true" >> settings.txt
+          echo "test_one_class_multiple_times: true" >> settings.txt
+
+      - name: Run Project Delaying | One by One | Parent
+        run: |
+          echo "======================================== Delaying | One by One | Parent" 2>&1 | tee sanitizers_log.txt
+          DRI_PRIME=0 timeout -v 14400 xvfb-run ./godot.x11.tools.64s FunctionExecutor.tscn 1800 --audio-driver Dummy --video-driver GLES3 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          tail -n 300 sanitizers_log.txt > project_results.txt
+
+      - name: Configure Project Data
+        run: |
+          echo "" > settings.txt
+
+          echo "used_number: 10000" >> settings.txt
+          echo "use_parent_methods: true" >> settings.txt
+          echo "test_one_class_multiple_times: true" >> settings.txt
+
+      - name: Run Project Big Numbers | Parent | One by One
+        run: |
+          echo "======================================== Big Numbers | Parent | One by One" 2>&1 | tee sanitizers_log.txt
+          DRI_PRIME=0 timeout -v 14400 xvfb-run ./godot.x11.tools.64s FunctionExecutor.tscn 1800 --audio-driver Dummy --video-driver GLES3 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          tail -n 300 sanitizers_log.txt > project_results.txt
+
+      - name: Configure Project Data
+        run: |
+          echo "" > settings.txt
+
+          echo "used_number: 10" >> settings.txt
+          echo "use_parent_methods: true" >> settings.txt
+          echo "test_one_class_multiple_times: true" >> settings.txt
+
+      - name: Run Project Small Numbers | Parent | One by One
+        run: |
+          echo "======================================== Small Numbers | Parent | One by One" 2>&1 | tee sanitizers_log.txt
+          DRI_PRIME=0 timeout -v 14400 xvfb-run ./godot.x11.tools.64s FunctionExecutor.tscn 1800 --audio-driver Dummy --video-driver GLES3 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          tail -n 300 sanitizers_log.txt > project_results.txt
+
+      - name: Configure Project Data
+        run: |
+          echo "" > settings.txt
+
+          echo "remove_returned_value: true" >> settings.txt
+          echo "use_parent_methods: true" >> settings.txt
+          echo "test_one_class_multiple_times: true" >> settings.txt
+
+      - name: Run Project Remove returned | Parent | One by One
+        run: |
+          echo "======================================== Remove returned | Parent | One by One" 2>&1 | tee sanitizers_log.txt
+          DRI_PRIME=0 timeout -v 14400 xvfb-run ./godot.x11.tools.64s FunctionExecutor.tscn 1800 --audio-driver Dummy --video-driver GLES3 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          tail -n 300 sanitizers_log.txt > project_results.txt
+
+      - name: Configure Project Data
+        run: |
+          echo "" > settings.txt
+
+          echo "use_parent_methods: true" >> settings.txt
+          echo "add_to_tree: true" >> settings.txt
+          echo "maximum_executed_functions_on_object: 5" >> settings.txt
+
+      - name: Run Project Parent | Add to tree | Maximum executed
+        run: |
+          echo "======================================== Parent | Add to tree | Maximum executed" 2>&1 | tee sanitizers_log.txt
+          DRI_PRIME=0 timeout -v 14400 xvfb-run ./godot.x11.tools.64s FunctionExecutor.tscn 1800 --audio-driver Dummy --video-driver GLES3 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          tail -n 300 sanitizers_log.txt > project_results.txt
+
+      - name: Configure Project Data
+        run: |
+          echo "" > settings.txt
+
+          echo "add_arguments_to_tree: true" >> settings.txt
+          echo "delay_removing_added_arguments_to_next_frame: true" >> settings.txt
+
+      - name: Run Project Add arguments to tree | Delaying
+        run: |
+          echo "======================================== Add arguments to tree | Delaying" 2>&1 | tee sanitizers_log.txt
+          DRI_PRIME=0 timeout -v 14400 xvfb-run ./godot.x11.tools.64s FunctionExecutor.tscn 1800 --audio-driver Dummy --video-driver GLES3 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          tail -n 300 sanitizers_log.txt > project_results.txt
+
+      - name: Store project results
+        uses: actions/upload-artifact@v2
+        with:
+          name: project-results
+          path: project_results.txt
+
+      - name: Store test results
+        uses: actions/upload-artifact@v2
+        with:
+          name: last-run-functions
+          path: results.txt
+
+      - name: Store timer results
+        uses: actions/upload-artifact@v2
+        with:
+          name: timer
+          path: timer.txt
+
+      - name: Store memory usage results
+        uses: actions/upload-artifact@v2
+        with:
+          name: memory-usage
+          path: memory_usage.txt
+
+      - name: Check Log
+        run: |
+          misc/check_ci_log.py project_results.txt
