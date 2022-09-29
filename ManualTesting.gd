@@ -77,6 +77,7 @@ var excluded_functions: Array = [
 	"canvas_texture_set_shading_parameters", # 
 	"canvas_texture_set_texture_filter",
 	"canvas_texture_set_texture_repeat",
+	"canvas_texture_set_channel", #TODO, but probably same as above
 	# LEAK
 	"joint_create",
 	"separation_ray_shape_create",
