@@ -10,11 +10,24 @@ var excluded_functions: Array = [
 	"area_get_space",  #60113
 	"mesh_surface_get_format_offset",  #60114
 	"mesh_surface_get_format_stride",  #60114
+	"open_midi_inputs", #52821
 	# OTHER
 	"move_to_trash", # Moves to trash
 	"make_sphere_mesh",  # Slow
 	"free",  # Not enabled
 	"warp_mouse_position",  # Warping
+	"crash", # Crash
+	"alert", # Show useless message
+	"kill", # Kills random process
+	"execute", # Open random app
+	"shell_open", # Opens file exporer
+	"delay_msec", # Sleep
+	"delay_usec", # Sleep
+	"set_exit_code", # Always should return valid code, not changed one
+	"dump_memory_to_file", # create file
+	"dump_resources_to_file", # create file 
+	"set_low_processor_usage_mode", # Freeze
+	"set_low_processor_usage_mode_sleep_usec", # Freeze
 	# MEMORY LEAK
 	"init",  # Quite specific function, which probably needs to be instanced only once
 	"space_create",
@@ -120,7 +133,11 @@ func _process(_delta) -> void:
 	for name_of_class in list_of_singletons:
 		var argument_number: int = 0
 
-		var functions_info = ClassDB.class_get_method_list(name_of_class, true)
+		var functions_info
+		if ClassDB.class_exists(name_of_class):
+			functions_info = ClassDB.class_get_method_list(name_of_class, true)
+		else:
+			functions_info = ClassDB.class_get_method_list("_" + name_of_class, true)
 
 #		print("----------------------------- " + name_of_class)
 		file_handler.store_string("func f_" + name_of_class + "() -> void:\n")
