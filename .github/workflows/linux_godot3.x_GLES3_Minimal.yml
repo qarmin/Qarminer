@@ -1,4 +1,4 @@
-name: 🐧 Godot 3.x GLES3 Other
+name: 🐧 Godot 3.x GLES3 Minimal
 on:
   push:
   pull_request:
@@ -72,7 +72,7 @@ jobs:
       - name: Run Project Variant Tester
         run: |
           echo "======================================== Variant Tester" 2>&1 | tee sanitizers_log.txt
-          DRI_PRIME=0 timeout -v 3960 xvfb-run ./godot.x11.tools.64s VariantTester.tscn 3600 --audio-driver Dummy --video-driver GLES3 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          DRI_PRIME=0 timeout -v 1260 xvfb-run ./godot.x11.tools.64s VariantTester.tscn 900 --audio-driver Dummy --video-driver GLES3 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
           tail -n 300 sanitizers_log.txt >> project_results.txt
 
           if [ -f "results.txt" ]; then
@@ -108,7 +108,7 @@ jobs:
       - name: Run Project GDScript Fuzzer
         run: |
           echo "======================================== GDScript Fuzzer" 2>&1 | tee sanitizers_log.txt
-          DRI_PRIME=0 timeout -v 3960 xvfb-run ./godot.x11.tools.64s GDScriptCreator.tscn 3600 --audio-driver Dummy --video-driver GLES3 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          DRI_PRIME=0 timeout -v 1260 xvfb-run ./godot.x11.tools.64s GDScriptCreator.tscn 900 --audio-driver Dummy --video-driver GLES3 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
           tail -n 300 sanitizers_log.txt >> project_results.txt
 
           if [ -f "results.txt" ]; then
@@ -141,10 +141,10 @@ jobs:
               fi
           fi
 
-      - name: Run Project Reparenting Deleting
+      - name: Run Project Default
         run: |
-          echo "======================================== Reparenting Deleting" 2>&1 | tee sanitizers_log.txt
-          DRI_PRIME=0 timeout -v 3960 xvfb-run ./godot.x11.tools.64s ReparentingDeleting.tscn 3600 --audio-driver Dummy --video-driver GLES3 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          echo "======================================== Default" 2>&1 | tee sanitizers_log.txt
+          DRI_PRIME=0 timeout -v 2160 xvfb-run ./godot.x11.tools.64s FunctionExecutor.tscn 1800 --audio-driver Dummy --video-driver GLES3 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
           tail -n 300 sanitizers_log.txt >> project_results.txt
 
           if [ -f "results.txt" ]; then

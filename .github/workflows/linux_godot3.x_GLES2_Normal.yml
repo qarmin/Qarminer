@@ -40,7 +40,7 @@ jobs:
           wget https://patch-diff.githubusercontent.com/raw/godotengine/godot/pull/52075.patch -O 3x.patch
           wget https://patch-diff.githubusercontent.com/raw/godotengine/godot/pull/49053.patch -O 4.patch
           git apply 3x.patch
-          scons -j2 use_asan=yes use_ubsan=yes CCFLAGS="-fsanitize=shift,shift-exponent,integer-divide-by-zero,unreachable,vla-bound,null,return,signed-integer-overflow,bounds,float-divide-by-zero,float-cast-overflow,nonnull-attribute,returns-nonnull-attribute,bool,enum,vptr" linker=gold
+          scons -j2 use_asan=yes use_ubsan=yes linker=gold
           cp bin/godot.x11.tools.64s ../
           cd ../
           rm -rf godot
@@ -67,7 +67,7 @@ jobs:
 
       - name: Check Godot Editor Log
         run: |
-          misc/check_ci_log.py sanitizers_log.txt
+          misc/check_ci_log.py editor_results.txt
 
       - name: Configure Project Data
         run: |
@@ -76,19 +76,79 @@ jobs:
           echo "add_to_tree: true" >> settings.txt
           echo "use_parent_methods: true" >> settings.txt
           echo "test_one_class_multiple_times: true" >> settings.txt
-          echo "maximum_executed_functions_on_object: 15" >> settings.txt
+          echo "maximum_executed_functions_on_object: 10" >> settings.txt
 
       - name: Run Project One by One | Parent | Add to tree | Maximum Tested
         run: |
           echo "======================================== One by One | Parent | Add to tree | Maximum Tested" 2>&1 | tee sanitizers_log.txt
-          DRI_PRIME=0 timeout -v 14400 xvfb-run ./godot.x11.tools.64s FunctionExecutor.tscn 1800 --audio-driver Dummy --video-driver GLES2 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
-          tail -n 300 sanitizers_log.txt > project_results.txt
+          DRI_PRIME=0 timeout -v 2160 xvfb-run ./godot.x11.tools.64s FunctionExecutor.tscn 1800 --audio-driver Dummy --video-driver GLES2 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          tail -n 300 sanitizers_log.txt >> project_results.txt
+
+          if [ -f "results.txt" ]; then
+              if [ -f "results_end.txt" ]; then
+                  echo "" > t.txt;echo "================ NEW_LINE ===============" >> t.txt;echo "" >> t.txt
+                  cat "results.txt" "t.txt" "results_end.txt" > "temp.txt"
+                  mv "temp.txt" "results_end.txt"
+              else
+                  cp "results.txt" "results_end.txt"
+              fi
+          fi
+
+          if [ -f "memory_usage.txt" ]; then
+              if [ -f "memory_usage_end.txt" ]; then
+                  echo "" > t.txt;echo "================ NEW_LINE ===============" >> t.txt;echo "" >> t.txt
+                  cat "memory_usage.txt" "t.txt" "memory_usage_end.txt" > "temp.txt"
+                  mv "temp.txt" "memory_usage_end.txt"
+              else
+                  cp "memory_usage.txt" "memory_usage_end.txt"
+              fi
+          fi
+
+          if [ -f "timer.txt" ]; then
+              if [ -f "timer_end.txt" ]; then
+                  echo "" > t.txt;echo "================ NEW_LINE ===============" >> t.txt;echo "" >> t.txt
+                  cat "timer.txt" "t.txt" "timer_end.txt" > "temp.txt"
+                  mv "temp.txt" "timer_end.txt"
+              else
+                  cp "timer.txt" "timer_end.txt"
+              fi
+          fi
 
       - name: Run Project Default
         run: |
           echo "======================================== Default" 2>&1 | tee sanitizers_log.txt
-          DRI_PRIME=0 timeout -v 14400 xvfb-run ./godot.x11.tools.64s FunctionExecutor.tscn 1800 --audio-driver Dummy --video-driver GLES2 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
-          tail -n 300 sanitizers_log.txt > project_results.txt
+          DRI_PRIME=0 timeout -v 2160 xvfb-run ./godot.x11.tools.64s FunctionExecutor.tscn 1800 --audio-driver Dummy --video-driver GLES2 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          tail -n 300 sanitizers_log.txt >> project_results.txt
+
+          if [ -f "results.txt" ]; then
+              if [ -f "results_end.txt" ]; then
+                  echo "" > t.txt;echo "================ NEW_LINE ===============" >> t.txt;echo "" >> t.txt
+                  cat "results.txt" "t.txt" "results_end.txt" > "temp.txt"
+                  mv "temp.txt" "results_end.txt"
+              else
+                  cp "results.txt" "results_end.txt"
+              fi
+          fi
+
+          if [ -f "memory_usage.txt" ]; then
+              if [ -f "memory_usage_end.txt" ]; then
+                  echo "" > t.txt;echo "================ NEW_LINE ===============" >> t.txt;echo "" >> t.txt
+                  cat "memory_usage.txt" "t.txt" "memory_usage_end.txt" > "temp.txt"
+                  mv "temp.txt" "memory_usage_end.txt"
+              else
+                  cp "memory_usage.txt" "memory_usage_end.txt"
+              fi
+          fi
+
+          if [ -f "timer.txt" ]; then
+              if [ -f "timer_end.txt" ]; then
+                  echo "" > t.txt;echo "================ NEW_LINE ===============" >> t.txt;echo "" >> t.txt
+                  cat "timer.txt" "t.txt" "timer_end.txt" > "temp.txt"
+                  mv "temp.txt" "timer_end.txt"
+              else
+                  cp "timer.txt" "timer_end.txt"
+              fi
+          fi
 
       - name: Configure Project Data
         run: |
@@ -97,13 +157,43 @@ jobs:
           echo "add_to_tree: true" >> settings.txt
           echo "use_parent_methods: true" >> settings.txt
           echo "delay_removing_added_nodes_to_next_frame: true" >> settings.txt
-          echo "maximum_executed_functions_on_object: 15" >> settings.txt
+          echo "maximum_executed_functions_on_object: 10" >> settings.txt
 
       - name: Run Project Delaying | Parent | Add to tree | Maximum Tested
         run: |
           echo "======================================== Delaying | Parent | Add to tree | Maximum Tested" 2>&1 | tee sanitizers_log.txt
-          DRI_PRIME=0 timeout -v 14400 xvfb-run ./godot.x11.tools.64s FunctionExecutor.tscn 1800 --audio-driver Dummy --video-driver GLES2 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
-          tail -n 300 sanitizers_log.txt > project_results.txt
+          DRI_PRIME=0 timeout -v 2160 xvfb-run ./godot.x11.tools.64s FunctionExecutor.tscn 1800 --audio-driver Dummy --video-driver GLES2 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          tail -n 300 sanitizers_log.txt >> project_results.txt
+
+          if [ -f "results.txt" ]; then
+              if [ -f "results_end.txt" ]; then
+                  echo "" > t.txt;echo "================ NEW_LINE ===============" >> t.txt;echo "" >> t.txt
+                  cat "results.txt" "t.txt" "results_end.txt" > "temp.txt"
+                  mv "temp.txt" "results_end.txt"
+              else
+                  cp "results.txt" "results_end.txt"
+              fi
+          fi
+
+          if [ -f "memory_usage.txt" ]; then
+              if [ -f "memory_usage_end.txt" ]; then
+                  echo "" > t.txt;echo "================ NEW_LINE ===============" >> t.txt;echo "" >> t.txt
+                  cat "memory_usage.txt" "t.txt" "memory_usage_end.txt" > "temp.txt"
+                  mv "temp.txt" "memory_usage_end.txt"
+              else
+                  cp "memory_usage.txt" "memory_usage_end.txt"
+              fi
+          fi
+
+          if [ -f "timer.txt" ]; then
+              if [ -f "timer_end.txt" ]; then
+                  echo "" > t.txt;echo "================ NEW_LINE ===============" >> t.txt;echo "" >> t.txt
+                  cat "timer.txt" "t.txt" "timer_end.txt" > "temp.txt"
+                  mv "temp.txt" "timer_end.txt"
+              else
+                  cp "timer.txt" "timer_end.txt"
+              fi
+          fi
 
       - name: Configure Project Data
         run: |
@@ -116,8 +206,38 @@ jobs:
       - name: Run Project Delaying | One by One | Parent
         run: |
           echo "======================================== Delaying | One by One | Parent" 2>&1 | tee sanitizers_log.txt
-          DRI_PRIME=0 timeout -v 14400 xvfb-run ./godot.x11.tools.64s FunctionExecutor.tscn 1800 --audio-driver Dummy --video-driver GLES2 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
-          tail -n 300 sanitizers_log.txt > project_results.txt
+          DRI_PRIME=0 timeout -v 2160 xvfb-run ./godot.x11.tools.64s FunctionExecutor.tscn 1800 --audio-driver Dummy --video-driver GLES2 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          tail -n 300 sanitizers_log.txt >> project_results.txt
+
+          if [ -f "results.txt" ]; then
+              if [ -f "results_end.txt" ]; then
+                  echo "" > t.txt;echo "================ NEW_LINE ===============" >> t.txt;echo "" >> t.txt
+                  cat "results.txt" "t.txt" "results_end.txt" > "temp.txt"
+                  mv "temp.txt" "results_end.txt"
+              else
+                  cp "results.txt" "results_end.txt"
+              fi
+          fi
+
+          if [ -f "memory_usage.txt" ]; then
+              if [ -f "memory_usage_end.txt" ]; then
+                  echo "" > t.txt;echo "================ NEW_LINE ===============" >> t.txt;echo "" >> t.txt
+                  cat "memory_usage.txt" "t.txt" "memory_usage_end.txt" > "temp.txt"
+                  mv "temp.txt" "memory_usage_end.txt"
+              else
+                  cp "memory_usage.txt" "memory_usage_end.txt"
+              fi
+          fi
+
+          if [ -f "timer.txt" ]; then
+              if [ -f "timer_end.txt" ]; then
+                  echo "" > t.txt;echo "================ NEW_LINE ===============" >> t.txt;echo "" >> t.txt
+                  cat "timer.txt" "t.txt" "timer_end.txt" > "temp.txt"
+                  mv "temp.txt" "timer_end.txt"
+              else
+                  cp "timer.txt" "timer_end.txt"
+              fi
+          fi
 
       - name: Configure Project Data
         run: |
@@ -130,8 +250,38 @@ jobs:
       - name: Run Project Big Numbers | Parent | One by One
         run: |
           echo "======================================== Big Numbers | Parent | One by One" 2>&1 | tee sanitizers_log.txt
-          DRI_PRIME=0 timeout -v 14400 xvfb-run ./godot.x11.tools.64s FunctionExecutor.tscn 1800 --audio-driver Dummy --video-driver GLES2 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
-          tail -n 300 sanitizers_log.txt > project_results.txt
+          DRI_PRIME=0 timeout -v 2160 xvfb-run ./godot.x11.tools.64s FunctionExecutor.tscn 1800 --audio-driver Dummy --video-driver GLES2 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          tail -n 300 sanitizers_log.txt >> project_results.txt
+
+          if [ -f "results.txt" ]; then
+              if [ -f "results_end.txt" ]; then
+                  echo "" > t.txt;echo "================ NEW_LINE ===============" >> t.txt;echo "" >> t.txt
+                  cat "results.txt" "t.txt" "results_end.txt" > "temp.txt"
+                  mv "temp.txt" "results_end.txt"
+              else
+                  cp "results.txt" "results_end.txt"
+              fi
+          fi
+
+          if [ -f "memory_usage.txt" ]; then
+              if [ -f "memory_usage_end.txt" ]; then
+                  echo "" > t.txt;echo "================ NEW_LINE ===============" >> t.txt;echo "" >> t.txt
+                  cat "memory_usage.txt" "t.txt" "memory_usage_end.txt" > "temp.txt"
+                  mv "temp.txt" "memory_usage_end.txt"
+              else
+                  cp "memory_usage.txt" "memory_usage_end.txt"
+              fi
+          fi
+
+          if [ -f "timer.txt" ]; then
+              if [ -f "timer_end.txt" ]; then
+                  echo "" > t.txt;echo "================ NEW_LINE ===============" >> t.txt;echo "" >> t.txt
+                  cat "timer.txt" "t.txt" "timer_end.txt" > "temp.txt"
+                  mv "temp.txt" "timer_end.txt"
+              else
+                  cp "timer.txt" "timer_end.txt"
+              fi
+          fi
 
       - name: Configure Project Data
         run: |
@@ -144,8 +294,38 @@ jobs:
       - name: Run Project Small Numbers | Parent | One by One
         run: |
           echo "======================================== Small Numbers | Parent | One by One" 2>&1 | tee sanitizers_log.txt
-          DRI_PRIME=0 timeout -v 14400 xvfb-run ./godot.x11.tools.64s FunctionExecutor.tscn 1800 --audio-driver Dummy --video-driver GLES2 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
-          tail -n 300 sanitizers_log.txt > project_results.txt
+          DRI_PRIME=0 timeout -v 2160 xvfb-run ./godot.x11.tools.64s FunctionExecutor.tscn 1800 --audio-driver Dummy --video-driver GLES2 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          tail -n 300 sanitizers_log.txt >> project_results.txt
+
+          if [ -f "results.txt" ]; then
+              if [ -f "results_end.txt" ]; then
+                  echo "" > t.txt;echo "================ NEW_LINE ===============" >> t.txt;echo "" >> t.txt
+                  cat "results.txt" "t.txt" "results_end.txt" > "temp.txt"
+                  mv "temp.txt" "results_end.txt"
+              else
+                  cp "results.txt" "results_end.txt"
+              fi
+          fi
+
+          if [ -f "memory_usage.txt" ]; then
+              if [ -f "memory_usage_end.txt" ]; then
+                  echo "" > t.txt;echo "================ NEW_LINE ===============" >> t.txt;echo "" >> t.txt
+                  cat "memory_usage.txt" "t.txt" "memory_usage_end.txt" > "temp.txt"
+                  mv "temp.txt" "memory_usage_end.txt"
+              else
+                  cp "memory_usage.txt" "memory_usage_end.txt"
+              fi
+          fi
+
+          if [ -f "timer.txt" ]; then
+              if [ -f "timer_end.txt" ]; then
+                  echo "" > t.txt;echo "================ NEW_LINE ===============" >> t.txt;echo "" >> t.txt
+                  cat "timer.txt" "t.txt" "timer_end.txt" > "temp.txt"
+                  mv "temp.txt" "timer_end.txt"
+              else
+                  cp "timer.txt" "timer_end.txt"
+              fi
+          fi
 
       - name: Configure Project Data
         run: |
@@ -158,22 +338,38 @@ jobs:
       - name: Run Project Remove returned | Parent | One by One
         run: |
           echo "======================================== Remove returned | Parent | One by One" 2>&1 | tee sanitizers_log.txt
-          DRI_PRIME=0 timeout -v 14400 xvfb-run ./godot.x11.tools.64s FunctionExecutor.tscn 1800 --audio-driver Dummy --video-driver GLES2 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
-          tail -n 300 sanitizers_log.txt > project_results.txt
+          DRI_PRIME=0 timeout -v 2160 xvfb-run ./godot.x11.tools.64s FunctionExecutor.tscn 1800 --audio-driver Dummy --video-driver GLES2 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          tail -n 300 sanitizers_log.txt >> project_results.txt
 
-      - name: Configure Project Data
-        run: |
-          echo "" > settings.txt
+          if [ -f "results.txt" ]; then
+              if [ -f "results_end.txt" ]; then
+                  echo "" > t.txt;echo "================ NEW_LINE ===============" >> t.txt;echo "" >> t.txt
+                  cat "results.txt" "t.txt" "results_end.txt" > "temp.txt"
+                  mv "temp.txt" "results_end.txt"
+              else
+                  cp "results.txt" "results_end.txt"
+              fi
+          fi
 
-          echo "use_parent_methods: true" >> settings.txt
-          echo "add_to_tree: true" >> settings.txt
-          echo "maximum_executed_functions_on_object: 5" >> settings.txt
+          if [ -f "memory_usage.txt" ]; then
+              if [ -f "memory_usage_end.txt" ]; then
+                  echo "" > t.txt;echo "================ NEW_LINE ===============" >> t.txt;echo "" >> t.txt
+                  cat "memory_usage.txt" "t.txt" "memory_usage_end.txt" > "temp.txt"
+                  mv "temp.txt" "memory_usage_end.txt"
+              else
+                  cp "memory_usage.txt" "memory_usage_end.txt"
+              fi
+          fi
 
-      - name: Run Project Parent | Add to tree | Maximum executed
-        run: |
-          echo "======================================== Parent | Add to tree | Maximum executed" 2>&1 | tee sanitizers_log.txt
-          DRI_PRIME=0 timeout -v 14400 xvfb-run ./godot.x11.tools.64s FunctionExecutor.tscn 1800 --audio-driver Dummy --video-driver GLES2 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
-          tail -n 300 sanitizers_log.txt > project_results.txt
+          if [ -f "timer.txt" ]; then
+              if [ -f "timer_end.txt" ]; then
+                  echo "" > t.txt;echo "================ NEW_LINE ===============" >> t.txt;echo "" >> t.txt
+                  cat "timer.txt" "t.txt" "timer_end.txt" > "temp.txt"
+                  mv "temp.txt" "timer_end.txt"
+              else
+                  cp "timer.txt" "timer_end.txt"
+              fi
+          fi
 
       - name: Configure Project Data
         run: |
@@ -185,8 +381,38 @@ jobs:
       - name: Run Project Add arguments to tree | Delaying
         run: |
           echo "======================================== Add arguments to tree | Delaying" 2>&1 | tee sanitizers_log.txt
-          DRI_PRIME=0 timeout -v 14400 xvfb-run ./godot.x11.tools.64s FunctionExecutor.tscn 1800 --audio-driver Dummy --video-driver GLES2 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
-          tail -n 300 sanitizers_log.txt > project_results.txt
+          DRI_PRIME=0 timeout -v 2160 xvfb-run ./godot.x11.tools.64s FunctionExecutor.tscn 1800 --audio-driver Dummy --video-driver GLES2 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          tail -n 300 sanitizers_log.txt >> project_results.txt
+
+          if [ -f "results.txt" ]; then
+              if [ -f "results_end.txt" ]; then
+                  echo "" > t.txt;echo "================ NEW_LINE ===============" >> t.txt;echo "" >> t.txt
+                  cat "results.txt" "t.txt" "results_end.txt" > "temp.txt"
+                  mv "temp.txt" "results_end.txt"
+              else
+                  cp "results.txt" "results_end.txt"
+              fi
+          fi
+
+          if [ -f "memory_usage.txt" ]; then
+              if [ -f "memory_usage_end.txt" ]; then
+                  echo "" > t.txt;echo "================ NEW_LINE ===============" >> t.txt;echo "" >> t.txt
+                  cat "memory_usage.txt" "t.txt" "memory_usage_end.txt" > "temp.txt"
+                  mv "temp.txt" "memory_usage_end.txt"
+              else
+                  cp "memory_usage.txt" "memory_usage_end.txt"
+              fi
+          fi
+
+          if [ -f "timer.txt" ]; then
+              if [ -f "timer_end.txt" ]; then
+                  echo "" > t.txt;echo "================ NEW_LINE ===============" >> t.txt;echo "" >> t.txt
+                  cat "timer.txt" "t.txt" "timer_end.txt" > "temp.txt"
+                  mv "temp.txt" "timer_end.txt"
+              else
+                  cp "timer.txt" "timer_end.txt"
+              fi
+          fi
 
       - name: Store project results
         uses: actions/upload-artifact@v2
@@ -198,19 +424,19 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: last-run-functions
-          path: results.txt
+          path: results_end.txt
 
       - name: Store timer results
         uses: actions/upload-artifact@v2
         with:
           name: timer
-          path: timer.txt
+          path: timer_end.txt
 
       - name: Store memory usage results
         uses: actions/upload-artifact@v2
         with:
           name: memory-usage
-          path: memory_usage.txt
+          path: memory_usage_end.txt
 
       - name: Check Log
         run: |

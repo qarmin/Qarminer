@@ -32,16 +32,16 @@ var function_exceptions: Array = [
 	###
 	### Reported crashes
 	###
+	"_editor_settings_changed", # TODO - LineEdit._editor_settings_changed()
 	"set_zoom_min", # 60492
 	"set_zoom_max", # 60492
 	"open_midi_inputs", # 52821
-	"set_window_size", # 60466
 	"set_zoom", # 60492
 	"set_end", # 60492
-	"set_custom_minimum_size", #60376
+	"set_custom_minimum_size", #60326 - 60376
 	"set_size", #60325
 	"set_custom_viewport", #60052
-	"create_convex_shape", # TODO
+	"create_convex_shape", # 60357
 	"get_debug_mesh", #60337
 	"set_radial_initial_angle", #60338
 	"set_outer_radius", #60325
@@ -58,26 +58,22 @@ var function_exceptions: Array = [
 	"merge_polygons_2d",  #60324
 	"intersect_polygons_2d",  #60324
 	"process_action",  #60297
-	"remove_line",  #59935
 	"bake_navigation_mesh",  # Threading problem, needs to find exact steps to reproduce
 	"get_bind_bone",  # Fixed only in master
 	"get_bind_name",  # Fixed only in master
 	"get_bind_pose",  # Fixed only in master
-	"create_from_mesh",  # TODO
-	"reset_instance_physics_interpolation",  #58293
 	"lightmap_unwrap",  # 52929
 	"replace_by",  #53775
 	"set_extra_cull_margin",  # 53623
 	"set_block_signals",  #53553
 	"make_atlas",  #51154
 	"light_unwrap",  #52929
-	"_editor_settings_changed",  # 45979
 	"set_script",  #46120
 	"set_icon",  #46189
-	"set_editor_hint",  #46252 - Fixed only for master(due compatibility)
-	"set_probe_data",  #46570
-	"add_vertex",  #47066
-	"convert",  # 46479
+	###
+	### Expected Crashes
+	### 
+	"set_editor_hint",  #46252 - Fixed only for master(due compatibility)	- do not use
 	###
 	### Not worth to check, cause a lot of crashes but it is very unlikelly that users will use them
 	###
@@ -299,13 +295,12 @@ var disabled_classes: Array = [
 	###
 	### TODO
 	###
-	"ParallaxBackground",  # TODO threading problem, cannot reproduce
+	#"ParallaxBackground",  # TODO threading problem, cannot reproduce
 	"ImmediateGeometry",  #53623
 	"ItemList",  # Big numbers
 	"_ResourceLoader",  #Spams
 	"ResourceLoader",  #Spams
-	"PackedDataContainer",  #53554 - more crashes
-	"ProximityGroup",  # Not cherrypicked yet
+	#"ProximityGroup",  # Not cherrypicked yet
 	###
 	### Exported build - some checks are disabled in exported build due to too big performance impact
 	###
