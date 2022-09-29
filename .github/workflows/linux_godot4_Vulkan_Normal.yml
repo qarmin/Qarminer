@@ -67,7 +67,7 @@ jobs:
 
       - name: Check Godot Editor Log
         run: |
-          misc/check_ci_log.py sanitizers_log.txt
+          misc/check_ci_log.py editor_results.txt
 
       - name: Configure Project Data
         run: |
@@ -81,8 +81,8 @@ jobs:
       - name: Run Project One by One | Parent | Add to tree | Maximum Tested
         run: |
           echo "======================================== One by One | Parent | Add to tree | Maximum Tested" 2>&1 | tee sanitizers_log.txt
-          VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json DRI_PRIME=0 timeout -v 14400 xvfb-run ./godot.linuxbsd.tools.x86_64.san FunctionExecutor.tscn 1800 --audio-driver Dummy  --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
-          tail -n 300 sanitizers_log.txt > project_results.txt
+          VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json DRI_PRIME=0 timeout -v 2160 xvfb-run ./godot.linuxbsd.tools.x86_64.san FunctionExecutor.tscn 1800 --audio-driver Dummy  --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          tail -n 300 sanitizers_log.txt >> project_results.txt
 
           if [ -f "results.txt" ]; then
               if [ -f "results_end.txt" ]; then
@@ -117,8 +117,8 @@ jobs:
       - name: Run Project Default
         run: |
           echo "======================================== Default" 2>&1 | tee sanitizers_log.txt
-          VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json DRI_PRIME=0 timeout -v 14400 xvfb-run ./godot.linuxbsd.tools.x86_64.san FunctionExecutor.tscn 1800 --audio-driver Dummy  --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
-          tail -n 300 sanitizers_log.txt > project_results.txt
+          VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json DRI_PRIME=0 timeout -v 2160 xvfb-run ./godot.linuxbsd.tools.x86_64.san FunctionExecutor.tscn 1800 --audio-driver Dummy  --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          tail -n 300 sanitizers_log.txt >> project_results.txt
 
           if [ -f "results.txt" ]; then
               if [ -f "results_end.txt" ]; then
@@ -162,8 +162,8 @@ jobs:
       - name: Run Project Delaying | Parent | Add to tree | Maximum Tested
         run: |
           echo "======================================== Delaying | Parent | Add to tree | Maximum Tested" 2>&1 | tee sanitizers_log.txt
-          VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json DRI_PRIME=0 timeout -v 14400 xvfb-run ./godot.linuxbsd.tools.x86_64.san FunctionExecutor.tscn 1800 --audio-driver Dummy  --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
-          tail -n 300 sanitizers_log.txt > project_results.txt
+          VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json DRI_PRIME=0 timeout -v 2160 xvfb-run ./godot.linuxbsd.tools.x86_64.san FunctionExecutor.tscn 1800 --audio-driver Dummy  --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          tail -n 300 sanitizers_log.txt >> project_results.txt
 
           if [ -f "results.txt" ]; then
               if [ -f "results_end.txt" ]; then
@@ -206,8 +206,8 @@ jobs:
       - name: Run Project Delaying | One by One | Parent
         run: |
           echo "======================================== Delaying | One by One | Parent" 2>&1 | tee sanitizers_log.txt
-          VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json DRI_PRIME=0 timeout -v 14400 xvfb-run ./godot.linuxbsd.tools.x86_64.san FunctionExecutor.tscn 1800 --audio-driver Dummy  --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
-          tail -n 300 sanitizers_log.txt > project_results.txt
+          VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json DRI_PRIME=0 timeout -v 2160 xvfb-run ./godot.linuxbsd.tools.x86_64.san FunctionExecutor.tscn 1800 --audio-driver Dummy  --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          tail -n 300 sanitizers_log.txt >> project_results.txt
 
           if [ -f "results.txt" ]; then
               if [ -f "results_end.txt" ]; then
@@ -250,8 +250,8 @@ jobs:
       - name: Run Project Big Numbers | Parent | One by One
         run: |
           echo "======================================== Big Numbers | Parent | One by One" 2>&1 | tee sanitizers_log.txt
-          VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json DRI_PRIME=0 timeout -v 14400 xvfb-run ./godot.linuxbsd.tools.x86_64.san FunctionExecutor.tscn 1800 --audio-driver Dummy  --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
-          tail -n 300 sanitizers_log.txt > project_results.txt
+          VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json DRI_PRIME=0 timeout -v 2160 xvfb-run ./godot.linuxbsd.tools.x86_64.san FunctionExecutor.tscn 1800 --audio-driver Dummy  --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          tail -n 300 sanitizers_log.txt >> project_results.txt
 
           if [ -f "results.txt" ]; then
               if [ -f "results_end.txt" ]; then
@@ -294,8 +294,8 @@ jobs:
       - name: Run Project Small Numbers | Parent | One by One
         run: |
           echo "======================================== Small Numbers | Parent | One by One" 2>&1 | tee sanitizers_log.txt
-          VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json DRI_PRIME=0 timeout -v 14400 xvfb-run ./godot.linuxbsd.tools.x86_64.san FunctionExecutor.tscn 1800 --audio-driver Dummy  --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
-          tail -n 300 sanitizers_log.txt > project_results.txt
+          VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json DRI_PRIME=0 timeout -v 2160 xvfb-run ./godot.linuxbsd.tools.x86_64.san FunctionExecutor.tscn 1800 --audio-driver Dummy  --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          tail -n 300 sanitizers_log.txt >> project_results.txt
 
           if [ -f "results.txt" ]; then
               if [ -f "results_end.txt" ]; then
@@ -338,8 +338,8 @@ jobs:
       - name: Run Project Remove returned | Parent | One by One
         run: |
           echo "======================================== Remove returned | Parent | One by One" 2>&1 | tee sanitizers_log.txt
-          VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json DRI_PRIME=0 timeout -v 14400 xvfb-run ./godot.linuxbsd.tools.x86_64.san FunctionExecutor.tscn 1800 --audio-driver Dummy  --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
-          tail -n 300 sanitizers_log.txt > project_results.txt
+          VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json DRI_PRIME=0 timeout -v 2160 xvfb-run ./godot.linuxbsd.tools.x86_64.san FunctionExecutor.tscn 1800 --audio-driver Dummy  --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          tail -n 300 sanitizers_log.txt >> project_results.txt
 
           if [ -f "results.txt" ]; then
               if [ -f "results_end.txt" ]; then
@@ -381,8 +381,8 @@ jobs:
       - name: Run Project Add arguments to tree | Delaying
         run: |
           echo "======================================== Add arguments to tree | Delaying" 2>&1 | tee sanitizers_log.txt
-          VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json DRI_PRIME=0 timeout -v 14400 xvfb-run ./godot.linuxbsd.tools.x86_64.san FunctionExecutor.tscn 1800 --audio-driver Dummy  --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
-          tail -n 300 sanitizers_log.txt > project_results.txt
+          VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json DRI_PRIME=0 timeout -v 2160 xvfb-run ./godot.linuxbsd.tools.x86_64.san FunctionExecutor.tscn 1800 --audio-driver Dummy  --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          tail -n 300 sanitizers_log.txt >> project_results.txt
 
           if [ -f "results.txt" ]; then
               if [ -f "results_end.txt" ]; then

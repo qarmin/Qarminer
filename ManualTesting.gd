@@ -61,23 +61,21 @@ var excluded_functions: Array = [
 	"instance_create2",
 	"line_shape_create",
 	# CRASHES
-	"cursor_set_custom_image",
-	"joint_clear",
-	"texture_2d_create",
-	"merge_polygons",
-	"skeleton_set_base_transform_2d",
-	"bake_render_uv2godot",
-	"bake_render_uv2",
-	"set_boot_image",
-	"set_id",
+	"cursor_set_custom_image", #66605
+	"joint_clear", #66607
+	"texture_2d_create", # 66608
+	"skeleton_set_base_transform_2d", #66609
+	"bake_render_uv2", #66610
+	"set_boot_image", #66611
 	"create_local_rendering_device", #  #66372
 	"open_midi_inputs", # 52821
 	"texture_replace", # 66373
 	"texture_2d_update", # 66374
-	"canvas_texture_set_shading_parameters", # 
-	"canvas_texture_set_texture_filter",
-	"canvas_texture_set_texture_repeat",
-	"canvas_texture_set_channel", #TODO, but probably same as above
+	"canvas_texture_set_shading_parameters", #66375
+	"canvas_texture_set_texture_filter", #66375
+	"canvas_texture_set_texture_repeat", #66375
+	"canvas_texture_set_channel", #66375
+	"set_id", #66612
 	# LEAK
 	"joint_create",
 	"separation_ray_shape_create",
@@ -232,16 +230,13 @@ func f_GDScript() -> void:
 	print("atan2")
 	atan2(ValueCreator.get_float(),ValueCreator.get_float())
 	
-	print("assert")
-	assert(true)
-	
 	print("bezier_interpolate")
 	bezier_interpolate(ValueCreator.get_float(),ValueCreator.get_float(),ValueCreator.get_float(),ValueCreator.get_float(),ValueCreator.get_float())
 	
 #	print("bytes_to_var")
-#	bytes_to_var(ValueCreator.get_poolbytearray()) # Editor error
+#	bytes_to_var(ValueCreator.get_packed_byte_array()) # Editor error
 #	print("bytes_to_var_with_objects")
-#	bytes_to_var_with_objects(ValueCreator.get_poolbytearray()) # Editor error
+#	bytes_to_var_with_objects(ValueCreator.get_packed_byte_array()) # Editor error
 
 	print("ceil")
 	ceil(ValueCreator.get_float())
@@ -250,31 +245,48 @@ func f_GDScript() -> void:
 	print("ceili")
 	ceili(ValueCreator.get_float())
 	
-	print("char")
-	char(ValueCreator.get_int())
 	print("clamp")
 	clamp(ValueCreator.get_float(),ValueCreator.get_float(),ValueCreator.get_float())
+	print("clampf")
+	clampf(ValueCreator.get_float(),ValueCreator.get_float(),ValueCreator.get_float())
+	print("clampi")
+	clampi(ValueCreator.get_int(),ValueCreator.get_int(),ValueCreator.get_int())
 	
-#	print("convert")
-#	convert(null,randi() % TYPE_MAX) # Editor error
 	print("cos")
 	cos(ValueCreator.get_float())
 	print("cosh")
 	cosh(ValueCreator.get_float())
 	
+	print("cubic_interpolate")
+	cubic_interpolate(ValueCreator.get_float(),ValueCreator.get_float(),ValueCreator.get_float(),ValueCreator.get_float(),ValueCreator.get_float())
+	print("cubic_interpolate_angle")
+	cubic_interpolate_angle(ValueCreator.get_float(),ValueCreator.get_float(),ValueCreator.get_float(),ValueCreator.get_float(),ValueCreator.get_float())
+	print("cubic_interpolate_angle_in_time")
+	cubic_interpolate_angle_in_time(ValueCreator.get_float(),ValueCreator.get_float(),ValueCreator.get_float(),ValueCreator.get_float(),ValueCreator.get_float(),ValueCreator.get_float(),ValueCreator.get_float(),ValueCreator.get_float())
+	print("cubic_interpolate_in_time")
+	cubic_interpolate_in_time(ValueCreator.get_float(),ValueCreator.get_float(),ValueCreator.get_float(),ValueCreator.get_float(),ValueCreator.get_float(),ValueCreator.get_float(),ValueCreator.get_float(),ValueCreator.get_float())
+	
+	
 	print("db_to_linear")
 	db_to_linear(ValueCreator.get_float())
-	
 	print("deg_to_rad")
 	deg_to_rad(ValueCreator.get_float())
 #	print("dict_to_inst")
 #	dict_to_inst(ValueCreator.get_dictionary()) # Editor error
 	print("ease")
 	ease(ValueCreator.get_float(),ValueCreator.get_float())
+	print("error_string")
+	error_string(ValueCreator.get_int())
 	print("exp")
 	exp(ValueCreator.get_float())
+	
 	print("floor")
 	floor(ValueCreator.get_float())
+	print("floorf")
+	floorf(ValueCreator.get_float())
+	print("floori")
+	floori(ValueCreator.get_int())
+	
 	print("fmod")
 	fmod(ValueCreator.get_float(),ValueCreator.get_float())
 	print("fposmod")
@@ -287,11 +299,10 @@ func f_GDScript() -> void:
 	hash(obj3)
 	HelpFunctions.remove_thing(obj3)
 	
-#	print("inst2dict")
-#	inst2dict(ValueCreator.get_object("Node")) # Editor error
+#	print("inst_to_dict")
+#	inst_to_dict(ValueCreator.get_object("Node")) # Editor error
 	print("instance_from_id")
 	instance_from_id(ValueCreator.get_int())
-	
 	print("inverse_lerp")
 	inverse_lerp(ValueCreator.get_float(),ValueCreator.get_float(),ValueCreator.get_float())
 	
@@ -299,6 +310,8 @@ func f_GDScript() -> void:
 	is_equal_approx(ValueCreator.get_float(),ValueCreator.get_float())
 	print("is_inf")
 	is_inf(ValueCreator.get_float())
+	print("is_instance_id_valid")
+	is_instance_valid(ValueCreator.get_int())
 	print("is_instance_valid")
 	is_instance_valid(self)
 	print("is_nan")
@@ -306,24 +319,32 @@ func f_GDScript() -> void:
 	print("is_zero_approx")
 	is_zero_approx(ValueCreator.get_float())
 	
-	print("len")
-	len(ValueCreator.get_string())
-	
 	print("lerp")
 	lerp(ValueCreator.get_float(),ValueCreator.get_float(),ValueCreator.get_float())
 	print("lerp_angle")
 	lerp_angle(ValueCreator.get_float(),ValueCreator.get_float(),ValueCreator.get_float())
+	print("lerpf")
+	lerpf(ValueCreator.get_float(),ValueCreator.get_float(),ValueCreator.get_float())
 	
 	print("linear_to_db")
 	linear_to_db(ValueCreator.get_float())
-	print("load")
-	load(ValueCreator.get_string())
 	print("log")
 	log(ValueCreator.get_float())
+	
 	print("max")
 	max(ValueCreator.get_float(),ValueCreator.get_float())
+	print("maxf")
+	maxf(ValueCreator.get_float(),ValueCreator.get_float())
+	print("maxi")
+	maxi(ValueCreator.get_int(),ValueCreator.get_int())
+	
 	print("min")
 	min(ValueCreator.get_float(),ValueCreator.get_float())
+	print("minf")
+	minf(ValueCreator.get_float(),ValueCreator.get_float())
+	print("mini")
+	mini(ValueCreator.get_int(),ValueCreator.get_int())
+	
 	print("move_toward")
 	move_toward(ValueCreator.get_float(),ValueCreator.get_float(),ValueCreator.get_float())
 	print("nearest_po2")
@@ -332,18 +353,15 @@ func f_GDScript() -> void:
 #	posmod(ValueCreator.get_int(),ValueCreator.get_int())
 	print("pow")
 	pow(ValueCreator.get_float(),ValueCreator.get_float())
-#	print("preload")
-#	preload(ValueCreator.get_string()) # Constant expected
 	
 	# Print spam
-	print("if")
 	if false:
 		print("print")
 		print(ValueCreator.get_string())
-		print("print_debug")
-		print_debug(ValueCreator.get_string())
-		print("print_stack")
-		print_stack()
+		print("print_rich")
+		print_rich(ValueCreator.get_string())
+		print("print_verbose")
+		print_verbose(ValueCreator.get_string())
 		print("printerr")
 		printerr(ValueCreator.get_string())
 		print("printraw")
@@ -351,6 +369,7 @@ func f_GDScript() -> void:
 		print("prints")
 		prints(ValueCreator.get_string())
 		print("printt")
+		
 		printt(ValueCreator.get_string())
 		print("push_error")
 		push_error(ValueCreator.get_string())
@@ -359,22 +378,48 @@ func f_GDScript() -> void:
 		
 	print("rad_to_deg")
 	rad_to_deg(ValueCreator.get_float())
-	
+			
+	print("rand_from_seed")
+	rand_from_seed(ValueCreator.get_int())
+
 	print("randf")
 	randf()
+	print("randf_range")
+	randf_range(ValueCreator.get_float(),ValueCreator.get_float())
+	print("randfn")
+	randfn(ValueCreator.get_float(),ValueCreator.get_float())
 	print("randi")
 	randi()
+	print("randi_range")
+	randi_range(ValueCreator.get_int(),ValueCreator.get_int())
 	print("randomize")
 	randomize()
-	print("range")
-	range(ValueCreator.get_int(),ValueCreator.get_int(),max(ValueCreator.get_int(),1))
+	
+	print("remap")
+	range(ValueCreator.get_float(),ValueCreator.get_float(),ValueCreator.get_float(),ValueCreator.get_float(),ValueCreator.get_float())
 
+	
+	print("rid_allocate_id")
+	rid_allocate_id()
+	print("rid_from_int64")
+	rid_from_int64(ValueCreator.get_int())
+	
 	print("round")
 	round(ValueCreator.get_float())
+	print("roundf")
+	roundf(ValueCreator.get_float())
+	print("roundi")
+	roundi(ValueCreator.get_int())
+	
 	print("seed")
 	seed(ValueCreator.get_int())
+	
 	print("sign")
 	sign(ValueCreator.get_float())
+	print("signf")
+	signf(ValueCreator.get_float())
+	print("signi")
+	signi(ValueCreator.get_int())
 	
 	print("sin")
 	sin(ValueCreator.get_float())
@@ -383,9 +428,10 @@ func f_GDScript() -> void:
 	
 	print("smoothstep")
 	smoothstep(ValueCreator.get_float(),ValueCreator.get_float(),ValueCreator.get_float())
+	print("snapped")
+	snapped(ValueCreator.get_float(),ValueCreator.get_float())
 	print("sqrt")
 	sqrt(ValueCreator.get_float())
-	
 	print("step_decimals")
 	step_decimals(ValueCreator.get_float())
 	
@@ -399,24 +445,55 @@ func f_GDScript() -> void:
 	print("tanh")
 	tanh(ValueCreator.get_float())
 	
-	print("type_exists")
-	type_exists(ValueCreator.get_string())
 	print("typeof")
 	typeof(ValueCreator.get_string())
 	
 	print("var_to_bytes")
-	var_to_bytes(ValueCreator.get_bool())
+	var_to_bytes(ValueCreator.get_int())
+	print("var_to_bytes_with_objects")
+	var_to_bytes_with_objects(ValueCreator.get_int())
 	print("var_to_str")
 	var_to_str(ValueCreator.get_string())
 	
 	print("weakref")
 	weakref(get_parent())
 	
+	print("wrap")
+	wrap(ValueCreator.get_float(),ValueCreator.get_float(),ValueCreator.get_float())
 	print("wrapf")
 	wrapf(ValueCreator.get_float(),ValueCreator.get_float(),ValueCreator.get_float())
 	print("wrapi")
 	wrapi(ValueCreator.get_int(),ValueCreator.get_int(),ValueCreator.get_int())
 	
-#	print("yield")
-#	yield(self,ValueCreator.get_string()) # 
+	# Normal GDScript, Above are globals
+	print("Color8")
+	Color8(ValueCreator.get_int(),ValueCreator.get_int(),ValueCreator.get_int(),ValueCreator.get_int())
+	print("assert")
+	assert(true) # TODO must be constant, ValueCreator.get_string())
+	print("char")
+	char(ValueCreator.get_int())	
+#	print("convert")
+#	convert(null,randi() % TYPE_MAX) # Editor error
+#	print("dist_to_inst")
+#	dist_to_inst(ValueCreator.get_dictionary())
+	print("get_stack")
+	get_stack()
+	print("inst_to_dict")
+	inst_to_dict(ValueCreator.get_object("Reference"))
+	print("len")
+	len(ValueCreator.get_string())
+	#print("load")
+	#load(ValueCreator.get_string())
+	#print("preload")
+	#preload(ValueCreator.get_string())
+	#print("print_debug")
+	#print_debug(ValueCreator.get_string())
+	#print("print_stack")
+	#print_stack()
+	print("range")
+	range(ValueCreator.get_int())
+	print("str")
+	str(ValueCreator.get_string())
+	print("type_exists")
+	type_exists(ValueCreator.get_string())
 """
