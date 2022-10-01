@@ -15,6 +15,7 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
+	"create_trimesh_shape", # 
 	"set_data", #66029
 	"get_face_count", #66029
 	"_get_light_textures_data", # 66002
@@ -383,7 +384,6 @@ var disabled_classes: Array = [
 	### Godot 4.0 Additional
 	###
 	#
-	"ConfigFile",  # 65316
 	"ThemeDB",  # Singleton 4
 	"SystemFont",  # 64698
 	"TextServer",  # RefCounted Server
@@ -394,13 +394,14 @@ var disabled_classes: Array = [
 	# Functions to be enabled(somewhere)
 	"InputMap",  # Strange crashes
 	"MultiplayerAPI",  # Crashes TODO
+	"ConfigFile",  # 65316
 	"VisibleOnScreenEnabler3D",  #53565
 	"VisibleOnScreenEnabler2D",  #53565
 	"ImageTexture3D",  #53721
-	"XRCamera3D",  #53725
 	"FogMaterial",  #54478
 	"AudioStreamGenerator",  # TODO threading crash
 	"AudioStreamGeneratorPlayback",  # TODO threading crash
+	"GraphNode",  # 65557
 ]
 
 # Exceptions for e.g. float, String or int functions

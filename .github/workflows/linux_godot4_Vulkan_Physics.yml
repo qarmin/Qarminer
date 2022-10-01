@@ -41,7 +41,7 @@ jobs:
           wget https://patch-diff.githubusercontent.com/raw/godotengine/godot/pull/49053.patch -O 4.patch
           git apply 4.patch
           scons -j2 use_asan=yes use_ubsan=yes linker=gold
-          cp bin/godot.linuxbsd.tools.x86_64.san ../
+          cp bin/godot.linuxbsd.editor.dev.x86_64.san ../
           cd ../
           rm -rf godot
 
@@ -56,7 +56,7 @@ jobs:
 
       - name: Open Godot Editor
         run: |
-          VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json DRI_PRIME=0 xvfb-run ./godot.linuxbsd.tools.x86_64.san -e --quit --audio-driver Dummy  --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json DRI_PRIME=0 xvfb-run ./godot.linuxbsd.editor.dev.x86_64.san -e --quit --audio-driver Dummy  --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
           tail -n 300 sanitizers_log.txt > editor_results.txt
 
       - name: Store editor results
@@ -72,7 +72,7 @@ jobs:
       - name: Run Project StressPhysics - Physics Normal
         run: |
           echo "======================================== StressPhysics - Physics Normal" 2>&1 | tee sanitizers_log.txt
-          VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json DRI_PRIME=0 timeout -v 3960 xvfb-run ./godot.linuxbsd.tools.x86_64.san StressPhysics.tscn 3600 --audio-driver Dummy  --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json DRI_PRIME=0 timeout -v 3960 xvfb-run ./godot.linuxbsd.editor.dev.x86_64.san StressPhysics.tscn 3600 --audio-driver Dummy  --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
           tail -n 300 sanitizers_log.txt >> project_results.txt
 
           if [ -f "results.txt" ]; then
@@ -122,7 +122,7 @@ jobs:
       - name: Run Project Multithread rendering | physics | Add to tree
         run: |
           echo "======================================== Multithread rendering | physics | Add to tree" 2>&1 | tee sanitizers_log.txt
-          VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json DRI_PRIME=0 timeout -v 3960 xvfb-run ./godot.linuxbsd.tools.x86_64.san StressPhysics.tscn 3600 --audio-driver Dummy  --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json DRI_PRIME=0 timeout -v 3960 xvfb-run ./godot.linuxbsd.editor.dev.x86_64.san StressPhysics.tscn 3600 --audio-driver Dummy  --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
           tail -n 300 sanitizers_log.txt >> project_results.txt
 
           if [ -f "results.txt" ]; then

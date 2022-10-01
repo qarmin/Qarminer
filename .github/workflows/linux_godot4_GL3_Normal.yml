@@ -47,7 +47,7 @@ jobs:
           wget https://patch-diff.githubusercontent.com/raw/godotengine/godot/pull/49053.patch -O 4.patch
           git apply 4.patch
           scons -j2 use_asan=yes use_ubsan=yes linker=gold
-          cp bin/godot.linuxbsd.tools.x86_64.san ../
+          cp bin/godot.linuxbsd.editor.dev.x86_64.san ../
           cd ../
           rm -rf godot
 
@@ -62,7 +62,7 @@ jobs:
 
       - name: Open Godot Editor
         run: |
-          DRI_PRIME=0 xvfb-run ./godot.linuxbsd.tools.x86_64.san -e --quit --audio-driver Dummy --rendering-driver opengl3 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          DRI_PRIME=0 xvfb-run ./godot.linuxbsd.editor.dev.x86_64.san -e --quit --audio-driver Dummy --rendering-driver opengl3 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
           tail -n 300 sanitizers_log.txt > editor_results.txt
 
       - name: Store editor results
@@ -82,12 +82,12 @@ jobs:
           echo "add_to_tree: true" >> settings.txt
           echo "use_parent_methods: true" >> settings.txt
           echo "test_one_class_multiple_times: true" >> settings.txt
-          echo "maximum_executed_functions_on_object: 10" >> settings.txt
+          echo "maximum_executed_functions_on_object: 3" >> settings.txt
 
       - name: Run Project One by One | Parent | Add to tree | Maximum Tested
         run: |
           echo "======================================== One by One | Parent | Add to tree | Maximum Tested" 2>&1 | tee sanitizers_log.txt
-          DRI_PRIME=0 timeout -v 2160 xvfb-run ./godot.linuxbsd.tools.x86_64.san FunctionExecutor.tscn 1800 --audio-driver Dummy --rendering-driver opengl3 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          DRI_PRIME=0 timeout -v 2160 xvfb-run ./godot.linuxbsd.editor.dev.x86_64.san FunctionExecutor.tscn 1800 --audio-driver Dummy --rendering-driver opengl3 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
           tail -n 300 sanitizers_log.txt >> project_results.txt
 
           if [ -f "results.txt" ]; then
@@ -123,7 +123,7 @@ jobs:
       - name: Run Project Default
         run: |
           echo "======================================== Default" 2>&1 | tee sanitizers_log.txt
-          DRI_PRIME=0 timeout -v 2160 xvfb-run ./godot.linuxbsd.tools.x86_64.san FunctionExecutor.tscn 1800 --audio-driver Dummy --rendering-driver opengl3 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          DRI_PRIME=0 timeout -v 2160 xvfb-run ./godot.linuxbsd.editor.dev.x86_64.san FunctionExecutor.tscn 1800 --audio-driver Dummy --rendering-driver opengl3 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
           tail -n 300 sanitizers_log.txt >> project_results.txt
 
           if [ -f "results.txt" ]; then
@@ -163,12 +163,12 @@ jobs:
           echo "add_to_tree: true" >> settings.txt
           echo "use_parent_methods: true" >> settings.txt
           echo "delay_removing_added_nodes_to_next_frame: true" >> settings.txt
-          echo "maximum_executed_functions_on_object: 10" >> settings.txt
+          echo "maximum_executed_functions_on_object: 3" >> settings.txt
 
       - name: Run Project Delaying | Parent | Add to tree | Maximum Tested
         run: |
           echo "======================================== Delaying | Parent | Add to tree | Maximum Tested" 2>&1 | tee sanitizers_log.txt
-          DRI_PRIME=0 timeout -v 2160 xvfb-run ./godot.linuxbsd.tools.x86_64.san FunctionExecutor.tscn 1800 --audio-driver Dummy --rendering-driver opengl3 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          DRI_PRIME=0 timeout -v 2160 xvfb-run ./godot.linuxbsd.editor.dev.x86_64.san FunctionExecutor.tscn 1800 --audio-driver Dummy --rendering-driver opengl3 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
           tail -n 300 sanitizers_log.txt >> project_results.txt
 
           if [ -f "results.txt" ]; then
@@ -212,7 +212,7 @@ jobs:
       - name: Run Project Delaying | One by One | Parent
         run: |
           echo "======================================== Delaying | One by One | Parent" 2>&1 | tee sanitizers_log.txt
-          DRI_PRIME=0 timeout -v 2160 xvfb-run ./godot.linuxbsd.tools.x86_64.san FunctionExecutor.tscn 1800 --audio-driver Dummy --rendering-driver opengl3 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          DRI_PRIME=0 timeout -v 2160 xvfb-run ./godot.linuxbsd.editor.dev.x86_64.san FunctionExecutor.tscn 1800 --audio-driver Dummy --rendering-driver opengl3 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
           tail -n 300 sanitizers_log.txt >> project_results.txt
 
           if [ -f "results.txt" ]; then
@@ -256,7 +256,7 @@ jobs:
       - name: Run Project Big Numbers | Parent | One by One
         run: |
           echo "======================================== Big Numbers | Parent | One by One" 2>&1 | tee sanitizers_log.txt
-          DRI_PRIME=0 timeout -v 2160 xvfb-run ./godot.linuxbsd.tools.x86_64.san FunctionExecutor.tscn 1800 --audio-driver Dummy --rendering-driver opengl3 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          DRI_PRIME=0 timeout -v 2160 xvfb-run ./godot.linuxbsd.editor.dev.x86_64.san FunctionExecutor.tscn 1800 --audio-driver Dummy --rendering-driver opengl3 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
           tail -n 300 sanitizers_log.txt >> project_results.txt
 
           if [ -f "results.txt" ]; then
@@ -300,7 +300,7 @@ jobs:
       - name: Run Project Small Numbers | Parent | One by One
         run: |
           echo "======================================== Small Numbers | Parent | One by One" 2>&1 | tee sanitizers_log.txt
-          DRI_PRIME=0 timeout -v 2160 xvfb-run ./godot.linuxbsd.tools.x86_64.san FunctionExecutor.tscn 1800 --audio-driver Dummy --rendering-driver opengl3 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          DRI_PRIME=0 timeout -v 2160 xvfb-run ./godot.linuxbsd.editor.dev.x86_64.san FunctionExecutor.tscn 1800 --audio-driver Dummy --rendering-driver opengl3 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
           tail -n 300 sanitizers_log.txt >> project_results.txt
 
           if [ -f "results.txt" ]; then
@@ -344,7 +344,7 @@ jobs:
       - name: Run Project Remove returned | Parent | One by One
         run: |
           echo "======================================== Remove returned | Parent | One by One" 2>&1 | tee sanitizers_log.txt
-          DRI_PRIME=0 timeout -v 2160 xvfb-run ./godot.linuxbsd.tools.x86_64.san FunctionExecutor.tscn 1800 --audio-driver Dummy --rendering-driver opengl3 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          DRI_PRIME=0 timeout -v 2160 xvfb-run ./godot.linuxbsd.editor.dev.x86_64.san FunctionExecutor.tscn 1800 --audio-driver Dummy --rendering-driver opengl3 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
           tail -n 300 sanitizers_log.txt >> project_results.txt
 
           if [ -f "results.txt" ]; then
@@ -387,7 +387,7 @@ jobs:
       - name: Run Project Add arguments to tree | Delaying
         run: |
           echo "======================================== Add arguments to tree | Delaying" 2>&1 | tee sanitizers_log.txt
-          DRI_PRIME=0 timeout -v 2160 xvfb-run ./godot.linuxbsd.tools.x86_64.san FunctionExecutor.tscn 1800 --audio-driver Dummy --rendering-driver opengl3 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          DRI_PRIME=0 timeout -v 2160 xvfb-run ./godot.linuxbsd.editor.dev.x86_64.san FunctionExecutor.tscn 1800 --audio-driver Dummy --rendering-driver opengl3 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
           tail -n 300 sanitizers_log.txt >> project_results.txt
 
           if [ -f "results.txt" ]; then

@@ -40,7 +40,8 @@ func _ready() -> void:
 			assert(ret2 == OK)
 
 	
-	var ret: int = dir.make_dir("res://test_gdscript")
+	var dir2: DirAccess = DirAccess.open("res://")
+	var ret: int = dir2.make_dir("res://test_gdscript")
 	assert(ret == OK)
 	var fa = FileAccess.open("res://test_gdscript/.gdignore", FileAccess.WRITE)
 	assert(fa.get_open_error() == OK)
