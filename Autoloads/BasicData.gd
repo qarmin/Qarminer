@@ -15,7 +15,8 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
-	"create_trimesh_shape", # 
+	"get_faces", #66699
+	"create_trimesh_shape", # 66699
 	"set_data", #66029
 	"get_face_count", #66029
 	"_get_light_textures_data", # 66002
