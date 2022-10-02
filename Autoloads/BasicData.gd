@@ -32,6 +32,7 @@ var function_exceptions: Array = [
 	###
 	### Reported crashes
 	###
+	"reset_instance_physics_interpolation", # 66749
 	"_editor_settings_changed", # TODO - LineEdit._editor_settings_changed()
 	"set_zoom_min", # 60492
 	"set_zoom_max", # 60492

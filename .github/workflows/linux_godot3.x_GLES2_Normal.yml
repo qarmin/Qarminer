@@ -76,7 +76,7 @@ jobs:
           echo "add_to_tree: true" >> settings.txt
           echo "use_parent_methods: true" >> settings.txt
           echo "test_one_class_multiple_times: true" >> settings.txt
-          echo "maximum_executed_functions_on_object: 10" >> settings.txt
+          echo "maximum_executed_functions_on_object: 3" >> settings.txt
 
       - name: Run Project One by One | Parent | Add to tree | Maximum Tested
         run: |
@@ -157,7 +157,7 @@ jobs:
           echo "add_to_tree: true" >> settings.txt
           echo "use_parent_methods: true" >> settings.txt
           echo "delay_removing_added_nodes_to_next_frame: true" >> settings.txt
-          echo "maximum_executed_functions_on_object: 10" >> settings.txt
+          echo "maximum_executed_functions_on_object: 3" >> settings.txt
 
       - name: Run Project Delaying | Parent | Add to tree | Maximum Tested
         run: |
