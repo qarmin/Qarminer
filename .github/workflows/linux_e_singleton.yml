@@ -49,10 +49,6 @@ jobs:
           cd ../
           rm -rf godot
 
-      - name: Check Godot Editor Log
-        run: |
-          misc/check_ci_log.py sanitizers_log.txt
-
       - name: Create test project
         run: |
           DRI_PRIME=0 xvfb-run ./godot.x11.tools.64s ManualTesting.tscn --audio-driver Dummy --video-driver GLES2 || true
