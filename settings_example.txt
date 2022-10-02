@@ -15,6 +15,7 @@ value_max: int # Set maximum usable value by arguments
 
 ## FunctionExecutor tool:
 
+max_random_tested_classes: int # Choose random x classes to test, useful when using sanitizer build which takes a lot of time to initialize all clases
 maximum_executed_functions_on_object: bool # Maximum number of functions that can be tested on object
 debug_print: bool  # Switch to turn off printed things to screen
 exiting: bool  # Close app after first run

@@ -5,7 +5,7 @@ var use_always_new_object: bool = false  # Don't allow to "remeber" other functi
 
 var expr: Expression = Expression.new()
 
-var temp_gdscript_file: File = File.new()
+var temp_gdscript_file: File
 var loaded_gdscript
 
 var thing
@@ -54,6 +54,7 @@ func tests_all_functions() -> void:
 				to_print += "." + method_data["name"] + "(" + argument_string + ")"
 				print(to_print)
 
+			temp_gdscript_file = File.new()
 			temp_gdscript_file.open("temp_gdscript.gd", File.WRITE)
 			temp_gdscript_file.store_string("static func test_function() -> void:\n\t")
 			# TODO create temporary variables
@@ -130,6 +131,10 @@ func type_to_name(type: int) -> String:
 #			name = "Vector2i"
 #		TYPE_VECTOR3I:
 #			name = "Vector3i"
+#		TYPE_VECTOR4:
+#			name = "Vector4"
+#		TYPE_VECTOR4I:
+#			name = "Vector4i"
 #		TYPE_RECT2I:
 #			name = "Rect2i"
 #		TYPE_STRING_NAME:
@@ -138,10 +143,12 @@ func type_to_name(type: int) -> String:
 #			name = "Callable"
 #		TYPE_SIGNAL:
 #			name = "Signal"
-#		TYPE_FLOAT64_ARRAY:
+#		TYPE_PACKED_FLOAT64_ARRAY:
 #			thing = "PackedFloat64Array"
-#		TYPE_INT64_ARRAY:
+#		TYPE_PACKED_INT64_ARRAY:
 #			thing = "PackedInt64Array"
+#		TYPE_PROJECTION:
+#			thing = "Projection"
 		TYPE_OBJECT:
 			assert(false, "Object not supported")
 		TYPE_NIL:
@@ -215,18 +222,24 @@ func get_basic_thing(type: int):
 #			thing = Callable(BoxMesh.new(), "Rar")
 #		TYPE_VECTOR3I:
 #			thing = ValueCreator.get_vector3i()
+#		TYPE_VECTOR4:
+#			thing = ValueCreator.get_vector4()
+#		TYPE_VECTOR4I:
+#			thing = ValueCreator.get_vector4i()
 #		TYPE_VECTOR2I:
 #			thing = ValueCreator.get_vector2i()
 #		TYPE_STRING_NAME:
 #			thing = ValueCreator.get_string_name()
 #		TYPE_RECT2I:
 #			thing = ValueCreator.get_rect2i()
-#		TYPE_FLOAT64_ARRAY:
+#		TYPE_PACKED_FLOAT64_ARRAY:
 #			thing = ValueCreator.get_packed_float64_array()
-#		TYPE_INT64_ARRAY:
+#		TYPE_PACKED_INT64_ARRAY:
 #			thing = ValueCreator.get_packed_int64_array()
 #		TYPE_SIGNAL:
 #			thing = ValueCreator.get_signal()
+#		TYPE_PROJECTION:
+#			thing = ValueCreator.get_projection()
 		_:
 			assert(false, "Missing type --" + str(type) + "--, needs to be added to project")
 

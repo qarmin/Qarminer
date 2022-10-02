@@ -50,6 +50,8 @@ var memory_before: float = 0.0
 var maximum_executed_functions_on_object: int = -1
 var currently_executed_functions_on_object: int = 0
 
+var max_random_tested_classes: int = 999999
+
 
 # Prepare options for desired type of test
 func _ready() -> void:
@@ -102,7 +104,7 @@ func _ready() -> void:
 	save_resources_to_file = SettingsLoader.load_setting("save_resources_to_file", TYPE_BOOL, save_resources_to_file)
 	how_many_times_test_one_class = SettingsLoader.load_setting("how_many_times_test_one_class", TYPE_INT, how_many_times_test_one_class)
 	maximum_executed_functions_on_object = SettingsLoader.load_setting("maximum_executed_functions_on_object", TYPE_INT, maximum_executed_functions_on_object)
-
+	max_random_tested_classes = SettingsLoader.load_setting("max_random_tested_classes", TYPE_INT, max_random_tested_classes)
 	# Adds additional arguments to excluded items
 	HelpFunctions.add_excluded_too_big_functions(ValueCreator.number > 40)
 	HelpFunctions.add_excluded_too_big_classes(ValueCreator.number > 100)
@@ -110,10 +112,16 @@ func _ready() -> void:
 	# Initialize array of objects
 #	BasicData.custom_classes = []  # Here can be choosen any classes that user want to use
 	HelpFunctions.initialize_list_of_available_classes()
+	if max_random_tested_classes < BasicData.base_classes.size():
+		BasicData.base_classes.shuffle()
+		BasicData.base_classes = BasicData.base_classes.slice(0, max_random_tested_classes - 1)
+		BasicData.base_classes.sort()
+
 #	BasicData.base_classes = BasicData.base_classes.slice(250,260)
 #	print("After preselection, choosed " + str(BasicData.base_classes.size()) + " classes")
 	HelpFunctions.initialize_array_with_allowed_functions(use_parent_methods, BasicData.function_exceptions)
 	tested_classes = BasicData.base_classes.duplicate(true)
+	print("At the end choosed " + str(tested_classes.size()) + " classes")
 
 #	# Debug check if all methods exists in choosen classes
 #	assert(BasicData.allowed_thing.size() == BasicData.base_classes.size())
@@ -179,7 +187,10 @@ func tests_all_functions() -> void:
 				save_to_file_to_screen("\n" + to_print, to_print)
 
 			var object: Object = ClassDB.instance(name_of_class)
-			assert(object != null, "Object must be instantable")
+			if object == null:
+				print("ERROR: Object is not instantable but should be")
+				break
+#			assert(object != null, "Object must be instantable")
 			if add_to_tree:
 				if object is Node:
 					add_child(object)

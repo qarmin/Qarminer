@@ -2,9 +2,9 @@ extends Node
 
 var classes: Array = []
 
-var things: Array = ["var", "=", "func", "export", "in", "match", "pass", ",", "(", ")", "[", "]", "enum", "const", "{", "}", "yield", "await", ":", "()", "{}", "[]"]
+var things: Array = ["var", "=", "func", "export", "in", "match", "pass", ",", "(", ")", "[", "]", "enum", "const", "{", "}", "yield", "await", ":", "()", "{}", "[]", "."]
 var names: Array = ["Źdźbło", "Kasztan", "Krokiet", "Krokiew", "Krotka"]
-var variants: Array = ["void", "Vector2", "int", "float", "String", "Array"]
+var variants: Array = ["void", "Vector2", "int", "float", "String", "Array", "File", "Object"]
 
 var file_handler: File = File.new()
 

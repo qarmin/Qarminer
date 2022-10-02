@@ -4,20 +4,21 @@ var available_nodes: Array = []
 
 var disabled_classes: Array = [
 	"ShapeCast2D",  #61925
-	"ScrollContainer",  #61927
 	"MissingNode",  # Vanished messages
 ]
 
-var max_children: int = 500
+var max_children: int
 var master_child: Node
 
 
 func _ready():
 	var dir = Directory.new()
 	dir.make_dir("res://T/")
-	create_available()
-	populate()
-	save_scene()
+	for _i in range(10):
+		max_children = 500
+		create_available()
+		populate()
+		save_scene()
 
 
 func create_available():
@@ -48,6 +49,9 @@ func save_scene():
 	assert_if_false(ResourceSaver.save("res://ABCD.tscn", packed_scene))
 	assert_if_false(ResourceSaver.save("res://T/" + random_number + ".tscn", packed_scene))
 	assert_if_false(get_tree().change_scene("res://ABCD.tscn"))
+	var ar: Node = master_child
+	remove_child(master_child)
+	ar.queue_free()
 	#get_tree().quit()
 
 

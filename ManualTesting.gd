@@ -7,9 +7,10 @@ var allowed_functions: Array = []
 var excluded_functions: Array = [
 	# Crashes
 	"open_midi_inputs",  #52821
-	"set_window_mouse_passthrough",  #
+	"set_window_mouse_passthrough",  #66754
 	"lock",  # 66758
 	# OTHER
+	"print_all_textures_by_size",  # Prints
 	"print_all_resources",  # Create files
 	"move_to_trash",  # Moves to trash
 	"make_sphere_mesh",  # Slow
