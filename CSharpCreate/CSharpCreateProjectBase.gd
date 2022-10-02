@@ -36,16 +36,17 @@ var list_of_all_files = {"2D": [], "3D": [], "Node": [], "Other": [], "Control":
 #	assert(normalize_function_names("node") == "node")
 
 
-
 func collect_data() -> void:
-	BasicData.disabled_classes.append_array([
-		"Object", # Ambigous name
-		"UndoRedo", # Cannot execute without instance
-		"MainLoop", # Cannot execute without instance
-	])
+	BasicData.disabled_classes.append_array(
+		[
+			"Object",  # Ambigous name
+			"UndoRedo",  # Cannot execute without instance
+			"MainLoop",  # Cannot execute without instance
+		]
+	)
 	HelpFunctions.initialize_list_of_available_classes()
-	HelpFunctions.initialize_array_with_allowed_functions(false, BasicData.function_exceptions + BasicData.csharp_function_exceptions, true) # TODO enable later 
-	
+	HelpFunctions.initialize_array_with_allowed_functions(false, BasicData.function_exceptions + BasicData.csharp_function_exceptions, true)  # TODO enable later
+
 	for name_of_class in BasicData.base_classes:
 		var class_data: ClassData = ClassData.new()
 		class_data.name = name_of_class
@@ -83,15 +84,15 @@ func create_scene_files() -> void:
 			else:
 				latest_name = split[split.size() - 1].trim_suffix(".cs")
 
-			external_dependiences += "[ext_resource path=\"_PATH_\" type=\"Script\" id=COUNTER]\n".replace("COUNTER", str(counter)).replace("_PATH_", file_name.replace(base_dir, ""))
-			node_data += "[node name=\"FILE_NAME\" type=\"Node2D\" parent=\".\"]\n".replace("FILE_NAME", latest_name)
+			external_dependiences += '[ext_resource path="_PATH_" type="Script" id=COUNTER]\n'.replace("COUNTER", str(counter)).replace("_PATH_", file_name.replace(base_dir, ""))
+			node_data += '[node name="FILE_NAME" type="Node2D" parent="."]\n'.replace("FILE_NAME", latest_name)
 			node_data += "script = ExtResource( COUNTER )\n\n".replace("COUNTER", str(counter))
 
 			counter += 1
 
 		file.store_string(external_dependiences)
 		file.store_string("\n")
-		file.store_string("[node name=\"Root\" type=\"Node2D\"]".replace("Root", type))
+		file.store_string('[node name="Root" type="Node2D"]'.replace("Root", type))
 		file.store_string("\n\n")
 		file.store_string(node_data)
 

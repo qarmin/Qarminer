@@ -12,6 +12,7 @@ extends <<node>>
 func _process(_delta : float) -> void:
 """
 
+
 func _ready():
 	var editor_classes: Array = []
 	for i in ClassDB.get_class_list():

@@ -9,7 +9,7 @@ func create_basic_files() -> void:
 		var file_name: String = CSharpCreateProjectBase.base_path
 
 		var file_name_real: String = class_data.name + "_P"
-		
+
 		if ClassDB.is_parent_class(class_data.name, "Spatial"):  # TODO Fix in Godot 4.0
 			file_name += "3D" + "/" + file_name_real + ".cs"
 			CSharpCreateProjectBase.list_of_all_files["3D"].append(file_name)
@@ -49,7 +49,7 @@ using System;
 
 public class <<class_name>> : Godot.Node2D
 {
-""".replace("<<class_name>>", class_data.name + "_P" )
+""".replace("<<class_name>>", class_data.name + "_P")
 		if (
 			ClassDB.is_parent_class(class_data.name, "Node")
 			|| ClassDB.is_parent_class(class_data.name, "Reference")
@@ -95,8 +95,8 @@ public class <<class_name>> : Godot.Node2D
 		for i in range(class_data.function_names.size()):
 			data_to_save += "\t\tif (GD.Randi() % 2 == 0)\n\t\t{\n"
 			if CSharpCreateProjectBase.debug_in_runtime:
-				data_to_save += "\t\t\tGD.Print(\"Executing " + object_type + "." + class_data.function_names[i] + "\");\n\n"
-			
+				data_to_save += '\t\t\tGD.Print("Executing ' + object_type + "." + class_data.function_names[i] + '");\n\n'
+
 			var arguments := convert_arguments_to_string(class_data.arguments[i])
 			var split_arguments := arguments.split(",")
 
@@ -193,7 +193,7 @@ func convert_arguments_to_string(arguments: Array) -> String:
 			TYPE_INT_ARRAY:
 				return_string += "Godot.Collections.Array<int>()"
 			TYPE_NODE_PATH:
-				return_string += "NodePath(\".\")"
+				return_string += 'NodePath(".")'
 			TYPE_OBJECT:
 				return_string += "new Godot." + CSharpValueCreator.get_object_string(argument["class_name"]) + "()"
 			TYPE_PLANE:

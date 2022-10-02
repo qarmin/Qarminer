@@ -32,21 +32,21 @@ var function_exceptions: Array = [
 	###
 	### Reported crashes
 	###
-	"set_window_mouse_passthrough", # 66754
-	"reset_instance_physics_interpolation", # 66749
-	"_editor_settings_changed", # TODO - LineEdit._editor_settings_changed()
-	"set_zoom_min", # 60492
-	"set_zoom_max", # 60492
-	"open_midi_inputs", # 52821
-	"set_zoom", # 60492
-	"set_end", # 60492
-	"set_custom_minimum_size", #60326 - 60376
-	"set_size", #60325
-	"set_custom_viewport", #60052
-	"create_convex_shape", # 60357
-	"get_debug_mesh", #60337
-	"set_radial_initial_angle", #60338
-	"set_outer_radius", #60325
+	"set_window_mouse_passthrough",  # 66754
+	"reset_instance_physics_interpolation",  # 66749
+	"_editor_settings_changed",  # TODO - LineEdit._editor_settings_changed()
+	"set_zoom_min",  # 60492
+	"set_zoom_max",  # 60492
+	"open_midi_inputs",  # 52821
+	"set_zoom",  # 60492
+	"set_end",  # 60492
+	"set_custom_minimum_size",  #60326 - 60376
+	"set_size",  #60325
+	"set_custom_viewport",  #60052
+	"create_convex_shape",  # 60357
+	"get_debug_mesh",  #60337
+	"set_radial_initial_angle",  #60338
+	"set_outer_radius",  #60325
 	"set_polygon",  #60325
 	"set_depth",  #60325
 	"set_radius",  #60325
@@ -74,7 +74,7 @@ var function_exceptions: Array = [
 	"set_icon",  #46189
 	###
 	### Expected Crashes
-	### 
+	###
 	"set_editor_hint",  #46252 - Fixed only for master(due compatibility)	- do not use
 	###
 	### Not worth to check, cause a lot of crashes but it is very unlikelly that users will use them
@@ -325,5 +325,5 @@ var allowed_functions: Array = [
 ]
 
 var csharp_function_exceptions: Array = [
-	"ResChanged", # AnimatedSprite
+	"ResChanged",  # AnimatedSprite
 ]

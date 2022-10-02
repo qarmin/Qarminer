@@ -127,7 +127,7 @@ func get_gdscript_class_creation(name_of_class: String) -> String:
 # because passing by reference seems to be broken in 4.0
 func remove_disabled_methods(method_list: Array, exceptions: Array, csharp_project: bool = false) -> Array:
 	var new_method_list: Array = method_list.duplicate(true)
-	
+
 	for exception in exceptions:
 		var index: int = -1
 		for method_index in range(new_method_list.size()):
@@ -141,7 +141,7 @@ func remove_disabled_methods(method_list: Array, exceptions: Array, csharp_proje
 		new_method_list = []
 		for method in old_method_list:
 			if !method["name"].begins_with("_"):
-				new_method_list.append(method) 
+				new_method_list.append(method)
 	return new_method_list
 
 
@@ -235,8 +235,8 @@ func leave_custom_classes_if_needed(how_much_all_classes: int) -> void:
 	print(str(BasicData.base_classes.size()) + " choosen classes from all " + str(how_much_all_classes) + " classes.")
 	print(str(BasicData.argument_classes.size()) + " classes can be used as arguments.")
 
-func normalize_function_names(function_name: String) -> String:
 
+func normalize_function_names(function_name: String) -> String:
 	assert(function_name.length() > 1)
 	assert(!function_name.ends_with("_"))  # There is i+1 expression which may be out of bounds
 	var started_with_underscore = function_name.begins_with("_")

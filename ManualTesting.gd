@@ -6,27 +6,27 @@ var allowed_functions: Array = []
 
 var excluded_functions: Array = [
 	# Crashes
-	"open_midi_inputs", #52821
-	"set_window_mouse_passthrough", #
-	"lock", # 66758
+	"open_midi_inputs",  #52821
+	"set_window_mouse_passthrough",  #
+	"lock",  # 66758
 	# OTHER
-	"print_all_resources", # Create files
-	"move_to_trash", # Moves to trash
+	"print_all_resources",  # Create files
+	"move_to_trash",  # Moves to trash
 	"make_sphere_mesh",  # Slow
 	"free",  # Not enabled
 	"warp_mouse_position",  # Warping
-	"crash", # Crash
-	"alert", # Show useless message
-	"kill", # Kills random process
-	"execute", # Open random app
-	"shell_open", # Opens file exporer
-	"delay_msec", # Sleep
-	"delay_usec", # Sleep
-	"set_exit_code", # Always should return valid code, not changed one
-	"dump_memory_to_file", # create file
-	"dump_resources_to_file", # create file 
-	"set_low_processor_usage_mode", # Freeze
-	"set_low_processor_usage_mode_sleep_usec", # Freeze
+	"crash",  # Crash
+	"alert",  # Show useless message
+	"kill",  # Kills random process
+	"execute",  # Open random app
+	"shell_open",  # Opens file exporer
+	"delay_msec",  # Sleep
+	"delay_usec",  # Sleep
+	"set_exit_code",  # Always should return valid code, not changed one
+	"dump_memory_to_file",  # create file
+	"dump_resources_to_file",  # create file
+	"set_low_processor_usage_mode",  # Freeze
+	"set_low_processor_usage_mode_sleep_usec",  # Freeze
 	# MEMORY LEAK
 	"init",  # Quite specific function, which probably needs to be instanced only once
 	"space_create",
@@ -81,7 +81,7 @@ func _ready():
 	# GDScript, ResourceLoader, ResourceSaver
 	var list_of_singletons = [
 		"Performance",
-		# "ProjectSettings", # Mess with project godot file and couldn't fine even 1 crash with it 
+		# "ProjectSettings", # Mess with project godot file and couldn't fine even 1 crash with it
 		"IP",
 		"Geometry",
 		# "ResourceLoader", # TODO
@@ -120,9 +120,9 @@ func _ready():
 var file_handler: File = File.new()
 
 func save_and_print(message: String):
-	file_handler.store_string(message + "\\n")
+	file_handler.store_string("\\t" + message + "\\n")
 	file_handler.flush()
-	print(message)
+	print("\\t" + message)
 
 func _process(_delta) -> void:
 	ValueCreator.number = [1,10,100,1000,10000,100000,100000][randi() % 7]
@@ -140,9 +140,8 @@ func _process(_delta) -> void:
 		file_handler.store_string("\t\tf_" + name_of_class + "()\n")
 	file_handler.store_string("\n")
 
+	var argument_number: int = 0
 	for name_of_class in list_of_singletons:
-		var argument_number: int = 0
-
 		var functions_info
 		if ClassDB.class_exists(name_of_class):
 			functions_info = ClassDB.class_get_method_list(name_of_class, true)
@@ -166,7 +165,7 @@ func _process(_delta) -> void:
 			var creation_of_arguments: String = ""
 			var variable_names: Array = []
 			var deleting_arguments: String = ""
-			
+
 			creation_of_arguments += "\tif randi() % 3 == 0:\n"
 			for argument in arguments:
 				argument_number += 1

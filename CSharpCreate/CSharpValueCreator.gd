@@ -214,12 +214,12 @@ func get_string() -> String:
 func get_string_string() -> String:
 	if random:
 		if randi() % 3 == 0:
-			return "\".\""
+			return '"."'
 		elif randi() % 3 == 0:
-			return "\"\""
+			return '""'
 		else:
 			return "str(randi() / 100)"
-	return "\"\""
+	return '""'
 
 
 # TODO
@@ -229,7 +229,7 @@ func get_nodepath() -> NodePath:
 
 # TODO
 func get_nodepath_string_csharp() -> String:
-	return "new NodePath(\".\")"
+	return 'new NodePath(".")'
 
 
 # TODO

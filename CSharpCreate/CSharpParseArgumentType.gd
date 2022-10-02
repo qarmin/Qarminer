@@ -55,7 +55,7 @@ func create_gdscript_arguments(arguments: Array) -> Array:
 				sa.value = "PoolIntArray([])"
 			TYPE_NODE_PATH:
 				sa.type = "NodePath"
-				sa.value = "NodePath(\".\")"
+				sa.value = 'NodePath(".")'
 			TYPE_OBJECT:
 				sa.type = CSharpValueCreator.get_object_string(argument["class_name"])
 				sa.value = sa.type + ".new()"
@@ -292,7 +292,7 @@ func return_gdscript_code_which_run_this_object(data) -> String:
 					&& !ClassDB.is_parent_class(name_of_class, "Reference")
 					&& !ClassDB.class_has_method(name_of_class, "new")
 				):
-					return_string += "ClassDB.instance(\"" + name_of_class + "\")"
+					return_string += 'ClassDB.instance("' + name_of_class + '")'
 				else:
 					return_string = name_of_class.trim_prefix("_")
 					return_string += ".new()"
@@ -342,7 +342,7 @@ func return_gdscript_code_which_run_this_object(data) -> String:
 		TYPE_RID:
 			return_string = "RID()"
 		TYPE_STRING:
-			return_string = "\"" + data + "\""
+			return_string = '"' + data + '"'
 		TYPE_STRING_ARRAY:
 			return_string = "PoolStringArray(["
 			for i in data.size():

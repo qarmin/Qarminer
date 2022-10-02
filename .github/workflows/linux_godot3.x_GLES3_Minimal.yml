@@ -153,6 +153,7 @@ jobs:
           echo "HMACContext" >> settings.txt
           echo "PacketPeerDTLS" >> settings.txt
           echo "StreamPeerTLS" >> settings.txt
+          echo "StreamPeerSSL" >> settings.txt
           echo "X509Certificate" >> settings.txt
 
       - name: Run Project Default
