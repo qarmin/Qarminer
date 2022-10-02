@@ -49,35 +49,43 @@ jobs:
           cd ../
           rm -rf godot
 
-      # Download, unzip and setup SwiftShader library
-      - name: Download SwiftShader
-        run: |
-          wget https://github.com/qarmin/gtk_library_store/releases/download/3.24.0/swiftshader3.zip
-          unzip swiftshader3.zip
-          rm swiftshader3.zip
-          curr="$(pwd)/libvk_swiftshader.so"
-          sed -i "s|PATH_TO_CHANGE|$curr|" vk_swiftshader_icd.json
-
-      - name: Open Godot Editor
-        run: |
-          DRI_PRIME=0 xvfb-run ./godot.x11.tools.64s -e --quit --audio-driver Dummy --video-driver GLES2 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
-          tail -n 300 sanitizers_log.txt > editor_results.txt
-
-      - name: Store editor results
-        uses: actions/upload-artifact@v2
-        with:
-          name: editor-results
-          path: editor_results.txt
-
       - name: Check Godot Editor Log
         run: |
           misc/check_ci_log.py sanitizers_log.txt
 
-      - name: Run Project
+      - name: Create test project
         run: |
           DRI_PRIME=0 xvfb-run ./godot.x11.tools.64s ManualTesting.tscn --audio-driver Dummy --video-driver GLES2 || true
-          DRI_PRIME=0 xvfb-run ./godot.x11.tools.64s SingletonTesting.tscn 3600 --audio-driver Dummy --video-driver GLES2 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
-          tail -n 300 sanitizers_log.txt > project_results.txt
+          
+      - name: Execute project 1 GLES2
+        run: |
+          DRI_PRIME=0 xvfb-run ./godot.x11.tools.64s SingletonTesting.tscn 1000 --audio-driver Dummy --video-driver GLES2 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          tail -n 300 sanitizers_log.txt >> project_results.txt
+          
+      - name: Execute project 2 GLES2
+        run: |
+          DRI_PRIME=0 xvfb-run ./godot.x11.tools.64s SingletonTesting.tscn 1000 --audio-driver Dummy --video-driver GLES2 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          tail -n 300 sanitizers_log.txt >> project_results.txt
+          
+      - name: Execute project 3 GLES2
+        run: |
+          DRI_PRIME=0 xvfb-run ./godot.x11.tools.64s SingletonTesting.tscn 1000 --audio-driver Dummy --video-driver GLES2 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          tail -n 300 sanitizers_log.txt >> project_results.txt
+          
+      - name: Execute project 1 GLES3
+        run: |
+          DRI_PRIME=0 xvfb-run ./godot.x11.tools.64s SingletonTesting.tscn 1000 --audio-driver Dummy --video-driver GLES3 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          tail -n 300 sanitizers_log.txt >> project_results.txt
+          
+      - name: Execute project 2 GLES3
+        run: |
+          DRI_PRIME=0 xvfb-run ./godot.x11.tools.64s SingletonTesting.tscn 1000 --audio-driver Dummy --video-driver GLES3 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          tail -n 300 sanitizers_log.txt >> project_results.txt
+          
+      - name: Execute project 3 GLES3
+        run: |
+          DRI_PRIME=0 xvfb-run ./godot.x11.tools.64s SingletonTesting.tscn 1000 --audio-driver Dummy --video-driver GLES3 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          tail -n 300 sanitizers_log.txt >> project_results.txt
 
       - name: Store project results
         uses: actions/upload-artifact@v2
@@ -90,18 +98,6 @@ jobs:
         with:
           name: last-run-functions
           path: results.txt
-
-      - name: Store timer results
-        uses: actions/upload-artifact@v2
-        with:
-          name: timer
-          path: timer.txt
-
-      - name: Store memory usage results
-        uses: actions/upload-artifact@v2
-        with:
-          name: memory-usage
-          path: memory_usage.txt
 
       - name: Check Log
         run: |

@@ -15,6 +15,7 @@ value_max: int # Set maximum usable value by arguments
 
 ## FunctionExecutor tool:
 
+maximum_executed_functions_on_object: bool # Maximum number of functions that can be tested on object
 debug_print: bool  # Switch to turn off printed things to screen
 exiting: bool  # Close app after first run
 add_to_tree: bool  # Adds nodes to tree

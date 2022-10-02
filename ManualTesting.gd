@@ -6,12 +6,11 @@ var allowed_functions: Array = []
 
 var excluded_functions: Array = [
 	# Crashes
-	"set_custom_mouse_cursor",  #60112
-	"area_get_space",  #60113
-	"mesh_surface_get_format_offset",  #60114
-	"mesh_surface_get_format_stride",  #60114
 	"open_midi_inputs", #52821
+	"set_window_mouse_passthrough", #
+	"lock", # 66758
 	# OTHER
+	"print_all_resources", # Create files
 	"move_to_trash", # Moves to trash
 	"make_sphere_mesh",  # Slow
 	"free",  # Not enabled
@@ -82,9 +81,11 @@ func _ready():
 	# GDScript, ResourceLoader, ResourceSaver
 	var list_of_singletons = [
 		"Performance",
+		# "ProjectSettings", # Mess with project godot file and couldn't fine even 1 crash with it 
 		"IP",
-		"ProjectSettings",
 		"Geometry",
+		# "ResourceLoader", # TODO
+		# "ResourceSaver", # TODO
 		"OS",
 		"Engine",
 		"ClassDB",
@@ -115,11 +116,20 @@ func _ready():
 
 	file_handler.store_string(
 		"""extends Node
-func _ready() -> void:
-	ValueCreator.number = [1,10,100,1000,10000,100000,100000][randi() % 7]
+		
+var file_handler: File = File.new()
+
+func save_and_print(message: String):
+	file_handler.store_string(message + "\\n")
+	file_handler.flush()
+	print(message)
 
 func _process(_delta) -> void:
-	f_GDScript()
+	ValueCreator.number = [1,10,100,1000,10000,100000,100000][randi() % 7]
+	var _a = file_handler.open("results.txt", File.WRITE)
+	
+	for _i in range(5):
+		f_GDScript()
 """
 	)
 
@@ -127,7 +137,7 @@ func _process(_delta) -> void:
 		if !ClassDB.class_exists(name_of_class) && !ClassDB.class_exists("_" + name_of_class):
 			print("Class " + name_of_class + " not exists!!!!!!!!!")
 			assert(false)
-		file_handler.store_string("\tf_" + name_of_class + "()\n")
+		file_handler.store_string("\t\tf_" + name_of_class + "()\n")
 	file_handler.store_string("\n")
 
 	for name_of_class in list_of_singletons:
@@ -156,17 +166,19 @@ func _process(_delta) -> void:
 			var creation_of_arguments: String = ""
 			var variable_names: Array = []
 			var deleting_arguments: String = ""
+			
+			creation_of_arguments += "\tif randi() % 3 == 0:\n"
 			for argument in arguments:
 				argument_number += 1
 				var variable_name = "temp_variable" + str(argument_number)
-				creation_of_arguments += "\tvar " + variable_name + " = " + argument + "\n"
-				creation_of_arguments += '\tprint("var ' + variable_name + ' = " + ParseArgumentType.return_gdscript_code_which_run_this_object(' + variable_name + "))\n"
+				creation_of_arguments += "\t\tvar " + variable_name + " = " + argument + "\n"
+				creation_of_arguments += '\t\tsave_and_print("var ' + variable_name + ' = " + ParseArgumentType.return_gdscript_code_which_run_this_object(' + variable_name + "))\n"
 
 				variable_names.append(variable_name)
 
 				if argument.find("get_object") != -1:
-					deleting_arguments += "\tHelpFunctions.remove_thing(" + variable_name + ")\n"
-					deleting_arguments += "\tprint('" + variable_name + "'+ HelpFunctions.remove_thing_string(" + variable_name + "))\n"
+					deleting_arguments += "\t\tHelpFunctions.remove_thing(" + variable_name + ")\n"
+					deleting_arguments += "\t\tsave_and_print('" + variable_name + "'+ HelpFunctions.remove_thing_string(" + variable_name + "))\n"
 
 			file_handler.store_string(creation_of_arguments)
 
@@ -176,8 +188,8 @@ func _process(_delta) -> void:
 				if name_index + 1 != variable_names.size():
 					to_execute += ","
 			to_execute += ")"
-			file_handler.store_string("\tprint('" + to_execute + "')\n")
-			file_handler.store_string("\t" + to_execute + "\n")
+			file_handler.store_string("\t\tsave_and_print('" + to_execute + "')\n")
+			file_handler.store_string("\t\t" + to_execute + "\n")
 
 			file_handler.store_string(deleting_arguments + "\n")
 
@@ -189,7 +201,8 @@ func _process(_delta) -> void:
 
 
 var manual_functions: String = """
-func f_GDScript() -> void:	
+
+func f_GDScript() -> void:
 	print("Color8")
 	Color8(ValueCreator.get_int(),ValueCreator.get_int(),ValueCreator.get_int(),ValueCreator.get_int())
 	print("ColorN")
