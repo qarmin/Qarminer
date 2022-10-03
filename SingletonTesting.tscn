@@ -1,6 +1,6 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=2 format=3 uid="uid://bh1ygcte1x4jl"]
 
-[ext_resource path="res://SingletonTesting.gd" type="Script" id=1]
+[ext_resource type="Script" path="res://SingletonTesting.gd" id="1"]
 
 [node name="SingletonTesting" type="Node"]
-script = ExtResource( 1 )
+script = ExtResource("1")

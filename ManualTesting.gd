@@ -122,6 +122,7 @@ var excluded_functions: Array = [
 	"camera_attributes_create",  # RID Leak
 	"canvas_texture_create",  # RID Leak
 	#Other
+	"read_string_from_stdin", # Freeze
 	"warp_mouse",  # Warping
 	"alert",  # Blocking window
 	"crash",  # Well it crash engine
@@ -159,7 +160,7 @@ func _ready():
 	file_handler.store_string(
 		"""extends Node
 		
-var file_handler: File = File.new()
+var file_handler: FileAccess
 
 func save_and_print(message: String):
 	file_handler.store_string("\\t" + message + "\\n")
@@ -168,7 +169,7 @@ func save_and_print(message: String):
 
 func _process(_delta) -> void:
 	ValueCreator.number = [1,10,100,1000,10000,100000,100000][randi() % 7]
-	var _a = file_handler.open("results.txt", File.WRITE)
+	file_handler = FileAccess.open("results.txt", FileAccess.WRITE)
 	file_handler.store_string("\\n\\n\\n\\n\\n############# NEW RUN \\n\\n\\n\\n\\n")
 	for _i in range(5):
 		f_GDScript()
@@ -427,8 +428,8 @@ func f_GDScript() -> void:
 	print("randomize")
 	randomize()
 	
-	print("remap")
-	range(ValueCreator.get_float(),ValueCreator.get_float(),ValueCreator.get_float(),ValueCreator.get_float(),ValueCreator.get_float())
+#	print("remap") # TODO strange bug
+#	range(ValueCreator.get_float(),ValueCreator.get_float(),ValueCreator.get_float(),ValueCreator.get_float(),ValueCreator.get_float())
 
 	
 	print("rid_allocate_id")
@@ -511,7 +512,7 @@ func f_GDScript() -> void:
 	print("get_stack")
 	get_stack()
 	print("inst_to_dict")
-	inst_to_dict(ValueCreator.get_object("Reference"))
+	inst_to_dict(ValueCreator.get_object("RefCounted"))
 	print("len")
 	len(ValueCreator.get_string())
 	#print("load")

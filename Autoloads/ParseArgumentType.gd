@@ -67,7 +67,7 @@ func parse_and_return_functions_to_create_object(method_data: Dictionary, name_o
 				arguments_array.push_back("ValueCreator.get_packed_vector3_array()")
 #			# TODOGODOT4
 			TYPE_CALLABLE:
-				arguments_array.push_back(Callable(BoxMesh.new(), "Rar"))
+				arguments_array.push_back("Callable(BoxMesh.new(), 'Rar')") # TODO this line should not create callable object but string!!!!
 			TYPE_VECTOR2I:
 				arguments_array.push_back("ValueCreator.get_vector2i()")
 			TYPE_VECTOR3I:

@@ -291,7 +291,7 @@ func get_projection() -> Projection:
 
 
 func get_object(object_name: String) -> Object:
-	assert(ClassDB.class_exists(object_name))  #,"Class " + object_name + " doesn't exists.")
+	assert(ClassDB.class_exists(object_name))  #,"Class " + object_name + " doesn't exists.") # TODO this is quite useless, because cannnot use with reference
 	if object_name == "PhysicsDirectSpaceState3D" || object_name == "PhysicsDirectSpaceState2D":
 		return null
 

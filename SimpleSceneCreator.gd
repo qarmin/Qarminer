@@ -12,7 +12,7 @@ var master_child: Node
 
 
 func _ready():
-	var dir = DirAccess.new()
+	var dir = DirAccess.open("res://")
 	dir.make_dir("res://T/")
 	for _i in range(10):
 		max_children = 500

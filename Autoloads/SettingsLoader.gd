@@ -10,7 +10,7 @@ func _init():
 	load_deprecated_classes()
 
 	var file_handler: FileAccess
-	if !file_handler.file_exists(SETTINGS_FILE_NAME):
+	if !FileAccess.file_exists(SETTINGS_FILE_NAME):
 		print("Setting file doesn't exists, so it cannot be loaded.")
 	else:
 		file_handler = FileAccess.open(SETTINGS_FILE_NAME, FileAccess.READ)
@@ -151,7 +151,7 @@ func load_deprecated_classes() -> void:
 	var file : FileAccess
 
 	# Compatibility tool
-	if file.file_exists("res://classes.txt"):
+	if FileAccess.file_exists("res://classes.txt"):
 		file = FileAccess.open("res://classes.txt", FileAccess.READ)
 		while !file.eof_reached():
 			var cname = file.get_line().strip_edges()
