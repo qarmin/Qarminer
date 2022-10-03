@@ -128,4 +128,9 @@ if file_contents.find("Killed") != -1:
     print('ERROR: CI was killed due one of possible bugs')
     sys.exit(62)
 
+if file_contents.find("timeout: sending signal") != -1:
+    print('ERROR: timeout of command')
+    sys.exit(63)
+
+
 sys.exit(0)

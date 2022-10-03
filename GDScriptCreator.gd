@@ -23,7 +23,6 @@ func _ready() -> void:
 	classes = Array(ClassDB.get_class_list())
 	classes.sort()
 
-	# Create
 	var dir: Directory = Directory.new()
 
 	for base_dir in ["res://test_gdscript/.import/", "res://test_gdscript/.godot/", "res://test_gdscript/"]:
@@ -44,10 +43,6 @@ func _ready() -> void:
 	assert(ret == OK)
 	ret = File.new().open("res://test_gdscript/project.godot", File.WRITE)
 	assert(ret == OK)
-
-
-#func get_thing() -> String:
-#	things
 
 
 func tabs() -> void:

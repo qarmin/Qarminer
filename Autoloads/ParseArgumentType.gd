@@ -9,7 +9,7 @@ func parse_and_return_functions_to_create_object(method_data: Dictionary, name_o
 	for argument in method_data["args"]:
 		match argument.type:
 			TYPE_NIL:  # Looks that this means VARIANT not null
-				arguments_array.push_back('ValueCreator.get_variant()')
+				arguments_array.push_back("ValueCreator.get_variant()")
 			TYPE_AABB:
 				arguments_array.push_back("ValueCreator.get_aabb()")
 			TYPE_ARRAY:
@@ -34,7 +34,7 @@ func parse_and_return_functions_to_create_object(method_data: Dictionary, name_o
 				if String(argument["class_name"]).empty():
 					arguments_array.push_back('ValueCreator.get_object("Object")')
 				else:
-					arguments_array.push_back('ValueCreator.get_object("' + argument["class_name"] + '")')
+					arguments_array.push_back('ValueCreator.get_object("' + String(argument["class_name"]) + '")')
 			TYPE_PLANE:
 				arguments_array.push_back("ValueCreator.get_plane()")
 			TYPE_QUAT:
@@ -68,10 +68,14 @@ func parse_and_return_functions_to_create_object(method_data: Dictionary, name_o
 #			# TODOGODOT4
 #			TYPE_CALLABLE:
 #				arguments_array.push_back(Callable(BoxMesh.new(), "Rar"))
-#			TYPE_VECTOR3I:
-#				arguments_array.push_back('ValueCreator.get_vector3i()')
 #			TYPE_VECTOR2I:
 #				arguments_array.push_back('ValueCreator.get_vector2i()')
+#			TYPE_VECTOR3I:
+#				arguments_array.push_back('ValueCreator.get_vector3i()')
+#			TYPE_VECTOR4:
+#				arguments_array.push_back("ValueCreator.get_vector4()")
+#			TYPE_VECTOR4I:
+#				arguments_array.push_back("ValueCreator.get_vector4i()")
 #			TYPE_STRING_NAME:
 #				arguments_array.push_back('ValueCreator.get_string_name()')
 #			TYPE_RECT2I:
@@ -172,10 +176,14 @@ func parse_and_return_objects(method_data: Dictionary, name_of_class: String, de
 #			# TODOGODOT4
 #			TYPE_CALLABLE:
 #				arguments_array.push_back(Callable(BoxMesh.new(), "Rar"))
-#			TYPE_VECTOR3I:
-#				arguments_array.push_back(ValueCreator.get_vector3i())
 #			TYPE_VECTOR2I:
 #				arguments_array.push_back(ValueCreator.get_vector2i())
+#			TYPE_VECTOR3I:
+#				arguments_array.push_back(ValueCreator.get_vector3i())
+#			TYPE_VECTOR4:
+#				arguments_array.push_back(ValueCreator.get_vector4())
+#			TYPE_VECTOR4I:
+#				arguments_array.push_back(ValueCreator.get_vector4i())
 #			TYPE_STRING_NAME:
 #				arguments_array.push_back(ValueCreator.get_string_name())
 #			TYPE_RECT2I:
@@ -413,6 +421,26 @@ func return_gdscript_code_which_run_this_object(data) -> String:
 #			return_string += return_gdscript_code_which_run_this_object(data.y)
 #			return_string += ", "
 #			return_string += return_gdscript_code_which_run_this_object(data.z)
+#			return_string += ")"
+#		TYPE_VECTOR4:
+#			return_string = "Vector4("
+#			return_string += return_gdscript_code_which_run_this_object(data.x)
+#			return_string += ", "
+#			return_string += return_gdscript_code_which_run_this_object(data.y)
+#			return_string += ", "
+#			return_string += return_gdscript_code_which_run_this_object(data.z)
+#			return_string += ", "
+#			return_string += return_gdscript_code_which_run_this_object(data.w)
+#			return_string += ")"
+#		TYPE_VECTOR4I:
+#			return_string = "Vector4i("
+#			return_string += return_gdscript_code_which_run_this_object(data.x)
+#			return_string += ", "
+#			return_string += return_gdscript_code_which_run_this_object(data.y)
+#			return_string += ", "
+#			return_string += return_gdscript_code_which_run_this_object(data.z)
+#			return_string += ", "
+#			return_string += return_gdscript_code_which_run_this_object(data.w)
 #			return_string += ")"
 #		TYPE_RECT2I:
 #			return_string = "Rect2i("

@@ -26,8 +26,9 @@ var max_numbers: Array = [2, 5, 10, 100, 1000, 10000, 100000]
 func tests_all_functions() -> void:
 	ValueCreator.number = max_numbers[randi() % max_numbers.size()]
 	for type in range(TYPE_MAX):
+		# NIL not exists, Objects are checked via FunctionExectutor tool
 		if type == TYPE_NIL || type == TYPE_OBJECT:
-			continue  # TODO Add support for objects
+			continue
 		if debug_print:
 			print("\n#################### " + type_to_name(type) + " ####################")
 

@@ -42,10 +42,10 @@ jobs:
       - name: Compile Godot
         run: |
           cd godot
-          scons -j2 use_asan=yes use_ubsan=yes CCFLAGS="-fsanitize=shift,shift-exponent,integer-divide-by-zero,unreachable,vla-bound,null,return,signed-integer-overflow,bounds,float-divide-by-zero,float-cast-overflow,nonnull-attribute,returns-nonnull-attribute,bool,enum,vptr"
+          scons -j2 use_asan=yes use_ubsan=yes CCFLAGS="DEBUG_ENABLED=1"
           cp bin/godot.x11.tools.64s ../
           git clean -xqdf
-          scons -j2 tools=no target=release debug_symbols=yes use_asan=yes use_ubsan=yes optimize=none CCFLAGS="-fsanitize=shift,shift-exponent,integer-divide-by-zero,unreachable,vla-bound,null,return,signed-integer-overflow,bounds,float-divide-by-zero,float-cast-overflow,nonnull-attribute,returns-nonnull-attribute,bool,enum,vptr"
+          scons -j2 tools=no target=release debug_symbols=yes use_asan=yes use_ubsan=yes optimize=none CCFLAGS="DEBUG_ENABLED=1"
           cp bin/godot.x11.opt.64s ../
           cd ../
           rm -rf godot

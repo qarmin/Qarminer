@@ -20,7 +20,7 @@ func get_int() -> int:
 func get_float() -> float:
 	var numm = randi() % 100
 	if numm == 0:
-#		return -INF
+#		return -INF # TODO Reenable after fixing  60492, 60466, 60357, 60338, 60326
 #	elif numm == 1:
 #		return INF
 #	elif numm == 2:
@@ -85,11 +85,15 @@ func get_color() -> Color:
 
 
 func get_string() -> String:
-	var numm = randi() % 4
+	var numm = randi() % 6
 	if numm == 0:
 		return String(".")
 	elif numm == 1:
 		return str(randi())
+	elif numm == 2:
+		return "5555"
+	elif numm == 3:
+		return "127.0.0.1"
 	return String()
 
 
@@ -110,6 +114,15 @@ func get_array() -> Array:
 func get_dictionary() -> Dictionary:
 	if randi() % 2:
 		return Dictionary({"roman": 22, 22: 25, BoxShape.new(): BoxShape.new()})
+	elif randi() % 2:
+		var dict = {}
+		var things = ["date", "month", "day", "year"]
+		for i in randi() % 10:
+			var key = things[randi() % things.size()]
+			var value = get_int()
+			dict[key] = value
+		return dict
+
 	return Dictionary({})
 
 
@@ -175,6 +188,7 @@ func get_packed_color_array() -> PoolColorArray:
 		array.append(get_color())
 	return PoolColorArray(array)
 
+
 func get_variant():
 	match randi() % 22:
 		0:
@@ -220,8 +234,9 @@ func get_variant():
 		20:
 			return get_packed_vector3_array()
 		21:
-			return get_object('Reference')
+			return get_object("Reference")
 	return "A"
+
 
 # TODOGODOT4
 
@@ -252,9 +267,16 @@ func get_variant():
 #func get_signal() -> Signal:
 #	return Signal()
 #
+#func get_vector4() -> Vector4:
+#	if randi() % 2:
+#		return Vector4(get_float(), get_float(), get_float(), get_float()).normalized()
+#	return Vector4(get_float(), get_float(), get_float(), get_float())
+##
+#func get_vector4i() -> Vector4i:
+#	return Vector4i(get_int(), get_int(), get_int(), get_int())
+
 #func get_projection() -> Projection:
 #	return Projection(get_vector4(), get_vector4(), get_vector4(), get_vector4())
-
 
 
 func get_object(object_name: String) -> Object:
