@@ -9,7 +9,7 @@ func parse_and_return_functions_to_create_object(method_data: Dictionary, name_o
 	for argument in method_data["args"]:
 		match argument.type:
 			TYPE_NIL:  # Looks that this means VARIANT not null
-				arguments_array.push_back('ValueCreator.get_object("Object")')
+				arguments_array.push_back('ValueCreator.get_variant()')
 			TYPE_AABB:
 				arguments_array.push_back("ValueCreator.get_aabb()")
 			TYPE_ARRAY:
@@ -56,7 +56,7 @@ func parse_and_return_functions_to_create_object(method_data: Dictionary, name_o
 			TYPE_TRANSFORM:
 				arguments_array.push_back("ValueCreator.get_transform3d()")
 			TYPE_TRANSFORM2D:
-				arguments_array.push_back("ValueCreator.get_transform2D()")
+				arguments_array.push_back("ValueCreator.get_transform2d()")
 			TYPE_VECTOR2:
 				arguments_array.push_back("ValueCreator.get_vector2()")
 			TYPE_VECTOR2_ARRAY:
@@ -82,6 +82,8 @@ func parse_and_return_functions_to_create_object(method_data: Dictionary, name_o
 #				arguments_array.push_back('ValueCreator.get_packed_int64_array()')
 #			TYPE_SIGNAL:
 #				arguments_array.push_back('ValueCreator.get_signal()')
+#			TYPE_PROJECTION:
+#				arguments_array.push_back('ValueCreator.get_projection()')
 			_:
 				assert(false, "Missing type --" + str(argument.type) + "-- needs to be added to project")
 
@@ -158,7 +160,7 @@ func parse_and_return_objects(method_data: Dictionary, name_of_class: String, de
 			TYPE_TRANSFORM:
 				arguments_array.push_back(ValueCreator.get_transform3d())
 			TYPE_TRANSFORM2D:
-				arguments_array.push_back(ValueCreator.get_transform2D())
+				arguments_array.push_back(ValueCreator.get_transform2d())
 			TYPE_VECTOR2:
 				arguments_array.push_back(ValueCreator.get_vector2())
 			TYPE_VECTOR2_ARRAY:
@@ -184,6 +186,8 @@ func parse_and_return_objects(method_data: Dictionary, name_of_class: String, de
 #				arguments_array.push_back(ValueCreator.get_packed_int64_array())
 #			TYPE_SIGNAL:
 #				arguments_array.push_back(ValueCreator.get_signal())
+#			TYPE_PROJECTION:
+#				arguments_array.push_back(ValueCreator.get_projection())
 			_:
 				assert(false, "Missing type --" + str(argument.type) + "-- needs to be added to project")
 
@@ -432,6 +436,16 @@ func return_gdscript_code_which_run_this_object(data) -> String:
 #			return_string += "])"
 #		TYPE_SIGNAL:
 #			return_string = "Signal()"  # TODO, not sure
+#		TYPE_PROJECTION:
+#			return_string = "Projection("
+#			return_string += return_gdscript_code_which_run_this_object(data.x)
+#			return_string += ", "
+#			return_string += return_gdscript_code_which_run_this_object(data.y)
+#			return_string += ", "
+#			return_string += return_gdscript_code_which_run_this_object(data.w)
+#			return_string += ", "
+#			return_string += return_gdscript_code_which_run_this_object(data.z)
+#			return_string = ")"
 		_:
 			assert(false, "Missing type --" + str(typeof(data)) + "-- needs to be added to project")
 

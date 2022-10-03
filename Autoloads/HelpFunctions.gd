@@ -101,6 +101,8 @@ func check_if_is_allowed(method_data: Dictionary, csharp_project: bool = false) 
 			#			|| t == TYPE_FLOAT64_ARRAY
 			#			|| t == TYPE_INT64_ARRAY
 			#			|| t == TYPE_CALLABLE
+			#			|| t == TYPE_SIGNAL
+			#			|| t == TYPE_PROJECTION
 			print("MISSING TYPE in function " + method_data["name"] + "  --  Variant type - " + str(t))
 			return false
 

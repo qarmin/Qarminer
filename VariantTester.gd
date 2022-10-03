@@ -204,7 +204,7 @@ func get_basic_thing(type: int):
 		TYPE_TRANSFORM:
 			thing = ValueCreator.get_transform3d()
 		TYPE_TRANSFORM2D:
-			thing = ValueCreator.get_transform2D()
+			thing = ValueCreator.get_transform2d()
 		TYPE_VECTOR2:
 			thing = ValueCreator.get_vector2()
 		TYPE_VECTOR2_ARRAY:

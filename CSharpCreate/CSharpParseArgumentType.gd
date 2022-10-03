@@ -100,7 +100,7 @@ func create_gdscript_arguments(arguments: Array) -> Array:
 				sa.value = CSharpValueCreator.get_transform_string()
 			TYPE_TRANSFORM2D:
 				sa.type = "Transform2D"
-				sa.value = CSharpValueCreator.get_transform2D_string()
+				sa.value = CSharpValueCreator.get_transform2d_string()
 			TYPE_VECTOR2:
 				sa.type = "Vector2"
 				sa.value = CSharpValueCreator.get_vector2_string()
@@ -152,13 +152,13 @@ func parse_and_return_objects(method_data: Dictionary, name_of_class: String, de
 			TYPE_COLOR:
 				arguments_array.push_back(CSharpValueCreator.get_color())
 			TYPE_COLOR_ARRAY:
-				arguments_array.push_back(CSharpValueCreator.get_pool_color_array())
+				arguments_array.push_back(CSharpValueCreator.get_packed_color_array())
 			TYPE_DICTIONARY:
 				arguments_array.push_back(CSharpValueCreator.get_dictionary())
 			TYPE_INT:
 				arguments_array.push_back(CSharpValueCreator.get_int())
 			TYPE_INT_ARRAY:
-				arguments_array.push_back(CSharpValueCreator.get_pool_int_array())
+				arguments_array.push_back(CSharpValueCreator.get_packed_int_array())
 			TYPE_NODE_PATH:
 				arguments_array.push_back(CSharpValueCreator.get_nodepath())
 			TYPE_OBJECT:
@@ -174,11 +174,11 @@ func parse_and_return_objects(method_data: Dictionary, name_of_class: String, de
 			TYPE_QUAT:
 				arguments_array.push_back(CSharpValueCreator.get_quat())
 			TYPE_RAW_ARRAY:
-				arguments_array.push_back(CSharpValueCreator.get_pool_byte_array())
+				arguments_array.push_back(CSharpValueCreator.get_packed_byte_array())
 			TYPE_REAL:
 				arguments_array.push_back(CSharpValueCreator.get_float())
 			TYPE_REAL_ARRAY:
-				arguments_array.push_back(CSharpValueCreator.get_pool_real_array())
+				arguments_array.push_back(CSharpValueCreator.get_packed_real_array())
 			TYPE_RECT2:
 				arguments_array.push_back(CSharpValueCreator.get_rect2())
 			TYPE_RID:
@@ -186,19 +186,19 @@ func parse_and_return_objects(method_data: Dictionary, name_of_class: String, de
 			TYPE_STRING:
 				arguments_array.push_back(CSharpValueCreator.get_string())
 			TYPE_STRING_ARRAY:
-				arguments_array.push_back(CSharpValueCreator.get_pool_string_array())
+				arguments_array.push_back(CSharpValueCreator.get_packed_string_array())
 			TYPE_TRANSFORM:
 				arguments_array.push_back(CSharpValueCreator.get_transform())
 			TYPE_TRANSFORM2D:
-				arguments_array.push_back(CSharpValueCreator.get_transform2D())
+				arguments_array.push_back(CSharpValueCreator.get_transform2d())
 			TYPE_VECTOR2:
 				arguments_array.push_back(CSharpValueCreator.get_vector2())
 			TYPE_VECTOR2_ARRAY:
-				arguments_array.push_back(CSharpValueCreator.get_pool_vector2_array())
+				arguments_array.push_back(CSharpValueCreator.get_packed_vector2_array())
 			TYPE_VECTOR3:
 				arguments_array.push_back(CSharpValueCreator.get_vector3())
 			TYPE_VECTOR3_ARRAY:
-				arguments_array.push_back(CSharpValueCreator.get_pool_vector3_array())
+				arguments_array.push_back(CSharpValueCreator.get_packed_vector3_array())
 			_:
 				assert(false, "Missing type, needs to be added to project")
 

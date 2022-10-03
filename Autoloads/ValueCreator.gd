@@ -60,7 +60,7 @@ func get_transform3d() -> Transform:
 	return Transform(get_vector3(), get_vector3(), get_vector3(), get_vector3())
 
 
-func get_transform2D() -> Transform2D:
+func get_transform2d() -> Transform2D:
 	return Transform2D(get_vector2(), get_vector2(), get_vector2())
 
 
@@ -175,6 +175,53 @@ func get_packed_color_array() -> PoolColorArray:
 		array.append(get_color())
 	return PoolColorArray(array)
 
+func get_variant():
+	match randi() % 22:
+		0:
+			return get_int()
+		1:
+			return get_bool()
+		2:
+			return get_vector2()
+		3:
+			return get_vector3()
+		4:
+			return get_aabb()
+		5:
+			return get_transform2d()
+		6:
+			return get_transform3d()
+		7:
+			return get_plane()
+		8:
+			return get_rect2()
+		9:
+			return get_color()
+		10:
+			return get_string()
+		11:
+			return get_nodepath()
+		12:
+			return get_array()
+		13:
+			return get_dictionary()
+		14:
+			return get_packed_byte_array()
+		15:
+			return get_packed_color_array()
+		16:
+			return get_packed_float32_array()
+		17:
+			return get_packed_int32_array()
+		18:
+			return get_packed_string_array()
+		19:
+			return get_packed_vector2_array()
+		20:
+			return get_packed_vector3_array()
+		21:
+			return get_object('Reference')
+	return "A"
 
 # TODOGODOT4
 
@@ -204,6 +251,10 @@ func get_packed_color_array() -> PoolColorArray:
 #
 #func get_signal() -> Signal:
 #	return Signal()
+#
+#func get_projection() -> Projection:
+#	return Projection(get_vector4(), get_vector4(), get_vector4(), get_vector4())
+
 
 
 func get_object(object_name: String) -> Object:

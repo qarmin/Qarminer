@@ -217,7 +217,7 @@ func convert_arguments_to_string(arguments: Array) -> String:
 			TYPE_TRANSFORM:
 				return_string += CSharpValueCreator.get_transform_string_csharp()
 			TYPE_TRANSFORM2D:
-				return_string += CSharpValueCreator.get_transform2D_string_csharp()
+				return_string += CSharpValueCreator.get_transform2d_string_csharp()
 			TYPE_VECTOR2:
 				return_string += CSharpValueCreator.get_vector2_string_csharp()
 			TYPE_VECTOR2_ARRAY:

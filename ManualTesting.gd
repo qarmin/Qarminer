@@ -225,7 +225,7 @@ func f_GDScript() -> void:
 	atan2(ValueCreator.get_float(),ValueCreator.get_float())
 	
 #	print("bytes2var")
-#	bytes2var(ValueCreator.get_poolbytearray(),ValueCreator.get_bool()) # Editor error
+#	bytes2var(ValueCreator.get_packedbytearray(),ValueCreator.get_bool()) # Editor error
 	print("cartesian2polar")
 	cartesian2polar(ValueCreator.get_float(),ValueCreator.get_float())
 	print("ceil")
