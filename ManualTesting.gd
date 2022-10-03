@@ -10,6 +10,8 @@ var excluded_functions: Array = [
 	"set_window_mouse_passthrough",  #66754
 	"lock",  # 66758
 	# OTHER
+	"set_window_size",  # Can crash OS/DE, hard to find exact values to crash
+	"print_resources_by_type",  # Prints
 	"print_all_textures_by_size",  # Prints
 	"print_all_resources",  # Create files
 	"move_to_trash",  # Moves to trash
@@ -128,7 +130,7 @@ func save_and_print(message: String):
 func _process(_delta) -> void:
 	ValueCreator.number = [1,10,100,1000,10000,100000,100000][randi() % 7]
 	var _a = file_handler.open("results.txt", File.WRITE)
-	
+	file_handler.store_string("\\n\\n\\n\\n\\n############# NEW RUN \\n\\n\\n\\n\\n")
 	for _i in range(5):
 		f_GDScript()
 """
