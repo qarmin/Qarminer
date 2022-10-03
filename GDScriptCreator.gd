@@ -2,9 +2,9 @@ extends Node
 
 var classes: Array = []
 
-var things: Array = ["var", "=", "func", "export", "in", "match", "pass", ",", "(", ")", "[", "]", "enum", "const", "{", "}", "yield", "await", ":", "()", "{}", "[]"]
+var things: Array = ["var", "=", "func", "export", "in", "match", "pass", ",", "(", ")", "[", "]", "enum", "const", "{", "}", "yield", "await", ":", "()", "{}", "[]", "."]
 var names: Array = ["Źdźbło", "Kasztan", "Krokiet", "Krokiew", "Krotka"]
-var variants: Array = ["void", "Vector2", "int", "float", "String", "Array"]
+var variants: Array = ["void", "Vector2", "int", "float", "String", "Array", "File", "Object"]
 
 var file_handler: FileAccess
 
@@ -23,7 +23,6 @@ func _ready() -> void:
 	classes = Array(ClassDB.get_class_list())
 	classes.sort()
 
-	# Remove file
 	var dir: DirAccess = DirAccess.open("res://")
 	for base_dir in ["res://test_gdscript/.import/", "res://test_gdscript/.godot/", "res://test_gdscript/"]:
 		dir = DirAccess.open(base_dir)
@@ -39,7 +38,6 @@ func _ready() -> void:
 			var ret2: int = dir.remove(base_dir)
 			assert(ret2 == OK)
 
-	
 	var dir2: DirAccess = DirAccess.open("res://")
 	var ret: int = dir2.make_dir("res://test_gdscript")
 	assert(ret == OK)
@@ -47,10 +45,6 @@ func _ready() -> void:
 	assert(fa.get_open_error() == OK)
 	var fa2 = FileAccess.open("res://test_gdscript/project.godot", FileAccess.WRITE)
 	assert(fa2.get_open_error() == OK)
-
-
-#func get_thing() -> String:
-#	things
 
 
 func tabs() -> void:

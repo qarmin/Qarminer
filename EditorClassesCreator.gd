@@ -27,9 +27,9 @@ func _ready():
 	print("[autoload]")
 	for name_of_class in editor_classes:
 		var argument_number = 0
-		var file_handler: FileAccess = FileAccess.new()
+		var file_handler: FileAccess
 
-		file_handler.open("res://Files/" + name_of_class + ".gd", FileAccess.WRITE)
+		file_handler = FileAccess.open("res://Files/" + name_of_class + ".gd", FileAccess.WRITE)
 		file_handler.store_string(begin_of_file.replace("<<node>>", name_of_class))
 		var functions: String = "\t"
 		for function_data in ClassDB.class_get_method_list(name_of_class, true):

@@ -5,7 +5,7 @@ var use_always_new_object: bool = false  # Don't allow to "remeber" other functi
 
 var expr: Expression = Expression.new()
 
-var temp_gdscript_file: FileAccess = FileAccess.new()
+var temp_gdscript_file: FileAccess
 var loaded_gdscript
 
 var thing
@@ -26,8 +26,9 @@ var max_numbers: Array = [2, 5, 10, 100, 1000, 10000, 100000]
 func tests_all_functions() -> void:
 	ValueCreator.number = max_numbers[randi() % max_numbers.size()]
 	for type in range(TYPE_MAX):
+		# NIL not exists, Objects are checked via FunctionExectutor tool
 		if type == TYPE_NIL || type == TYPE_OBJECT:
-			continue  # TODO Add support for objects
+			continue
 		if debug_print:
 			print("\n#################### " + type_to_name(type) + " ####################")
 
@@ -203,7 +204,7 @@ func get_basic_thing(type: int):
 		TYPE_TRANSFORM3D:
 			thing = ValueCreator.get_transform3d()
 		TYPE_TRANSFORM2D:
-			thing = ValueCreator.get_transform2D()
+			thing = ValueCreator.get_transform2d()
 		TYPE_VECTOR2:
 			thing = ValueCreator.get_vector2()
 		TYPE_PACKED_VECTOR2_ARRAY:

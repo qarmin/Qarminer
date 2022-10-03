@@ -1,5 +1,5 @@
 extends Node
-# Test physics nodes due adding and removing them from scene, moving them and executing random functions on them
+# Test physics nodes due adding and removing them from scene, moving them and executing random functions checked them
 
 # 0 - no info, 1 - basic info about executed functions, 2 - prints also info about moved nodes etc., 3 - all with also printing executed functions
 var debug_level: int = 3
@@ -25,8 +25,8 @@ var created_objects = 0
 
 # Loop - exit after X frames
 # 	Create some physics nodes and add them to scene tree
-# 	Move nodes with set_position, add_constant_force or similar
-#	Random Functions Executor - will probably show the biggest number of crashes, so for now it is better to disable it and fix rest of crashes. It execute on object all available functions without Object and Node functions.
+# 	Move nodes with set_position, apply_force or similar
+#	Random Functions Executor - will probably show the biggest number of crashes, so for now it is better to disable it and fix rest of crashes. It execute checked object all available functions without Object and Node functions.
 #	Delete some nodes - Randomly deletes nodes
 
 
@@ -101,7 +101,7 @@ func process_nodes() -> void:
 		get_tree().quit()
 	create_nodes()
 	move_nodes()
-	random_functions()
+	#random_functions()
 	delete_nodes()
 	if debug_level:
 		print("--- Ended Processing Data ---")
@@ -164,23 +164,25 @@ func move_nodes() -> void:
 				child.set_position(ValueCreator.get_vector3())
 
 		if child is CharacterBody3D:
-			child.set_motion_velocity(ValueCreator.get_vector3())
+			child.set_velocity(ValueCreator.get_vector3())
 			child.set_up_direction(ValueCreator.get_vector3())
 			child.set_floor_stop_on_slope_enabled(ValueCreator.get_bool())
 			child.set_max_slides(ValueCreator.get_int())
 			child.set_floor_max_angle(ValueCreator.get_bool())
 			child.move_and_slide()
+			child.velocity
 		elif child is CharacterBody2D:
-			child.set_motion_velocity(ValueCreator.get_vector2())
+			child.set_velocity(ValueCreator.get_vector2())
 			child.set_up_direction(ValueCreator.get_vector2())
 			child.set_floor_stop_on_slope_enabled(ValueCreator.get_bool())
 			child.set_max_slides(ValueCreator.get_int())
 			child.set_floor_max_angle(ValueCreator.get_bool())
 			child.move_and_slide()
+			child.velocity
 		elif child is RigidBody3D:
-			child.add_constant_force(ValueCreator.get_vector3(), ValueCreator.get_vector3())
+			child.apply_force(ValueCreator.get_vector3(), ValueCreator.get_vector3())
 		elif child is RigidBody2D:
-			child.add_constant_force(ValueCreator.get_vector2(), ValueCreator.get_vector2())
+			child.apply_force(ValueCreator.get_vector2(), ValueCreator.get_vector2())
 		elif child is Joint3D:
 			var nodea: Node = get_child(randi() % get_child_count())
 			var nodeb: Node = get_child(randi() % get_child_count())

@@ -124,7 +124,6 @@ if file_contents.find("Attempted to free invalid ID") != -1:
     print('WARNING: Trying to free invalid object (search for "Attempted to free invalid ID" in CI log)')
     #sys.exit(61)
 
-
 if file_contents.find("Killed") != -1:
     print('ERROR: CI was killed due one of possible bugs')
     sys.exit(62)
@@ -132,5 +131,6 @@ if file_contents.find("Killed") != -1:
 if file_contents.find("timeout: sending signal") != -1:
     print('ERROR: timeout of command')
     sys.exit(63)
+
 
 sys.exit(0)

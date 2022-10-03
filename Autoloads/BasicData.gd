@@ -15,12 +15,12 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
-	"get_faces", #66699
-	"create_trimesh_shape", # 66699
-	"set_data", #66029
-	"get_face_count", #66029
-	"_get_light_textures_data", # 66002
-	"get_seamless_image", # 61044
+	"get_faces",  #66699
+	"create_trimesh_shape",  # 66699
+	"set_data",  #66029
+	"get_face_count",  #66029
+	"_get_light_textures_data",  # 66002
+	"get_seamless_image",  # 61044
 	"set_buffer",  # 65964
 	"set_process_mode",  #61474
 	"get_mesh_arrays",  # 64122
@@ -81,22 +81,27 @@ var function_exceptions: Array = [
 	###
 	### Freeze
 	###
-	"popup_centered_minsize",  # 60326
+	"popup_centered_clamped",  # 60326
+	###
+	### Image crashes in release builds
+	###
+	"_screen_input",
 	###
 	### Reported crashes
 	###
+	"tts_set_utterance_callback",  # 66821
+	"set_window_mouse_passthrough",  # 66754
+	"reset_instance_physics_interpolation",  # 66749
+	"_editor_settings_changed",  # TODO - LineEdit._editor_settings_changed()
 	"set_zoom_min",  # 60492
 	"set_zoom_max",  # 60492
 	"open_midi_inputs",  # 52821
-	"set_window_size",  # 60466
 	"set_zoom",  # 60492
 	"set_end",  # 60492
-	"find_interaction_profile",  # 60375
-	"find_action_set",  #60374
-	"set_custom_minimum_size",  #60376
+	"set_custom_minimum_size",  #60326 - 60376
 	"set_size",  #60325
 	"set_custom_viewport",  #60052
-	"create_convex_shape",  # TODO
+	"create_convex_shape",  # 60357
 	"get_debug_mesh",  #60337
 	"set_radial_initial_angle",  #60338
 	"set_outer_radius",  #60325
@@ -104,35 +109,31 @@ var function_exceptions: Array = [
 	"set_depth",  #60325
 	"set_radius",  #60325
 	"set_inner_radius",  #60325
-	"clip_polyline_with_polygon_2d",  #60324
-	"clip_polygons_2d",  #60324
-	"offset_polyline_2d",  #60324
-	"offset_polygon_2d",  #60324
-	"exclude_polygons_2d",  #60324
-	"intersect_polyline_with_polygon_2d",  #60324
-	"merge_polygons_2d",  #60324
-	"intersect_polygons_2d",  #60324
+	"clip_polyline_with_polygon",  #60324
+	"clip_polygons",  #60324
+	"offset_polyline",  #60324
+	"offset_polygon",  #60324
+	"exclude_polygons",  #60324
+	"intersect_polyline_with_polygon",  #60324
+	"merge_polygons",  #60324
+	"intersect_polygons",  #60324
 	"process_action",  #60297
-	"remove_line",  #59935
 	"bake_navigation_mesh",  # Threading problem, needs to find exact steps to reproduce
 	"get_bind_bone",  # Fixed only in master
 	"get_bind_name",  # Fixed only in master
 	"get_bind_pose",  # Fixed only in master
-	"create_from_mesh",  # TODO
-	"reset_instance_physics_interpolation",  #58293
 	"lightmap_unwrap",  # 52929
 	"replace_by",  #53775
 	"set_extra_cull_margin",  # 53623
 	"set_block_signals",  #53553
 	"make_atlas",  #51154
 	"light_unwrap",  #52929
-	"_editor_settings_changed",  # 45979
 	"set_script",  #46120
 	"set_icon",  #46189
-	"set_editor_hint",  #46252 - Fixed only for master(due compatibility)
-	"set_probe_data",  #46570
-	"add_vertex",  #47066
-	"convert",  # 46479
+	###
+	### Expected Crashes
+	###
+	"set_editor_hint",  #46252 - Fixed only for master(due compatibility)	- do not use
 	###
 	### Not worth to check, cause a lot of crashes but it is very unlikelly that users will use them
 	###
@@ -150,9 +151,6 @@ var function_exceptions: Array = [
 	###
 	### Slow Function
 	###
-	"sample_baked_up_vector",
-	"sample_baked",
-	"convert_to_image",
 	"set_pre_process_time",
 	"create_convex_collision",
 	"create_multiple_convex_collisions",
@@ -203,7 +201,7 @@ var function_exceptions: Array = [
 	### Do not warp mouse, because I'm unable to do anything
 	###
 	"warp_mouse",
-	"warp_mouse_position",
+	"warp_mouse",
 	###
 	### OS
 	###
@@ -229,7 +227,7 @@ var function_exceptions: Array = [
 	### Spams Output and aren't very useful
 	###
 	"print_tree",
-	"print_stray_nodes",
+	"print_orphan_nodes",
 	"print_tree_pretty",
 	"print_all_textures_by_size",
 	"print_all_resources",
@@ -244,14 +242,13 @@ var function_exceptions: Array = [
 	"callv",
 	"call_func",
 	###
-	### Too dangerous, because add, mix and remove randomly nodes and objects
+	### Too dangerous, because add, mix and remove_at randomly nodes and objects
 	###
-	"to_node",
 	"replace_by",
 	"create_instance",
 	"set_owner",
 	"set_root_node",
-	"instantiate",
+	"instance",
 	"init_ref",
 	"reference",
 	"unreference",
@@ -264,7 +261,7 @@ var function_exceptions: Array = [
 	"move_child",
 	"raise",
 	"add_child",
-	"add_child_below_node",
+	"add_sibling",
 	#####
 	##### Crash and Trash
 	#####
@@ -273,7 +270,7 @@ var function_exceptions: Array = [
 	#####
 	##### Goost
 	##### TODO: these take too long to execute, does not make sense to limit number of iterations ether.
-	##### TODO - remove this and put it into setting file
+	##### TODO - remove_at this and put it into setting file
 	#####
 	"smooth_polyline_approx",
 	"smooth_polygon_approx",
@@ -358,13 +355,11 @@ var disabled_classes: Array = [
 	###
 	### TODO
 	###
-	"ParallaxBackground",  # TODO threading problem, cannot reproduce
 	"ImmediateMesh",  #53623
 	"ItemList",  # Big numbers
 	"_ResourceLoader",  #Spams
 	"ResourceLoader",  #Spams
-	"PackedDataContainer",  #53554 - more crashes
-	"ProximityGroup",  # Not cherrypicked yet
+	#"ProximityGroup",  # Not cherrypicked yet
 	###
 	### Exported build - some checks are disabled in exported build due to too big performance impact
 	###
@@ -414,4 +409,8 @@ var variant_exceptions: Array = [
 # User defined allowed functions, empty means that this won't work
 var allowed_functions: Array = [
 # TO FIND
+]
+
+var csharp_function_exceptions: Array = [
+	"ResChanged",  # AnimatedSprite2D
 ]

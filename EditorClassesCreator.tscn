@@ -1,6 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://bw4tlb73t7enw"]
+[gd_scene load_steps=2 format=2]
 
-[ext_resource type="Script" path="res://EditorClassesCreator.gd" id="1"]
+[ext_resource path="res://EditorClassesCreator.gd" type="Script" id=1]
 
 [node name="EditorClassesCreator" type="Node2D"]
-script = ExtResource("1")
+script = ExtResource( 1 )

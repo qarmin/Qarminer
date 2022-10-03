@@ -10,76 +10,73 @@ func _init():
 	load_deprecated_classes()
 
 	var file_handler: FileAccess
-	if !FileAccess.file_exists(SETTINGS_FILE_NAME):
+	if !file_handler.file_exists(SETTINGS_FILE_NAME):
 		print("Setting file doesn't exists, so it cannot be loaded.")
 	else:
 		file_handler = FileAccess.open(SETTINGS_FILE_NAME, FileAccess.READ)
-		if file_handler == null:
-			print("Failed to open settings file.")
-		else:
-			var current_setting: String = ""
-			var temp_array_with_settings: Array = []
-			var line_number: int = 0
+		var current_setting: String = ""
+		var temp_array_with_settings: Array = []
+		var line_number: int = 0
 
-			while !file_handler.eof_reached():
-				line_number += 1
-				var line: String = file_handler.get_line().strip_edges()
-				# Comments and empty lines can be ignored safely
-				if line.begins_with("#"):
-					print_text("INFO: Found comment: '" + line + "'", line_number)
+		while !file_handler.eof_reached():
+			line_number += 1
+			var line: String = file_handler.get_line().strip_edges()
+			# Comments and empty lines can be ignored safely
+			if line.begins_with("#"):
+				print_text("INFO: Found comment: '" + line + "'", line_number)
+				continue
+			if line == "":
+				print_text("INFO: Found empty line", line_number)
+				continue
+
+			# Removes comments
+			if line.find("#") != -1:
+				line = line.substr(0, line.find("#")).strip_edges()
+
+			# Contains info about setting which needs to be changed
+			if line.find(":") != -1:
+				var before_colon: String = line.substr(0, line.find(":")).strip_edges()
+				var after_colon: String = line.substr(line.find(":") + 1).strip_edges()
+				if before_colon == "":
+					print_text("ERROR: Missing setting name", line_number)
 					continue
-				if line == "":
-					print_text("INFO: Found empty line", line_number)
-					continue
 
-				# Removes comments
-				if line.find("#") != -1:
-					line = line.substr(0, line.find("#")).strip_edges()
-
-				# Contains info about setting which needs to be changed
-				if line.find(":") != -1:
-					var before_colon: String = line.substr(0, line.find(":")).strip_edges()
-					var after_colon: String = line.substr(line.find(":") + 1).strip_edges()
-					if before_colon == "":
-						print_text("ERROR: Missing setting name", line_number)
-						continue
-
-					if current_setting != "":
-						if !temp_array_with_settings.is_empty():
-							settings[current_setting] = temp_array_with_settings
-							temp_array_with_settings = []
-						else:
-							print_text("ERROR: Found array setting '" + current_setting + "' without any value", line_number)
-						current_setting = ""
-
-					if after_colon == "":
-						current_setting = before_colon
-						print_text("INFO: Checking for new array setting '" + current_setting + "'", line_number)
+				if current_setting != "":
+					if !temp_array_with_settings.is_empty():
+						settings[current_setting] = temp_array_with_settings
+						temp_array_with_settings = []
 					else:
-						settings[before_colon] = after_colon
-						print_text("INFO: Found new single setting: '" + before_colon + "' with value '" + after_colon + "'", line_number)
+						print_text("ERROR: Found array setting '" + current_setting + "' without any value", line_number)
+					current_setting = ""
 
-				# Normal setting
+				if after_colon == "":
+					current_setting = before_colon
+					print_text("INFO: Checking for new array setting '" + current_setting + "'", line_number)
 				else:
-					if current_setting != "":
-						temp_array_with_settings.append(line)
-						print_text("INFO: Found for array setting '" + current_setting + "' value '" + line + "'", line_number)
-					else:
-						print_text("ERROR: Found orphan text without any assignement '" + line + "'", line_number)
+					settings[before_colon] = after_colon
+					print_text("INFO: Found new single setting: '" + before_colon + "' with value '" + after_colon + "'", line_number)
 
-			# Save latest results if still waiting
-			if current_setting != "":
-				if !temp_array_with_settings.is_empty():
-					settings[current_setting] = temp_array_with_settings
+			# Normal setting
+			else:
+				if current_setting != "":
+					temp_array_with_settings.append(line)
+					print_text("INFO: Found for array setting '" + current_setting + "' value '" + line + "'", line_number)
 				else:
-					print_text("ERROR: Found array setting '" + current_setting + "' without any value", line_number)
+					print_text("ERROR: Found orphan text without any assignement '" + line + "'", line_number)
 
-			print("\nLoaded settings:")
-			for setting_name in settings.keys():
-				print("'" + setting_name + "' with value '" + str(settings[setting_name]) + "'")
-			print()
+		# Save latest results if still waiting
+		if current_setting != "":
+			if !temp_array_with_settings.is_empty():
+				settings[current_setting] = temp_array_with_settings
+			else:
+				print_text("ERROR: Found array setting '" + current_setting + "' without any value", line_number)
 
-			load_basic_settings_from_file()
+		print("\nLoaded settings:")
+		for setting_name in settings.keys():
+			print("'" + setting_name + "' with value '" + str(settings[setting_name]) + "'")
+		print()
+
+		load_basic_settings_from_file()
 
 
 func load_basic_settings_from_file() -> void:
@@ -151,10 +148,11 @@ func load_setting(setting_name: String, value_type: int, default_value):
 
 func load_deprecated_classes() -> void:
 	var custom_classes: Array = []
+	var file : FileAccess
 
 	# Compatibility tool
-	if FileAccess.file_exists("res://classes.txt"):
-		var file: FileAccess = FileAccess.open("res://classes.txt", FileAccess.READ)
+	if file.file_exists("res://classes.txt"):
+		file = FileAccess.open("res://classes.txt", FileAccess.READ)
 		while !file.eof_reached():
 			var cname = file.get_line().strip_edges()
 			if !cname.is_empty():

@@ -97,11 +97,11 @@ func _process(delta: float) -> void:
 		if debug_enabled:
 			to_print = "\t##########\n"
 			to_print += "\tprint_tree_pretty()\n"
-			to_print += "\tvar " + choosen_node_variable_name + ' = find_node("' + choosen_node_name + '", true, false) #' + choosen_node.get_class() + "\n"
+			to_print += "\tvar " + choosen_node_variable_name + ' = find_child("' + choosen_node_name + '", true, false) #' + choosen_node.get_class() + "\n"
 			to_print += "\tassert(" + choosen_node_variable_name + "!= null)\n"
 			to_print += "\tvar " + parent_node_variable_name + " = " + choosen_node_variable_name + ".get_parent() #" + parent_node.get_class() + " - " + parent_node_name + "\n"
 			to_print += "\tassert(" + parent_node_variable_name + "!= null)\n"
-			to_print += "\tvar " + random_node_variable_name + ' = find_node("' + random_node_name + '", true, false) #' + random_node.get_class() + "\n"
+			to_print += "\tvar " + random_node_variable_name + ' = find_child("' + random_node_name + '", true, false) #' + random_node.get_class() + "\n"
 			to_print += "\tassert(" + random_node_variable_name + "!= null)\n"
 
 			to_print += "\t" + parent_node_variable_name + ".remove_child(" + choosen_node_variable_name + ")"
@@ -122,13 +122,13 @@ func _process(delta: float) -> void:
 					var temp_variable_name: String = "var" + str(number_of_variables) + "_temp" + str(temp_counter)
 					to_print = "\tvar " + temp_variable_name + " = " + node_class + ".new()\n"
 					if choosen_node_name != name_to_remove:
-						to_print += "\t" + choosen_node_variable_name + '.find_node("' + name_to_remove + '").set_name("' + temp_variable_name + '")\n'
+						to_print += "\t" + choosen_node_variable_name + '.find_child("' + name_to_remove + '").set_name("' + temp_variable_name + '")\n'
 					else:
 						to_print += "\t" + choosen_node_variable_name + '.set_name("' + temp_variable_name + '")\n'
 					to_print += "\t" + temp_variable_name + '.set_name("' + name_to_remove + '")\n'
 					to_print += "\tadd_child(" + temp_variable_name + ")"
 #					if choosen_node_name != name_to_remove:
-#						choosen_node.find_node(name_to_remove,true,false).set_name(temp_variable_name)
+#						choosen_node.find_child(name_to_remove,true,false).set_name(temp_variable_name)
 #					else:
 #						choosen_node.set_name(temp_variable_name)
 					save_to_file_to_screen("\n" + to_print, to_print)
@@ -143,7 +143,7 @@ func _process(delta: float) -> void:
 			choosen_node.queue_free()
 			continue
 
-		if choosen_node.find_child(random_node.get_name(), true, false):  # Cannot set as node parent one of its child
+		if choosen_node.find_child(random_node.get_name(), true, false) != null:  # Cannot set as node parent one of its child
 			if debug_enabled:
 				to_print = "\tadd_child(" + choosen_node_variable_name + ")"
 				save_to_file_to_screen("\n" + to_print, to_print)

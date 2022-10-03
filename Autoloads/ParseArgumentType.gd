@@ -9,7 +9,7 @@ func parse_and_return_functions_to_create_object(method_data: Dictionary, name_o
 	for argument in method_data["args"]:
 		match argument.type:
 			TYPE_NIL:  # Looks that this means VARIANT not null
-				arguments_array.push_back('ValueCreator.get_object("Object")')
+				arguments_array.push_back("ValueCreator.get_variant()")
 			TYPE_AABB:
 				arguments_array.push_back("ValueCreator.get_aabb()")
 			TYPE_ARRAY:
@@ -31,7 +31,6 @@ func parse_and_return_functions_to_create_object(method_data: Dictionary, name_o
 			TYPE_NODE_PATH:
 				arguments_array.push_back("ValueCreator.get_nodepath()")
 			TYPE_OBJECT:
-				# GODOT4
 				if String(argument["class_name"]).is_empty():
 					arguments_array.push_back('ValueCreator.get_object("Object")')
 				else:
@@ -57,7 +56,7 @@ func parse_and_return_functions_to_create_object(method_data: Dictionary, name_o
 			TYPE_TRANSFORM3D:
 				arguments_array.push_back("ValueCreator.get_transform3d()")
 			TYPE_TRANSFORM2D:
-				arguments_array.push_back("ValueCreator.get_transform2D()")
+				arguments_array.push_back("ValueCreator.get_transform2d()")
 			TYPE_VECTOR2:
 				arguments_array.push_back("ValueCreator.get_vector2()")
 			TYPE_PACKED_VECTOR2_ARRAY:
@@ -66,18 +65,17 @@ func parse_and_return_functions_to_create_object(method_data: Dictionary, name_o
 				arguments_array.push_back("ValueCreator.get_vector3()")
 			TYPE_PACKED_VECTOR3_ARRAY:
 				arguments_array.push_back("ValueCreator.get_packed_vector3_array()")
-			# TODOGODOT4
+#			# TODOGODOT4
 			TYPE_CALLABLE:
-				# GODOT4
-				arguments_array.push_back('Callable(BoxMesh.new(), "Rar")')
+				arguments_array.push_back(Callable(BoxMesh.new(), "Rar"))
+			TYPE_VECTOR2I:
+				arguments_array.push_back("ValueCreator.get_vector2i()")
 			TYPE_VECTOR3I:
 				arguments_array.push_back("ValueCreator.get_vector3i()")
 			TYPE_VECTOR4:
 				arguments_array.push_back("ValueCreator.get_vector4()")
 			TYPE_VECTOR4I:
 				arguments_array.push_back("ValueCreator.get_vector4i()")
-			TYPE_VECTOR2I:
-				arguments_array.push_back("ValueCreator.get_vector2i()")
 			TYPE_STRING_NAME:
 				arguments_array.push_back("ValueCreator.get_string_name()")
 			TYPE_RECT2I:
@@ -88,6 +86,8 @@ func parse_and_return_functions_to_create_object(method_data: Dictionary, name_o
 				arguments_array.push_back("ValueCreator.get_packed_int64_array()")
 			TYPE_SIGNAL:
 				arguments_array.push_back("ValueCreator.get_signal()")
+			TYPE_PROJECTION:
+				arguments_array.push_back("ValueCreator.get_projection()")
 			_:
 				assert(false)  #,"Missing type --" + str(argument.type) + "-- needs to be added to project")
 
@@ -164,7 +164,7 @@ func parse_and_return_objects(method_data: Dictionary, name_of_class: String, de
 			TYPE_TRANSFORM3D:
 				arguments_array.push_back(ValueCreator.get_transform3d())
 			TYPE_TRANSFORM2D:
-				arguments_array.push_back(ValueCreator.get_transform2D())
+				arguments_array.push_back(ValueCreator.get_transform2d())
 			TYPE_VECTOR2:
 				arguments_array.push_back(ValueCreator.get_vector2())
 			TYPE_PACKED_VECTOR2_ARRAY:
@@ -173,17 +173,17 @@ func parse_and_return_objects(method_data: Dictionary, name_of_class: String, de
 				arguments_array.push_back(ValueCreator.get_vector3())
 			TYPE_PACKED_VECTOR3_ARRAY:
 				arguments_array.push_back(ValueCreator.get_packed_vector3_array())
-			# TODOGODOT4
+#			# TODOGODOT4
 			TYPE_CALLABLE:
 				arguments_array.push_back(Callable(BoxMesh.new(), "Rar"))
-			TYPE_VECTOR3I:
-				arguments_array.push_back(ValueCreator.get_vector3i())
-			TYPE_VECTOR4I:
-				arguments_array.push_back(ValueCreator.get_vector4i())
-			TYPE_VECTOR4:
-				arguments_array.push_back(ValueCreator.get_vector4())
 			TYPE_VECTOR2I:
 				arguments_array.push_back(ValueCreator.get_vector2i())
+			TYPE_VECTOR3I:
+				arguments_array.push_back(ValueCreator.get_vector3i())
+			TYPE_VECTOR4:
+				arguments_array.push_back(ValueCreator.get_vector4())
+			TYPE_VECTOR4I:
+				arguments_array.push_back(ValueCreator.get_vector4i())
 			TYPE_STRING_NAME:
 				arguments_array.push_back(ValueCreator.get_string_name())
 			TYPE_RECT2I:
@@ -194,6 +194,8 @@ func parse_and_return_objects(method_data: Dictionary, name_of_class: String, de
 				arguments_array.push_back(ValueCreator.get_packed_int64_array())
 			TYPE_SIGNAL:
 				arguments_array.push_back(ValueCreator.get_signal())
+			TYPE_PROJECTION:
+				arguments_array.push_back(ValueCreator.get_projection())
 			_:
 				assert(false)  #,"Missing type --" + str(argument.type) + "-- needs to be added to project")
 
@@ -399,7 +401,7 @@ func return_gdscript_code_which_run_this_object(data) -> String:
 					return_string += ", "
 			return_string += "])"
 
-		# TODOGODOT4
+#		# TODOGODOT4
 		TYPE_CALLABLE:
 			return_string = 'Callable(BoxMesh.new(),"")'
 		TYPE_STRING_NAME:
@@ -420,8 +422,8 @@ func return_gdscript_code_which_run_this_object(data) -> String:
 			return_string += ", "
 			return_string += return_gdscript_code_which_run_this_object(data.z)
 			return_string += ")"
-		TYPE_VECTOR4I:
-			return_string = "Vector4i("
+		TYPE_VECTOR4:
+			return_string = "Vector4("
 			return_string += return_gdscript_code_which_run_this_object(data.x)
 			return_string += ", "
 			return_string += return_gdscript_code_which_run_this_object(data.y)
@@ -430,8 +432,8 @@ func return_gdscript_code_which_run_this_object(data) -> String:
 			return_string += ", "
 			return_string += return_gdscript_code_which_run_this_object(data.w)
 			return_string += ")"
-		TYPE_VECTOR4:
-			return_string = "Vector4("
+		TYPE_VECTOR4I:
+			return_string = "Vector4i("
 			return_string += return_gdscript_code_which_run_this_object(data.x)
 			return_string += ", "
 			return_string += return_gdscript_code_which_run_this_object(data.y)
@@ -462,6 +464,16 @@ func return_gdscript_code_which_run_this_object(data) -> String:
 			return_string += "])"
 		TYPE_SIGNAL:
 			return_string = "Signal()"  # TODO, not sure
+		TYPE_PROJECTION:
+			return_string = "Projection("
+			return_string += return_gdscript_code_which_run_this_object(data.x)
+			return_string += ", "
+			return_string += return_gdscript_code_which_run_this_object(data.y)
+			return_string += ", "
+			return_string += return_gdscript_code_which_run_this_object(data.w)
+			return_string += ", "
+			return_string += return_gdscript_code_which_run_this_object(data.z)
+			return_string = ")"
 		_:
 			assert(false)  #,"Missing type --" + str(typeof(data)) + "-- needs to be added to project")
 

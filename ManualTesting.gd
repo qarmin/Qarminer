@@ -6,14 +6,30 @@ var allowed_functions: Array = []
 
 var excluded_functions: Array = [
 	# Crashes
-	"set_custom_mouse_cursor",  #60112
-	"area_get_space",  #60113
-	"mesh_surface_get_format_offset",  #60114
-	"mesh_surface_get_format_stride",  #60114
+	"open_midi_inputs",  #52821
+	"set_window_mouse_passthrough",  #66754
+	"lock",  # 66758
 	# OTHER
+	"set_window_size",  # Can crash OS/DE, hard to find exact values to crash
+	"print_resources_by_type",  # Prints
+	"print_all_textures_by_size",  # Prints
+	"print_all_resources",  # Create files
+	"move_to_trash",  # Moves to trash
 	"make_sphere_mesh",  # Slow
 	"free",  # Not enabled
-	"warp_mouse_position",  # Warping
+	"warp_mouse",  # Warping
+	"crash",  # Crash
+	"alert",  # Show useless message
+	"kill",  # Kills random process
+	"execute",  # Open random app
+	"shell_open",  # Opens file exporer
+	"delay_msec",  # Sleep
+	"delay_usec",  # Sleep
+	"set_exit_code",  # Always should return valid code, not changed one
+	"dump_memory_to_file",  # create file
+	"dump_resources_to_file",  # create file
+	"set_low_processor_usage_mode",  # Freeze
+	"set_low_processor_usage_mode_sleep_usec",  # Freeze
 	# MEMORY LEAK
 	"init",  # Quite specific function, which probably needs to be instanced only once
 	"space_create",
@@ -60,22 +76,23 @@ var excluded_functions: Array = [
 	"directional_light_create",
 	"instance_create2",
 	"line_shape_create",
+	# GODOT 4
 	# CRASHES
-	"cursor_set_custom_image", #66605
-	"joint_clear", #66607
-	"texture_2d_create", # 66608
-	"skeleton_set_base_transform_2d", #66609
-	"bake_render_uv2", #66610
-	"set_boot_image", #66611
-	"create_local_rendering_device", #  #66372
-	"open_midi_inputs", # 52821
-	"texture_replace", # 66373
-	"texture_2d_update", # 66374
-	"canvas_texture_set_shading_parameters", #66375
-	"canvas_texture_set_texture_filter", #66375
-	"canvas_texture_set_texture_repeat", #66375
-	"canvas_texture_set_channel", #66375
-	"set_id", #66612
+	"cursor_set_custom_image",  #66605
+	"joint_clear",  #66607
+	"texture_2d_create",  # 66608
+	"skeleton_set_base_transform_2d",  #66609
+	"bake_render_uv2",  #66610
+	"set_boot_image",  #66611
+	"create_local_rendering_device",  #  #66372
+	"open_midi_inputs",  # 52821
+	"texture_replace",  # 66373
+	"texture_2d_update",  # 66374
+	"canvas_texture_set_shading_parameters",  #66375
+	"canvas_texture_set_texture_filter",  #66375
+	"canvas_texture_set_texture_repeat",  #66375
+	"canvas_texture_set_channel",  #66375
+	"set_id",  #66612
 	# LEAK
 	"joint_create",
 	"separation_ray_shape_create",
@@ -85,25 +102,25 @@ var excluded_functions: Array = [
 	"box_shape_create",
 	"heightmap_shape_create",
 	"generate_bus_layout",
-	"add_task", # Thread Woker leak
-	"add_group_task", # Thread Woker leak
-	"load_threaded_request", # Leak
-	"texture_2d_layered_create", # RID Leak
-	"texture_3d_create", # RID Leak
-	"texture_proxy_create", # RID leak
-	"texture_2d_placeholder_create", # RID Leak
-	"texture_3d_placeholder_create", # RID Leak
-	"texture_2d_layered_placeholder_create", # RID Leak
-	"mesh_create_from_surfaces", # RID Leak
-	"decal_create", # RID Leak
-	"voxel_gi_create", # RID Leak
-	"lightmap_create", # RID Leak
-	"particles_collision_create", # RID Leak
-	"fog_volume_create", # RID Leak
-	"visibility_notifier_create", # RID Leak
-	"occluder_create", # RID Leak
-	"camera_attributes_create", # RID Leak
-	"canvas_texture_create", # RID Leak
+	"add_task",  # Thread Woker leak
+	"add_group_task",  # Thread Woker leak
+	"load_threaded_request",  # Leak
+	"texture_2d_layered_create",  # RID Leak
+	"texture_3d_create",  # RID Leak
+	"texture_proxy_create",  # RID leak
+	"texture_2d_placeholder_create",  # RID Leak
+	"texture_3d_placeholder_create",  # RID Leak
+	"texture_2d_layered_placeholder_create",  # RID Leak
+	"mesh_create_from_surfaces",  # RID Leak
+	"decal_create",  # RID Leak
+	"voxel_gi_create",  # RID Leak
+	"lightmap_create",  # RID Leak
+	"particles_collision_create",  # RID Leak
+	"fog_volume_create",  # RID Leak
+	"visibility_notifier_create",  # RID Leak
+	"occluder_create",  # RID Leak
+	"camera_attributes_create",  # RID Leak
+	"canvas_texture_create",  # RID Leak
 	#Other
 	"warp_mouse",  # Warping
 	"alert",  # Blocking window
@@ -118,8 +135,8 @@ var excluded_functions: Array = [
 	"create_process",
 	"create_instance",
 	"move_to_trash",
-	"set_low_processor_usage_mode_sleep_usec", # Sleep
-	"free_rid", # Just no, may free valid rid
+	"set_low_processor_usage_mode_sleep_usec",  # Sleep
+	"free_rid",  # Just no, may free valid rid
 	"set_restart_on_exit",
 ]
 
@@ -141,11 +158,20 @@ func _ready():
 
 	file_handler.store_string(
 		"""extends Node
-func _ready() -> void:
-	ValueCreator.number = [1,10,100,1000,10000,100000,100000][randi() % 7]
+		
+var file_handler: File = File.new()
+
+func save_and_print(message: String):
+	file_handler.store_string("\\t" + message + "\\n")
+	file_handler.flush()
+	print("\\t" + message)
 
 func _process(_delta) -> void:
-	f_GDScript()
+	ValueCreator.number = [1,10,100,1000,10000,100000,100000][randi() % 7]
+	var _a = file_handler.open("results.txt", File.WRITE)
+	file_handler.store_string("\\n\\n\\n\\n\\n############# NEW RUN \\n\\n\\n\\n\\n")
+	for _i in range(5):
+		f_GDScript()
 """
 	)
 
@@ -153,13 +179,16 @@ func _process(_delta) -> void:
 		if !ClassDB.class_exists(name_of_class) && !ClassDB.class_exists("_" + name_of_class):
 			print("Class " + name_of_class + " not exists!!!!!!!!!")
 			assert(false)
-		file_handler.store_string("\tf_" + name_of_class + "()\n")
+		file_handler.store_string("\t\tf_" + name_of_class + "()\n")
 	file_handler.store_string("\n")
 
+	var argument_number: int = 0
 	for name_of_class in list_of_singletons:
-		var argument_number: int = 0
-
-		var functions_info = ClassDB.class_get_method_list(name_of_class, true)
+		var functions_info
+		if ClassDB.class_exists(name_of_class):
+			functions_info = ClassDB.class_get_method_list(name_of_class, true)
+		else:
+			functions_info = ClassDB.class_get_method_list("_" + name_of_class, true)
 
 #		print("----------------------------- " + name_of_class)
 		file_handler.store_string("func f_" + name_of_class + "() -> void:\n")
@@ -178,17 +207,19 @@ func _process(_delta) -> void:
 			var creation_of_arguments: String = ""
 			var variable_names: Array = []
 			var deleting_arguments: String = ""
+
+			creation_of_arguments += "\tif randi() % 3 == 0:\n"
 			for argument in arguments:
 				argument_number += 1
 				var variable_name = "temp_variable" + str(argument_number)
-				creation_of_arguments += "\tvar " + variable_name + " = " + argument + "\n"
-				creation_of_arguments += '\tprint("var ' + variable_name + ' = " + ParseArgumentType.return_gdscript_code_which_run_this_object(' + variable_name + "))\n"
+				creation_of_arguments += "\t\tvar " + variable_name + " = " + argument + "\n"
+				creation_of_arguments += '\t\tsave_and_print("var ' + variable_name + ' = " + ParseArgumentType.return_gdscript_code_which_run_this_object(' + variable_name + "))\n"
 
 				variable_names.append(variable_name)
 
 				if argument.find("get_object") != -1:
-					deleting_arguments += "\tHelpFunctions.remove_thing(" + variable_name + ")\n"
-					deleting_arguments += "\tprint('" + variable_name + "'+ HelpFunctions.remove_thing_string(" + variable_name + "))\n"
+					deleting_arguments += "\t\tHelpFunctions.remove_thing(" + variable_name + ")\n"
+					deleting_arguments += "\t\tsave_and_print('" + variable_name + "'+ HelpFunctions.remove_thing_string(" + variable_name + "))\n"
 
 			file_handler.store_string(creation_of_arguments)
 
@@ -198,8 +229,8 @@ func _process(_delta) -> void:
 				if name_index + 1 != variable_names.size():
 					to_execute += ","
 			to_execute += ")"
-			file_handler.store_string("\tprint('" + to_execute + "')\n")
-			file_handler.store_string("\t" + to_execute + "\n")
+			file_handler.store_string("\t\tsave_and_print('" + to_execute + "')\n")
+			file_handler.store_string("\t\t" + to_execute + "\n")
 
 			file_handler.store_string(deleting_arguments + "\n")
 
@@ -211,7 +242,8 @@ func _process(_delta) -> void:
 
 
 var manual_functions: String = """
-func f_GDScript() -> void:	
+
+func f_GDScript() -> void:
 	print("Color8")
 	Color8(ValueCreator.get_int(),ValueCreator.get_int(),ValueCreator.get_int(),ValueCreator.get_int())
 	

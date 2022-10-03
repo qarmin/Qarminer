@@ -52,12 +52,6 @@ func get_vector3() -> Vector3:
 	return Vector3(get_float(), get_float(), get_float())
 
 
-func get_vector4() -> Vector4:
-	if randi() % 2:
-		return Vector4(get_float(), get_float(), get_float(), get_float()).normalized()
-	return Vector4(get_float(), get_float(), get_float(), get_float())
-
-
 func get_aabb() -> AABB:
 	return AABB(get_vector3(), get_vector3())
 
@@ -66,7 +60,7 @@ func get_transform3d() -> Transform3D:
 	return Transform3D(get_vector3(), get_vector3(), get_vector3(), get_vector3())
 
 
-func get_transform2D() -> Transform2D:
+func get_transform2d() -> Transform2D:
 	return Transform2D(get_vector2(), get_vector2(), get_vector2())
 
 
@@ -128,6 +122,7 @@ func get_dictionary() -> Dictionary:
 			var value = get_int()
 			dict[key] = value
 		return dict
+
 	return Dictionary({})
 
 
@@ -194,6 +189,55 @@ func get_packed_color_array() -> PackedColorArray:
 	return PackedColorArray(array)
 
 
+func get_variant():
+	match randi() % 22:
+		0:
+			return get_int()
+		1:
+			return get_bool()
+		2:
+			return get_vector2()
+		3:
+			return get_vector3()
+		4:
+			return get_aabb()
+		5:
+			return get_transform2d()
+		6:
+			return get_transform3d()
+		7:
+			return get_plane()
+		8:
+			return get_rect2()
+		9:
+			return get_color()
+		10:
+			return get_string()
+		11:
+			return get_nodepath()
+		12:
+			return get_array()
+		13:
+			return get_dictionary()
+		14:
+			return get_packed_byte_array()
+		15:
+			return get_packed_color_array()
+		16:
+			return get_packed_float32_array()
+		17:
+			return get_packed_int32_array()
+		18:
+			return get_packed_string_array()
+		19:
+			return get_packed_vector2_array()
+		20:
+			return get_packed_vector3_array()
+		21:
+			return get_object("RefCounted")
+	return "A"
+
+
 # TODOGODOT4
 
 
@@ -207,10 +251,6 @@ func get_vector2i() -> Vector2i:
 
 func get_vector3i() -> Vector3i:
 	return Vector3i(get_int(), get_int(), get_int())
-
-
-func get_vector4i() -> Vector4i:
-	return Vector4i(get_int(), get_int(), get_int(), get_int())
 
 
 func get_rect2i() -> Rect2i:
@@ -233,6 +273,17 @@ func get_packed_float64_array() -> PackedFloat64Array:
 
 func get_signal() -> Signal:
 	return Signal()
+
+
+func get_vector4() -> Vector4:
+	if randi() % 2:
+		return Vector4(get_float(), get_float(), get_float(), get_float()).normalized()
+	return Vector4(get_float(), get_float(), get_float(), get_float())
+
+
+#
+func get_vector4i() -> Vector4i:
+	return Vector4i(get_int(), get_int(), get_int(), get_int())
 
 
 func get_projection() -> Projection:

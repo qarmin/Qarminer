@@ -2,21 +2,20 @@ extends Node
 
 ### Script:
 ### - finds all available classes and methods which can be used(e.g. types of arguments are checked)
-### - for all classes in list(all classes or only one depends on list) instantiate them
+### - for all classes in list(all classes or only one depends checked list) instance them
 ### - adds them to tree if needed
 ### - creates aruments
 ### - executes functions with provided arguments
-### - clean memory, instantiate other objects etc. until there is no other classes to check
+### - clean memory, instance other objects etc. until there is no other classes to check
 ### - waits for new frame to starts everything from start
 
-var debug_print: bool = true  # Switch to turn off printed things to screen
+var debug_print: bool = true  # Switch to turn unchecked printed things to screen
 var exiting: bool = false  # Close app after first run
-var add_to_tree: bool = false  # Adds nodes to tree
+var add_to_tree: bool = true  # Adds nodes to tree
 var delay_removing_added_nodes_to_next_frame: bool = false  # Delaying removing nodes added to tree to next frame, which force to render it
 var add_arguments_to_tree: bool = false  # Adds nodes which are used as arguments to tree
 var delay_removing_added_arguments_to_next_frame: bool = false  # Delaying removing arguments(nodes added to tree) to next frame, which force to render it
 var use_parent_methods: bool = false  # Allows to use parent methods e.g. Sprite2D can use Node.queue_free()
-var use_always_new_object: bool = false  # Don't allow to "remember" other function effects
 var number_of_function_repeats: int = 3  # How many times all functions will be executed in single class
 var number_of_classes_repeats: int = 1  # How much times class will be instanced in row(one after one)
 var allow_to_use_notification: bool = false  # Allows to use notification function in classes,to use this, parent methods must be enabled
@@ -28,7 +27,7 @@ var test_one_class_multiple_times: bool = false  # Test same class across multip
 
 var save_resources_to_file: bool = false  # Saves created resources to files
 
-var file_handler: FileAccess = FileAccess.new()  # Handles saves to file, in case of testing one class, entire log is saved to it
+var file_handler: FileAccess  # Handles saves to file, in case of testing one class, entire log is saved to it
 
 var to_print: String = ""  # Specify what needs to be printed
 
@@ -41,15 +40,17 @@ var current_tested_element: int = 0  # Which element from array is tested now
 var tested_classes: Array = []  # Array with elements that are tested, in normal situation this equal to base_classes variable
 
 var timer: int = 0  # Checks how much things are executed
-var timer_file_handler: FileAccess = FileAccess.new()
+var timer_file_handler: FileAccess
 
-var memory_usage_file_handler: FileAccess = FileAccess.new()
+var memory_usage_file_handler: FileAccess
 var memory_before: float = 0.0
 
-# This setting allow to decrease number of executed functions on object, to be able to easily find the smallest subset of functions
+# This setting allow to decrease number of executed functions checked object, to be able to easily find the smallest subset of functions
 # that will cause problem with Godot
 var maximum_executed_functions_on_object: int = -1
 var currently_executed_functions_on_object: int = 0
+
+var max_random_tested_classes: int = 999999
 
 
 # Prepare options for desired type of test
@@ -93,7 +94,6 @@ func _ready() -> void:
 	add_arguments_to_tree = SettingsLoader.load_setting("add_arguments_to_tree", TYPE_BOOL, add_arguments_to_tree)
 	delay_removing_added_arguments_to_next_frame = SettingsLoader.load_setting("delay_removing_added_arguments_to_next_frame", TYPE_BOOL, delay_removing_added_arguments_to_next_frame)
 	use_parent_methods = SettingsLoader.load_setting("use_parent_methods", TYPE_BOOL, use_parent_methods)
-	use_always_new_object = SettingsLoader.load_setting("use_always_new_object", TYPE_BOOL, use_always_new_object)
 	number_of_function_repeats = SettingsLoader.load_setting("number_of_function_repeats", TYPE_INT, number_of_function_repeats)
 	number_of_classes_repeats = SettingsLoader.load_setting("number_of_classes_repeats", TYPE_INT, number_of_classes_repeats)
 	allow_to_use_notification = SettingsLoader.load_setting("allow_to_use_notification", TYPE_BOOL, allow_to_use_notification)
@@ -105,7 +105,7 @@ func _ready() -> void:
 	save_resources_to_file = SettingsLoader.load_setting("save_resources_to_file", TYPE_BOOL, save_resources_to_file)
 	how_many_times_test_one_class = SettingsLoader.load_setting("how_many_times_test_one_class", TYPE_INT, how_many_times_test_one_class)
 	maximum_executed_functions_on_object = SettingsLoader.load_setting("maximum_executed_functions_on_object", TYPE_INT, maximum_executed_functions_on_object)
-
+	max_random_tested_classes = SettingsLoader.load_setting("max_random_tested_classes", TYPE_INT, max_random_tested_classes)
 	# Adds additional arguments to excluded items
 	HelpFunctions.add_excluded_too_big_functions(ValueCreator.number > 40)
 	HelpFunctions.add_excluded_too_big_classes(ValueCreator.number > 100)
@@ -113,10 +113,16 @@ func _ready() -> void:
 	# Initialize array of objects
 #	BasicData.custom_classes = []  # Here can be choosen any classes that user want to use
 	HelpFunctions.initialize_list_of_available_classes()
-	#BasicData.base_classes = BasicData.base_classes.slice(600,800)
+	if max_random_tested_classes < BasicData.base_classes.size():
+		BasicData.base_classes.shuffle()
+		BasicData.base_classes = BasicData.base_classes.slice(0, max_random_tested_classes - 1)
+		BasicData.base_classes.sort()
+
+#	BasicData.base_classes = BasicData.base_classes.slice(250,260)
 #	print("After preselection, choosed " + str(BasicData.base_classes.size()) + " classes")
 	HelpFunctions.initialize_array_with_allowed_functions(use_parent_methods, BasicData.function_exceptions)
 	tested_classes = BasicData.base_classes.duplicate(true)
+	print("At the end choosed " + str(tested_classes.size()) + " classes")
 
 #	# Debug check if all methods exists in choosen classes
 #	assert(BasicData.allowed_thing.size() == BasicData.base_classes.size())
@@ -182,7 +188,10 @@ func tests_all_functions() -> void:
 				save_to_file_to_screen("\n" + to_print, to_print)
 
 			var object: Object = ClassDB.instantiate(name_of_class)
-			assert(object != null)  #,"Object must be instantable")
+			if object == null:
+				print("ERROR: Object is not instantable but should be")
+				break
+#			assert(object != null) #,"Object must be instantable")
 			if add_to_tree:
 				if object is Node:
 					add_child(object)
@@ -191,7 +200,7 @@ func tests_all_functions() -> void:
 			if shuffle_methods:
 				method_list.shuffle()
 
-			if (debug_print || save_data_to_file) && !use_always_new_object:
+			if debug_print || save_data_to_file:
 				function_number = 0
 				number_to_track_variables += 1
 				to_print = "\tvar temp_variable" + str(number_to_track_variables) + " = " + HelpFunctions.get_gdscript_class_creation(name_of_class)
@@ -209,14 +218,6 @@ func tests_all_functions() -> void:
 							break
 
 						var arguments: Array = ParseArgumentType.parse_and_return_objects(method_data, name_of_class, debug_print)
-
-						if use_always_new_object && (debug_print || save_data_to_file):
-							number_to_track_variables += 1
-							to_print = "\tvar temp_variable" + str(number_to_track_variables) + " = " + HelpFunctions.get_gdscript_class_creation(name_of_class)
-							if add_to_tree:
-								if object is Node:
-									to_print += "\n\tadd_child(temp_variable" + str(number_to_track_variables) + ")"
-							save_to_file_to_screen("\n" + to_print, to_print)
 
 						if add_arguments_to_tree:
 							for argument in arguments:
@@ -283,19 +284,6 @@ func tests_all_functions() -> void:
 										save_to_file_to_screen(to_print + remove_function, to_print + remove_function)
 
 									HelpFunctions.remove_thing(ret)
-
-						if use_always_new_object:
-							if !(delay_removing_added_nodes_to_next_frame && add_to_tree && object is Node):
-								if (object is Node) || !(object is RefCounted):
-									to_print = "\ttemp_variable" + str(number_to_track_variables)
-									to_print += HelpFunctions.remove_thing_string(object)
-									save_to_file_to_screen("\n" + to_print, to_print)
-								HelpFunctions.remove_thing(object)
-
-							object = ClassDB.instantiate(name_of_class)
-							if add_to_tree:
-								if object is Node:
-									add_child(object)
 
 			if save_resources_to_file:
 				var res_path: String = "res://test_resources/" + str(number_to_track_variables) + ".tres"

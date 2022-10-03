@@ -2,14 +2,14 @@ extends Node2D
 var debug_print
 
 var save_to_file: bool = true
-var file_handler: FileAccess = FileAccess.new()
+var file_handler: FileAccess
 var to_print: String = ""
 var number: int = 0
 
 
 func _ready():
 	if save_to_file:
-		file_handler.open("results.txt", FileAccess.WRITE)
+		file_handler = FileAccess.open("results.txt", FileAccess.WRITE)
 	HelpFunctions.initialize_list_of_available_classes()
 
 
