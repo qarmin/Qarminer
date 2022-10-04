@@ -33,3 +33,6 @@ SingletonTesting.gd
 Files/
 T/
 ABCD.tscn
+*.pck
+*.sh
+*.x86_64
