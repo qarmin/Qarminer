@@ -44,7 +44,7 @@ jobs:
           scons -j2 dev_build=yes use_asan=yes use_ubsan=yes CCFLAGS="DEBUG_ENABLED=1"
           cp bin/godot.linuxbsd.editor.dev.x86_64.san ../
           git clean -xqdf
-          scons -j2 target=template_release optimize=none debug_symbols=yes use_asan=yes use_ubsan=yes optimize=none CCFLAGS="-DDEBUG_ENABLED=1"
+          scons -j2 target=template_release optimize=none debug_symbols=yes use_asan=yes use_ubsan=yes optimize=none CCFLAGS="-DDEBUG_METHODS_ENABLED"
           cp bin/godot.linuxbsd.template_release.x86_64.san ../
           cd ../
           rm -rf godot

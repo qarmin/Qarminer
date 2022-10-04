@@ -26,6 +26,7 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
+	"mesh_surface_get_format_offset", # 66896
 	"generate_triangle_mesh", # 66699
 	"get_faces",  #66699
 	"create_trimesh_shape",  # 66699
