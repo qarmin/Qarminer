@@ -13,8 +13,20 @@ var allowed_thing: Dictionary = {}  # List of all classes with
 # TODOGODOT4
 var function_exceptions: Array = [
 	###
+	### Godot 4.0 - Expected things
+	###
+	"instantiate", # Hmmm...
+	"warp_mouse_position", # Hmmm ..
+	"print_stray_nodes", # Hmmm ..
+	"add_child_below_node", # Hmm ..
+	"to_node", # Leak
+	"sample_baked", # Freeze
+	"sample_baked_up_vector", # Freeze
+	"get_parent", # ? - why this is not available on 3.x?
+	###
 	### Godot 4.0
 	###
+	"generate_triangle_mesh", # 66699
 	"get_faces",  #66699
 	"create_trimesh_shape",  # 66699
 	"set_data",  #66029
