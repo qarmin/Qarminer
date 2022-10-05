@@ -26,6 +26,9 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
+	"set_scroll_past_end_of_file_enabled", # 66937
+	"set_fit_content_height_enabled", # 66937
+	"set_line_wrapping_mode", # 66937
 	"mesh_surface_get_format_offset", # 66896
 	"generate_triangle_mesh", # 66699
 	"get_faces",  #66699
