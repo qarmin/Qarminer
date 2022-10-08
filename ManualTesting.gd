@@ -1,6 +1,7 @@
 extends Node2D
 
 var counter = 0
+var test_gdscript: bool = false
 
 var allowed_functions: Array = []
 
@@ -78,22 +79,20 @@ var excluded_functions: Array = [
 	"line_shape_create",
 	# GODOT 4
 	# CRASHES
+	"bake_render_uv2", # 67067
+	"create_sub_window", # 67030
 	"cursor_set_custom_image",  #66605
-	"joint_clear",  #66607
-	"texture_2d_create",  # 66608
-	"skeleton_set_base_transform_2d",  #66609
-	"bake_render_uv2",  #66610
-	"set_boot_image",  #66611
 	"create_local_rendering_device",  #  #66372
-	"open_midi_inputs",  # 52821
 	"texture_replace",  # 66373
 	"texture_2d_update",  # 66374
 	"canvas_texture_set_shading_parameters",  #66375
 	"canvas_texture_set_texture_filter",  #66375
 	"canvas_texture_set_texture_repeat",  #66375
 	"canvas_texture_set_channel",  #66375
-	"set_id",  #66612
+	"register_script_language", # 67065
 	# LEAK
+	"texture_2d_create", 
+	"link_create",
 	"joint_create",
 	"separation_ray_shape_create",
 	"sphere_shape_create",
@@ -122,21 +121,11 @@ var excluded_functions: Array = [
 	"camera_attributes_create",  # RID Leak
 	"canvas_texture_create",  # RID Leak
 	#Other
+	"set_primary_interface",# crash, but probably expected
 	"read_string_from_stdin", # Freeze
 	"warp_mouse",  # Warping
-	"alert",  # Blocking window
-	"crash",  # Well it crash engine
-	"shell_open",
-	"kill",
-	"execute",
-	"dump_memory_to_file",
-	"dump_resources_to_file",
-	"delay_msec",
-	"delay_usec",
 	"create_process",
 	"create_instance",
-	"move_to_trash",
-	"set_low_processor_usage_mode_sleep_usec",  # Sleep
 	"free_rid",  # Just no, may free valid rid
 	"set_restart_on_exit",
 ]
@@ -149,9 +138,10 @@ func _ready():
 	list_of_singletons.sort()
 	list_of_singletons.erase("Geometry2D")  # Already tested and contains a lot of bugs
 	list_of_singletons.erase("Geometry3D")  # Already tested and contains a lot of bugs
-	list_of_singletons.erase("TextServerManager")  # TODO
-	list_of_singletons.erase("Engine")  # TODO
+	list_of_singletons.erase("Engine")  # Only test this manually
+	list_of_singletons.erase("ProjectSettings")  # Mess project.godot
 #	list_of_singletons = list_of_singletons.slice(20,25) # TODO
+#	list_of_singletons = ["Engine"]
 	print(list_of_singletons)
 
 	var file_handler = FileAccess.open("SingletonTesting.gd", FileAccess.WRITE)
@@ -245,6 +235,7 @@ func _process(_delta) -> void:
 var manual_functions: String = """
 
 func f_GDScript() -> void:
+	return;
 	print("Color8")
 	Color8(ValueCreator.get_int(),ValueCreator.get_int(),ValueCreator.get_int(),ValueCreator.get_int())
 	

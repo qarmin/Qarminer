@@ -26,6 +26,9 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
+	"insert_text_at_caret", # 67063
+	"do_indent", # 67063
+	"do_unindent", #  67063
 	"set_follow_camera_enabled", # 66986
 	"set_scroll_past_end_of_file_enabled", # 66937
 	"set_fit_content_height_enabled", # 66937
