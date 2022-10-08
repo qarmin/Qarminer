@@ -29,7 +29,7 @@ test_gdscript/
 memory_usage.txt
 
 #
-#SingletonTesting.gd
+SingletonTesting.gd
 Files/
 T/
 ABCD.tscn
