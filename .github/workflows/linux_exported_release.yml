@@ -3,10 +3,10 @@ on:
   push:
   pull_request:
   schedule:
-    - cron: '0 0 * * 6'
+    - cron: '0 0 * * *'
 
 jobs:
-  linux-sanitizer:
+  linux-exported-release:
     runs-on: "ubuntu-20.04"
     name: Editor and project
 
@@ -19,28 +19,26 @@ jobs:
           sudo rm -f /etc/apt/sources.list.d/*
           sudo cp -f misc/ci/sources.list /etc/apt/sources.list
           sudo apt-get update
+          
       # Install all packages (except scons)
       - name: Configure dependencies
         run: |
           sudo apt-get install build-essential pkg-config libx11-dev libxcursor-dev \
             libxinerama-dev libgl1-mesa-dev libglu-dev libasound2-dev libpulse-dev libudev-dev libxi-dev libxrandr-dev yasm \
             xvfb wget2 unzip python scons git
-      - name: Configure Data
-        run: |
-          sed -i 's/var add_to_tree: bool = false/var add_to_tree: bool = true/' FunctionExecutor.gd
-          sed -i 's/var use_parent_methods: bool = false/var use_parent_methods: bool = true/' FunctionExecutor.gd
-          sed -i 's/var delay_removing_added_nodes_to_next_frame: bool = false/var delay_removing_added_nodes_to_next_frame: bool = true/' FunctionExecutor.gd
-          
-          
+                      
       - name: Download Godot(GIT)
         run: |
           git clone https://github.com/godotengine/godot.git
           cd godot
           git checkout master
           cd ../
+          
       - name: Compile Godot
         run: |
           cd godot
+          wget https://patch-diff.githubusercontent.com/raw/godotengine/godot/pull/49053.patch -O 4.patch
+          git apply 4.patch
           scons -j2 dev_build=yes use_asan=yes use_ubsan=yes
           cp bin/godot.linuxbsd.editor.dev.x86_64.san ../
           git clean -xqdf
@@ -52,9 +50,9 @@ jobs:
       # Download, unzip and setup SwiftShader library
       - name: Download SwiftShader
         run: |
-          wget https://github.com/qarmin/gtk_library_store/releases/download/3.24.0/swiftshader2.zip
-          unzip swiftshader2.zip
-          rm swiftshader2.zip
+          wget https://github.com/qarmin/gtk_library_store/releases/download/3.24.0/swiftshader3.zip
+          unzip swiftshader3.zip
+          rm swiftshader3.zip
           curr="$(pwd)/libvk_swiftshader.so"
           sed -i "s|PATH_TO_CHANGE|$curr|" vk_swiftshader_icd.json
           
