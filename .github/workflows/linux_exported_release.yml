@@ -39,10 +39,10 @@ jobs:
           cd godot
           wget https://patch-diff.githubusercontent.com/raw/godotengine/godot/pull/49053.patch -O 4.patch
           git apply 4.patch
-          scons -j2 dev_build=yes use_asan=yes use_ubsan=yes
+          scons -j2 dev_build=yes use_asan=yes use_ubsan=yes linker=gold
           cp bin/godot.linuxbsd.editor.dev.x86_64.san ../
           git clean -xqdf
-          scons -j2 target=template_release optimize=none debug_symbols=yes use_asan=yes use_ubsan=yes optimize=none CCFLAGS="-DDEBUG_METHODS_ENABLED"
+          scons -j2 target=template_release optimize=none debug_symbols=yes use_asan=yes use_ubsan=yes optimize=none CCFLAGS="-DDEBUG_METHODS_ENABLED" linker=gold
           cp bin/godot.linuxbsd.template_release.x86_64.san ../
           cd ../
           rm -rf godot
