@@ -26,24 +26,19 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
-	"insert_text_at_caret", # 67063
-	"do_indent", # 67063
-	"do_unindent", #  67063
+	"undo", # 67364
+	"indent_lines", # 67364
 	"set_follow_camera_enabled", # 66986
 	"set_scroll_past_end_of_file_enabled", # 66937
 	"set_fit_content_height_enabled", # 66937
 	"set_line_wrapping_mode", # 66937
-	"mesh_surface_get_format_offset", # 66896
 	"generate_triangle_mesh", # 66699
 	"get_faces",  #66699
 	"create_trimesh_shape",  # 66699
-	"set_data",  #66029
-	"get_face_count",  #66029
 	"_get_light_textures_data",  # 66002
 	"get_seamless_image",  # 61044
 	"set_buffer",  # 65964
 	"set_process_mode",  #61474
-	"get_mesh_arrays",  # 64122
 	"confirm_code_completion",  # 62199
 	"update_code_completion_options",  # 62199
 	"compress",  # 62097
