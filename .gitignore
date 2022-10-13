@@ -33,6 +33,8 @@ SingletonTesting.gd
 Files/
 T/
 ABCD.tscn
-*.sh
 *.pck
+*.sh
 *.x86_64
+Node.gd.test
+Node.gd.temp
