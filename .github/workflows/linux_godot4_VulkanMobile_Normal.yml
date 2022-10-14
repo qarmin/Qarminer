@@ -77,15 +77,14 @@ jobs:
 
       - name: Run Project SimpleThings
         run: |
-          for i in {0..25}; do echo "" >> sanitizers_log.txt; done;
+          for i in {0..50}; do echo "" >> project_results.txt; done;
           echo "======================================== SimpleThings" 2>&1 | tee sanitizers_log.txt
           VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json DRI_PRIME=0 timeout -v 660 xvfb-run ./godot.linuxbsd.editor.dev.x86_64.san SimpleThings.tscn 300 --audio-driver Dummy  --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
-          tail -n 300 sanitizers_log.txt >> project_results.txt
+          tail -n 200 sanitizers_log.txt >> project_results.txt
 
           if [ -f "results.txt" ]; then
               if [ -f "results_end.txt" ]; then
-                  for i in {0..15}; do echo "" >> t.txt; done;
-                  echo "" > t.txt;echo "================ NEW_LINE ===============" >> t.txt;echo "" >> t.txt
+                  for i in {0..50}; do echo "" >> t.txt; done;
                   cat "results.txt" "t.txt" "results_end.txt" > "temp.txt"
                   mv "temp.txt" "results_end.txt"
               else
@@ -95,8 +94,7 @@ jobs:
 
           if [ -f "memory_usage.txt" ]; then
               if [ -f "memory_usage_end.txt" ]; then
-                  for i in {0..15}; do echo "" >> t.txt; done;
-                  echo "" > t.txt;echo "================ NEW_LINE ===============" >> t.txt;echo "" >> t.txt
+                  for i in {0..50}; do echo "" >> t.txt; done;
                   cat "memory_usage.txt" "t.txt" "memory_usage_end.txt" > "temp.txt"
                   mv "temp.txt" "memory_usage_end.txt"
               else
@@ -106,8 +104,7 @@ jobs:
 
           if [ -f "timer.txt" ]; then
               if [ -f "timer_end.txt" ]; then
-                  for i in {0..15}; do echo "" >> t.txt; done;
-                  echo "" > t.txt;echo "================ NEW_LINE ===============" >> t.txt;echo "" >> t.txt
+                  for i in {0..50}; do echo "" >> t.txt; done;
                   cat "timer.txt" "t.txt" "timer_end.txt" > "temp.txt"
                   mv "temp.txt" "timer_end.txt"
               else
@@ -126,15 +123,14 @@ jobs:
 
       - name: Run Project One by One | Parent | Add to tree | Maximum Tested
         run: |
-          for i in {0..25}; do echo "" >> sanitizers_log.txt; done;
+          for i in {0..50}; do echo "" >> project_results.txt; done;
           echo "======================================== One by One | Parent | Add to tree | Maximum Tested" 2>&1 | tee sanitizers_log.txt
           VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json DRI_PRIME=0 timeout -v 2160 xvfb-run ./godot.linuxbsd.editor.dev.x86_64.san FunctionExecutor.tscn 1800 --audio-driver Dummy  --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
-          tail -n 300 sanitizers_log.txt >> project_results.txt
+          tail -n 200 sanitizers_log.txt >> project_results.txt
 
           if [ -f "results.txt" ]; then
               if [ -f "results_end.txt" ]; then
-                  for i in {0..15}; do echo "" >> t.txt; done;
-                  echo "" > t.txt;echo "================ NEW_LINE ===============" >> t.txt;echo "" >> t.txt
+                  for i in {0..50}; do echo "" >> t.txt; done;
                   cat "results.txt" "t.txt" "results_end.txt" > "temp.txt"
                   mv "temp.txt" "results_end.txt"
               else
@@ -144,8 +140,7 @@ jobs:
 
           if [ -f "memory_usage.txt" ]; then
               if [ -f "memory_usage_end.txt" ]; then
-                  for i in {0..15}; do echo "" >> t.txt; done;
-                  echo "" > t.txt;echo "================ NEW_LINE ===============" >> t.txt;echo "" >> t.txt
+                  for i in {0..50}; do echo "" >> t.txt; done;
                   cat "memory_usage.txt" "t.txt" "memory_usage_end.txt" > "temp.txt"
                   mv "temp.txt" "memory_usage_end.txt"
               else
@@ -155,8 +150,7 @@ jobs:
 
           if [ -f "timer.txt" ]; then
               if [ -f "timer_end.txt" ]; then
-                  for i in {0..15}; do echo "" >> t.txt; done;
-                  echo "" > t.txt;echo "================ NEW_LINE ===============" >> t.txt;echo "" >> t.txt
+                  for i in {0..50}; do echo "" >> t.txt; done;
                   cat "timer.txt" "t.txt" "timer_end.txt" > "temp.txt"
                   mv "temp.txt" "timer_end.txt"
               else
@@ -175,15 +169,14 @@ jobs:
 
       - name: Run Project Parent | Add to tree | Maximum Tested | Max Random
         run: |
-          for i in {0..25}; do echo "" >> sanitizers_log.txt; done;
+          for i in {0..50}; do echo "" >> project_results.txt; done;
           echo "======================================== Parent | Add to tree | Maximum Tested | Max Random" 2>&1 | tee sanitizers_log.txt
           VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json DRI_PRIME=0 timeout -v 2160 xvfb-run ./godot.linuxbsd.editor.dev.x86_64.san FunctionExecutor.tscn 1800 --audio-driver Dummy  --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
-          tail -n 300 sanitizers_log.txt >> project_results.txt
+          tail -n 200 sanitizers_log.txt >> project_results.txt
 
           if [ -f "results.txt" ]; then
               if [ -f "results_end.txt" ]; then
-                  for i in {0..15}; do echo "" >> t.txt; done;
-                  echo "" > t.txt;echo "================ NEW_LINE ===============" >> t.txt;echo "" >> t.txt
+                  for i in {0..50}; do echo "" >> t.txt; done;
                   cat "results.txt" "t.txt" "results_end.txt" > "temp.txt"
                   mv "temp.txt" "results_end.txt"
               else
@@ -193,8 +186,7 @@ jobs:
 
           if [ -f "memory_usage.txt" ]; then
               if [ -f "memory_usage_end.txt" ]; then
-                  for i in {0..15}; do echo "" >> t.txt; done;
-                  echo "" > t.txt;echo "================ NEW_LINE ===============" >> t.txt;echo "" >> t.txt
+                  for i in {0..50}; do echo "" >> t.txt; done;
                   cat "memory_usage.txt" "t.txt" "memory_usage_end.txt" > "temp.txt"
                   mv "temp.txt" "memory_usage_end.txt"
               else
@@ -204,8 +196,7 @@ jobs:
 
           if [ -f "timer.txt" ]; then
               if [ -f "timer_end.txt" ]; then
-                  for i in {0..15}; do echo "" >> t.txt; done;
-                  echo "" > t.txt;echo "================ NEW_LINE ===============" >> t.txt;echo "" >> t.txt
+                  for i in {0..50}; do echo "" >> t.txt; done;
                   cat "timer.txt" "t.txt" "timer_end.txt" > "temp.txt"
                   mv "temp.txt" "timer_end.txt"
               else
@@ -215,15 +206,14 @@ jobs:
 
       - name: Run Project Default
         run: |
-          for i in {0..25}; do echo "" >> sanitizers_log.txt; done;
+          for i in {0..50}; do echo "" >> project_results.txt; done;
           echo "======================================== Default" 2>&1 | tee sanitizers_log.txt
           VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json DRI_PRIME=0 timeout -v 2160 xvfb-run ./godot.linuxbsd.editor.dev.x86_64.san FunctionExecutor.tscn 1800 --audio-driver Dummy  --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
-          tail -n 300 sanitizers_log.txt >> project_results.txt
+          tail -n 200 sanitizers_log.txt >> project_results.txt
 
           if [ -f "results.txt" ]; then
               if [ -f "results_end.txt" ]; then
-                  for i in {0..15}; do echo "" >> t.txt; done;
-                  echo "" > t.txt;echo "================ NEW_LINE ===============" >> t.txt;echo "" >> t.txt
+                  for i in {0..50}; do echo "" >> t.txt; done;
                   cat "results.txt" "t.txt" "results_end.txt" > "temp.txt"
                   mv "temp.txt" "results_end.txt"
               else
@@ -233,8 +223,7 @@ jobs:
 
           if [ -f "memory_usage.txt" ]; then
               if [ -f "memory_usage_end.txt" ]; then
-                  for i in {0..15}; do echo "" >> t.txt; done;
-                  echo "" > t.txt;echo "================ NEW_LINE ===============" >> t.txt;echo "" >> t.txt
+                  for i in {0..50}; do echo "" >> t.txt; done;
                   cat "memory_usage.txt" "t.txt" "memory_usage_end.txt" > "temp.txt"
                   mv "temp.txt" "memory_usage_end.txt"
               else
@@ -244,8 +233,7 @@ jobs:
 
           if [ -f "timer.txt" ]; then
               if [ -f "timer_end.txt" ]; then
-                  for i in {0..15}; do echo "" >> t.txt; done;
-                  echo "" > t.txt;echo "================ NEW_LINE ===============" >> t.txt;echo "" >> t.txt
+                  for i in {0..50}; do echo "" >> t.txt; done;
                   cat "timer.txt" "t.txt" "timer_end.txt" > "temp.txt"
                   mv "temp.txt" "timer_end.txt"
               else
@@ -264,15 +252,14 @@ jobs:
 
       - name: Run Project Delaying | Parent | Add to tree | Maximum Tested
         run: |
-          for i in {0..25}; do echo "" >> sanitizers_log.txt; done;
+          for i in {0..50}; do echo "" >> project_results.txt; done;
           echo "======================================== Delaying | Parent | Add to tree | Maximum Tested" 2>&1 | tee sanitizers_log.txt
           VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json DRI_PRIME=0 timeout -v 2160 xvfb-run ./godot.linuxbsd.editor.dev.x86_64.san FunctionExecutor.tscn 1800 --audio-driver Dummy  --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
-          tail -n 300 sanitizers_log.txt >> project_results.txt
+          tail -n 200 sanitizers_log.txt >> project_results.txt
 
           if [ -f "results.txt" ]; then
               if [ -f "results_end.txt" ]; then
-                  for i in {0..15}; do echo "" >> t.txt; done;
-                  echo "" > t.txt;echo "================ NEW_LINE ===============" >> t.txt;echo "" >> t.txt
+                  for i in {0..50}; do echo "" >> t.txt; done;
                   cat "results.txt" "t.txt" "results_end.txt" > "temp.txt"
                   mv "temp.txt" "results_end.txt"
               else
@@ -282,8 +269,7 @@ jobs:
 
           if [ -f "memory_usage.txt" ]; then
               if [ -f "memory_usage_end.txt" ]; then
-                  for i in {0..15}; do echo "" >> t.txt; done;
-                  echo "" > t.txt;echo "================ NEW_LINE ===============" >> t.txt;echo "" >> t.txt
+                  for i in {0..50}; do echo "" >> t.txt; done;
                   cat "memory_usage.txt" "t.txt" "memory_usage_end.txt" > "temp.txt"
                   mv "temp.txt" "memory_usage_end.txt"
               else
@@ -293,8 +279,7 @@ jobs:
 
           if [ -f "timer.txt" ]; then
               if [ -f "timer_end.txt" ]; then
-                  for i in {0..15}; do echo "" >> t.txt; done;
-                  echo "" > t.txt;echo "================ NEW_LINE ===============" >> t.txt;echo "" >> t.txt
+                  for i in {0..50}; do echo "" >> t.txt; done;
                   cat "timer.txt" "t.txt" "timer_end.txt" > "temp.txt"
                   mv "temp.txt" "timer_end.txt"
               else
@@ -312,15 +297,14 @@ jobs:
 
       - name: Run Project Delaying | One by One | Parent
         run: |
-          for i in {0..25}; do echo "" >> sanitizers_log.txt; done;
+          for i in {0..50}; do echo "" >> project_results.txt; done;
           echo "======================================== Delaying | One by One | Parent" 2>&1 | tee sanitizers_log.txt
           VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json DRI_PRIME=0 timeout -v 2160 xvfb-run ./godot.linuxbsd.editor.dev.x86_64.san FunctionExecutor.tscn 1800 --audio-driver Dummy  --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
-          tail -n 300 sanitizers_log.txt >> project_results.txt
+          tail -n 200 sanitizers_log.txt >> project_results.txt
 
           if [ -f "results.txt" ]; then
               if [ -f "results_end.txt" ]; then
-                  for i in {0..15}; do echo "" >> t.txt; done;
-                  echo "" > t.txt;echo "================ NEW_LINE ===============" >> t.txt;echo "" >> t.txt
+                  for i in {0..50}; do echo "" >> t.txt; done;
                   cat "results.txt" "t.txt" "results_end.txt" > "temp.txt"
                   mv "temp.txt" "results_end.txt"
               else
@@ -330,8 +314,7 @@ jobs:
 
           if [ -f "memory_usage.txt" ]; then
               if [ -f "memory_usage_end.txt" ]; then
-                  for i in {0..15}; do echo "" >> t.txt; done;
-                  echo "" > t.txt;echo "================ NEW_LINE ===============" >> t.txt;echo "" >> t.txt
+                  for i in {0..50}; do echo "" >> t.txt; done;
                   cat "memory_usage.txt" "t.txt" "memory_usage_end.txt" > "temp.txt"
                   mv "temp.txt" "memory_usage_end.txt"
               else
@@ -341,8 +324,7 @@ jobs:
 
           if [ -f "timer.txt" ]; then
               if [ -f "timer_end.txt" ]; then
-                  for i in {0..15}; do echo "" >> t.txt; done;
-                  echo "" > t.txt;echo "================ NEW_LINE ===============" >> t.txt;echo "" >> t.txt
+                  for i in {0..50}; do echo "" >> t.txt; done;
                   cat "timer.txt" "t.txt" "timer_end.txt" > "temp.txt"
                   mv "temp.txt" "timer_end.txt"
               else
@@ -360,15 +342,14 @@ jobs:
 
       - name: Run Project Big Numbers | Parent | One by One
         run: |
-          for i in {0..25}; do echo "" >> sanitizers_log.txt; done;
+          for i in {0..50}; do echo "" >> project_results.txt; done;
           echo "======================================== Big Numbers | Parent | One by One" 2>&1 | tee sanitizers_log.txt
           VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json DRI_PRIME=0 timeout -v 2160 xvfb-run ./godot.linuxbsd.editor.dev.x86_64.san FunctionExecutor.tscn 1800 --audio-driver Dummy  --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
-          tail -n 300 sanitizers_log.txt >> project_results.txt
+          tail -n 200 sanitizers_log.txt >> project_results.txt
 
           if [ -f "results.txt" ]; then
               if [ -f "results_end.txt" ]; then
-                  for i in {0..15}; do echo "" >> t.txt; done;
-                  echo "" > t.txt;echo "================ NEW_LINE ===============" >> t.txt;echo "" >> t.txt
+                  for i in {0..50}; do echo "" >> t.txt; done;
                   cat "results.txt" "t.txt" "results_end.txt" > "temp.txt"
                   mv "temp.txt" "results_end.txt"
               else
@@ -378,8 +359,7 @@ jobs:
 
           if [ -f "memory_usage.txt" ]; then
               if [ -f "memory_usage_end.txt" ]; then
-                  for i in {0..15}; do echo "" >> t.txt; done;
-                  echo "" > t.txt;echo "================ NEW_LINE ===============" >> t.txt;echo "" >> t.txt
+                  for i in {0..50}; do echo "" >> t.txt; done;
                   cat "memory_usage.txt" "t.txt" "memory_usage_end.txt" > "temp.txt"
                   mv "temp.txt" "memory_usage_end.txt"
               else
@@ -389,8 +369,7 @@ jobs:
 
           if [ -f "timer.txt" ]; then
               if [ -f "timer_end.txt" ]; then
-                  for i in {0..15}; do echo "" >> t.txt; done;
-                  echo "" > t.txt;echo "================ NEW_LINE ===============" >> t.txt;echo "" >> t.txt
+                  for i in {0..50}; do echo "" >> t.txt; done;
                   cat "timer.txt" "t.txt" "timer_end.txt" > "temp.txt"
                   mv "temp.txt" "timer_end.txt"
               else
@@ -408,15 +387,14 @@ jobs:
 
       - name: Run Project Small Numbers | Parent | One by One
         run: |
-          for i in {0..25}; do echo "" >> sanitizers_log.txt; done;
+          for i in {0..50}; do echo "" >> project_results.txt; done;
           echo "======================================== Small Numbers | Parent | One by One" 2>&1 | tee sanitizers_log.txt
           VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json DRI_PRIME=0 timeout -v 2160 xvfb-run ./godot.linuxbsd.editor.dev.x86_64.san FunctionExecutor.tscn 1800 --audio-driver Dummy  --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
-          tail -n 300 sanitizers_log.txt >> project_results.txt
+          tail -n 200 sanitizers_log.txt >> project_results.txt
 
           if [ -f "results.txt" ]; then
               if [ -f "results_end.txt" ]; then
-                  for i in {0..15}; do echo "" >> t.txt; done;
-                  echo "" > t.txt;echo "================ NEW_LINE ===============" >> t.txt;echo "" >> t.txt
+                  for i in {0..50}; do echo "" >> t.txt; done;
                   cat "results.txt" "t.txt" "results_end.txt" > "temp.txt"
                   mv "temp.txt" "results_end.txt"
               else
@@ -426,8 +404,7 @@ jobs:
 
           if [ -f "memory_usage.txt" ]; then
               if [ -f "memory_usage_end.txt" ]; then
-                  for i in {0..15}; do echo "" >> t.txt; done;
-                  echo "" > t.txt;echo "================ NEW_LINE ===============" >> t.txt;echo "" >> t.txt
+                  for i in {0..50}; do echo "" >> t.txt; done;
                   cat "memory_usage.txt" "t.txt" "memory_usage_end.txt" > "temp.txt"
                   mv "temp.txt" "memory_usage_end.txt"
               else
@@ -437,8 +414,7 @@ jobs:
 
           if [ -f "timer.txt" ]; then
               if [ -f "timer_end.txt" ]; then
-                  for i in {0..15}; do echo "" >> t.txt; done;
-                  echo "" > t.txt;echo "================ NEW_LINE ===============" >> t.txt;echo "" >> t.txt
+                  for i in {0..50}; do echo "" >> t.txt; done;
                   cat "timer.txt" "t.txt" "timer_end.txt" > "temp.txt"
                   mv "temp.txt" "timer_end.txt"
               else
@@ -455,15 +431,14 @@ jobs:
 
       - name: Run Project Add arguments to tree | Delaying
         run: |
-          for i in {0..25}; do echo "" >> sanitizers_log.txt; done;
+          for i in {0..50}; do echo "" >> project_results.txt; done;
           echo "======================================== Add arguments to tree | Delaying" 2>&1 | tee sanitizers_log.txt
           VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json DRI_PRIME=0 timeout -v 2160 xvfb-run ./godot.linuxbsd.editor.dev.x86_64.san FunctionExecutor.tscn 1800 --audio-driver Dummy  --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
-          tail -n 300 sanitizers_log.txt >> project_results.txt
+          tail -n 200 sanitizers_log.txt >> project_results.txt
 
           if [ -f "results.txt" ]; then
               if [ -f "results_end.txt" ]; then
-                  for i in {0..15}; do echo "" >> t.txt; done;
-                  echo "" > t.txt;echo "================ NEW_LINE ===============" >> t.txt;echo "" >> t.txt
+                  for i in {0..50}; do echo "" >> t.txt; done;
                   cat "results.txt" "t.txt" "results_end.txt" > "temp.txt"
                   mv "temp.txt" "results_end.txt"
               else
@@ -473,8 +448,7 @@ jobs:
 
           if [ -f "memory_usage.txt" ]; then
               if [ -f "memory_usage_end.txt" ]; then
-                  for i in {0..15}; do echo "" >> t.txt; done;
-                  echo "" > t.txt;echo "================ NEW_LINE ===============" >> t.txt;echo "" >> t.txt
+                  for i in {0..50}; do echo "" >> t.txt; done;
                   cat "memory_usage.txt" "t.txt" "memory_usage_end.txt" > "temp.txt"
                   mv "temp.txt" "memory_usage_end.txt"
               else
@@ -484,8 +458,7 @@ jobs:
 
           if [ -f "timer.txt" ]; then
               if [ -f "timer_end.txt" ]; then
-                  for i in {0..15}; do echo "" >> t.txt; done;
-                  echo "" > t.txt;echo "================ NEW_LINE ===============" >> t.txt;echo "" >> t.txt
+                  for i in {0..50}; do echo "" >> t.txt; done;
                   cat "timer.txt" "t.txt" "timer_end.txt" > "temp.txt"
                   mv "temp.txt" "timer_end.txt"
               else

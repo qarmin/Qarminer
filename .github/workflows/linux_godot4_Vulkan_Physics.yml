@@ -71,15 +71,14 @@ jobs:
 
       - name: Run Project StressPhysics - Physics Normal
         run: |
-          for i in {0..25}; do echo "" >> sanitizers_log.txt; done;
+          for i in {0..50}; do echo "" >> project_results.txt; done;
           echo "======================================== StressPhysics - Physics Normal" 2>&1 | tee sanitizers_log.txt
           VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json DRI_PRIME=0 timeout -v 3960 xvfb-run ./godot.linuxbsd.editor.dev.x86_64.san StressPhysics.tscn 3600 --audio-driver Dummy  --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
-          tail -n 300 sanitizers_log.txt >> project_results.txt
+          tail -n 200 sanitizers_log.txt >> project_results.txt
 
           if [ -f "results.txt" ]; then
               if [ -f "results_end.txt" ]; then
-                  for i in {0..15}; do echo "" >> t.txt; done;
-                  echo "" > t.txt;echo "================ NEW_LINE ===============" >> t.txt;echo "" >> t.txt
+                  for i in {0..50}; do echo "" >> t.txt; done;
                   cat "results.txt" "t.txt" "results_end.txt" > "temp.txt"
                   mv "temp.txt" "results_end.txt"
               else
@@ -89,8 +88,7 @@ jobs:
 
           if [ -f "memory_usage.txt" ]; then
               if [ -f "memory_usage_end.txt" ]; then
-                  for i in {0..15}; do echo "" >> t.txt; done;
-                  echo "" > t.txt;echo "================ NEW_LINE ===============" >> t.txt;echo "" >> t.txt
+                  for i in {0..50}; do echo "" >> t.txt; done;
                   cat "memory_usage.txt" "t.txt" "memory_usage_end.txt" > "temp.txt"
                   mv "temp.txt" "memory_usage_end.txt"
               else
@@ -100,8 +98,7 @@ jobs:
 
           if [ -f "timer.txt" ]; then
               if [ -f "timer_end.txt" ]; then
-                  for i in {0..15}; do echo "" >> t.txt; done;
-                  echo "" > t.txt;echo "================ NEW_LINE ===============" >> t.txt;echo "" >> t.txt
+                  for i in {0..50}; do echo "" >> t.txt; done;
                   cat "timer.txt" "t.txt" "timer_end.txt" > "temp.txt"
                   mv "temp.txt" "timer_end.txt"
               else
@@ -125,15 +122,14 @@ jobs:
 
       - name: Run Project Multithread rendering | physics | Add to tree
         run: |
-          for i in {0..25}; do echo "" >> sanitizers_log.txt; done;
+          for i in {0..50}; do echo "" >> project_results.txt; done;
           echo "======================================== Multithread rendering | physics | Add to tree" 2>&1 | tee sanitizers_log.txt
           VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json DRI_PRIME=0 timeout -v 3960 xvfb-run ./godot.linuxbsd.editor.dev.x86_64.san StressPhysics.tscn 3600 --audio-driver Dummy  --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
-          tail -n 300 sanitizers_log.txt >> project_results.txt
+          tail -n 200 sanitizers_log.txt >> project_results.txt
 
           if [ -f "results.txt" ]; then
               if [ -f "results_end.txt" ]; then
-                  for i in {0..15}; do echo "" >> t.txt; done;
-                  echo "" > t.txt;echo "================ NEW_LINE ===============" >> t.txt;echo "" >> t.txt
+                  for i in {0..50}; do echo "" >> t.txt; done;
                   cat "results.txt" "t.txt" "results_end.txt" > "temp.txt"
                   mv "temp.txt" "results_end.txt"
               else
@@ -143,8 +139,7 @@ jobs:
 
           if [ -f "memory_usage.txt" ]; then
               if [ -f "memory_usage_end.txt" ]; then
-                  for i in {0..15}; do echo "" >> t.txt; done;
-                  echo "" > t.txt;echo "================ NEW_LINE ===============" >> t.txt;echo "" >> t.txt
+                  for i in {0..50}; do echo "" >> t.txt; done;
                   cat "memory_usage.txt" "t.txt" "memory_usage_end.txt" > "temp.txt"
                   mv "temp.txt" "memory_usage_end.txt"
               else
@@ -154,8 +149,7 @@ jobs:
 
           if [ -f "timer.txt" ]; then
               if [ -f "timer_end.txt" ]; then
-                  for i in {0..15}; do echo "" >> t.txt; done;
-                  echo "" > t.txt;echo "================ NEW_LINE ===============" >> t.txt;echo "" >> t.txt
+                  for i in {0..50}; do echo "" >> t.txt; done;
                   cat "timer.txt" "t.txt" "timer_end.txt" > "temp.txt"
                   mv "temp.txt" "timer_end.txt"
               else

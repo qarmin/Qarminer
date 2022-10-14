@@ -395,6 +395,7 @@ var disabled_classes: Array = [
 	### Godot 4.0 Additional
 	###
 	#
+	"FontFile", # 67396
 	"ThemeDB",  # Singleton 4
 	"SystemFont",  # 64698
 	"TextServer",  # RefCounted Server
