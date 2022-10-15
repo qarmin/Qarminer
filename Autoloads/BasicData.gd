@@ -26,6 +26,7 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
+	"set_current", # 67442
 	"undo", # 67364
 	"indent_lines", # 67364
 	"set_follow_camera_enabled", # 66986
