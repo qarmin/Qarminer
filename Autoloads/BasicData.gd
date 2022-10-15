@@ -94,6 +94,7 @@ var function_exceptions: Array = [
 	###
 	### Slow Function
 	###
+	"set_panorama",
 	"set_pre_process_time",
 	"create_convex_collision",
 	"create_multiple_convex_collisions",
