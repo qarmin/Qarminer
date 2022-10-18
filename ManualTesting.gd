@@ -114,8 +114,7 @@ func _ready():
 	list_of_singletons.sort()
 
 	var file_handler = File.new()
-	var ret = file_handler.open("SingletonTesting.gd", File.WRITE)
-	assert(ret == OK)
+	file_handler.open("SingletonTesting.gd", File.WRITE)
 
 	file_handler.store_string(
 		"""extends Node
@@ -127,9 +126,14 @@ func save_and_print(message: String):
 	file_handler.flush()
 	print("\\t" + message)
 
+var argument_index = 0
+func get_next_argument_index():
+	argument_index += 1
+	return argument_index
+
 func _process(_delta) -> void:
 	ValueCreator.number = [1,10,100,1000,10000,100000,100000][randi() % 7]
-	var _a = file_handler.open("results.txt", File.WRITE)
+	file_handler.open("results.txt", File.WRITE)
 	file_handler.store_string("\\n\\n\\n\\n\\n############# NEW RUN \\n\\n\\n\\n\\n")
 	for _i in range(5):
 		f_GDScript()
@@ -141,7 +145,9 @@ func _process(_delta) -> void:
 			print("Class " + name_of_class + " not exists!!!!!!!!!")
 			assert(false)
 		file_handler.store_string("\t\tf_" + name_of_class + "()\n")
-	file_handler.store_string("\n")
+	file_handler.store_string("\t\tfor i in range(5):\n")
+	file_handler.store_string("\t\t\tsave_and_print('')")
+	file_handler.store_string("\n\n")
 
 	var argument_number: int = 0
 	for name_of_class in list_of_singletons:
@@ -174,23 +180,30 @@ func _process(_delta) -> void:
 				argument_number += 1
 				var variable_name = "temp_variable" + str(argument_number)
 				creation_of_arguments += "\t\tvar " + variable_name + " = " + argument + "\n"
-				creation_of_arguments += '\t\tsave_and_print("var ' + variable_name + ' = " + ParseArgumentType.return_gdscript_code_which_run_this_object(' + variable_name + "))\n"
+				creation_of_arguments += "\t\tvar ARG_" + variable_name + " = \"temp_variable\" + str(get_next_argument_index())\n"
+				creation_of_arguments += '\t\tsave_and_print("var " + ARG_' + variable_name + ' + " = " + ParseArgumentType.return_gdscript_code_which_run_this_object(' + variable_name + "))\n"
 
 				variable_names.append(variable_name)
 
 				if argument.find("get_object") != -1:
 					deleting_arguments += "\t\tHelpFunctions.remove_thing(" + variable_name + ")\n"
-					deleting_arguments += "\t\tsave_and_print('" + variable_name + "'+ HelpFunctions.remove_thing_string(" + variable_name + "))\n"
+					deleting_arguments += "\t\tsave_and_print(ARG_" + variable_name + "+ HelpFunctions.remove_thing_string(" + variable_name + "))\n"
 
 			file_handler.store_string(creation_of_arguments)
 
 			var to_execute = name_of_class + "." + function_data.name + "("
+			var to_execute_str = to_execute + "' + "
 			for name_index in variable_names.size():
 				to_execute += variable_names[name_index]
+				to_execute_str += "ARG_" + variable_names[name_index]
 				if name_index + 1 != variable_names.size():
 					to_execute += ","
+					to_execute_str += "+ ',' + "
+			if variable_names.size() > 0:
+				to_execute_str += " + "
 			to_execute += ")"
-			file_handler.store_string("\t\tsave_and_print('" + to_execute + "')\n")
+			to_execute_str += "')"
+			file_handler.store_string("\t\tsave_and_print('" + to_execute_str + "')\n")
 			file_handler.store_string("\t\t" + to_execute + "\n")
 
 			file_handler.store_string(deleting_arguments + "\n")
@@ -201,8 +214,12 @@ func _process(_delta) -> void:
 
 	get_tree().quit()
 
-
 var manual_functions: String = """
+	
+func f_GDScript() -> void:
+	return;
+"""
+var manual_functions2: String = """
 
 func f_GDScript() -> void:
 	print("Color8")
