@@ -54,9 +54,14 @@ jobs:
           curr="$(pwd)/libvk_swiftshader.so"
           sed -i "s|PATH_TO_CHANGE|$curr|" vk_swiftshader_icd.json
 
+      # Make backup of project.godot
+      - name: Backup project.godot
+        run: |
+          cp project.godot project.godot.old
+
       - name: Open Godot Editor
         run: |
-           UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 xvfb-run ./godot.x11.tools.64s -e --quit --audio-driver Dummy --video-driver GLES3 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 xvfb-run ./godot.x11.tools.64s -e --quit --audio-driver Dummy --video-driver GLES3 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
           tail -n 300 sanitizers_log.txt > editor_results.txt
 
       - name: Store editor results
@@ -73,7 +78,7 @@ jobs:
         run: |
           for i in {0..50}; do echo "" >> project_results.txt; done;
           echo "======================================== Variant Tester" 2>&1 | tee sanitizers_log.txt
-           UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 660 xvfb-run ./godot.x11.tools.64s VariantTester.tscn 300 --audio-driver Dummy --video-driver GLES3 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 660 xvfb-run ./godot.x11.tools.64s VariantTester.tscn 300 --audio-driver Dummy --video-driver GLES3 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
           tail -n 200 sanitizers_log.txt >> project_results.txt
 
           if [ -f "results.txt" ]; then
@@ -110,7 +115,7 @@ jobs:
         run: |
           for i in {0..50}; do echo "" >> project_results.txt; done;
           echo "======================================== GDScript Fuzzer" 2>&1 | tee sanitizers_log.txt
-           UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 660 xvfb-run ./godot.x11.tools.64s GDScriptCreator.tscn 300 --audio-driver Dummy --video-driver GLES3 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 660 xvfb-run ./godot.x11.tools.64s GDScriptCreator.tscn 300 --audio-driver Dummy --video-driver GLES3 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
           tail -n 200 sanitizers_log.txt >> project_results.txt
 
           if [ -f "results.txt" ]; then
@@ -147,7 +152,7 @@ jobs:
         run: |
           for i in {0..50}; do echo "" >> project_results.txt; done;
           echo "======================================== Reparenting Deleting" 2>&1 | tee sanitizers_log.txt
-           UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 960 xvfb-run ./godot.x11.tools.64s ReparentingDeleting.tscn 600 --audio-driver Dummy --video-driver GLES3 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 960 xvfb-run ./godot.x11.tools.64s ReparentingDeleting.tscn 600 --audio-driver Dummy --video-driver GLES3 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
           tail -n 200 sanitizers_log.txt >> project_results.txt
 
           if [ -f "results.txt" ]; then
@@ -184,7 +189,7 @@ jobs:
         run: |
           for i in {0..50}; do echo "" >> project_results.txt; done;
           echo "======================================== StressPhysics - Physics Normal" 2>&1 | tee sanitizers_log.txt
-           UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 960 xvfb-run ./godot.x11.tools.64s StressPhysics.tscn 600 --audio-driver Dummy --video-driver GLES3 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 960 xvfb-run ./godot.x11.tools.64s StressPhysics.tscn 600 --audio-driver Dummy --video-driver GLES3 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
           tail -n 200 sanitizers_log.txt >> project_results.txt
 
           if [ -f "results.txt" ]; then
@@ -219,7 +224,7 @@ jobs:
 
       - name: Configure project with non usual commands
         run: |
-          cp project.godot project.godot.old
+          cp project.godot.old project.godot
           echo "[physics]" >> project.godot
           echo "2d/thread_model=2" >> project.godot
 
@@ -233,7 +238,7 @@ jobs:
         run: |
           for i in {0..50}; do echo "" >> project_results.txt; done;
           echo "======================================== StressPhysics | Multithread | Add to tree" 2>&1 | tee sanitizers_log.txt
-           UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 960 xvfb-run ./godot.x11.tools.64s StressPhysics.tscn 600 --audio-driver Dummy --video-driver GLES3 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 960 xvfb-run ./godot.x11.tools.64s StressPhysics.tscn 600 --audio-driver Dummy --video-driver GLES3 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
           tail -n 200 sanitizers_log.txt >> project_results.txt
 
           if [ -f "results.txt" ]; then
