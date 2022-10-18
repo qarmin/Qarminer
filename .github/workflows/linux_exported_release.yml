@@ -50,6 +50,12 @@ jobs:
           cd ../
           rm -rf godot
 
+      - name: Configure Project Data
+        run: |
+          echo "" > settings.txt
+          echo "disabled_classes_append:" >> settings.txt
+          echo "Image" >> settings.txt
+          
       - name: Exporting project
         run: |
           curr="$(pwd)/godot.x11.opt.64s"

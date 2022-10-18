@@ -304,10 +304,6 @@ var disabled_classes: Array = [
 	"_ResourceLoader",  #Spams
 	"ResourceLoader",  #Spams
 	#"ProximityGroup",  # Not cherrypicked yet
-	###
-	### Exported build - some checks are disabled in exported build due to too big performance impact
-	###
-	"Image",
 	# Backported Navigation changes also backport bugged classes
 	"NavigationAgent2D",
 	"NavigationAgent",
