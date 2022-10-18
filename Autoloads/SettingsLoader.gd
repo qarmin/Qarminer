@@ -1,7 +1,7 @@
 extends Node
 
 const SETTINGS_FILE_NAME: String = "res://settings.txt"
-const DEBUG_PRINT: bool = true  # Enable to validate your scipt
+const DEBUG_PRINT: bool = false  # Enable to validate your scipt
 var settings: Dictionary = {}
 
 

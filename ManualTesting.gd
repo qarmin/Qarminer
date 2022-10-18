@@ -141,7 +141,7 @@ func _ready():
 	list_of_singletons.erase("Engine")  # Only test this manually
 	list_of_singletons.erase("ProjectSettings")  # Mess project.godot
 #	list_of_singletons = list_of_singletons.slice(20,25) # TODO
-	list_of_singletons = ["Engine"]
+#	list_of_singletons = ["Engine"]
 	print(list_of_singletons)
 
 	var file_handler = FileAccess.open("SingletonTesting.gd", FileAccess.WRITE)
@@ -176,8 +176,8 @@ func _process(_delta) -> void:
 			print("Class " + name_of_class + " not exists!!!!!!!!!")
 			assert(false)
 		file_handler.store_string("\t\tf_" + name_of_class + "()\n")
-		file_handler.store_string("\t\tfor i in range(5):\n")
-		file_handler.store_string("\t\t\tsave_and_print('')")
+	file_handler.store_string("\t\tfor i in range(5):\n")
+	file_handler.store_string("\t\t\tsave_and_print('')")
 	file_handler.store_string("\n")
 
 	var argument_number: int = 0
