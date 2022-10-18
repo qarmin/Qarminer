@@ -74,6 +74,11 @@ jobs:
         run: |
           misc/check_ci_log.py editor_results.txt
 
+      - name: Configure Project Data
+        run: |
+          echo "" > settings.txt
+          cp project.godot.old project.godot
+
       - name: Run Project SimpleThings
         run: |
           for i in {0..50}; do echo "" >> project_results.txt; done;
@@ -110,6 +115,11 @@ jobs:
                   cp "timer.txt" "timer_end.txt"
               fi
           fi
+
+      - name: Configure Project Data
+        run: |
+          echo "" > settings.txt
+          cp project.godot.old project.godot
 
       - name: Run Project Variant Tester
         run: |
@@ -148,6 +158,11 @@ jobs:
               fi
           fi
 
+      - name: Configure Project Data
+        run: |
+          echo "" > settings.txt
+          cp project.godot.old project.godot
+
       - name: Run Project GDScript Fuzzer
         run: |
           for i in {0..50}; do echo "" >> project_results.txt; done;
@@ -184,6 +199,11 @@ jobs:
                   cp "timer.txt" "timer_end.txt"
               fi
           fi
+
+      - name: Configure Project Data
+        run: |
+          echo "" > settings.txt
+          cp project.godot.old project.godot
 
       - name: Run Project Default
         run: |
