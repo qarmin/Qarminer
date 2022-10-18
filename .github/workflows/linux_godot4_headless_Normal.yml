@@ -74,6 +74,11 @@ jobs:
         run: |
           misc/check_ci_log.py editor_results.txt
 
+      - name: Configure Project Data
+        run: |
+          echo "" > settings.txt
+          cp project.godot.old project.godot
+
       - name: Run Project SimpleThings
         run: |
           for i in {0..50}; do echo "" >> project_results.txt; done;
@@ -110,6 +115,11 @@ jobs:
                   cp "timer.txt" "timer_end.txt"
               fi
           fi
+
+      - name: Configure Project Data
+        run: |
+          echo "" > settings.txt
+          cp project.godot.old project.godot
 
       - name: Configure Project Data
         run: |
@@ -160,6 +170,11 @@ jobs:
       - name: Configure Project Data
         run: |
           echo "" > settings.txt
+          cp project.godot.old project.godot
+
+      - name: Configure Project Data
+        run: |
+          echo "" > settings.txt
 
           echo "add_to_tree: true" >> settings.txt
           echo "use_parent_methods: true" >> settings.txt
@@ -203,6 +218,11 @@ jobs:
               fi
           fi
 
+      - name: Configure Project Data
+        run: |
+          echo "" > settings.txt
+          cp project.godot.old project.godot
+
       - name: Run Project Default
         run: |
           for i in {0..50}; do echo "" >> project_results.txt; done;
@@ -239,6 +259,11 @@ jobs:
                   cp "timer.txt" "timer_end.txt"
               fi
           fi
+
+      - name: Configure Project Data
+        run: |
+          echo "" > settings.txt
+          cp project.godot.old project.godot
 
       - name: Configure Project Data
         run: |
@@ -289,6 +314,11 @@ jobs:
       - name: Configure Project Data
         run: |
           echo "" > settings.txt
+          cp project.godot.old project.godot
+
+      - name: Configure Project Data
+        run: |
+          echo "" > settings.txt
 
           echo "use_parent_methods: true" >> settings.txt
           echo "delay_removing_added_nodes_to_next_frame: true" >> settings.txt
@@ -330,6 +360,11 @@ jobs:
                   cp "timer.txt" "timer_end.txt"
               fi
           fi
+
+      - name: Configure Project Data
+        run: |
+          echo "" > settings.txt
+          cp project.godot.old project.godot
 
       - name: Configure Project Data
         run: |
@@ -379,6 +414,11 @@ jobs:
       - name: Configure Project Data
         run: |
           echo "" > settings.txt
+          cp project.godot.old project.godot
+
+      - name: Configure Project Data
+        run: |
+          echo "" > settings.txt
 
           echo "used_number: 10" >> settings.txt
           echo "use_parent_methods: true" >> settings.txt
@@ -424,6 +464,11 @@ jobs:
       - name: Configure Project Data
         run: |
           echo "" > settings.txt
+          cp project.godot.old project.godot
+
+      - name: Configure Project Data
+        run: |
+          echo "" > settings.txt
 
           echo "add_arguments_to_tree: true" >> settings.txt
           echo "delay_removing_added_arguments_to_next_frame: true" >> settings.txt
@@ -464,6 +509,11 @@ jobs:
                   cp "timer.txt" "timer_end.txt"
               fi
           fi
+
+      - name: Configure Project Data
+        run: |
+          echo "" > settings.txt
+          cp project.godot.old project.godot
 
       - name: Configure Project Data
         run: |
@@ -513,6 +563,11 @@ jobs:
       - name: Configure Project Data
         run: |
           echo "" > settings.txt
+          cp project.godot.old project.godot
+
+      - name: Configure Project Data
+        run: |
+          echo "" > settings.txt
 
           echo "number_of_function_repeats: 20" >> settings.txt
           echo "use_parent_methods: true" >> settings.txt
@@ -554,9 +609,13 @@ jobs:
               fi
           fi
 
+      - name: Configure Project Data
+        run: |
+          echo "" > settings.txt
+          cp project.godot.old project.godot
+
       - name: Configure project with non usual commands
         run: |
-          cp project.godot.old project.godot
           echo "[rendering]" >> project.godot
           echo "threads/thread_model=2" >> project.godot
           echo "driver/threads/thread_model=2" >> project.godot
@@ -604,9 +663,13 @@ jobs:
               fi
           fi
 
+      - name: Configure Project Data
+        run: |
+          echo "" > settings.txt
+          cp project.godot.old project.godot
+
       - name: Configure project with non usual commands
         run: |
-          cp project.godot.old project.godot
           echo "[rendering]" >> project.godot
           echo "threads/thread_model=2" >> project.godot
           echo "driver/threads/thread_model=2" >> project.godot
