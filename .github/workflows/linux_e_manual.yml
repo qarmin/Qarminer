@@ -55,6 +55,13 @@ jobs:
           curr="$(pwd)/libvk_swiftshader.so"
           sed -i "s|PATH_TO_CHANGE|$curr|" vk_swiftshader_icd.json
 
+      - name: Configure Project Data
+        run: |
+          echo "" > settings.txt
+
+          echo "disabled_classes_append:" >> settings.txt
+          echo "Image" >> settings.txt
+          
       - name: Create Project
         run: |
           VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json DRI_PRIME=0 xvfb-run ./godot.linuxbsd.editor.dev.x86_64.san ManualTesting.tscn --headless || true
