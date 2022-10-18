@@ -42,7 +42,7 @@ jobs:
           scons -j2 dev_build=yes use_asan=yes use_ubsan=yes linker=gold
           cp bin/godot.linuxbsd.editor.dev.x86_64.san ../
           git clean -xqdf
-          scons -j2 target=template_release optimize=none debug_symbols=yes use_asan=yes use_ubsan=yes optimize=none CCFLAGS="-DDEBUG_METHODS_ENABLED" linker=gold
+          scons -j2 target=template_release optimize=none debug_symbols=yes use_asan=yes use_ubsan=yes optimize=none CCFLAGS="-fsanitize=shift,shift-exponent,integer-divide-by-zero,unreachable,vla-bound,null,return,signed-integer-overflow,bounds,float-divide-by-zero,float-cast-overflow,nonnull-attribute,returns-nonnull-attribute,bool,enum,vptr -DDEBUG_METHODS_ENABLED" linker=gold
           cp bin/godot.linuxbsd.template_release.x86_64.san ../
           cd ../
           rm -rf godot

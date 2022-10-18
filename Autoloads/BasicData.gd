@@ -26,6 +26,10 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
+	"_set_playing",
+	"play", # 
+	"save_jpg_to_buffer", # 67586
+	"fill", #67567
 	"set_current", # 67442
 	"undo", # 67364
 	"indent_lines", # 67364
@@ -379,7 +383,7 @@ var disabled_classes: Array = [
 	###
 	### Exported build - some checks are disabled in exported build due to too big performance impact
 	###
-	"Image",
+	#"Image",
 	# Backported Node3D changes also backport bugged classes
 	"NavigationAgent2D",
 	"NavigationAgent3D",
@@ -397,7 +401,6 @@ var disabled_classes: Array = [
 	###
 	#
 	"XROrigin3D", # 67442
-	"FontFile", # 67396
 	"ThemeDB",  # Singleton 4
 	"SystemFont",  # 64698
 	"TextServer",  # RefCounted Server

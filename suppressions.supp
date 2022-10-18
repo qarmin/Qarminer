@@ -1,4 +1,5 @@
 bounds:thirdparty/harfbuzz/src/hb-open-type.hh
+bounds:thirdparty/icu4c/common/rbbi.cpp
 
 implicit-unsigned-integer-truncation:MachineIndependent/glslang.y
 implicit-signed-integer-truncation:MachineIndependent/glslang.y
