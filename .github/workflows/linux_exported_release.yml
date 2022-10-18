@@ -47,6 +47,11 @@ jobs:
           cd ../
           rm -rf godot
           
+      - name: Remove broken project files
+        run: |
+          rm SingletonTesting.tscn
+          rm Node.tscn
+          
       # Download, unzip and setup SwiftShader library
       - name: Download SwiftShader
         run: |
