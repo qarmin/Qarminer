@@ -26,8 +26,10 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
-	"_set_playing",
-	"play", # 
+	"do_unindent", #67364
+	"add_file", # 67613
+	"_set_playing", #67589
+	"play", #  67589
 	"save_jpg_to_buffer", # 67586
 	"fill", #67567
 	"set_current", # 67442
