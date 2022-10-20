@@ -575,6 +575,7 @@ jobs:
           echo "use_parent_methods: true" >> settings.txt
           echo "test_one_class_multiple_times: true" >> settings.txt
           echo "how_many_times_test_one_class: 2" >> settings.txt
+          echo "maximum_executed_functions_on_object: 15" >> settings.txt
 
       - name: Run Project One By one, very big amount of functions, Add to tree
         run: |
@@ -625,6 +626,7 @@ jobs:
           echo "number_of_function_repeats: 2" >> settings.txt
           echo "use_parent_methods: true" >> settings.txt
           echo "how_many_times_test_one_class: 2" >> settings.txt
+          echo "maximum_executed_functions_on_object: 15" >> settings.txt
 
       - name: Run Project Multiple classes, very big amount of functions
         run: |
