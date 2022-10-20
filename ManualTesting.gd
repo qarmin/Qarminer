@@ -30,6 +30,7 @@ var excluded_functions: Array = [
 	"dump_resources_to_file",  # create file
 	"set_low_processor_usage_mode",  # Freeze
 	"set_low_processor_usage_mode_sleep_usec",  # Freeze
+	"finish", # Visual, cause freeze
 	# MEMORY LEAK
 	"init",  # Quite specific function, which probably needs to be instanced only once
 	"space_create",
