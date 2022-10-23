@@ -76,6 +76,10 @@ jobs:
 
       - name: Configure Project Data
         run: |
+          rm timer.txt || true
+          rm memory_usage.txt || true
+          rm results.txt || true
+          rm crash_reproduce.gd || true
           echo "" > settings.txt
           cp project.godot.old project.godot
 
@@ -116,8 +120,28 @@ jobs:
               fi
           fi
 
+      - name: Run reproducer
+        run: |
+          echo "extends Node" > temp.txt
+          echo "func _process(delta):" >> temp.txt
+          cat temp.txt results.txt > Node.gd.test
+          wget https://github.com/qarmin/Qarminer/releases/download/reproducer/find_minimal_godot_crash_0.1.1 -O reproducer
+          chmod +x ./reproducer
+          VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0  ./reproducer godot.linuxbsd.editor.dev.x86_64.san 40 .  --audio-driver Dummy || echo "ERROR: REPRODUCER FAILURE"
+
+      - name: Store reproducer
+        uses: actions/upload-artifact@v3
+        with:
+          name: reproducer_4_vulkan_minimal
+          path: crash_reproduce.gd
+          if-no-files-found: ignore
+
       - name: Configure Project Data
         run: |
+          rm timer.txt || true
+          rm memory_usage.txt || true
+          rm results.txt || true
+          rm crash_reproduce.gd || true
           echo "" > settings.txt
           cp project.godot.old project.godot
 
@@ -158,8 +182,28 @@ jobs:
               fi
           fi
 
+      - name: Run reproducer
+        run: |
+          echo "extends Node" > temp.txt
+          echo "func _process(delta):" >> temp.txt
+          cat temp.txt results.txt > Node.gd.test
+          wget https://github.com/qarmin/Qarminer/releases/download/reproducer/find_minimal_godot_crash_0.1.1 -O reproducer
+          chmod +x ./reproducer
+          VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0  ./reproducer godot.linuxbsd.editor.dev.x86_64.san 40 .  --audio-driver Dummy || echo "ERROR: REPRODUCER FAILURE"
+
+      - name: Store reproducer
+        uses: actions/upload-artifact@v3
+        with:
+          name: reproducer_4_vulkan_minimal
+          path: crash_reproduce.gd
+          if-no-files-found: ignore
+
       - name: Configure Project Data
         run: |
+          rm timer.txt || true
+          rm memory_usage.txt || true
+          rm results.txt || true
+          rm crash_reproduce.gd || true
           echo "" > settings.txt
           cp project.godot.old project.godot
 
@@ -200,8 +244,28 @@ jobs:
               fi
           fi
 
+      - name: Run reproducer
+        run: |
+          echo "extends Node" > temp.txt
+          echo "func _process(delta):" >> temp.txt
+          cat temp.txt results.txt > Node.gd.test
+          wget https://github.com/qarmin/Qarminer/releases/download/reproducer/find_minimal_godot_crash_0.1.1 -O reproducer
+          chmod +x ./reproducer
+          VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0  ./reproducer godot.linuxbsd.editor.dev.x86_64.san 40 .  --audio-driver Dummy || echo "ERROR: REPRODUCER FAILURE"
+
+      - name: Store reproducer
+        uses: actions/upload-artifact@v3
+        with:
+          name: reproducer_4_vulkan_minimal
+          path: crash_reproduce.gd
+          if-no-files-found: ignore
+
       - name: Configure Project Data
         run: |
+          rm timer.txt || true
+          rm memory_usage.txt || true
+          rm results.txt || true
+          rm crash_reproduce.gd || true
           echo "" > settings.txt
           cp project.godot.old project.godot
 
@@ -242,6 +306,22 @@ jobs:
               fi
           fi
 
+      - name: Run reproducer
+        run: |
+          echo "extends Node" > temp.txt
+          echo "func _process(delta):" >> temp.txt
+          cat temp.txt results.txt > Node.gd.test
+          wget https://github.com/qarmin/Qarminer/releases/download/reproducer/find_minimal_godot_crash_0.1.1 -O reproducer
+          chmod +x ./reproducer
+          VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0  ./reproducer godot.linuxbsd.editor.dev.x86_64.san 40 .  --audio-driver Dummy || echo "ERROR: REPRODUCER FAILURE"
+
+      - name: Store reproducer
+        uses: actions/upload-artifact@v3
+        with:
+          name: reproducer_4_vulkan_minimal
+          path: crash_reproduce.gd
+          if-no-files-found: ignore
+
       - name: Store project results
         uses: actions/upload-artifact@v3
         with:
@@ -259,12 +339,14 @@ jobs:
         with:
           name: timer
           path: timer_end.txt
+          if-no-files-found: ignore
 
       - name: Store memory usage results
         uses: actions/upload-artifact@v3
         with:
           name: memory-usage
           path: memory_usage_end.txt
+          if-no-files-found: ignore
 
       - name: Check Log
         run: |

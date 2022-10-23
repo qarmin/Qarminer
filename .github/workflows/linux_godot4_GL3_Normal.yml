@@ -82,6 +82,10 @@ jobs:
 
       - name: Configure Project Data
         run: |
+          rm timer.txt || true
+          rm memory_usage.txt || true
+          rm results.txt || true
+          rm crash_reproduce.gd || true
           echo "" > settings.txt
           cp project.godot.old project.godot
 
@@ -122,14 +126,30 @@ jobs:
               fi
           fi
 
-      - name: Configure Project Data
+      - name: Run reproducer
         run: |
-          echo "" > settings.txt
-          cp project.godot.old project.godot
+          echo "extends Node" > temp.txt
+          echo "func _process(delta):" >> temp.txt
+          cat temp.txt results.txt > Node.gd.test
+          wget https://github.com/qarmin/Qarminer/releases/download/reproducer/find_minimal_godot_crash_0.1.1 -O reproducer
+          chmod +x ./reproducer
+          VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0  ./reproducer godot.linuxbsd.editor.dev.x86_64.san 40 . --rendering-driver opengl3 --audio-driver Dummy || echo "ERROR: REPRODUCER FAILURE"
+
+      - name: Store reproducer
+        uses: actions/upload-artifact@v3
+        with:
+          name: reproducer_4_gl3_normal
+          path: crash_reproduce.gd
+          if-no-files-found: ignore
 
       - name: Configure Project Data
         run: |
+          rm timer.txt || true
+          rm memory_usage.txt || true
+          rm results.txt || true
+          rm crash_reproduce.gd || true
           echo "" > settings.txt
+          cp project.godot.old project.godot
 
           echo "add_to_tree: true" >> settings.txt
           echo "use_parent_methods: true" >> settings.txt
@@ -173,14 +193,30 @@ jobs:
               fi
           fi
 
-      - name: Configure Project Data
+      - name: Run reproducer
         run: |
-          echo "" > settings.txt
-          cp project.godot.old project.godot
+          echo "extends Node" > temp.txt
+          echo "func _process(delta):" >> temp.txt
+          cat temp.txt results.txt > Node.gd.test
+          wget https://github.com/qarmin/Qarminer/releases/download/reproducer/find_minimal_godot_crash_0.1.1 -O reproducer
+          chmod +x ./reproducer
+          VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0  ./reproducer godot.linuxbsd.editor.dev.x86_64.san 40 . --rendering-driver opengl3 --audio-driver Dummy || echo "ERROR: REPRODUCER FAILURE"
+
+      - name: Store reproducer
+        uses: actions/upload-artifact@v3
+        with:
+          name: reproducer_4_gl3_normal
+          path: crash_reproduce.gd
+          if-no-files-found: ignore
 
       - name: Configure Project Data
         run: |
+          rm timer.txt || true
+          rm memory_usage.txt || true
+          rm results.txt || true
+          rm crash_reproduce.gd || true
           echo "" > settings.txt
+          cp project.godot.old project.godot
 
           echo "add_to_tree: true" >> settings.txt
           echo "use_parent_methods: true" >> settings.txt
@@ -224,8 +260,28 @@ jobs:
               fi
           fi
 
+      - name: Run reproducer
+        run: |
+          echo "extends Node" > temp.txt
+          echo "func _process(delta):" >> temp.txt
+          cat temp.txt results.txt > Node.gd.test
+          wget https://github.com/qarmin/Qarminer/releases/download/reproducer/find_minimal_godot_crash_0.1.1 -O reproducer
+          chmod +x ./reproducer
+          VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0  ./reproducer godot.linuxbsd.editor.dev.x86_64.san 40 . --rendering-driver opengl3 --audio-driver Dummy || echo "ERROR: REPRODUCER FAILURE"
+
+      - name: Store reproducer
+        uses: actions/upload-artifact@v3
+        with:
+          name: reproducer_4_gl3_normal
+          path: crash_reproduce.gd
+          if-no-files-found: ignore
+
       - name: Configure Project Data
         run: |
+          rm timer.txt || true
+          rm memory_usage.txt || true
+          rm results.txt || true
+          rm crash_reproduce.gd || true
           echo "" > settings.txt
           cp project.godot.old project.godot
 
@@ -266,14 +322,30 @@ jobs:
               fi
           fi
 
-      - name: Configure Project Data
+      - name: Run reproducer
         run: |
-          echo "" > settings.txt
-          cp project.godot.old project.godot
+          echo "extends Node" > temp.txt
+          echo "func _process(delta):" >> temp.txt
+          cat temp.txt results.txt > Node.gd.test
+          wget https://github.com/qarmin/Qarminer/releases/download/reproducer/find_minimal_godot_crash_0.1.1 -O reproducer
+          chmod +x ./reproducer
+          VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0  ./reproducer godot.linuxbsd.editor.dev.x86_64.san 40 . --rendering-driver opengl3 --audio-driver Dummy || echo "ERROR: REPRODUCER FAILURE"
+
+      - name: Store reproducer
+        uses: actions/upload-artifact@v3
+        with:
+          name: reproducer_4_gl3_normal
+          path: crash_reproduce.gd
+          if-no-files-found: ignore
 
       - name: Configure Project Data
         run: |
+          rm timer.txt || true
+          rm memory_usage.txt || true
+          rm results.txt || true
+          rm crash_reproduce.gd || true
           echo "" > settings.txt
+          cp project.godot.old project.godot
 
           echo "add_to_tree: true" >> settings.txt
           echo "use_parent_methods: true" >> settings.txt
@@ -317,14 +389,30 @@ jobs:
               fi
           fi
 
-      - name: Configure Project Data
+      - name: Run reproducer
         run: |
-          echo "" > settings.txt
-          cp project.godot.old project.godot
+          echo "extends Node" > temp.txt
+          echo "func _process(delta):" >> temp.txt
+          cat temp.txt results.txt > Node.gd.test
+          wget https://github.com/qarmin/Qarminer/releases/download/reproducer/find_minimal_godot_crash_0.1.1 -O reproducer
+          chmod +x ./reproducer
+          VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0  ./reproducer godot.linuxbsd.editor.dev.x86_64.san 40 . --rendering-driver opengl3 --audio-driver Dummy || echo "ERROR: REPRODUCER FAILURE"
+
+      - name: Store reproducer
+        uses: actions/upload-artifact@v3
+        with:
+          name: reproducer_4_gl3_normal
+          path: crash_reproduce.gd
+          if-no-files-found: ignore
 
       - name: Configure Project Data
         run: |
+          rm timer.txt || true
+          rm memory_usage.txt || true
+          rm results.txt || true
+          rm crash_reproduce.gd || true
           echo "" > settings.txt
+          cp project.godot.old project.godot
 
           echo "use_parent_methods: true" >> settings.txt
           echo "delay_removing_added_nodes_to_next_frame: true" >> settings.txt
@@ -367,14 +455,30 @@ jobs:
               fi
           fi
 
-      - name: Configure Project Data
+      - name: Run reproducer
         run: |
-          echo "" > settings.txt
-          cp project.godot.old project.godot
+          echo "extends Node" > temp.txt
+          echo "func _process(delta):" >> temp.txt
+          cat temp.txt results.txt > Node.gd.test
+          wget https://github.com/qarmin/Qarminer/releases/download/reproducer/find_minimal_godot_crash_0.1.1 -O reproducer
+          chmod +x ./reproducer
+          VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0  ./reproducer godot.linuxbsd.editor.dev.x86_64.san 40 . --rendering-driver opengl3 --audio-driver Dummy || echo "ERROR: REPRODUCER FAILURE"
+
+      - name: Store reproducer
+        uses: actions/upload-artifact@v3
+        with:
+          name: reproducer_4_gl3_normal
+          path: crash_reproduce.gd
+          if-no-files-found: ignore
 
       - name: Configure Project Data
         run: |
+          rm timer.txt || true
+          rm memory_usage.txt || true
+          rm results.txt || true
+          rm crash_reproduce.gd || true
           echo "" > settings.txt
+          cp project.godot.old project.godot
 
           echo "used_number: 10000" >> settings.txt
           echo "use_parent_methods: true" >> settings.txt
@@ -417,14 +521,30 @@ jobs:
               fi
           fi
 
-      - name: Configure Project Data
+      - name: Run reproducer
         run: |
-          echo "" > settings.txt
-          cp project.godot.old project.godot
+          echo "extends Node" > temp.txt
+          echo "func _process(delta):" >> temp.txt
+          cat temp.txt results.txt > Node.gd.test
+          wget https://github.com/qarmin/Qarminer/releases/download/reproducer/find_minimal_godot_crash_0.1.1 -O reproducer
+          chmod +x ./reproducer
+          VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0  ./reproducer godot.linuxbsd.editor.dev.x86_64.san 40 . --rendering-driver opengl3 --audio-driver Dummy || echo "ERROR: REPRODUCER FAILURE"
+
+      - name: Store reproducer
+        uses: actions/upload-artifact@v3
+        with:
+          name: reproducer_4_gl3_normal
+          path: crash_reproduce.gd
+          if-no-files-found: ignore
 
       - name: Configure Project Data
         run: |
+          rm timer.txt || true
+          rm memory_usage.txt || true
+          rm results.txt || true
+          rm crash_reproduce.gd || true
           echo "" > settings.txt
+          cp project.godot.old project.godot
 
           echo "used_number: 10" >> settings.txt
           echo "use_parent_methods: true" >> settings.txt
@@ -467,14 +587,30 @@ jobs:
               fi
           fi
 
-      - name: Configure Project Data
+      - name: Run reproducer
         run: |
-          echo "" > settings.txt
-          cp project.godot.old project.godot
+          echo "extends Node" > temp.txt
+          echo "func _process(delta):" >> temp.txt
+          cat temp.txt results.txt > Node.gd.test
+          wget https://github.com/qarmin/Qarminer/releases/download/reproducer/find_minimal_godot_crash_0.1.1 -O reproducer
+          chmod +x ./reproducer
+          VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0  ./reproducer godot.linuxbsd.editor.dev.x86_64.san 40 . --rendering-driver opengl3 --audio-driver Dummy || echo "ERROR: REPRODUCER FAILURE"
+
+      - name: Store reproducer
+        uses: actions/upload-artifact@v3
+        with:
+          name: reproducer_4_gl3_normal
+          path: crash_reproduce.gd
+          if-no-files-found: ignore
 
       - name: Configure Project Data
         run: |
+          rm timer.txt || true
+          rm memory_usage.txt || true
+          rm results.txt || true
+          rm crash_reproduce.gd || true
           echo "" > settings.txt
+          cp project.godot.old project.godot
 
           echo "add_arguments_to_tree: true" >> settings.txt
           echo "delay_removing_added_arguments_to_next_frame: true" >> settings.txt
@@ -516,14 +652,30 @@ jobs:
               fi
           fi
 
-      - name: Configure Project Data
+      - name: Run reproducer
         run: |
-          echo "" > settings.txt
-          cp project.godot.old project.godot
+          echo "extends Node" > temp.txt
+          echo "func _process(delta):" >> temp.txt
+          cat temp.txt results.txt > Node.gd.test
+          wget https://github.com/qarmin/Qarminer/releases/download/reproducer/find_minimal_godot_crash_0.1.1 -O reproducer
+          chmod +x ./reproducer
+          VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0  ./reproducer godot.linuxbsd.editor.dev.x86_64.san 40 . --rendering-driver opengl3 --audio-driver Dummy || echo "ERROR: REPRODUCER FAILURE"
+
+      - name: Store reproducer
+        uses: actions/upload-artifact@v3
+        with:
+          name: reproducer_4_gl3_normal
+          path: crash_reproduce.gd
+          if-no-files-found: ignore
 
       - name: Configure Project Data
         run: |
+          rm timer.txt || true
+          rm memory_usage.txt || true
+          rm results.txt || true
+          rm crash_reproduce.gd || true
           echo "" > settings.txt
+          cp project.godot.old project.godot
 
           echo "number_of_function_repeats: 6" >> settings.txt
           echo "use_parent_methods: true" >> settings.txt
@@ -567,14 +719,30 @@ jobs:
               fi
           fi
 
-      - name: Configure Project Data
+      - name: Run reproducer
         run: |
-          echo "" > settings.txt
-          cp project.godot.old project.godot
+          echo "extends Node" > temp.txt
+          echo "func _process(delta):" >> temp.txt
+          cat temp.txt results.txt > Node.gd.test
+          wget https://github.com/qarmin/Qarminer/releases/download/reproducer/find_minimal_godot_crash_0.1.1 -O reproducer
+          chmod +x ./reproducer
+          VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0  ./reproducer godot.linuxbsd.editor.dev.x86_64.san 40 . --rendering-driver opengl3 --audio-driver Dummy || echo "ERROR: REPRODUCER FAILURE"
+
+      - name: Store reproducer
+        uses: actions/upload-artifact@v3
+        with:
+          name: reproducer_4_gl3_normal
+          path: crash_reproduce.gd
+          if-no-files-found: ignore
 
       - name: Configure Project Data
         run: |
+          rm timer.txt || true
+          rm memory_usage.txt || true
+          rm results.txt || true
+          rm crash_reproduce.gd || true
           echo "" > settings.txt
+          cp project.godot.old project.godot
 
           echo "number_of_function_repeats: 3" >> settings.txt
           echo "add_to_tree: true" >> settings.txt
@@ -620,14 +788,30 @@ jobs:
               fi
           fi
 
-      - name: Configure Project Data
+      - name: Run reproducer
         run: |
-          echo "" > settings.txt
-          cp project.godot.old project.godot
+          echo "extends Node" > temp.txt
+          echo "func _process(delta):" >> temp.txt
+          cat temp.txt results.txt > Node.gd.test
+          wget https://github.com/qarmin/Qarminer/releases/download/reproducer/find_minimal_godot_crash_0.1.1 -O reproducer
+          chmod +x ./reproducer
+          VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0  ./reproducer godot.linuxbsd.editor.dev.x86_64.san 40 . --rendering-driver opengl3 --audio-driver Dummy || echo "ERROR: REPRODUCER FAILURE"
+
+      - name: Store reproducer
+        uses: actions/upload-artifact@v3
+        with:
+          name: reproducer_4_gl3_normal
+          path: crash_reproduce.gd
+          if-no-files-found: ignore
 
       - name: Configure Project Data
         run: |
+          rm timer.txt || true
+          rm memory_usage.txt || true
+          rm results.txt || true
+          rm crash_reproduce.gd || true
           echo "" > settings.txt
+          cp project.godot.old project.godot
 
           echo "number_of_function_repeats: 2" >> settings.txt
           echo "use_parent_methods: true" >> settings.txt
@@ -671,8 +855,28 @@ jobs:
               fi
           fi
 
+      - name: Run reproducer
+        run: |
+          echo "extends Node" > temp.txt
+          echo "func _process(delta):" >> temp.txt
+          cat temp.txt results.txt > Node.gd.test
+          wget https://github.com/qarmin/Qarminer/releases/download/reproducer/find_minimal_godot_crash_0.1.1 -O reproducer
+          chmod +x ./reproducer
+          VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0  ./reproducer godot.linuxbsd.editor.dev.x86_64.san 40 . --rendering-driver opengl3 --audio-driver Dummy || echo "ERROR: REPRODUCER FAILURE"
+
+      - name: Store reproducer
+        uses: actions/upload-artifact@v3
+        with:
+          name: reproducer_4_gl3_normal
+          path: crash_reproduce.gd
+          if-no-files-found: ignore
+
       - name: Configure Project Data
         run: |
+          rm timer.txt || true
+          rm memory_usage.txt || true
+          rm results.txt || true
+          rm crash_reproduce.gd || true
           echo "" > settings.txt
           cp project.godot.old project.godot
 
@@ -681,11 +885,6 @@ jobs:
           echo "[rendering]" >> project.godot
           echo "threads/thread_model=2" >> project.godot
           echo "driver/threads/thread_model=2" >> project.godot
-
-      - name: Configure Project Data
-        run: |
-          echo "" > settings.txt
-
           echo "use_parent_methods: true" >> settings.txt
 
       - name: Run Project Multithread | Parent
@@ -725,8 +924,28 @@ jobs:
               fi
           fi
 
+      - name: Run reproducer
+        run: |
+          echo "extends Node" > temp.txt
+          echo "func _process(delta):" >> temp.txt
+          cat temp.txt results.txt > Node.gd.test
+          wget https://github.com/qarmin/Qarminer/releases/download/reproducer/find_minimal_godot_crash_0.1.1 -O reproducer
+          chmod +x ./reproducer
+          VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0  ./reproducer godot.linuxbsd.editor.dev.x86_64.san 40 . --rendering-driver opengl3 --audio-driver Dummy || echo "ERROR: REPRODUCER FAILURE"
+
+      - name: Store reproducer
+        uses: actions/upload-artifact@v3
+        with:
+          name: reproducer_4_gl3_normal
+          path: crash_reproduce.gd
+          if-no-files-found: ignore
+
       - name: Configure Project Data
         run: |
+          rm timer.txt || true
+          rm memory_usage.txt || true
+          rm results.txt || true
+          rm crash_reproduce.gd || true
           echo "" > settings.txt
           cp project.godot.old project.godot
 
@@ -735,11 +954,6 @@ jobs:
           echo "[rendering]" >> project.godot
           echo "threads/thread_model=2" >> project.godot
           echo "driver/threads/thread_model=2" >> project.godot
-
-      - name: Configure Project Data
-        run: |
-          echo "" > settings.txt
-
           echo "use_parent_methods: true" >> settings.txt
           echo "add_to_tree: true" >> settings.txt
 
@@ -780,6 +994,22 @@ jobs:
               fi
           fi
 
+      - name: Run reproducer
+        run: |
+          echo "extends Node" > temp.txt
+          echo "func _process(delta):" >> temp.txt
+          cat temp.txt results.txt > Node.gd.test
+          wget https://github.com/qarmin/Qarminer/releases/download/reproducer/find_minimal_godot_crash_0.1.1 -O reproducer
+          chmod +x ./reproducer
+          VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0  ./reproducer godot.linuxbsd.editor.dev.x86_64.san 40 . --rendering-driver opengl3 --audio-driver Dummy || echo "ERROR: REPRODUCER FAILURE"
+
+      - name: Store reproducer
+        uses: actions/upload-artifact@v3
+        with:
+          name: reproducer_4_gl3_normal
+          path: crash_reproduce.gd
+          if-no-files-found: ignore
+
       - name: Store project results
         uses: actions/upload-artifact@v3
         with:
@@ -797,12 +1027,14 @@ jobs:
         with:
           name: timer
           path: timer_end.txt
+          if-no-files-found: ignore
 
       - name: Store memory usage results
         uses: actions/upload-artifact@v3
         with:
           name: memory-usage
           path: memory_usage_end.txt
+          if-no-files-found: ignore
 
       - name: Check Log
         run: |
