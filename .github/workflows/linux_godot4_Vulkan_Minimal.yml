@@ -134,7 +134,7 @@ jobs:
       - name: Store reproducer
         uses: actions/upload-artifact@v3
         with:
-          name: reproducer_4_vulkan_minimal
+          name: reproducer_4_vulkan_minimal_43
           path: crash_reproduce.gd
           if-no-files-found: ignore
 
@@ -198,7 +198,7 @@ jobs:
       - name: Store reproducer
         uses: actions/upload-artifact@v3
         with:
-          name: reproducer_4_vulkan_minimal
+          name: reproducer_4_vulkan_minimal_44
           path: crash_reproduce.gd
           if-no-files-found: ignore
 
@@ -262,7 +262,7 @@ jobs:
       - name: Store reproducer
         uses: actions/upload-artifact@v3
         with:
-          name: reproducer_4_vulkan_minimal
+          name: reproducer_4_vulkan_minimal_45
           path: crash_reproduce.gd
           if-no-files-found: ignore
 
@@ -326,7 +326,7 @@ jobs:
       - name: Store reproducer
         uses: actions/upload-artifact@v3
         with:
-          name: reproducer_4_vulkan_minimal
+          name: reproducer_4_vulkan_minimal_46
           path: crash_reproduce.gd
           if-no-files-found: ignore
 
