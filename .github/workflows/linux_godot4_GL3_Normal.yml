@@ -25,7 +25,7 @@ jobs:
         run: |
           sudo apt-get install build-essential pkg-config libx11-dev libxcursor-dev \
             libxinerama-dev libgl1-mesa-dev libglu-dev libasound2-dev libpulse-dev libudev-dev libxi-dev libxrandr-dev yasm \
-            xvfb wget2 unzip python scons git
+            xvfb wget2 unzip scons git
 
       - name: Configure Project Data
         run: |
