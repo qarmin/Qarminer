@@ -33,6 +33,11 @@ jobs:
           echo "[rendering]" >> project.godot
           echo "renderer/rendering_method=\"forward_plus\"" >> project.godot
 
+      - name: Download reproducer
+        run: |
+          wget -nv https://github.com/qarmin/Qarminer/releases/download/reproducer/find_minimal_godot_crash_0.1.1 -O reproducer
+          chmod +x ./reproducer
+
       - name: Download Godot(GIT)
         run: |
           git clone https://github.com/godotengine/godot.git
@@ -132,9 +137,7 @@ jobs:
           echo "func _process(delta):" >> temp.txt
           if [ -f results.txt ]; then
             cat temp.txt results.txt > Node.gd.test || true
-            wget -nv https://github.com/qarmin/Qarminer/releases/download/reproducer/find_minimal_godot_crash_0.1.1 -O reproducer
-            chmod +x ./reproducer
-            VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0  ./reproducer godot.linuxbsd.editor.dev.x86_64.san 40 . --headless --audio-driver Dummy || echo "ERROR: REPRODUCER FAILURE"
+            VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer godot.linuxbsd.editor.dev.x86_64.san 40 . --headless --audio-driver Dummy || echo "ERROR: REPRODUCER FAILURE"
           fi
 
       - name: Store reproducer
@@ -201,9 +204,7 @@ jobs:
           echo "func _process(delta):" >> temp.txt
           if [ -f results.txt ]; then
             cat temp.txt results.txt > Node.gd.test || true
-            wget -nv https://github.com/qarmin/Qarminer/releases/download/reproducer/find_minimal_godot_crash_0.1.1 -O reproducer
-            chmod +x ./reproducer
-            VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0  ./reproducer godot.linuxbsd.editor.dev.x86_64.san 40 . --headless --audio-driver Dummy || echo "ERROR: REPRODUCER FAILURE"
+            VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer godot.linuxbsd.editor.dev.x86_64.san 40 . --headless --audio-driver Dummy || echo "ERROR: REPRODUCER FAILURE"
           fi
 
       - name: Store reproducer
@@ -270,9 +271,7 @@ jobs:
           echo "func _process(delta):" >> temp.txt
           if [ -f results.txt ]; then
             cat temp.txt results.txt > Node.gd.test || true
-            wget -nv https://github.com/qarmin/Qarminer/releases/download/reproducer/find_minimal_godot_crash_0.1.1 -O reproducer
-            chmod +x ./reproducer
-            VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0  ./reproducer godot.linuxbsd.editor.dev.x86_64.san 40 . --headless --audio-driver Dummy || echo "ERROR: REPRODUCER FAILURE"
+            VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer godot.linuxbsd.editor.dev.x86_64.san 40 . --headless --audio-driver Dummy || echo "ERROR: REPRODUCER FAILURE"
           fi
 
       - name: Store reproducer
@@ -334,9 +333,7 @@ jobs:
           echo "func _process(delta):" >> temp.txt
           if [ -f results.txt ]; then
             cat temp.txt results.txt > Node.gd.test || true
-            wget -nv https://github.com/qarmin/Qarminer/releases/download/reproducer/find_minimal_godot_crash_0.1.1 -O reproducer
-            chmod +x ./reproducer
-            VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0  ./reproducer godot.linuxbsd.editor.dev.x86_64.san 40 . --headless --audio-driver Dummy || echo "ERROR: REPRODUCER FAILURE"
+            VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer godot.linuxbsd.editor.dev.x86_64.san 40 . --headless --audio-driver Dummy || echo "ERROR: REPRODUCER FAILURE"
           fi
 
       - name: Store reproducer
@@ -403,9 +400,7 @@ jobs:
           echo "func _process(delta):" >> temp.txt
           if [ -f results.txt ]; then
             cat temp.txt results.txt > Node.gd.test || true
-            wget -nv https://github.com/qarmin/Qarminer/releases/download/reproducer/find_minimal_godot_crash_0.1.1 -O reproducer
-            chmod +x ./reproducer
-            VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0  ./reproducer godot.linuxbsd.editor.dev.x86_64.san 40 . --headless --audio-driver Dummy || echo "ERROR: REPRODUCER FAILURE"
+            VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer godot.linuxbsd.editor.dev.x86_64.san 40 . --headless --audio-driver Dummy || echo "ERROR: REPRODUCER FAILURE"
           fi
 
       - name: Store reproducer
@@ -471,9 +466,7 @@ jobs:
           echo "func _process(delta):" >> temp.txt
           if [ -f results.txt ]; then
             cat temp.txt results.txt > Node.gd.test || true
-            wget -nv https://github.com/qarmin/Qarminer/releases/download/reproducer/find_minimal_godot_crash_0.1.1 -O reproducer
-            chmod +x ./reproducer
-            VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0  ./reproducer godot.linuxbsd.editor.dev.x86_64.san 40 . --headless --audio-driver Dummy || echo "ERROR: REPRODUCER FAILURE"
+            VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer godot.linuxbsd.editor.dev.x86_64.san 40 . --headless --audio-driver Dummy || echo "ERROR: REPRODUCER FAILURE"
           fi
 
       - name: Store reproducer
@@ -539,9 +532,7 @@ jobs:
           echo "func _process(delta):" >> temp.txt
           if [ -f results.txt ]; then
             cat temp.txt results.txt > Node.gd.test || true
-            wget -nv https://github.com/qarmin/Qarminer/releases/download/reproducer/find_minimal_godot_crash_0.1.1 -O reproducer
-            chmod +x ./reproducer
-            VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0  ./reproducer godot.linuxbsd.editor.dev.x86_64.san 40 . --headless --audio-driver Dummy || echo "ERROR: REPRODUCER FAILURE"
+            VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer godot.linuxbsd.editor.dev.x86_64.san 40 . --headless --audio-driver Dummy || echo "ERROR: REPRODUCER FAILURE"
           fi
 
       - name: Store reproducer
@@ -607,9 +598,7 @@ jobs:
           echo "func _process(delta):" >> temp.txt
           if [ -f results.txt ]; then
             cat temp.txt results.txt > Node.gd.test || true
-            wget -nv https://github.com/qarmin/Qarminer/releases/download/reproducer/find_minimal_godot_crash_0.1.1 -O reproducer
-            chmod +x ./reproducer
-            VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0  ./reproducer godot.linuxbsd.editor.dev.x86_64.san 40 . --headless --audio-driver Dummy || echo "ERROR: REPRODUCER FAILURE"
+            VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer godot.linuxbsd.editor.dev.x86_64.san 40 . --headless --audio-driver Dummy || echo "ERROR: REPRODUCER FAILURE"
           fi
 
       - name: Store reproducer
@@ -674,9 +663,7 @@ jobs:
           echo "func _process(delta):" >> temp.txt
           if [ -f results.txt ]; then
             cat temp.txt results.txt > Node.gd.test || true
-            wget -nv https://github.com/qarmin/Qarminer/releases/download/reproducer/find_minimal_godot_crash_0.1.1 -O reproducer
-            chmod +x ./reproducer
-            VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0  ./reproducer godot.linuxbsd.editor.dev.x86_64.san 40 . --headless --audio-driver Dummy || echo "ERROR: REPRODUCER FAILURE"
+            VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer godot.linuxbsd.editor.dev.x86_64.san 40 . --headless --audio-driver Dummy || echo "ERROR: REPRODUCER FAILURE"
           fi
 
       - name: Store reproducer
@@ -743,9 +730,7 @@ jobs:
           echo "func _process(delta):" >> temp.txt
           if [ -f results.txt ]; then
             cat temp.txt results.txt > Node.gd.test || true
-            wget -nv https://github.com/qarmin/Qarminer/releases/download/reproducer/find_minimal_godot_crash_0.1.1 -O reproducer
-            chmod +x ./reproducer
-            VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0  ./reproducer godot.linuxbsd.editor.dev.x86_64.san 40 . --headless --audio-driver Dummy || echo "ERROR: REPRODUCER FAILURE"
+            VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer godot.linuxbsd.editor.dev.x86_64.san 40 . --headless --audio-driver Dummy || echo "ERROR: REPRODUCER FAILURE"
           fi
 
       - name: Store reproducer
@@ -814,9 +799,7 @@ jobs:
           echo "func _process(delta):" >> temp.txt
           if [ -f results.txt ]; then
             cat temp.txt results.txt > Node.gd.test || true
-            wget -nv https://github.com/qarmin/Qarminer/releases/download/reproducer/find_minimal_godot_crash_0.1.1 -O reproducer
-            chmod +x ./reproducer
-            VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0  ./reproducer godot.linuxbsd.editor.dev.x86_64.san 40 . --headless --audio-driver Dummy || echo "ERROR: REPRODUCER FAILURE"
+            VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer godot.linuxbsd.editor.dev.x86_64.san 40 . --headless --audio-driver Dummy || echo "ERROR: REPRODUCER FAILURE"
           fi
 
       - name: Store reproducer
@@ -883,9 +866,7 @@ jobs:
           echo "func _process(delta):" >> temp.txt
           if [ -f results.txt ]; then
             cat temp.txt results.txt > Node.gd.test || true
-            wget -nv https://github.com/qarmin/Qarminer/releases/download/reproducer/find_minimal_godot_crash_0.1.1 -O reproducer
-            chmod +x ./reproducer
-            VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0  ./reproducer godot.linuxbsd.editor.dev.x86_64.san 40 . --headless --audio-driver Dummy || echo "ERROR: REPRODUCER FAILURE"
+            VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer godot.linuxbsd.editor.dev.x86_64.san 40 . --headless --audio-driver Dummy || echo "ERROR: REPRODUCER FAILURE"
           fi
 
       - name: Store reproducer
@@ -954,9 +935,7 @@ jobs:
           echo "func _process(delta):" >> temp.txt
           if [ -f results.txt ]; then
             cat temp.txt results.txt > Node.gd.test || true
-            wget -nv https://github.com/qarmin/Qarminer/releases/download/reproducer/find_minimal_godot_crash_0.1.1 -O reproducer
-            chmod +x ./reproducer
-            VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0  ./reproducer godot.linuxbsd.editor.dev.x86_64.san 40 . --headless --audio-driver Dummy || echo "ERROR: REPRODUCER FAILURE"
+            VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer godot.linuxbsd.editor.dev.x86_64.san 40 . --headless --audio-driver Dummy || echo "ERROR: REPRODUCER FAILURE"
           fi
 
       - name: Store reproducer
@@ -1026,9 +1005,7 @@ jobs:
           echo "func _process(delta):" >> temp.txt
           if [ -f results.txt ]; then
             cat temp.txt results.txt > Node.gd.test || true
-            wget -nv https://github.com/qarmin/Qarminer/releases/download/reproducer/find_minimal_godot_crash_0.1.1 -O reproducer
-            chmod +x ./reproducer
-            VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0  ./reproducer godot.linuxbsd.editor.dev.x86_64.san 40 . --headless --audio-driver Dummy || echo "ERROR: REPRODUCER FAILURE"
+            VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer godot.linuxbsd.editor.dev.x86_64.san 40 . --headless --audio-driver Dummy || echo "ERROR: REPRODUCER FAILURE"
           fi
 
       - name: Store reproducer
