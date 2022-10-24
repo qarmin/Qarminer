@@ -7,7 +7,7 @@ on:
 
 jobs:
   linux-sanitizer:
-    runs-on: "ubuntu-20.04"
+    runs-on: "ubuntu-22.04"
     name: Editor and project
 
     steps:
@@ -25,7 +25,18 @@ jobs:
         run: |
           sudo apt-get install build-essential pkg-config libx11-dev libxcursor-dev \
             libxinerama-dev libgl1-mesa-dev libglu-dev libasound2-dev libpulse-dev libudev-dev libxi-dev libxrandr-dev yasm \
-            xvfb wget2 unzip python scons git
+            xvfb wget2 unzip scons git
+
+      - name: Configure Project Data
+        run: |
+
+          echo "[rendering]" >> project.godot
+          echo "renderer/rendering_method=\"forward_plus\"" >> project.godot
+
+      - name: Download reproducer
+        run: |
+          wget -nv https://github.com/qarmin/Qarminer/releases/download/reproducer/find_minimal_godot_crash_0.1.1 -O reproducer
+          chmod +x ./reproducer
 
       - name: Download Godot(GIT)
         run: |
@@ -37,8 +48,8 @@ jobs:
       - name: Compile Godot
         run: |
           cd godot
-          wget https://patch-diff.githubusercontent.com/raw/godotengine/godot/pull/52075.patch -O 3x.patch
-          wget https://patch-diff.githubusercontent.com/raw/godotengine/godot/pull/49053.patch -O 4.patch
+          wget -nv https://patch-diff.githubusercontent.com/raw/godotengine/godot/pull/52075.patch -O 3x.patch
+          wget -nv https://patch-diff.githubusercontent.com/raw/godotengine/godot/pull/49053.patch -O 4.patch
           git apply 3x.patch
           scons -j2 use_asan=yes use_ubsan=yes linker=gold module_bmp_enabled=no module_bullet_enabled=no module_camera_enabled=no module_csg_enabled=no module_cvtt_enabled=no module_dds_enabled=no module_denoise_enabled=no module_enet_enabled=no module_etc_enabled=no module_fbx_enabled=no module_gdnative_enabled=no module_gltf_enabled=no module_gridmap_enabled=no module_hdr_enabled=no module_jpg_enabled=no module_jsonrpc_enabled=no module_lightmapper_cpu_enabled=no module_mbedtls_enabled=no module_minimp3_enabled=no module_mobile_vr_enabled=no module_ogg_enabled=no module_opensimplex_enabled=no module_opus_enabled=no module_pvr_enabled=no module_raycast_enabled=no module_regex_enabled=no module_squish_enabled=no module_stb_vorbis_enabled=no module_svg_enabled=no module_tga_enabled=no module_theora_enabled=no module_tinyexr_enabled=no module_upnp_enabled=no module_vhacd_enabled=no module_visual_script_enabled=no module_vorbis_enabled=no module_webm_enabled=no module_webp_enabled=no module_webrtc_enabled=no module_websocket_enabled=no module_webxr_enabled=no module_xatlas_unwrap_enabled=no
           cp bin/godot.x11.tools.64s ../
@@ -48,7 +59,7 @@ jobs:
       # Download, unzip and setup SwiftShader library
       - name: Download SwiftShader
         run: |
-          wget https://github.com/qarmin/gtk_library_store/releases/download/3.24.0/swiftshader3.zip
+          wget -nv https://github.com/qarmin/gtk_library_store/releases/download/3.24.0/swiftshader3.zip
           unzip swiftshader3.zip
           rm swiftshader3.zip
           curr="$(pwd)/libvk_swiftshader.so"
@@ -76,6 +87,10 @@ jobs:
 
       - name: Configure Project Data
         run: |
+          rm timer.txt || true
+          rm memory_usage.txt || true
+          rm results.txt || true
+          rm crash_reproduce.gd || true
           echo "" > settings.txt
           cp project.godot.old project.godot
 
@@ -116,8 +131,28 @@ jobs:
               fi
           fi
 
+      - name: Run reproducer
+        run: |
+          echo "extends Node" > temp.txt
+          echo "func _process(delta):" >> temp.txt
+          if [ -f results.txt ]; then
+            cat temp.txt results.txt > Node.gd.test || true
+            VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer godot.x11.tools.64s 40 . --video-driver GLES3 --audio-driver Dummy || echo "ERROR: REPRODUCER FAILURE"
+          fi
+
+      - name: Store reproducer
+        uses: actions/upload-artifact@v3
+        with:
+          name: reproducer_3_x_gles3_minimal_20
+          path: crash_reproduce.gd
+          if-no-files-found: ignore
+
       - name: Configure Project Data
         run: |
+          rm timer.txt || true
+          rm memory_usage.txt || true
+          rm results.txt || true
+          rm crash_reproduce.gd || true
           echo "" > settings.txt
           cp project.godot.old project.godot
 
@@ -158,8 +193,28 @@ jobs:
               fi
           fi
 
+      - name: Run reproducer
+        run: |
+          echo "extends Node" > temp.txt
+          echo "func _process(delta):" >> temp.txt
+          if [ -f results.txt ]; then
+            cat temp.txt results.txt > Node.gd.test || true
+            VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer godot.x11.tools.64s 40 . --video-driver GLES3 --audio-driver Dummy || echo "ERROR: REPRODUCER FAILURE"
+          fi
+
+      - name: Store reproducer
+        uses: actions/upload-artifact@v3
+        with:
+          name: reproducer_3_x_gles3_minimal_21
+          path: crash_reproduce.gd
+          if-no-files-found: ignore
+
       - name: Configure Project Data
         run: |
+          rm timer.txt || true
+          rm memory_usage.txt || true
+          rm results.txt || true
+          rm crash_reproduce.gd || true
           echo "" > settings.txt
           cp project.godot.old project.godot
 
@@ -200,8 +255,28 @@ jobs:
               fi
           fi
 
+      - name: Run reproducer
+        run: |
+          echo "extends Node" > temp.txt
+          echo "func _process(delta):" >> temp.txt
+          if [ -f results.txt ]; then
+            cat temp.txt results.txt > Node.gd.test || true
+            VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer godot.x11.tools.64s 40 . --video-driver GLES3 --audio-driver Dummy || echo "ERROR: REPRODUCER FAILURE"
+          fi
+
+      - name: Store reproducer
+        uses: actions/upload-artifact@v3
+        with:
+          name: reproducer_3_x_gles3_minimal_22
+          path: crash_reproduce.gd
+          if-no-files-found: ignore
+
       - name: Configure Project Data
         run: |
+          rm timer.txt || true
+          rm memory_usage.txt || true
+          rm results.txt || true
+          rm crash_reproduce.gd || true
           echo "" > settings.txt
           cp project.godot.old project.godot
 
@@ -242,6 +317,22 @@ jobs:
               fi
           fi
 
+      - name: Run reproducer
+        run: |
+          echo "extends Node" > temp.txt
+          echo "func _process(delta):" >> temp.txt
+          if [ -f results.txt ]; then
+            cat temp.txt results.txt > Node.gd.test || true
+            VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer godot.x11.tools.64s 40 . --video-driver GLES3 --audio-driver Dummy || echo "ERROR: REPRODUCER FAILURE"
+          fi
+
+      - name: Store reproducer
+        uses: actions/upload-artifact@v3
+        with:
+          name: reproducer_3_x_gles3_minimal_23
+          path: crash_reproduce.gd
+          if-no-files-found: ignore
+
       - name: Store project results
         uses: actions/upload-artifact@v3
         with:
@@ -259,12 +350,14 @@ jobs:
         with:
           name: timer
           path: timer_end.txt
+          if-no-files-found: ignore
 
       - name: Store memory usage results
         uses: actions/upload-artifact@v3
         with:
           name: memory-usage
           path: memory_usage_end.txt
+          if-no-files-found: ignore
 
       - name: Check Log
         run: |
