@@ -209,16 +209,17 @@ func _process(_delta) -> void:
 			creation_of_arguments += "\tif randi() % 3 == 0:\n"
 			for argument in arguments:
 				argument_number += 1
-				var variable_name = "temp_variable" + str(argument_number)
+				var variable_name = "temp_variable_f" + str(argument_number)
 				creation_of_arguments += "\t\tvar " + variable_name + " = " + argument + "\n"
-				creation_of_arguments += "\t\tvar ARG_" + variable_name + " = \"temp_variable\" + str(get_next_argument_index())\n"
+				creation_of_arguments += "\t\tvar ARG_" + variable_name + " = \"temp_variable_f\" + str(get_next_argument_index())\n"
 				creation_of_arguments += '\t\tsave_and_print("var " + ARG_' + variable_name + ' + " = " + ParseArgumentType.return_gdscript_code_which_run_this_object(' + variable_name + "))\n"
 
 				variable_names.append(variable_name)
 
 				if argument.find("get_object") != -1:
 					deleting_arguments += "\t\tHelpFunctions.remove_thing(" + variable_name + ")\n"
-					deleting_arguments += "\t\tsave_and_print(ARG_" + variable_name + "+ HelpFunctions.remove_thing_string(" + variable_name + "))\n"
+					deleting_arguments += "\t\tif !HelpFunctions.remove_thing_string(" + variable_name + ").is_empty():\n"
+					deleting_arguments += "\t\t\tsave_and_print(ARG_" + variable_name + "+ HelpFunctions.remove_thing_string(" + variable_name + "))\n"
 
 			file_handler.store_string(creation_of_arguments)
 
