@@ -188,7 +188,7 @@ func _process(_delta) -> void:
 
 				if argument.find("get_object") != -1:
 					deleting_arguments += "\t\tHelpFunctions.remove_thing(" + variable_name + ")\n"
-					deleting_arguments += "\t\tif !HelpFunctions.remove_thing_string(" + variable_name + ").is_empty():\n"
+					deleting_arguments += "\t\tif !HelpFunctions.remove_thing_string(" + variable_name + ").empty():\n"
 					deleting_arguments += "\t\t\tsave_and_print(ARG_" + variable_name + "+ HelpFunctions.remove_thing_string(" + variable_name + "))\n"
 
 			file_handler.store_string(creation_of_arguments)
