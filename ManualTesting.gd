@@ -30,7 +30,7 @@ var excluded_functions: Array = [
 	"dump_resources_to_file",  # create file
 	"set_low_processor_usage_mode",  # Freeze
 	"set_low_processor_usage_mode_sleep_usec",  # Freeze
-	"finish", # Visual, cause freeze
+	"finish",  # Visual, cause freeze
 	# MEMORY LEAK
 	"init",  # Quite specific function, which probably needs to be instanced only once
 	"space_create",
@@ -181,7 +181,7 @@ func _process(_delta) -> void:
 				argument_number += 1
 				var variable_name = "temp_variable_f" + str(argument_number)
 				creation_of_arguments += "\t\tvar " + variable_name + " = " + argument + "\n"
-				creation_of_arguments += "\t\tvar ARG_" + variable_name + " = \"temp_variable_f\" + str(get_next_argument_index())\n"
+				creation_of_arguments += "\t\tvar ARG_" + variable_name + ' = "temp_variable_f" + str(get_next_argument_index())\n'
 				creation_of_arguments += '\t\tsave_and_print("var " + ARG_' + variable_name + ' + " = " + ParseArgumentType.return_gdscript_code_which_run_this_object(' + variable_name + "))\n"
 
 				variable_names.append(variable_name)
@@ -215,6 +215,7 @@ func _process(_delta) -> void:
 	file_handler.store_string(manual_functions)
 
 	get_tree().quit()
+
 
 var manual_functions: String = """
 	

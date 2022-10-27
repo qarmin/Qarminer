@@ -30,7 +30,6 @@ jobs:
       - name: Configure Data
         run: |
           true
-          
 
       - name: Download Godot(GIT)
         run: |
@@ -55,7 +54,7 @@ jobs:
           echo "" > settings.txt
           echo "disabled_classes_append:" >> settings.txt
           echo "Image" >> settings.txt
-          
+
       - name: Exporting project
         run: |
           curr="$(pwd)/godot.x11.opt.64s"
