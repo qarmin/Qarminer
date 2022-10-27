@@ -281,7 +281,7 @@ jobs:
       - name: Store reproducer
         uses: actions/upload-artifact@v3
         with:
-          name: reproducer_4_vulkan_minimal_default_36
+          name: reproducer_4_vulkan_minimal_default_38
           path: crash_reproduce.gd
           if-no-files-found: ignore
 

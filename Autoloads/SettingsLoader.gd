@@ -148,7 +148,7 @@ func load_setting(setting_name: String, value_type: int, default_value):
 
 func load_deprecated_classes() -> void:
 	var custom_classes: Array = []
-	var file : FileAccess
+	var file: FileAccess
 
 	# Compatibility tool
 	if FileAccess.file_exists("res://classes.txt"):

@@ -19,21 +19,21 @@ jobs:
           sudo rm -f /etc/apt/sources.list.d/*
           sudo cp -f misc/ci/sources.list /etc/apt/sources.list
           sudo apt-get update
-          
+
       # Install all packages (except scons)
       - name: Configure dependencies
         run: |
           sudo apt-get install build-essential pkg-config libx11-dev libxcursor-dev \
             libxinerama-dev libgl1-mesa-dev libglu-dev libasound2-dev libpulse-dev libudev-dev libxi-dev libxrandr-dev yasm \
             xvfb wget2 unzip scons git
-                      
+           
       - name: Download Godot(GIT)
         run: |
           git clone https://github.com/godotengine/godot.git
           cd godot
           git checkout master
           cd ../
-          
+
       - name: Compile Godot
         run: |
           cd godot
@@ -46,12 +46,12 @@ jobs:
           cp bin/godot.linuxbsd.template_release.x86_64.san ../
           cd ../
           rm -rf godot
-          
+
       - name: Remove broken project files
         run: |
           rm SingletonTesting.tscn
           rm Node.tscn
-          
+
       # Download, unzip and setup SwiftShader library
       - name: Download SwiftShader
         run: |
@@ -60,7 +60,7 @@ jobs:
           rm swiftshader3.zip
           curr="$(pwd)/libvk_swiftshader.so"
           sed -i "s|PATH_TO_CHANGE|$curr|" vk_swiftshader_icd.json
-          
+
       - name: Exporting project
         run: |
           curr="$(pwd)/godot.linuxbsd.template_release.x86_64.san"
@@ -76,7 +76,7 @@ jobs:
         run: |
           VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json DRI_PRIME=0 xvfb-run ./test_project 3600 --audio-driver Dummy 2>&1 | tee sanitizers_log.txt || true
           tail -n 300 sanitizers_log.txt > project_results.txt
-          
+
       - name: Store project results
         uses: actions/upload-artifact@v3
         with:

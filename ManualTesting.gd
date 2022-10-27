@@ -79,8 +79,8 @@ var excluded_functions: Array = [
 	"line_shape_create",
 	# GODOT 4
 	# CRASHES
-	"bake_render_uv2", # 67067
-	"create_sub_window", # 67030
+	"bake_render_uv2",  # 67067
+	"create_sub_window",  # 67030
 	"cursor_set_custom_image",  #66605
 	"create_local_rendering_device",  #  #66372
 	"texture_replace",  # 66373
@@ -89,9 +89,9 @@ var excluded_functions: Array = [
 	"canvas_texture_set_texture_filter",  #66375
 	"canvas_texture_set_texture_repeat",  #66375
 	"canvas_texture_set_channel",  #66375
-	"register_script_language", # 67065
+	"register_script_language",  # 67065
 	# LEAK
-	"texture_2d_create", 
+	"texture_2d_create",
 	"link_create",
 	"joint_create",
 	"separation_ray_shape_create",
@@ -121,8 +121,8 @@ var excluded_functions: Array = [
 	"camera_attributes_create",  # RID Leak
 	"canvas_texture_create",  # RID Leak
 	#Other
-	"set_primary_interface",# crash, but probably expected
-	"read_string_from_stdin", # Freeze
+	"set_primary_interface",  # crash, but probably expected
+	"read_string_from_stdin",  # Freeze
 	"warp_mouse",  # Warping
 	"create_process",
 	"create_instance",
@@ -211,7 +211,7 @@ func _process(_delta) -> void:
 				argument_number += 1
 				var variable_name = "temp_variable_f" + str(argument_number)
 				creation_of_arguments += "\t\tvar " + variable_name + " = " + argument + "\n"
-				creation_of_arguments += "\t\tvar ARG_" + variable_name + " = \"temp_variable_f\" + str(get_next_argument_index())\n"
+				creation_of_arguments += "\t\tvar ARG_" + variable_name + ' = "temp_variable_f" + str(get_next_argument_index())\n'
 				creation_of_arguments += '\t\tsave_and_print("var " + ARG_' + variable_name + ' + " = " + ParseArgumentType.return_gdscript_code_which_run_this_object(' + variable_name + "))\n"
 
 				variable_names.append(variable_name)
@@ -245,6 +245,7 @@ func _process(_delta) -> void:
 	file_handler.store_string(manual_functions)
 
 	get_tree().quit()
+
 
 var manual_functions: String = """
 	

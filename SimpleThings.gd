@@ -10,6 +10,7 @@ var number: int = 0
 func _ready():
 	HelpFunctions.initialize_list_of_available_classes()
 
+
 func _process(delta):
 	if save_to_file:
 		file_handler = FileAccess.open("results.txt", FileAccess.WRITE)

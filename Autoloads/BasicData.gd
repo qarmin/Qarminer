@@ -15,31 +15,34 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0 - Expected things
 	###
-	"instantiate", # Hmmm...
-	"warp_mouse_position", # Hmmm ..
-	"print_stray_nodes", # Hmmm ..
-	"add_child_below_node", # Hmm ..
-	"to_node", # Leak
-	"sample_baked", # Freeze
-	"sample_baked_up_vector", # Freeze
-	"get_parent", # ? - why this is not available on 3.x?
+	"instantiate",  # Hmmm...
+	"warp_mouse_position",  # Hmmm ..
+	"print_stray_nodes",  # Hmmm ..
+	"add_child_below_node",  # Hmm ..
+	"to_node",  # Leak
+	"sample_baked",  # Freeze
+	"sample_baked_up_vector",  # Freeze
+	"get_parent",  # ? - why this is not available on 3.x?
 	###
 	### Godot 4.0
 	###
-	"do_unindent", #67364
-	"add_file", # 67613
-	"_set_playing", #67589
-	"play", #  67589
-	"save_jpg_to_buffer", # 67586
-	"fill", #67567
-	"set_current", # 67442
-	"undo", # 67364
-	"indent_lines", # 67364
-	"set_follow_camera_enabled", # 66986
-	"set_scroll_past_end_of_file_enabled", # 66937
-	"set_fit_content_height_enabled", # 66937
-	"set_line_wrapping_mode", # 66937
-	"generate_triangle_mesh", # 66699
+	"set_process_material",  # 67954, 54478
+	"append_from_file",  # 67951
+	"get_video_adapter_driver_info",  #67950
+	"do_unindent",  #67364
+	"add_file",  # 67613
+	"_set_playing",  #67589
+	"play",  #  67589
+	"save_jpg_to_buffer",  # 67586
+	"fill",  #67567
+	"set_current",  # 67442
+	"undo",  # 67364
+	"indent_lines",  # 67364
+	"set_follow_camera_enabled",  # 66986
+	"set_scroll_past_end_of_file_enabled",  # 66937
+	"set_fit_content_height_enabled",  # 66937
+	"set_line_wrapping_mode",  # 66937
+	"generate_triangle_mesh",  # 66699
 	"get_faces",  #66699
 	"create_trimesh_shape",  # 66699
 	"_get_light_textures_data",  # 66002
@@ -402,22 +405,19 @@ var disabled_classes: Array = [
 	### Godot 4.0 Additional
 	###
 	#
-	"XROrigin3D", # 67442
-	"ThemeDB",  # Singleton 4
-	"SystemFont",  # 64698
+	"InputMap",  # Singleton
+	"ThemeDB",  # Singleton
 	"TextServer",  # RefCounted Server
 	"TextServerAdvanced",  # RefCounted Server
 	"TextServerExtension",  # RefCounted Server
 	"TextServer",  # RefCounted Server
+	"XROrigin3D",  # 67442
 	"EngineDebugger",  # Crashes in exported project, not very usable
 	# Functions to be enabled(somewhere)
-	"InputMap",  # Strange crashes
 	"MultiplayerAPI",  # Crashes TODO
-	"ConfigFile",  # 65316
 	"VisibleOnScreenEnabler3D",  #53565
 	"VisibleOnScreenEnabler2D",  #53565
 	"ImageTexture3D",  #53721
-	"FogMaterial",  #54478
 	"AudioStreamGenerator",  # TODO threading crash
 	"AudioStreamGeneratorPlayback",  # TODO threading crash
 	"GraphNode",  # 65557
