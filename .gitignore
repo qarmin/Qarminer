@@ -38,3 +38,7 @@ ABCD.tscn
 *.x86_64
 Node.gd.test
 Node.gd.temp
+text.txt
+test.txt
+*text.txt
+*test.txt

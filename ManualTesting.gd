@@ -10,6 +10,7 @@ var excluded_functions: Array = [
 	"open_midi_inputs",  #52821
 	"set_window_mouse_passthrough",  #66754
 	"lock",  # 66758
+	"get_video_adapter_driver_info",  # 67954
 	# OTHER
 	"set_window_size",  # Can crash OS/DE, hard to find exact values to crash
 	"print_resources_by_type",  # Prints
