@@ -27,10 +27,6 @@ jobs:
             libxinerama-dev libgl1-mesa-dev libglu-dev libasound2-dev libpulse-dev libudev-dev libxi-dev libxrandr-dev yasm \
             xvfb wget2 unzip python3 scons git
 
-      - name: Configure Data
-        run: |
-          true
-
       - name: Backup project.godot
         run: |
           cp project.godot project.godot.old
@@ -82,7 +78,7 @@ jobs:
           echo "func _process(delta):" >> temp.txt
           if [ -f results.txt ]; then
             cat temp.txt results.txt > Node.gd.test || true
-            VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer godot.x11.tools.64s 40 . --video-driver GLES2 --audio-driver Dummy # || echo "ERROR: REPRODUCER FAILURE"
+            VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer godot.x11.tools.64s 60_50 . --video-driver GLES2 --audio-driver Dummy # || echo "ERROR: REPRODUCER FAILURE"
           fi
 
       - name: Store reproducer
@@ -115,7 +111,7 @@ jobs:
           echo "func _process(delta):" >> temp.txt
           if [ -f results.txt ]; then
             cat temp.txt results.txt > Node.gd.test || true
-            VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer godot.x11.tools.64s 40 . --video-driver GLES2 --audio-driver Dummy # || echo "ERROR: REPRODUCER FAILURE"
+            VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer godot.x11.tools.64s 60_50 . --video-driver GLES2 --audio-driver Dummy # || echo "ERROR: REPRODUCER FAILURE"
           fi
 
       - name: Store reproducer
@@ -148,7 +144,7 @@ jobs:
           echo "func _process(delta):" >> temp.txt
           if [ -f results.txt ]; then
             cat temp.txt results.txt > Node.gd.test || true
-            VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer godot.x11.tools.64s 40 . --video-driver GLES2 --audio-driver Dummy # || echo "ERROR: REPRODUCER FAILURE"
+            VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer godot.x11.tools.64s 60_50 . --video-driver GLES2 --audio-driver Dummy # || echo "ERROR: REPRODUCER FAILURE"
           fi
 
       - name: Store reproducer
@@ -182,7 +178,7 @@ jobs:
           echo "func _process(delta):" >> temp.txt
           if [ -f results.txt ]; then
             cat temp.txt results.txt > Node.gd.test || true
-            VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer godot.x11.tools.64s 40 . --video-driver GLES3 --audio-driver Dummy # || echo "ERROR: REPRODUCER FAILURE"
+            VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer godot.x11.tools.64s 60_50 . --video-driver GLES3 --audio-driver Dummy # || echo "ERROR: REPRODUCER FAILURE"
           fi
 
       - name: Store reproducer
@@ -215,7 +211,7 @@ jobs:
           echo "func _process(delta):" >> temp.txt
           if [ -f results.txt ]; then
             cat temp.txt results.txt > Node.gd.test || true
-            VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer godot.x11.tools.64s 40 . --video-driver GLES3 --audio-driver Dummy # || echo "ERROR: REPRODUCER FAILURE"
+            VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer godot.x11.tools.64s 60_50 . --video-driver GLES3 --audio-driver Dummy # || echo "ERROR: REPRODUCER FAILURE"
           fi
 
       - name: Store reproducer
@@ -248,7 +244,7 @@ jobs:
           echo "func _process(delta):" >> temp.txt
           if [ -f results.txt ]; then
             cat temp.txt results.txt > Node.gd.test || true
-            VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer godot.x11.tools.64s 40 . --video-driver GLES3 --audio-driver Dummy # || echo "ERROR: REPRODUCER FAILURE"
+            VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer godot.x11.tools.64s 60_50 . --video-driver GLES3 --audio-driver Dummy # || echo "ERROR: REPRODUCER FAILURE"
           fi
 
       - name: Store reproducer
