@@ -9,6 +9,10 @@ This repository contains many tools:
 - Variant Tester - test functions in builtin Godot classes like String
 - Reparenting/Deleting - tool to reparent and delete randomly nodes
 - Simple Things - creates and deletes objects of every class
+- CSharpCreate - C# files creator with all available functions
+- GDScriptCreator - creates broken GDScript files that should leak, crash or worse
+- ManualTesting/SingletonTesting - create file with functions executed on singletons(similar to Function executor, but singleton objects cannot be instanced)
+- Simple Scene creator - creates random scene files with random nodes
 
 Qarminer can test functions with random data(used for fuzzing - just look into CI of this project) or always with same(used as simple check in Godot CI)
 
@@ -47,10 +51,10 @@ After e.g. crash, you need only to check and try to run GDScript from file `resu
 If you use non modified version of Godot, then you can experiment with with specific arguments, settings etc.  
 Most crashes in official Godot binaries were fixed or reported to repository.  
 
-## 4.0 version(WIP)
-4.0 version is available in 4.0 branch, but since Godot 4 is not stable yet, project also isn't stable.  
-Conversion project from 3.x to 4.0 is quite easy and require to use project converter - https://github.com/godotengine/godot/pull/51950.  
-Later only uncommenting some code is required(marked by `TODOGODOT4`) which handle additional types like Callable or Signal is required
+## Automatic bug finding
+Recently I introduced automatic way to find GDScript code which crashes/leaks/timeouts.  
+App is available in release tab, and example usage is visible in CI.  
+Main feature of reproducer is ability to find the smallest possible GDScript that cause problems.
 
 ## LICENSE
 MIT
