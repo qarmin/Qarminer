@@ -26,6 +26,7 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
+	"load_tga_from_buffer", # 
 	"set_process_material",  # 67954, 54478
 	"append_from_file",  # 67951
 	"get_video_adapter_driver_info",  #67950
@@ -414,6 +415,7 @@ var disabled_classes: Array = [
 	"XROrigin3D",  # 67442
 	"EngineDebugger",  # Crashes in exported project, not very usable
 	# Functions to be enabled(somewhere)
+	"FogMaterial", # 67954
 	"MultiplayerAPI",  # Crashes TODO
 	"VisibleOnScreenEnabler3D",  #53565
 	"VisibleOnScreenEnabler2D",  #53565
