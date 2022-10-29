@@ -32,6 +32,7 @@ var function_exceptions: Array = [
 	###
 	### Reported crashes
 	###
+	"agent_set_callback", # 68013
 	"create_convex_collision", # 60357
 	"tts_set_utterance_callback",  # 66821
 	"set_window_mouse_passthrough",  # 66754
@@ -302,13 +303,6 @@ var disabled_classes: Array = [
 	### TODO
 	###
 	"ImmediateGeometry",  #53623
-	"ItemList",  # Big numbers
-	"_ResourceLoader",  #Spams
-	"ResourceLoader",  #Spams
-	#"ProximityGroup",  # Not cherrypicked yet
-	# Backported Navigation changes also backport bugged classes
-	"NavigationAgent2D",
-	"NavigationAgent",
 	# TODOGODOT4 - update here exluded list from Godot4
 ]
 
