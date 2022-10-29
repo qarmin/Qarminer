@@ -281,7 +281,7 @@ jobs:
       - name: Store reproducer
         uses: actions/upload-artifact@v3
         with:
-          name: reproducer_3_x_gles3_minimal_default_19
+          name: reproducer_3_x_gles3_minimal_default_18
           path: crash_reproduce.gd
           if-no-files-found: ignore
 

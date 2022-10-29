@@ -194,7 +194,7 @@ jobs:
       - name: Store reproducer
         uses: actions/upload-artifact@v3
         with:
-          name: reproducer_3_x_gles3_normal_one_by_one_parent_add_to_tree_maximum_tested_21
+          name: reproducer_3_x_gles3_normal_one_by_one_parent_add_to_tree_maximum_tested_20
           path: crash_reproduce.gd
           if-no-files-found: ignore
 
@@ -261,7 +261,7 @@ jobs:
       - name: Store reproducer
         uses: actions/upload-artifact@v3
         with:
-          name: reproducer_3_x_gles3_normal_parent_add_to_tree_maximum_tested_max_random_22
+          name: reproducer_3_x_gles3_normal_parent_add_to_tree_maximum_tested_max_random_21
           path: crash_reproduce.gd
           if-no-files-found: ignore
 
@@ -323,7 +323,7 @@ jobs:
       - name: Store reproducer
         uses: actions/upload-artifact@v3
         with:
-          name: reproducer_3_x_gles3_normal_default_23
+          name: reproducer_3_x_gles3_normal_default_22
           path: crash_reproduce.gd
           if-no-files-found: ignore
 
@@ -390,7 +390,7 @@ jobs:
       - name: Store reproducer
         uses: actions/upload-artifact@v3
         with:
-          name: reproducer_3_x_gles3_normal_delaying_parent_add_to_tree_maximum_tested_24
+          name: reproducer_3_x_gles3_normal_delaying_parent_add_to_tree_maximum_tested_23
           path: crash_reproduce.gd
           if-no-files-found: ignore
 
@@ -456,7 +456,7 @@ jobs:
       - name: Store reproducer
         uses: actions/upload-artifact@v3
         with:
-          name: reproducer_3_x_gles3_normal_delaying_one_by_one_parent_25
+          name: reproducer_3_x_gles3_normal_delaying_one_by_one_parent_24
           path: crash_reproduce.gd
           if-no-files-found: ignore
 
@@ -522,7 +522,7 @@ jobs:
       - name: Store reproducer
         uses: actions/upload-artifact@v3
         with:
-          name: reproducer_3_x_gles3_normal_big_numbers_parent_one_by_one_26
+          name: reproducer_3_x_gles3_normal_big_numbers_parent_one_by_one_25
           path: crash_reproduce.gd
           if-no-files-found: ignore
 
@@ -588,7 +588,7 @@ jobs:
       - name: Store reproducer
         uses: actions/upload-artifact@v3
         with:
-          name: reproducer_3_x_gles3_normal_small_numbers_parent_one_by_one_27
+          name: reproducer_3_x_gles3_normal_small_numbers_parent_one_by_one_26
           path: crash_reproduce.gd
           if-no-files-found: ignore
 
@@ -653,7 +653,7 @@ jobs:
       - name: Store reproducer
         uses: actions/upload-artifact@v3
         with:
-          name: reproducer_3_x_gles3_normal_add_arguments_to_tree_delaying_28
+          name: reproducer_3_x_gles3_normal_add_arguments_to_tree_delaying_27
           path: crash_reproduce.gd
           if-no-files-found: ignore
 
@@ -720,7 +720,7 @@ jobs:
       - name: Store reproducer
         uses: actions/upload-artifact@v3
         with:
-          name: reproducer_3_x_gles3_normal_one_by_one,_very_big_amount_of_functions_29
+          name: reproducer_3_x_gles3_normal_one_by_one,_very_big_amount_of_functions_28
           path: crash_reproduce.gd
           if-no-files-found: ignore
 
@@ -789,7 +789,7 @@ jobs:
       - name: Store reproducer
         uses: actions/upload-artifact@v3
         with:
-          name: reproducer_3_x_gles3_normal_one_by_one,_very_big_amount_of_functions,_add_to_tree_30
+          name: reproducer_3_x_gles3_normal_one_by_one,_very_big_amount_of_functions,_add_to_tree_29
           path: crash_reproduce.gd
           if-no-files-found: ignore
 
@@ -856,7 +856,7 @@ jobs:
       - name: Store reproducer
         uses: actions/upload-artifact@v3
         with:
-          name: reproducer_3_x_gles3_normal_multiple_classes,_very_big_amount_of_functions_31
+          name: reproducer_3_x_gles3_normal_multiple_classes,_very_big_amount_of_functions_30
           path: crash_reproduce.gd
           if-no-files-found: ignore
 
@@ -927,7 +927,7 @@ jobs:
       - name: Store reproducer
         uses: actions/upload-artifact@v3
         with:
-          name: reproducer_3_x_gles3_normal_multithread_parent_maximum_tested_32
+          name: reproducer_3_x_gles3_normal_multithread_parent_maximum_tested_31
           path: crash_reproduce.gd
           if-no-files-found: ignore
 
@@ -999,119 +999,7 @@ jobs:
       - name: Store reproducer
         uses: actions/upload-artifact@v3
         with:
-          name: reproducer_3_x_gles3_normal_multithread_add_parent_maximum_tested_33
-          path: crash_reproduce.gd
-          if-no-files-found: ignore
-
-      - name: Configure Project Data
-        run: |
-          rm timer.txt || true
-          rm memory_usage.txt || true
-          rm results.txt || true
-          rm crash_reproduce.gd || true
-          echo "" > settings.txt
-          cp project.godot.old project.godot
-
-          echo "use_parent_methods: true" >> settings.txt
-          echo "used_number: 50" >> settings.txt
-          echo "function_exceptions_remove:" >> settings.txt
-          echo "get_recognized_extensions_for_type" >> settings.txt
-          echo "load" >> settings.txt
-          echo "add_sphere" >> settings.txt
-          echo "_update_inputs" >> settings.txt
-          echo "update_bitmask_region" >> settings.txt
-          echo "set_enabled_inputs" >> settings.txt
-          echo "set_pre_process_time" >> settings.txt
-          echo "create_convex_collision" >> settings.txt
-          echo "create_multiple_convex_collisions" >> settings.txt
-          echo "load_webp_from_buffer" >> settings.txt
-          echo "_update_sky" >> settings.txt
-          echo "interpolate_baked" >> settings.txt
-          echo "get_baked_length" >> settings.txt
-          echo "get_baked_points" >> settings.txt
-          echo "get_closest_offset" >> settings.txt
-          echo "get_closest_point" >> settings.txt
-          echo "get_baked_up_vectors" >> settings.txt
-          echo "interpolate_baked_up_vector" >> settings.txt
-          echo "get_baked_tilts" >> settings.txt
-          echo "set_enabled_inputs" >> settings.txt
-          echo "grow_mask" >> settings.txt
-          echo "force_update_transform" >> settings.txt
-          echo "is_enabler_enabled" >> settings.txt
-          echo "set_enabler" >> settings.txt
-          echo "get_aabb" >> settings.txt
-          echo "set_aabb" >> settings.txt
-          echo "is_on_screen" >> settings.txt
-          echo "set_rings" >> settings.txt
-          echo "set_amount" >> settings.txt
-          echo "pck_start" >> settings.txt
-          echo "save" >> settings.txt
-          echo "save_png" >> settings.txt
-          echo "save_to_wav" >> settings.txt
-          echo "save_to_file" >> settings.txt
-          echo "make_dir" >> settings.txt
-          echo "make_dir_recursive" >> settings.txt
-          echo "save_encrypted" >> settings.txt
-          echo "save_encrypted_pass" >> settings.txt
-          echo "save_exr" >> settings.txt
-          echo "dump_resources_to_file" >> settings.txt
-          echo "dump_memory_to_file" >> settings.txt
-          echo "open" >> settings.txt
-          echo "open_encrypted" >> settings.txt
-          echo "open_encrypted_with_pass" >> settings.txt
-          echo "open_compressed" >> settings.txt
-          echo "warp_mouse" >> settings.txt
-
-      - name: Run Project Broken Functions
-        run: |
-          for i in {0..50}; do echo "" >> project_results.txt; done;
-          echo "======================================== Broken Functions" 2>&1 | tee sanitizers_log.txt
-          UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 960 xvfb-run ./godot.x11.tools.64s FunctionExecutor.tscn 600 --audio-driver Dummy --video-driver GLES3 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
-          tail -n 200 sanitizers_log.txt >> project_results.txt
-
-          if [ -f "results.txt" ]; then
-              if [ -f "results_end.txt" ]; then
-                  for i in {0..50}; do echo "" >> t.txt; done;
-                  cat "results.txt" "t.txt" "results_end.txt" > "temp.txt"
-                  mv "temp.txt" "results_end.txt"
-              else
-                  cp "results.txt" "results_end.txt"
-              fi
-          fi
-
-          if [ -f "memory_usage.txt" ]; then
-              if [ -f "memory_usage_end.txt" ]; then
-                  for i in {0..50}; do echo "" >> t.txt; done;
-                  cat "memory_usage.txt" "t.txt" "memory_usage_end.txt" > "temp.txt"
-                  mv "temp.txt" "memory_usage_end.txt"
-              else
-                  cp "memory_usage.txt" "memory_usage_end.txt"
-              fi
-          fi
-
-          if [ -f "timer.txt" ]; then
-              if [ -f "timer_end.txt" ]; then
-                  for i in {0..50}; do echo "" >> t.txt; done;
-                  cat "timer.txt" "t.txt" "timer_end.txt" > "temp.txt"
-                  mv "temp.txt" "timer_end.txt"
-              else
-                  cp "timer.txt" "timer_end.txt"
-              fi
-          fi
-
-      - name: Run reproducer
-        run: |
-          echo "extends Node" > temp.txt
-          echo "func _process(delta):" >> temp.txt
-          if [ -f results.txt ]; then
-            cat temp.txt results.txt > Node.gd.test || true
-            VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer godot.x11.tools.64s 60_50 . --video-driver GLES3 --audio-driver Dummy # || echo "ERROR: REPRODUCER FAILURE"
-          fi
-
-      - name: Store reproducer
-        uses: actions/upload-artifact@v3
-        with:
-          name: reproducer_3_x_gles3_normal_broken_functions_34
+          name: reproducer_3_x_gles3_normal_multithread_add_parent_maximum_tested_32
           path: crash_reproduce.gd
           if-no-files-found: ignore
 
