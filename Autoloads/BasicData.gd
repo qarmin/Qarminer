@@ -26,7 +26,8 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
-	"load_tga_from_buffer", # 
+	"create_convex_collision", # 60357
+	"load_tga_from_buffer", # 67985
 	"set_process_material",  # 67954, 54478
 	"append_from_file",  # 67951
 	"get_video_adapter_driver_info",  #67950

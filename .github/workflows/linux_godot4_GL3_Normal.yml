@@ -1030,7 +1030,6 @@ jobs:
           echo "get_baked_length" >> settings.txt
           echo "get_baked_points" >> settings.txt
           echo "get_closest_offset" >> settings.txt
-          echo "get_closest_point" >> settings.txt
           echo "get_baked_up_vectors" >> settings.txt
           echo "interpolate_baked_up_vector" >> settings.txt
           echo "get_baked_tilts" >> settings.txt
