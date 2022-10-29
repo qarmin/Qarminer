@@ -32,6 +32,7 @@ var function_exceptions: Array = [
 	###
 	### Reported crashes
 	###
+	"set_avoidance_enabled", # 
 	"agent_set_callback", # 68013
 	"create_convex_collision", # 60357
 	"tts_set_utterance_callback",  # 66821
