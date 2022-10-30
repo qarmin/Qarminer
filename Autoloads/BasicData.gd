@@ -115,7 +115,11 @@ var function_exceptions: Array = [
 	"_screen_input",
 	###
 	### Reported crashes
-	###
+	###      
+	"set_avoidance_enabled", # 
+	"agent_set_callback", # 68013
+	"create_convex_collision", # 60357
+
 	"tts_set_utterance_callback",  # 66821
 	"set_window_mouse_passthrough",  # 66754
 	"reset_instance_physics_interpolation",  # 66749
