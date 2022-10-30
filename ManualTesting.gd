@@ -129,6 +129,10 @@ var excluded_functions: Array = [
 	"create_instance",
 	"free_rid",  # Just no, may free valid rid
 	"set_restart_on_exit",
+	# MSAN
+	"get_system_fonts",
+	"get_system_font_path",
+	"create_id", 
 ]
 
 

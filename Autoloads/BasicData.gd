@@ -24,6 +24,13 @@ var function_exceptions: Array = [
 	"sample_baked_up_vector",  # Freeze
 	"get_parent",  # ? - why this is not available on 3.x?
 	###
+	### Godot 4.0 MSAN
+	###
+	"set_font_names",
+	"create_client",
+	"connect_to_url",
+	# TODO ZipReader use uniitalized memory 
+	###
 	### Godot 4.0
 	###
 	"create_convex_collision", # 60357
