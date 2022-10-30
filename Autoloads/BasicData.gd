@@ -29,12 +29,13 @@ var function_exceptions: Array = [
 	"set_font_names",
 	"create_client",
 	"connect_to_url",
-	# TODO ZipReader use uniitalized memory 
+	# TODO ZipReader use uniitalized memory
 	###
 	### Godot 4.0
 	###
-	"create_convex_collision", # 60357
-	"load_tga_from_buffer", # 67985
+	"resize",  # 68061
+	"create_convex_collision",  # 60357
+	"load_tga_from_buffer",  # 67985
 	"set_process_material",  # 67954, 54478
 	"append_from_file",  # 67951
 	"get_video_adapter_driver_info",  #67950
@@ -122,11 +123,10 @@ var function_exceptions: Array = [
 	"_screen_input",
 	###
 	### Reported crashes
-	###      
-	"set_avoidance_enabled", # 
-	"agent_set_callback", # 68013
-	"create_convex_collision", # 60357
-
+	###
+	"set_avoidance_enabled",  #
+	"agent_set_callback",  # 68013
+	"create_convex_collision",  # 60357
 	"tts_set_utterance_callback",  # 66821
 	"set_window_mouse_passthrough",  # 66754
 	"reset_instance_physics_interpolation",  # 66749
@@ -427,7 +427,7 @@ var disabled_classes: Array = [
 	"XROrigin3D",  # 67442
 	"EngineDebugger",  # Crashes in exported project, not very usable
 	# Functions to be enabled(somewhere)
-	"FogMaterial", # 67954
+	"FogMaterial",  # 67954
 	"MultiplayerAPI",  # Crashes TODO
 	"VisibleOnScreenEnabler3D",  #53565
 	"VisibleOnScreenEnabler2D",  #53565

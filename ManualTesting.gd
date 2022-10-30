@@ -132,7 +132,7 @@ var excluded_functions: Array = [
 	# MSAN
 	"get_system_fonts",
 	"get_system_font_path",
-	"create_id", 
+	"create_id",
 ]
 
 
