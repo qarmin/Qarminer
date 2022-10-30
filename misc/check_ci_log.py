@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import sys
+from os.path import exists
 
 if len(sys.argv) < 2:
     print("ERROR: You must run program with file name as argument.")
@@ -131,6 +132,10 @@ if file_contents.find("Killed") != -1:
 if file_contents.find("timeout: sending signal") != -1:
     print('ERROR: timeout of command')
     sys.exit(63)
+
+if exists("CRASH_FOUND"):
+    print('ERROR: Reproducer found crash')
+    sys.exit(91)
 
 
 sys.exit(0)
