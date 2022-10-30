@@ -9,7 +9,7 @@ var excluded_functions: Array = [
 	"open_midi_inputs",  #52821
 	"set_window_mouse_passthrough",  #66754
 	"lock",  # 66758
-	"tts_set_utterance_callback", # 66821
+	"tts_set_utterance_callback",  # 66821
 	# OTHER
 	"set_window_size",  # Can crash OS/DE, hard to find exact values to crash
 	"print_resources_by_type",  # Prints
@@ -32,7 +32,7 @@ var excluded_functions: Array = [
 	"set_low_processor_usage_mode",  # Freeze
 	"set_low_processor_usage_mode_sleep_usec",  # Freeze
 	"finish",  # Visual, cause freeze
-	"set_restart_on_exit", # Restart editor
+	"set_restart_on_exit",  # Restart editor
 	# MEMORY LEAK
 	"init",  # Quite specific function, which probably needs to be instanced only once
 	"space_create",
