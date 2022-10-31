@@ -59,7 +59,7 @@ jobs:
       - name: Remove broken project files
         run: |
           rm SingletonTesting.tscn
-          rm Node.tscn
+          mv Node.tscn Node.tscn2
 
       # Download, unzip and setup SwiftShader library
       - name: Download SwiftShader
@@ -81,6 +81,10 @@ jobs:
           name: exporting-results
           path: exporting.txt
 
+      - name: Restore broken project files
+        run: |
+          mv Node.tscn2 Node.tscn
+          
       - name: Run Project
         run: |
           VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json DRI_PRIME=0 xvfb-run ./test_project 3600 --audio-driver Dummy 2>&1 | tee sanitizers_log.txt || true
