@@ -38,16 +38,11 @@ var function_exceptions: Array = [
 	"load_tga_from_buffer",  # 67985
 	"set_process_material",  # 67954, 54478
 	"append_from_file",  # 67951
-	"get_video_adapter_driver_info",  #67950
-	"do_unindent",  #67364
 	"add_file",  # 67613
 	"_set_playing",  #67589
 	"play",  #  67589
 	"save_jpg_to_buffer",  # 67586
-	"fill",  #67567
 	"set_current",  # 67442
-	"undo",  # 67364
-	"indent_lines",  # 67364
 	"set_follow_camera_enabled",  # 66986
 	"set_scroll_past_end_of_file_enabled",  # 66937
 	"set_fit_content_height_enabled",  # 66937
@@ -59,8 +54,6 @@ var function_exceptions: Array = [
 	"get_seamless_image",  # 61044
 	"set_buffer",  # 65964
 	"set_process_mode",  #61474
-	"confirm_code_completion",  # 62199
-	"update_code_completion_options",  # 62199
 	"compress",  # 62097
 	"set_disable_mode",  # 61474
 	"set_process_material",  #61175
