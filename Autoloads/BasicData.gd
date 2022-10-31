@@ -23,6 +23,7 @@ var function_exceptions: Array = [
 	"sample_baked",  # Freeze
 	"sample_baked_up_vector",  # Freeze
 	"get_parent",  # ? - why this is not available on 3.x?
+	"save_jpg", # create files 
 	###
 	### Godot 4.0 MSAN
 	###

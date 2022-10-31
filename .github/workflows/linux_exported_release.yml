@@ -75,19 +75,30 @@ jobs:
           curr="$(pwd)/godot.linuxbsd.template_release.x86_64.san"
           sed -i "s|PATH_TO_CHANGE|$curr|" export_presets.cfg
           VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json DRI_PRIME=0 xvfb-run ./godot.linuxbsd.editor.dev.x86_64.san --audio-driver Dummy --export-debug "Linux/X11" test_project 2>&1 | tee exporting.txt || true
+          mkdir tp
+          cp ./test_project tp
+          cp ./test_project.pck tp
+          
       - name: Store exporting results
         uses: actions/upload-artifact@v3
         with:
           name: exporting-results
           path: exporting.txt
+          
+      - name: Store exported binaries
+        uses: actions/upload-artifact@v3
+        with:
+          name: test_project
+          path: tp
 
       - name: Restore broken project files
         run: |
           mv Node.tscn2 Node.tscn
           
+      # Headless
       - name: Run Project
         run: |
-          VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json DRI_PRIME=0 xvfb-run ./test_project 3600 --audio-driver Dummy 2>&1 | tee sanitizers_log.txt || true
+          VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json DRI_PRIME=0 xvfb-run tp/test_project 1200 --headless 2>&1 | tee sanitizers_log.txt || true
           tail -n 300 sanitizers_log.txt > project_results.txt
 
       - name: Run reproducer
@@ -96,15 +107,61 @@ jobs:
           echo "func _process(delta):" >> temp.txt
           if [ -f results.txt ]; then
             cat temp.txt results.txt > Node.gd.test || true
-            VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer test_project 60_50 . --rendering-driver opengl3 --audio-driver Dummy # || echo "ERROR: REPRODUCER FAILURE"
+            VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer test_project 60_50 . --headless
           fi
 
       - name: Store reproducer
         uses: actions/upload-artifact@v3
         with:
-          name: reproducer_4_test_project
+          name: reproducer_4_test_project_headless
           path: crash_reproduce.gd
           if-no-files-found: ignore
+          
+      # Vulkan
+      - name: Run Project
+        run: |
+          VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json DRI_PRIME=0 xvfb-run tp/test_project 1200 2>&1 | tee sanitizers_log.txt || true
+          tail -n 300 sanitizers_log.txt > project_results.txt
+
+      - name: Run reproducer
+        run: |
+          echo "extends Node" > temp.txt
+          echo "func _process(delta):" >> temp.txt
+          if [ -f results.txt ]; then
+            cat temp.txt results.txt > Node.gd.test || true
+            VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer test_project 60_50 .
+          fi
+
+      - name: Store reproducer
+        uses: actions/upload-artifact@v3
+        with:
+          name: reproducer_4_test_project_vulkan
+          path: crash_reproduce.gd
+          if-no-files-found: ignore
+          
+      # GLES3
+      - name: Run Project
+        run: |
+          VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json DRI_PRIME=0 xvfb-run tp/test_project 1200 --rendering-driver opengl3 2>&1 | tee sanitizers_log.txt || true
+          tail -n 300 sanitizers_log.txt > project_results.txt
+
+      - name: Run reproducer
+        run: |
+          echo "extends Node" > temp.txt
+          echo "func _process(delta):" >> temp.txt
+          if [ -f results.txt ]; then
+            cat temp.txt results.txt > Node.gd.test || true
+            VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer test_project 60_50 . --rendering-driver opengl3
+          fi
+
+      - name: Store reproducer
+        uses: actions/upload-artifact@v3
+        with:
+          name: reproducer_4_test_project_gles3
+          path: crash_reproduce.gd
+          if-no-files-found: ignore
+          
+          
 
       - name: Store project results
         uses: actions/upload-artifact@v3
