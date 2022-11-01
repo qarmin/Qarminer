@@ -190,7 +190,7 @@ func get_packed_color_array() -> PackedColorArray:
 
 
 func get_variant():
-	match randi() % 22:
+	match randi() % 23:
 		0:
 			return get_int()
 		1:
@@ -234,6 +234,8 @@ func get_variant():
 		20:
 			return get_packed_vector3_array()
 		21:
+			return get_projection()
+		22:
 			return get_object("RefCounted")
 	return "A"
 
