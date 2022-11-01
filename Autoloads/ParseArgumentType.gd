@@ -205,7 +205,9 @@ func parse_and_return_objects(method_data: Dictionary, name_of_class: String, de
 
 
 func return_gdscript_code_which_run_this_object(data) -> String:
-	if data == null:
+	# TODO workaround https://github.com/godotengine/godot/pull/68136
+	if typeof(data) == TYPE_NIL:
+#	if data == null:
 		return "null"
 
 	var return_string: String = ""
