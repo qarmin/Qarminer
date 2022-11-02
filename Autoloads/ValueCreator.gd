@@ -69,7 +69,7 @@ func get_plane() -> Plane:
 
 
 func get_quaternion() -> Quaternion:
-	return Quaternion(get_vector3())
+	return Quaternion(get_vector3(), get_float())
 
 
 func get_basis() -> Basis:

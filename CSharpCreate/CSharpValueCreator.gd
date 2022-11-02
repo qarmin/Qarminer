@@ -154,7 +154,7 @@ func get_plane_string_csharp() -> String:
 
 
 func get_quat() -> Quaternion:
-	return Quaternion(get_vector3())
+	return Quaternion(get_vector3(), get_float())
 
 
 func get_quat_string() -> String:
