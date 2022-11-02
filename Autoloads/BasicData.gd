@@ -35,11 +35,12 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
+	"do_indent", # 68176
+	"unindent_lines", # 68176
+	"update_code_completion_options", # 68176
 	"get_line_width", # 68156
 	"do_unindent", # 68154
-	"resize",  # 68061
 	"create_convex_collision",  # 60357
-	"load_tga_from_buffer",  # 67985
 	"set_process_material",  # 67954, 54478
 	"append_from_file",  # 67951
 	"add_file",  # 67613
@@ -57,9 +58,7 @@ var function_exceptions: Array = [
 	"_get_light_textures_data",  # 66002
 	"get_seamless_image",  # 61044
 	"set_buffer",  # 65964
-	"set_process_mode",  #61474
 	"compress",  # 62097
-	"set_disable_mode",  # 61474
 	"set_process_material",  #61175
 	"_update_texture",  # 61044
 	"_generate_texture",  # 61044
