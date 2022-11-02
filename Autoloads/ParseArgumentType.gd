@@ -475,7 +475,7 @@ func return_gdscript_code_which_run_this_object(data) -> String:
 			return_string += return_gdscript_code_which_run_this_object(data.w)
 			return_string += ", "
 			return_string += return_gdscript_code_which_run_this_object(data.z)
-			return_string = ")"
+			return_string += ")"
 		_:
 			assert(false)  #,"Missing type --" + str(typeof(data)) + "-- needs to be added to project")
 

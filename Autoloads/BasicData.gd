@@ -23,7 +23,8 @@ var function_exceptions: Array = [
 	"sample_baked",  # Freeze
 	"sample_baked_up_vector",  # Freeze
 	"get_parent",  # ? - why this is not available on 3.x?
-	"save_jpg", # create files 
+	"save_jpg", # create files
+	"set_font_size", # SLOOOOOOW function
 	###
 	### Godot 4.0 MSAN
 	###
@@ -34,6 +35,8 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
+	"get_line_width", # 68156
+	"do_unindent", # 68154
 	"resize",  # 68061
 	"create_convex_collision",  # 60357
 	"load_tga_from_buffer",  # 67985
