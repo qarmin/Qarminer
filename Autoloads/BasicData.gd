@@ -185,6 +185,7 @@ var function_exceptions: Array = [
 	###
 	### Slow Function
 	###
+	"sample_baked_with_rotation",
 	"set_pre_process_time",
 	"create_convex_collision",
 	"create_multiple_convex_collisions",
