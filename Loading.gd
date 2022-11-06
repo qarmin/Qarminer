@@ -10,7 +10,7 @@ func _ready():
 	var line_index: int = 0
 	var all_lines: int = images_to_load.size()
 
-	print("Loading " + (images_to_load.size()) + " images")
+	print("Loading " + str(images_to_load.size()) + " images")
 	# Image
 #	for i in images_to_load:
 #		line_index += 1

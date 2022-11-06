@@ -207,6 +207,8 @@ func initialize_list_of_available_classes() -> void:
 	var full_class_list: Array = Array(ClassDB.get_class_list())
 	full_class_list.sort()
 
+	var singleton_list : PackedStringArray = Engine.get_singleton_list()
+
 	for name_of_class in full_class_list:
 		if name_of_class in BasicData.disabled_classes:
 			continue
@@ -217,7 +219,8 @@ func initialize_list_of_available_classes() -> void:
 			continue
 
 		if ClassDB.can_instantiate(name_of_class):
-			BasicData.all_available_classes.push_back(name_of_class)
+			if !singleton_list.has(name_of_class):
+				BasicData.all_available_classes.push_back(name_of_class)
 
 	BasicData.argument_classes = BasicData.all_available_classes.duplicate()
 	BasicData.base_classes = BasicData.all_available_classes.duplicate()
