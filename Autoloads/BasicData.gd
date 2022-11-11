@@ -35,6 +35,7 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
+	"get_transform_for_view", # 68515
 	"push_paragraph", # 68242
 	"do_indent", # 68176
 	"unindent_lines", # 68176
