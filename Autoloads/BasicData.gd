@@ -315,6 +315,7 @@ var function_exceptions: Array = [
 
 # List of all functions that can freeze Godot when working with really big numbers
 var too_big_arguments: Array = [
+	"resize", # Image
 	"get_seamless_image",
 	"generate_rsa",  # TODO
 	"set_map_width",
