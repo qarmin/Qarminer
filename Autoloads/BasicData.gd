@@ -25,6 +25,7 @@ var function_exceptions: Array = [
 	"get_parent",  # ? - why this is not available on 3.x?
 	"save_jpg", # create files
 	"set_font_size", # SLOOOOOOW function
+	"tessellate_even_length", # Too slow
 	###
 	### Godot 4.0 MSAN
 	###
