@@ -87,11 +87,8 @@ func _ready():
 	# GDScript, ResourceLoader, ResourceSaver
 	var list_of_singletons = [
 		"Performance",
-		# "ProjectSettings", # Mess with project godot file and couldn't fine even 1 crash with it
 		"IP",
 		"Geometry",
-		# "ResourceLoader", # TODO
-		# "ResourceSaver", # TODO
 		"OS",
 		"Engine",
 		"ClassDB",
@@ -112,7 +109,10 @@ func _ready():
 		"NavigationServer",
 		"Navigation2DServer",
 		"ARVRServer",
-		"CameraServer"
+		"CameraServer",
+		# "ProjectSettings", # Mess with project godot file and couldn't fine even 1 crash with it
+		# "ResourceLoader", # TODO
+		# "ResourceSaver", # TODO
 	]
 	list_of_singletons.sort()
 

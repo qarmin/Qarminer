@@ -38,3 +38,4 @@ ABCD.tscn
 *.x86_64
 Node.gd.test
 Node.gd.temp
+*.tmp
