@@ -13,17 +13,9 @@ var allowed_thing: Dictionary = {}  # List of all classes with
 # TODOGODOT4
 var function_exceptions: Array = [
 	###
-	### Input crashes, still are some problems TODO
-	###
-#	"_gui_input",
-#	"_input",
-#	"_unhandled_input",
-#	"_unhandled_key_input",
-#	"_vp_input",
-#	"_vp_unhandled_input",
-	###
 	### Reported crashes
 	###
+	"_gui_input", #69214
 	"set_avoidance_enabled",  #68022
 	"agent_set_callback",  # 68013
 	"create_convex_collision",  # 60357
@@ -63,9 +55,6 @@ var function_exceptions: Array = [
 	###
 	### Expected Crashes
 	###
-	"get_bind_bone",  # Fixed only in master
-	"get_bind_name",  # Fixed only in master
-	"get_bind_pose",  # Fixed only in master
 	"_editor_settings_changed",  # Fixed only for master
 	"set_editor_hint",  #46252 - Fixed only for master(due compatibility)- do not use
 	###
@@ -73,29 +62,6 @@ var function_exceptions: Array = [
 	###
 	"propagate_notification",
 	"notification",
-	###
-	### Error spam when using it TODO
-	###
-#	"get_recognized_extensions_for_type",  # Spam
-#	"load",  # Spam - _ResourceLoader
-#	"add_sphere",
-#	"_update_inputs",
-#	"update_bitmask_region",
-#	"set_enabled_inputs",
-	###
-	### Slow Function
-	###
-	"_update_sky",
-	"create_convex_collision",
-	"create_multiple_convex_collisions",
-	"tessellate",
-	"interpolate_baked_up_vector",
-	"interpolate_baked",
-	"get_baked_length",
-	"get_baked_points",
-	"get_closest_offset",
-	"get_closest_point",  # Only Curve, but looks that a lot of other classes uses this
-	"get_baked_up_vectors",
 	###
 	### Do not save files and create files and folders, this probably can be enabled in CI
 	###
@@ -111,9 +77,6 @@ var function_exceptions: Array = [
 	"save_exr",
 	"dump_resources_to_file",
 	"dump_memory_to_file",
-	###
-	### This also allow to save files
-	###
 	"open",
 	"open_encrypted",
 	"open_encrypted_with_pass",
@@ -130,6 +93,8 @@ var function_exceptions: Array = [
 	"shell_open",
 	"execute",
 	"alert",  # Stupid alert window opens
+	"crash",
+	"move_to_trash",
 	###
 	### Godot freeze or run very slow
 	###
@@ -141,7 +106,7 @@ var function_exceptions: Array = [
 	"connect_to_stream",
 	"discover",
 	"wait",
-	"set_gizmo",  # Stupid function, needs as parameter an object which can't be instanced # TODO, create issue to hide it
+	"set_gizmo",  # Stupid function, needs as parameter an object which can't be instanced in GDScript
 	###
 	### Spams Output and aren't very useful
 	###
@@ -180,23 +145,23 @@ var function_exceptions: Array = [
 	"move_child",
 	"raise",
 	"add_child",
-	"add_child_below_node",
-	#####
-	##### Crash and Trash
-	#####
-	"crash",
-	"move_to_trash",
-	#####
-	##### Goost
-	##### TODO: these take too long to execute, does not make sense to limit number of iterations ether.
-	##### TODO - remove this and put it into setting file
-	#####
-	"smooth_polyline_approx",
-	"smooth_polygon_approx",
+	"add_child_below_node"
 ]
 
 # List of all functions that can freeze Godot when working with really big numbers
 var too_big_arguments: Array = [
+	"_update_sky",
+	"create_convex_collision",
+	"create_multiple_convex_collisions",
+	"tessellate",
+	"interpolate_baked_up_vector",
+	"interpolate_baked",
+	"get_baked_length",
+	"get_baked_points",
+	"get_closest_offset",
+	"get_closest_point",  # Only Curve, but looks that a lot of other classes uses this
+	"get_baked_up_vectors",
+	
 	"debug_bake",
 	"bake",
 	"bake_navigation_mesh",  # Threading problem, needs to find exact steps to reproduce
@@ -319,5 +284,4 @@ var allowed_functions: Array = [
 ]
 
 var csharp_function_exceptions: Array = [
-	"ResChanged",  # AnimatedSprite
 ]
