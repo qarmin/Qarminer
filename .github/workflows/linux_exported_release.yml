@@ -59,6 +59,8 @@ jobs:
           echo "" > settings.txt
           echo "disabled_classes_append:" >> settings.txt
           echo "Image" >> settings.txt
+          echo "function_exceptions_append:" >> settings.txt
+          echo "_screen_input" >> settings.txt # Uses internally Image functions
 
       - name: Exporting project
         run: |
