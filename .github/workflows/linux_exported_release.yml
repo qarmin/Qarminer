@@ -61,6 +61,9 @@ jobs:
           echo "Image" >> settings.txt
           echo "function_exceptions_append:" >> settings.txt
           echo "_screen_input" >> settings.txt # Uses internally Image functions
+          echo "get_bind_bone" >> settings.txt
+          echo "get_bind_pose" >> settings.txt
+          echo "get_bind_name" >> settings.txt
 
       - name: Exporting project
         run: |

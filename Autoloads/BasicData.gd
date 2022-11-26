@@ -15,7 +15,9 @@ var function_exceptions: Array = [
 	###
 	### Reported crashes
 	###
-	"_gui_input", #69214
+	"bake", # 69229
+	"set_enabled_inputs",  # 69230
+	"_gui_input",  # 69214
 	"set_avoidance_enabled",  #68022
 	"agent_set_callback",  # 68013
 	"create_convex_collision",  # 60357
@@ -161,7 +163,6 @@ var too_big_arguments: Array = [
 	"get_closest_offset",
 	"get_closest_point",  # Only Curve, but looks that a lot of other classes uses this
 	"get_baked_up_vectors",
-	
 	"debug_bake",
 	"bake",
 	"bake_navigation_mesh",  # Threading problem, needs to find exact steps to reproduce
@@ -183,8 +184,6 @@ var too_big_arguments: Array = [
 	"create_convex_shape",
 	"create_trimesh_shape",
 	"get_method_list",
-	
-	
 	"set_grid_radius",  # ProximyGroup, freeze entire calculations
 	"set_panorama",
 	"set_pre_process_time",
@@ -237,7 +236,7 @@ var disabled_classes: Array = [
 	"_Semaphore",
 	"_Mutex",
 	"JavaClassWrapper",  # Looks that JavaClassWrapper.new() crashes android
-	"JavaClass", # JavaClass is only functions that returns Null when using JavaClass.new().get_class
+	"JavaClass",  # JavaClass is only functions that returns Null when using JavaClass.new().get_class
 	###
 	### Singletons
 	###
@@ -283,5 +282,4 @@ var allowed_functions: Array = [
 # TO FIND
 ]
 
-var csharp_function_exceptions: Array = [
-]
+var csharp_function_exceptions: Array = []
