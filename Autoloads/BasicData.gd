@@ -15,7 +15,7 @@ var function_exceptions: Array = [
 	###
 	### Reported crashes
 	###
-	"bake", # 69229
+	"bake",  # 69229
 	"set_enabled_inputs",  # 69230
 	"_gui_input",  # 69214
 	"set_avoidance_enabled",  #68022
