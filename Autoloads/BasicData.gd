@@ -36,6 +36,8 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
+	"pack", # 69258
+	"set_extra_cull_margin", # 69258
 	"window_get_native_handle", # 68525
 	"push_paragraph", # 68242
 	"do_indent", # 68176

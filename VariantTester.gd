@@ -10,6 +10,15 @@ var loaded_gdscript
 
 var thing
 
+var variant_exceptions: Dictionary = {}
+var disabled_classes_names: Dictionary = {}
+func _ready() -> void:
+	for i in BasicData.variant_exceptions:
+		variant_exceptions[i] = false
+	
+	for method_name in BasicData.disabled_classes:
+		disabled_classes_names[method_name] = false
+	
 
 func _process(delta) -> void:
 	ValueCreator.number = 10000
@@ -35,10 +44,10 @@ func tests_all_functions() -> void:
 		thing = get_basic_thing(type)
 		var method_list: Array = ClassDB.get_variant_method_list(type)
 
-		method_list = HelpFunctions.remove_disabled_methods(method_list, BasicData.variant_exceptions)
+		method_list = HelpFunctions.remove_disabled_methods(method_list, variant_exceptions)
 
 		for method_data in method_list:
-			if !HelpFunctions.check_if_is_allowed(method_data):
+			if !HelpFunctions.check_if_is_allowed(method_data, disabled_classes_names):
 				continue
 
 			var arguments: Array = ParseArgumentType.parse_and_return_objects(method_data, type_to_name(type), debug_print)
