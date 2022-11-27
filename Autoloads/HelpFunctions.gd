@@ -173,8 +173,12 @@ func initialize_array_with_allowed_functions(use_parent_methods: bool, disabled_
 	assert(!BasicData.argument_classes.is_empty())  #,"Missing initalization of classes")
 	var class_info: Dictionary = {}
 
+	var i = 0
 	if BasicData.allowed_functions.is_empty():
 		for name_of_class in BasicData.base_classes:
+			i+=1
+			if i % 50 == 0:
+				print(str(i) + "/" + str(BasicData.base_classes.size()))
 			var old_method_list: Array = []
 			var new_method_list: Array = []
 			old_method_list = ClassDB.class_get_method_list(name_of_class, !use_parent_methods)
@@ -187,6 +191,9 @@ func initialize_array_with_allowed_functions(use_parent_methods: bool, disabled_
 			class_info[name_of_class] = new_method_list
 	else:
 		for name_of_class in BasicData.base_classes:
+			i+=1
+			if i % 50 == 0:
+				print(str(i) + "/" + str(BasicData.base_classes.size()))
 			var old_method_list: Array = []
 			var new_method_list: Array = []
 			old_method_list = ClassDB.class_get_method_list(name_of_class, !use_parent_methods)
@@ -207,12 +214,13 @@ func initialize_list_of_available_classes() -> void:
 	var full_class_list: Array = Array(ClassDB.get_class_list())
 	full_class_list.sort()
 
-	var singleton_list : PackedStringArray = Engine.get_singleton_list()
-
+	var singleton_list : Array = Array(Engine.get_singleton_list())
+	singleton_list.sort()
+	
 	for name_of_class in full_class_list:
 		if name_of_class in BasicData.disabled_classes:
 			continue
-
+		
 		if name_of_class.find("Server") != -1 && !ClassDB.is_parent_class(name_of_class, "RefCounted"):
 			continue
 		if name_of_class.find("Editor") != -1:
