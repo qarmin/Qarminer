@@ -37,7 +37,7 @@ func disable_nodes_with_internal_child() -> void:
 # Checks if function can be executed
 # Looks at its arguments and method type
 # This is useful when e.g. adding/renaming type Transform3D -> Transform3D
-func check_if_is_allowed(method_data: Dictionary, csharp_project: bool = false) -> bool:
+func check_if_is_allowed(method_data: Dictionary, disabled_classes_dict: Dictionary, csharp_project: bool = false) -> bool:
 	# Function is virtual or vararg, so we just skip it
 	if method_data["flags"] & METHOD_FLAG_VIRTUAL != 0:
 		return false
@@ -53,7 +53,7 @@ func check_if_is_allowed(method_data: Dictionary, csharp_project: bool = false) 
 			if !ClassDB.class_exists(name_of_class):
 				return false
 
-		if name_of_class in BasicData.disabled_classes:
+		if name_of_class in disabled_classes_dict:
 			return false
 		if name_of_class.find("Server") != -1 && ClassDB.class_exists(name_of_class) && !ClassDB.is_parent_class(name_of_class, "RefCounted"):
 			return false
@@ -61,55 +61,9 @@ func check_if_is_allowed(method_data: Dictionary, csharp_project: bool = false) 
 		if name_of_class.find("Editor") != -1 || name_of_class.find("SkinReference") != -1:
 			return false
 
-		# In case of adding new type, this prevents from crashing due not recognizing this type
-		# In case of removing/rename type, just comment e.g. TYPE_ARRAY and all occurencies checked e.g. switch statement with it
-		var t: int = arg["type"]
-		if !(
-			t == TYPE_NIL
-			|| t == TYPE_AABB
-			|| t == TYPE_ARRAY
-			|| t == TYPE_BASIS
-			|| t == TYPE_BOOL
-			|| t == TYPE_COLOR
-			|| t == TYPE_PACKED_COLOR_ARRAY
-			|| t == TYPE_DICTIONARY
-			|| t == TYPE_INT
-			|| t == TYPE_PACKED_INT32_ARRAY
-			|| t == TYPE_NODE_PATH
-			|| t == TYPE_OBJECT
-			|| t == TYPE_PLANE
-			|| t == TYPE_QUATERNION
-			|| t == TYPE_PACKED_BYTE_ARRAY
-			|| t == TYPE_FLOAT
-			|| t == TYPE_PACKED_FLOAT32_ARRAY
-			|| t == TYPE_RECT2
-			|| t == TYPE_RID
-			|| t == TYPE_STRING
-			|| t == TYPE_PACKED_STRING_ARRAY
-			|| t == TYPE_TRANSFORM3D
-			|| t == TYPE_TRANSFORM2D
-			|| t == TYPE_VECTOR2
-			|| t == TYPE_PACKED_VECTOR2_ARRAY
-			|| t == TYPE_VECTOR3
-			|| t == TYPE_PACKED_VECTOR3_ARRAY
-			|| t == TYPE_VECTOR2I
-			|| t == TYPE_VECTOR3I
-			|| t == TYPE_VECTOR4I
-			|| t == TYPE_VECTOR4
-			|| t == TYPE_STRING_NAME
-			|| t == TYPE_RECT2I
-			|| t == TYPE_PACKED_FLOAT64_ARRAY
-			|| t == TYPE_PACKED_INT64_ARRAY
-			|| t == TYPE_CALLABLE
-			|| t == TYPE_SIGNAL
-			|| t == TYPE_PROJECTION
-		):
-			print("MISSING TYPE in function " + method_data["name"] + "  --  Variant type - " + str(t))
-			assert(false)
-			return false
-
-		if name_of_class.is_empty():
-			continue
+		# TODO is this enum?
+#		if name_of_class.empty():
+#			continue
 
 	return true
 
@@ -127,25 +81,13 @@ func get_gdscript_class_creation(name_of_class: String) -> String:
 		return name_of_class.trim_prefix("_") + ".new()"
 
 
-# Removes disabled methods from list - TODO, for now it do unecessary duplication
-# because passing by reference seems to be broken in 4.0
-func remove_disabled_methods(method_list: Array, exceptions: Array, csharp_project: bool = false) -> Array:
-	var new_method_list: Array = method_list.duplicate(true)
+func remove_disabled_methods(method_list: Array, exceptions: Dictionary, csharp_project: bool = false) -> Array:
+	var new_method_list: Array = []
 
-	for exception in exceptions:
-		var index: int = -1
-		for method_index in range(new_method_list.size()):
-			if new_method_list[method_index]["name"] == exception:
-				index = method_index
-				break
-		if index != -1:
-			new_method_list.remove_at(index)
-	if csharp_project:
-		var old_method_list = new_method_list.duplicate(true)
-		new_method_list = []
-		for method in old_method_list:
-			if !method["name"].begins_with("_"):
-				new_method_list.append(method)
+	for method in method_list:
+		if !(method["name"] in exceptions):
+			new_method_list.append(method)
+
 	return new_method_list
 
 
@@ -169,43 +111,50 @@ func remove_thing_string(thing: Object) -> String:
 # Initialize array which contains only allowed functions
 # If BasicData.allowed_functions is not set, every possible functions is checked
 func initialize_array_with_allowed_functions(use_parent_methods: bool, disabled_methods: Array, csharp_project: bool = false):
-	assert(!BasicData.base_classes.is_empty())  #,"Missing initalization of classes")
-	assert(!BasicData.argument_classes.is_empty())  #,"Missing initalization of classes")
+	assert(!BasicData.base_classes.is_empty())#, "Missing initalization of classes")
+	assert(!BasicData.argument_classes.is_empty())#, "Missing initalization of classes")
 	var class_info: Dictionary = {}
+	var disabled_methods_names: Dictionary = {}
+	for method_name in disabled_methods:
+		disabled_methods_names[method_name] = false
+
+	var disabled_classes_names: Dictionary = {}
+	for method_name in BasicData.disabled_classes:
+		disabled_classes_names[method_name] = false
 
 	var i = 0
+	print(Time.get_datetime_dict_from_system())
+
 	if BasicData.allowed_functions.is_empty():
 		for name_of_class in BasicData.base_classes:
-			i+=1
+			i += 1
 			if i % 50 == 0:
 				print(str(i) + "/" + str(BasicData.base_classes.size()))
 			var old_method_list: Array = []
 			var new_method_list: Array = []
 			old_method_list = ClassDB.class_get_method_list(name_of_class, !use_parent_methods)
-			old_method_list = remove_disabled_methods(old_method_list, disabled_methods, csharp_project)
+			old_method_list = remove_disabled_methods(old_method_list, disabled_methods_names, csharp_project)
 			for method_data in old_method_list:
-				if !check_if_is_allowed(method_data, csharp_project):
+				if !check_if_is_allowed(method_data, disabled_classes_names, csharp_project):
 					continue
 				new_method_list.append(method_data)
 
 			class_info[name_of_class] = new_method_list
 	else:
 		for name_of_class in BasicData.base_classes:
-			i+=1
-			if i % 50 == 0:
-				print(str(i) + "/" + str(BasicData.base_classes.size()))
 			var old_method_list: Array = []
 			var new_method_list: Array = []
 			old_method_list = ClassDB.class_get_method_list(name_of_class, !use_parent_methods)
 			for method_data in old_method_list:
 				if !(method_data["name"] in BasicData.allowed_functions):
 					continue
-				if !check_if_is_allowed(method_data, csharp_project):
+				if !check_if_is_allowed(method_data, disabled_classes_names, csharp_project):
 					continue
 				new_method_list.append(method_data)
 
 			class_info[name_of_class] = new_method_list
 
+	print(Time.get_datetime_dict_from_system())
 	BasicData.allowed_thing = class_info
 
 
