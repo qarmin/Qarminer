@@ -243,6 +243,9 @@ var function_exceptions: Array = [
 
 # List of all functions that can freeze Godot when working with really big numbers
 var too_big_arguments: Array = [
+	# GODOT 4
+	"sample_baked_with_rotation",
+	# GODOT 3
 	"_update_sky",
 	"create_convex_collision",
 	"create_multiple_convex_collisions",
