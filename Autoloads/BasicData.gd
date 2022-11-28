@@ -38,6 +38,7 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
+	"create_font", # TODO TextServerAdvanced
 	"create_shaped_text", # TODO TextServerAdvanced
 	"pack", # 69258
 	"set_extra_cull_margin", # 69258
