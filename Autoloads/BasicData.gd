@@ -26,6 +26,8 @@ var function_exceptions: Array = [
 	"save_jpg", # create files
 	"set_font_size", # SLOOOOOOW function
 	"tessellate_even_length", # Too slow
+	"save_webp", # Saves file to FS
+	"save_support_data", # Saves file to FS
 	###
 	### Godot 4.0 MSAN
 	###
