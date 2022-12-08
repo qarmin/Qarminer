@@ -7,23 +7,32 @@ var disabled_classes: Array = [
 	"MissingNode",  # Vanished messages
 ]
 
-var max_children: int
+var max_children: int = 30
+var children_left: int
 var master_child: Node
+
+var instantiable_classes: Array = []
 
 
 func _ready():
 	var dir = DirAccess.open("res://")
 	dir.make_dir("res://T/")
-	for _i in range(10):
-		max_children = 500
-		create_available()
-		populate()
-		save_scene()
+	create_available()
 
-
-func create_available():
+func _process(delta):
+	print("Creating scene")
+	children_left = max_children
+	for i in get_children():
+		i.queue_free()
 	master_child = Node.new()
 	add_child(master_child)
+	populate()
+	save_scene()
+	var scene = load("res://ABCD.tscn").instantiate()
+	add_child(scene)
+	print("Added scene to tree")
+
+func create_available():
 	var classes = ClassDB.get_class_list()
 	for name_of_class in classes:
 		if ClassDB.can_instantiate(name_of_class) && ClassDB.is_parent_class(name_of_class, "Node"):
@@ -47,8 +56,8 @@ func save_scene():
 	var packed_scene = PackedScene.new()
 	packed_scene.pack(master_child)
 	assert_if_false(ResourceSaver.save(packed_scene, "res://ABCD.tscn"))
-	assert_if_false(ResourceSaver.save(packed_scene, "res://T/" + random_number + ".tscn"))
-	assert_if_false(get_tree().change_scene_to_file("res://ABCD.tscn"))
+#	assert_if_false(ResourceSaver.save(packed_scene, "res://T/" + random_number + ".tscn"))
+#	assert_if_false(get_tree().change_scene_to_file("res://ABCD.tscn"))
 	var ar: Node = master_child
 	remove_child(master_child)
 	ar.queue_free()
@@ -57,12 +66,12 @@ func save_scene():
 
 func create_children(parent: Node, number_of_childrens: int):
 	for i in number_of_childrens:
-		if max_children < 0:
+		if children_left < 0:
 			return
 
 		var node = ClassDB.instantiate(available_nodes[randi() % available_nodes.size()])
-		node.set_name(str(max_children))
-		max_children -= 1
+		node.set_name(str(children_left))
+		children_left -= 1
 		parent.add_child(node)
 		node.set_owner(master_child)
 
