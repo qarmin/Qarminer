@@ -3,6 +3,10 @@ bounds:thirdparty/harfbuzz/src/hb-open-type.hh
 
 
 
+implicit-unsigned-integer-truncation:thirdparty/noise/FastNoiseLite.h
+implicit-signed-integer-truncation:thirdparty/noise/FastNoiseLite.h
+implicit-integer-sign-change:thirdparty/noise/FastNoiseLite.h
+
 implicit-unsigned-integer-truncation:MachineIndependent/glslang.y
 implicit-signed-integer-truncation:MachineIndependent/glslang.y
 implicit-integer-sign-change:MachineIndependent/glslang.y

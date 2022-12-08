@@ -83,14 +83,10 @@ var excluded_functions: Array = [
 	"bake_render_uv2",  # 67067
 	"create_sub_window",  # 67030
 	"cursor_set_custom_image",  #66605
-	"create_local_rendering_device",  #  #66372
 	"texture_replace",  # 66373
 	"texture_2d_update",  # 66374
-	"canvas_texture_set_shading_parameters",  #66375
-	"canvas_texture_set_texture_filter",  #66375
-	"canvas_texture_set_texture_repeat",  #66375
-	"canvas_texture_set_channel",  #66375
-	"register_script_language",  # 67065
+	"agent_set_callback", # 69750 - LEAK
+	#"create_local_device", # TODO LEAK
 	# LEAK
 	"texture_2d_create",
 	"link_create",

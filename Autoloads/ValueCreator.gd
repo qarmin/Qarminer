@@ -84,6 +84,16 @@ func get_color() -> Color:
 	return Color(get_float(), get_float(), get_float())
 
 
+var resources_string_array : Array = [
+	"res://resources/item.jpg",
+	"res://resources/item.png",
+	"res://resources/item.fbx",
+	"res://resources/item.gltf",
+	"res://resources/item.ttf",
+	"res://resources/item.xml",
+	"res://resources/item.json",
+	"res://resources/item.tscn",
+	]
 func get_string() -> String:
 	var numm = randi() % 6
 	if numm == 0:
@@ -94,6 +104,8 @@ func get_string() -> String:
 		return "5555"
 	elif numm == 3:
 		return "127.0.0.1"
+	elif numm == 4:
+		resources_string_array[randi() % resources_string_array.size()]
 	return String()
 
 

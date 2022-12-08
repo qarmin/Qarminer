@@ -54,3 +54,5 @@ Later only uncommenting some code is required(marked by `TODOGODOT4`) which hand
 
 ## LICENSE
 MIT
+
+Font - https://www.1001freefonts.com/touchscreen.font - free for use
