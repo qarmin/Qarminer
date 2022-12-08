@@ -111,8 +111,8 @@ func remove_thing_string(thing: Object) -> String:
 # Initialize array which contains only allowed functions
 # If BasicData.allowed_functions is not set, every possible functions is checked
 func initialize_array_with_allowed_functions(use_parent_methods: bool, disabled_methods: Array, csharp_project: bool = false):
-	assert(!BasicData.base_classes.is_empty())#, "Missing initalization of classes")
-	assert(!BasicData.argument_classes.is_empty())#, "Missing initalization of classes")
+	assert(!BasicData.base_classes.is_empty())  #, "Missing initalization of classes")
+	assert(!BasicData.argument_classes.is_empty())  #, "Missing initalization of classes")
 	var class_info: Dictionary = {}
 	var disabled_methods_names: Dictionary = {}
 	for method_name in disabled_methods:
@@ -163,13 +163,13 @@ func initialize_list_of_available_classes() -> void:
 	var full_class_list: Array = Array(ClassDB.get_class_list())
 	full_class_list.sort()
 
-	var singleton_list : Array = Array(Engine.get_singleton_list())
+	var singleton_list: Array = Array(Engine.get_singleton_list())
 	singleton_list.sort()
-	
+
 	for name_of_class in full_class_list:
 		if name_of_class in BasicData.disabled_classes:
 			continue
-		
+
 		if name_of_class.find("Server") != -1 && !ClassDB.is_parent_class(name_of_class, "RefCounted"):
 			continue
 		if name_of_class.find("Editor") != -1:

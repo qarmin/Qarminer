@@ -23,11 +23,11 @@ var function_exceptions: Array = [
 	"sample_baked",  # Freeze
 	"sample_baked_up_vector",  # Freeze
 	"get_parent",  # ? - why this is not available on 3.x?
-	"save_jpg", # create files
-	"set_font_size", # SLOOOOOOW function
-	"tessellate_even_length", # Too slow
-	"save_webp", # Saves file to FS
-	"save_support_data", # Saves file to FS
+	"save_jpg",  # create files
+	"set_font_size",  # SLOOOOOOW function
+	"tessellate_even_length",  # Too slow
+	"save_webp",  # Saves file to FS
+	"save_support_data",  # Saves file to FS
 	###
 	### Godot 4.0 MSAN
 	###
@@ -38,17 +38,17 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
-	"create_font", # TODO TextServerAdvanced
-	"create_shaped_text", # TODO TextServerAdvanced
-	"pack", # 69258
-	"set_extra_cull_margin", # 69258
-	"window_get_native_handle", # 68525
-	"push_paragraph", # 68242
-	"do_indent", # 68176
-	"unindent_lines", # 68176
-	"update_code_completion_options", # 68176
-	"get_line_width", # 68156
-	"do_unindent", # 68154
+	"create_font",  # TODO TextServerAdvanced
+	"create_shaped_text",  # TODO TextServerAdvanced
+	"pack",  # 69258
+	"set_extra_cull_margin",  # 69258
+	"window_get_native_handle",  # 68525
+	"push_paragraph",  # 68242
+	"do_indent",  # 68176
+	"unindent_lines",  # 68176
+	"update_code_completion_options",  # 68176
+	"get_line_width",  # 68156
+	"do_unindent",  # 68154
 	"create_convex_collision",  # 60357
 	"set_process_material",  # 67954, 54478
 	"append_from_file",  # 67951
@@ -112,7 +112,7 @@ var function_exceptions: Array = [
 	###
 	### Reported crashes
 	###
-	"bake", # 69229
+	"bake",  # 69229
 	"set_enabled_inputs",  # 69230
 	"_gui_input",  # 69214
 	"set_avoidance_enabled",  #68022

@@ -19,6 +19,7 @@ func _ready():
 	dir.make_dir("res://T/")
 	create_available()
 
+
 func _process(delta):
 	print("Creating scene")
 	children_left = max_children
@@ -31,6 +32,7 @@ func _process(delta):
 	var scene = load("res://ABCD.tscn").instantiate()
 	add_child(scene)
 	print("Added scene to tree")
+
 
 func create_available():
 	var classes = ClassDB.get_class_list()

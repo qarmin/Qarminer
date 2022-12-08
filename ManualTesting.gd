@@ -85,7 +85,7 @@ var excluded_functions: Array = [
 	"cursor_set_custom_image",  #66605
 	"texture_replace",  # 66373
 	"texture_2d_update",  # 66374
-	"agent_set_callback", # 69750 - LEAK
+	"agent_set_callback",  # 69750 - LEAK
 	#"create_local_device", # TODO LEAK
 	# LEAK
 	"texture_2d_create",

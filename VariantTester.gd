@@ -12,13 +12,15 @@ var thing
 
 var variant_exceptions: Dictionary = {}
 var disabled_classes_names: Dictionary = {}
+
+
 func _ready() -> void:
 	for i in BasicData.variant_exceptions:
 		variant_exceptions[i] = false
-	
+
 	for method_name in BasicData.disabled_classes:
 		disabled_classes_names[method_name] = false
-	
+
 
 func _process(delta) -> void:
 	ValueCreator.number = 10000

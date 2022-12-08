@@ -84,7 +84,7 @@ func get_color() -> Color:
 	return Color(get_float(), get_float(), get_float())
 
 
-var resources_string_array : Array = [
+var resources_string_array: Array = [
 	"res://resources/item.jpg",
 	"res://resources/item.png",
 	"res://resources/item.fbx",
@@ -93,7 +93,9 @@ var resources_string_array : Array = [
 	"res://resources/item.xml",
 	"res://resources/item.json",
 	"res://resources/item.tscn",
-	]
+]
+
+
 func get_string() -> String:
 	var numm = randi() % 6
 	if numm == 0:

@@ -57,29 +57,6 @@ var max_random_tested_classes: int = 999999
 func _ready() -> void:
 	ValueCreator.number = 100
 
-	if save_resources_to_file:
-		var dir: DirAccess = DirAccess.new()
-
-		for base_dir in ["res://test_resources/.import/", "res://test_resources/.godot/", "res://test_resources/"]:
-			dir = DirAccess.open(base_dir)
-			if dir.get_open_error() == OK:
-				var _unused = dir.list_dir_begin()  # TODOGODOT4 fill missing arguments https://github.com/godotengine/godot/pull/40547
-				var file_name: String = dir.get_next()
-				while file_name != "":
-					if file_name != ".." && file_name != ".":
-						var rr: int = dir.remove_at(base_dir + file_name)
-						assert(rr == OK)
-					file_name = dir.get_next()
-				var ret2: int = dir.remove_at(base_dir)
-				assert(ret2 == OK)
-
-		var ret: int = dir.make_dir("res://test_resources")
-		assert(ret == OK)
-		var fa = FileAccess.open("res://test_resources/.gdignore", FileAccess.WRITE)
-		assert(fa.get_open_error() == OK)
-		var fa2 = FileAccess.open("res://test_resources/project.godot", FileAccess.WRITE)
-		assert(fa2.get_open_error() == OK)
-
 	if allow_to_use_notification:
 		BasicData.function_exceptions.erase("notification")
 		BasicData.function_exceptions.erase("propagate_notification")
@@ -117,6 +94,33 @@ func _ready() -> void:
 		BasicData.base_classes.shuffle()
 		BasicData.base_classes = BasicData.base_classes.slice(0, max_random_tested_classes - 1)
 		BasicData.base_classes.sort()
+
+	if save_resources_to_file:
+		for base_dir in ["res://test_resources/.import/", "res://test_resources/.godot/", "res://test_resources/"]:
+			var dir = DirAccess.open(base_dir)
+			if dir != null:
+				dir.include_hidden = true
+				var _unused = dir.list_dir_begin()  # TODOGODOT4 fill missing arguments https://github.com/godotengine/godot/pull/40547
+				var file_name: String = dir.get_next()
+				print(file_name)
+				while file_name != "":
+					print(file_name)
+					if file_name != ".." && file_name != ".":
+						var rr: int = dir.remove(base_dir + file_name)
+						assert(rr == OK)
+					file_name = dir.get_next()
+				var ret2 = dir.remove(base_dir)
+				assert(ret2 == OK)
+
+		var dir2 = DirAccess.open("res://")
+		var ret: int = dir2.make_dir("res://test_resources")
+		assert(ret == OK)
+		var rr = DirAccess.open("res://test_resources")
+		assert(rr != null)
+		var fa = FileAccess.open("res://test_resources/.gdignore", FileAccess.WRITE)
+		assert(fa.get_open_error() == OK)
+		var fa2 = FileAccess.open("res://test_resources/project.godot", FileAccess.WRITE)
+		assert(fa2.get_open_error() == OK)
 
 #	BasicData.base_classes = BasicData.base_classes.slice(250,260)
 #	print("After preselection, choosed " + str(BasicData.base_classes.size()) + " classes")
