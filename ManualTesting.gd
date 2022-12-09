@@ -86,6 +86,7 @@ var excluded_functions: Array = [
 	"texture_replace",  # 66373
 	"texture_2d_update",  # 66374
 	"agent_set_callback",  # 69750 - LEAK
+	"create_local_rendering_device", # TODO - out of memory probably
 	#"create_local_device", # TODO LEAK
 	# LEAK
 	"texture_2d_create",
