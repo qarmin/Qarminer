@@ -106,8 +106,8 @@ func get_string() -> String:
 		return "5555"
 	elif numm == 3:
 		return "127.0.0.1"
-	elif numm == 4:
-		resources_string_array[randi() % resources_string_array.size()]
+	#elif numm == 4: # 65484 - should fix memory leak
+	#	resources_string_array[randi() % resources_string_array.size()]
 	return String()
 
 
