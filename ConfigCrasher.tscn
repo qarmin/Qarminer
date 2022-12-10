@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://dvm7o30ptjy8v"]
+
+[ext_resource type="Script" path="res://ConfigCrasher.gd" id="1_nl3mf"]
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_nl3mf")
