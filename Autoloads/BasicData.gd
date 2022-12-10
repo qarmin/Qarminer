@@ -147,7 +147,13 @@ var function_exceptions: Array = [
 	"move_child",
 	"raise",
 	"add_child",
-	"add_child_below_node"
+	"add_child_below_node",
+	###
+	### Steam
+	###
+	"restartAppIfNecessary", # Run steam
+	"setIPv6", # https://github.com/Gramps/GodotSteam/issues/298
+	"toIdentityString", #  https://github.com/Gramps/GodotSteam/issues/299
 ]
 
 # List of all functions that can freeze Godot when working with really big numbers
