@@ -122,14 +122,14 @@ func initialize_array_with_allowed_functions(use_parent_methods: bool, disabled_
 	for method_name in BasicData.disabled_classes:
 		disabled_classes_names[method_name] = false
 
-	var i = 0
-	print(Time.get_datetime_dict_from_system())
+	#var i = 0
+	#print(Time.get_datetime_dict_from_system())
 
 	if BasicData.allowed_functions.is_empty():
 		for name_of_class in BasicData.base_classes:
-			i += 1
-			if i % 50 == 0:
-				print(str(i) + "/" + str(BasicData.base_classes.size()))
+			#i += 1
+			#if i % 50 == 0:
+			#	print(str(i) + "/" + str(BasicData.base_classes.size()))
 			var old_method_list: Array = []
 			var new_method_list: Array = []
 			old_method_list = ClassDB.class_get_method_list(name_of_class, !use_parent_methods)
@@ -154,7 +154,7 @@ func initialize_array_with_allowed_functions(use_parent_methods: bool, disabled_
 
 			class_info[name_of_class] = new_method_list
 
-	print(Time.get_datetime_dict_from_system())
+	#print(Time.get_datetime_dict_from_system())
 	BasicData.allowed_thing = class_info
 
 
@@ -196,7 +196,7 @@ func leave_custom_classes_if_needed(how_much_all_classes: int) -> void:
 		print("There is no classes available!!!!!!!!!!!!!!!!!!!")
 		get_tree().quit()
 
-	print(str(BasicData.base_classes.size()) + " choosen classes from all " + str(how_much_all_classes) + " classes.")
+	print(str(BasicData.base_classes.size()) + " chosen classes from all " + str(how_much_all_classes) + " classes.")
 	print(str(BasicData.argument_classes.size()) + " classes can be used as arguments.")
 
 
