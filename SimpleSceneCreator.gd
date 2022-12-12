@@ -7,7 +7,7 @@ var disabled_classes: Array = [
 	"MissingNode",  # Vanished messages
 ]
 
-var max_children: int = 30
+var max_children: int = 3000
 var children_left: int
 var master_child: Node
 
