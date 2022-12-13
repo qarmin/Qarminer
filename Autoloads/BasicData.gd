@@ -28,6 +28,7 @@ var function_exceptions: Array = [
 	"tessellate_even_length",  # Too slow
 	"save_webp",  # Saves file to FS
 	"save_support_data",  # Saves file to FS
+	"set_pre_process_time", # TODO, with INF freeze entire CpuParticles3D
 	###
 	### Godot 4.0 MSAN
 	###
@@ -38,6 +39,8 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
+	"_get_drag_data_fw", # 70005
+	"set_icon_scale", # 70004
 	"create_font",  # TODO TextServerAdvanced
 	"create_shaped_text",  # TODO TextServerAdvanced
 	"pack",  # 69258
