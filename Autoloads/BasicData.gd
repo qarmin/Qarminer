@@ -29,6 +29,7 @@ var function_exceptions: Array = [
 	"save_webp",  # Saves file to FS
 	"save_support_data",  # Saves file to FS
 	"set_pre_process_time", # TODO, with INF freeze entire CpuParticles3D
+	"set_is_setup",  # Just don't use, in SkeletonModification crashes a lot without reason
 	###
 	### Godot 4.0 MSAN
 	###
@@ -40,12 +41,10 @@ var function_exceptions: Array = [
 	### Godot 4.0
 	###
 	"_get_drag_data_fw", # 70005
-	"set_icon_scale", # 70004
 	"create_font",  # TODO TextServerAdvanced
 	"create_shaped_text",  # TODO TextServerAdvanced
 	"pack",  # 69258
 	"set_extra_cull_margin",  # 69258
-	"window_get_native_handle",  # 68525
 	"push_paragraph",  # 68242
 	"do_indent",  # 68176
 	"unindent_lines",  # 68176
@@ -55,7 +54,6 @@ var function_exceptions: Array = [
 	"create_convex_collision",  # 60357
 	"set_process_material",  # 67954, 54478
 	"append_from_file",  # 67951
-	"add_file",  # 67613
 	"_set_playing",  #67589
 	"play",  #  67589
 	"save_jpg_to_buffer",  # 67586
@@ -64,9 +62,6 @@ var function_exceptions: Array = [
 	"set_scroll_past_end_of_file_enabled",  # 66937
 	"set_fit_content_height_enabled",  # 66937
 	"set_line_wrapping_mode",  # 66937
-	"generate_triangle_mesh",  # 66699
-	"get_faces",  #66699
-	"create_trimesh_shape",  # 66699
 	"_get_light_textures_data",  # 66002
 	"get_seamless_image",  # 61044
 	"set_buffer",  # 65964
@@ -76,33 +71,23 @@ var function_exceptions: Array = [
 	"_generate_texture",  # 61044
 	"set_zoom",  # 60492
 	"set_end",  # 60492
-	"set_size",  # 60326, 60325
+	"set_size",  # 60325
+	"set_height", # 60325
 	"set_points",  # 60337
 	"set_custom_viewport",  #60052
 	"set_visibility_range_begin_margin",  #54655
 	"set_visibility_range_begin",  #54655
 	"_broadcast",  #53873
-	"set_base",  #53723
 	"set_polygon",  #53722
-	"add_bone",  #53646
-	"set_bone_children",  #53646
-	"global_pose_z_forward_to_bone_forward",  #53646
-	"lightmap_unwrap",  # 52929
 	"get_property_list",  #53604
 	"set_projector",  #53604
 	"commit",  #53191
 	"commit_to_arrays",  #53191
-	"shaped_text_draw_outline",  #53562
-	"set_input_as_handled",  #53560
 	"add_node",  #53558
 	"set_texture",  #46828
 	"compress_from_channels",  # Image
 	"open_midi_inputs",  #52821
 	"load_threaded_request",  #46762
-	"bake_navigation_mesh",  # TODO too hard to find for now
-	"set_is_setup",  # Just don't use, in SkeletonModification crashes a lot without reason
-	"_update_shape",  # TODO, probably crashes exported build
-	"get_custom_monitor",  # TODO crashes only in exported build
 	"clip_polyline_with_polygon",  #60324
 	"clip_polygons",  #60324
 	"offset_polyline",  #60324
@@ -111,7 +96,6 @@ var function_exceptions: Array = [
 	"intersect_polyline_with_polygon",  #60324
 	"merge_polygons",  #60324
 	"intersect_polygons",  #60324
-	"popup_centered_clamped",  # 60326
 	###
 	### Reported crashes
 	###
