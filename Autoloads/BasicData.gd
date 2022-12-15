@@ -15,16 +15,11 @@ var function_exceptions: Array = [
 	###
 	### Reported crashes
 	###
-	"bake",  # 69229
 	"set_enabled_inputs",  # 69230
-	"_gui_input",  # 69214
-	"set_avoidance_enabled",  #68022
-	"agent_set_callback",  # 68013
 	"create_convex_collision",  # 60357
 	"tts_set_utterance_callback",  # 66821
 	"set_window_mouse_passthrough",  # 66754
 	"open_midi_inputs",  # 52821, 69180
-	"set_custom_minimum_size",  #60326 - 60376
 	"set_custom_viewport",  #60052
 	"create_convex_shape",  # 60357
 	"get_debug_mesh",  #60337
@@ -36,7 +31,6 @@ var function_exceptions: Array = [
 	"set_script",  #46120
 	"set_icon",  #46189
 	"set_size",  #60325
-	"popup_centered_minsize",  # 60326
 	"set_zoom",  # 60492
 	"set_end",  # 60492
 	"set_zoom_min",  # 60492
