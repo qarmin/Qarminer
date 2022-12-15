@@ -10,6 +10,15 @@ var excluded_functions: Array = [
 	"set_window_mouse_passthrough",  #66754
 	"lock",  # 66758
 	"tts_set_utterance_callback",  # 66821
+	"clip_polyline_with_polygon_2d",  #60324
+	"clip_polygons_2d",  #60324
+	"offset_polyline_2d",  #60324
+	"offset_polygon_2d",  #60324
+	"exclude_polygons_2d",  #60324
+	"intersect_polyline_with_polygon_2d",  #60324
+	"merge_polygons_2d",  #60324
+	"intersect_polygons_2d",  #60324
+	"set_points",  # 60337
 	# OTHER
 	"set_window_size",  # Can crash OS/DE, hard to find exact values to crash
 	"print_resources_by_type",  # Prints
