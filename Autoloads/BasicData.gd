@@ -15,6 +15,8 @@ var function_exceptions: Array = [
 	###
 	### Reported crashes
 	###
+	"_gui_input",  # 70097
+	"set_width", # 60325
 	"set_avoidance_enabled", # 68022 TODO wait for PR for 3.6, 69629
 	"agent_set_callback", # 68013 TODO wait for PR for 3.6, 69629
 	"set_enabled_inputs",  # 69230
@@ -145,6 +147,7 @@ var function_exceptions: Array = [
 	"raise",
 	"add_child",
 	"add_child_below_node",
+	"to_node", # GLTFLight creates new Node
 	###
 	### Steam
 	###
