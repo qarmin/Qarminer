@@ -16,7 +16,7 @@ var function_exceptions: Array = [
 	### Reported crashes
 	###
 	"set_avoidance_enabled", # 68022 TODO wait for PR for 3.6, 69629
-	"agent_set_callback" # 68013 TODO wait for PR for 3.6, 69629
+	"agent_set_callback", # 68013 TODO wait for PR for 3.6, 69629
 	"set_enabled_inputs",  # 69230
 	"create_convex_collision",  # 60357
 	"tts_set_utterance_callback",  # 66821
