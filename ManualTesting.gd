@@ -19,6 +19,8 @@ var excluded_functions: Array = [
 	"merge_polygons_2d",  #60324
 	"intersect_polygons_2d",  #60324
 	"set_points",  # 60337
+	"set_avoidance_enabled", # 68022 TODO wait for PR for 3.6, 69629
+	"agent_set_callback", # 68013 TODO wait for PR for 3.6, 69629
 	# OTHER
 	"set_window_size",  # Can crash OS/DE, hard to find exact values to crash
 	"print_resources_by_type",  # Prints

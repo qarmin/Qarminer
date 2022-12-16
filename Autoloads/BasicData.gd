@@ -15,6 +15,11 @@ var function_exceptions: Array = [
 	###
 	### Reported crashes
 	###
+	"play", # 70140
+	"set_pitch_scale", # 70140
+	"update_bitmask_region" # 70139
+	"set_custom_minimum_size", # 70120
+	"set_points", # 60337
 	"_gui_input",  # 70097
 	"set_width", # 60325
 	"set_avoidance_enabled", # 68022 TODO wait for PR for 3.6, 69629
