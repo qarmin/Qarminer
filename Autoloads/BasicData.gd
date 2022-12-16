@@ -15,6 +15,9 @@ var function_exceptions: Array = [
 	###
 	### Reported crashes
 	###
+	"_zoom_plus", # set_zoom_step
+	"set_zoom_step", # set_zoom_step
+	"update_bitmask_area", # 70139
 	"play", # 70140
 	"set_pitch_scale", # 70140
 	"update_bitmask_region", # 70139
