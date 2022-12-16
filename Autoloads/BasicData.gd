@@ -15,7 +15,10 @@ var function_exceptions: Array = [
 	###
 	### Reported crashes
 	###
-	"_zoom_plus", # set_zoom_step
+	"set_begin", # 70147
+	"set_zoom_step", # 70147
+	"_zoom_minus", # 70147
+	"_zoom_plus", # 70147
 	"set_zoom_step", # set_zoom_step
 	"update_bitmask_area", # 70139
 	"play", # 70140
@@ -24,7 +27,6 @@ var function_exceptions: Array = [
 	"set_custom_minimum_size", # 70120
 	"set_points", # 60337
 	"_gui_input",  # 70097
-	"set_width", # 60325
 	"set_avoidance_enabled", # 68022 TODO wait for PR for 3.6, 69629
 	"agent_set_callback", # 68013 TODO wait for PR for 3.6, 69629
 	"set_enabled_inputs",  # 69230
@@ -51,6 +53,8 @@ var function_exceptions: Array = [
 	"set_polygon",  #60325
 	"set_depth",  #60325
 	"set_radius",  #60325
+	"set_width",  #60325
+	"set_height",  #60325
 	"set_inner_radius",  #60325
 	"clip_polyline_with_polygon_2d",  #60324
 	"clip_polygons_2d",  #60324
