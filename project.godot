@@ -26,6 +26,7 @@ SettingsLoader="*res://Autoloads/SettingsLoader.gd"
 CSharpValueCreator="*res://CSharpCreate/CSharpValueCreator.gd"
 CSharpParseArgumentType="*res://CSharpCreate/CSharpParseArgumentType.gd"
 CSharpCreateProjectBase="*res://CSharpCreate/CSharpCreateProjectBase.gd"
+Validator="*res://Autoloads/Validator.gd"
 
 [logging]
 

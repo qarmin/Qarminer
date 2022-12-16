@@ -19,7 +19,6 @@ var function_exceptions: Array = [
 	"set_zoom_step", # 70147
 	"_zoom_minus", # 70147
 	"_zoom_plus", # 70147
-	"set_zoom_step", # set_zoom_step
 	"update_bitmask_area", # 70139
 	"play", # 70140
 	"set_pitch_scale", # 70140
@@ -39,7 +38,6 @@ var function_exceptions: Array = [
 	"get_debug_mesh",  #60337
 	"set_radial_initial_angle",  #60338
 	"process_action",  #60297
-	"replace_by",  #53775
 	"set_block_signals",  #53553
 	"make_atlas",  #51154
 	"set_script",  #46120
@@ -129,15 +127,15 @@ var function_exceptions: Array = [
 	"print_all_textures_by_size",
 	"print_all_resources",
 	"print_resources_in_use",
-	"print_orphan_nodes",
 	###
 	### Can call other functions and broke everything
 	###
-	"_call_function",
 	"call",
 	"call_deferred",
 	"callv",
 	"call_func",
+	"call_funcv",
+	"call_native",
 	###
 	### Too dangerous, because add, mix and remove randomly nodes and objects
 	###
@@ -253,7 +251,6 @@ var disabled_classes: Array = [
 	"_Thread",
 	"_Semaphore",
 	"_Mutex",
-	"JavaClassWrapper",  # Looks that JavaClassWrapper.new() crashes android
 	"JavaClass",  # JavaClass is only functions that returns Null when using JavaClass.new().get_class
 	###
 	### Singletons
