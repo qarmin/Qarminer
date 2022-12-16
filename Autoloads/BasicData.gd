@@ -17,7 +17,7 @@ var function_exceptions: Array = [
 	###
 	"play", # 70140
 	"set_pitch_scale", # 70140
-	"update_bitmask_region" # 70139
+	"update_bitmask_region", # 70139
 	"set_custom_minimum_size", # 70120
 	"set_points", # 60337
 	"_gui_input",  # 70097
