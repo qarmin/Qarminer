@@ -32,10 +32,11 @@ var function_exceptions: Array = [
 	"set_font_names",
 	"create_client",
 	"connect_to_url",
-	# TODO ZipReader use uniitalized memory
 	###
 	### Godot 4.0
 	###
+	"set_custom_minimum_size", # TODO - probably is fixed, but I still have crashes
+	"compress_from_channels", # 70197
 	"_get_drag_data_fw", # 70005
 	"create_font",  # TODO TextServerAdvanced
 	"create_shaped_text",  # TODO TextServerAdvanced
