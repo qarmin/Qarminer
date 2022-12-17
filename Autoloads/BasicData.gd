@@ -16,10 +16,7 @@ var function_exceptions: Array = [
 	### Godot 4.0 - Expected things
 	###
 	"instantiate",  # Hmmm...
-	"warp_mouse_position",  # Hmmm ..
-	"print_stray_nodes",  # Hmmm ..
-	"add_child_below_node",  # Hmm ..
-	"to_node",  # Leak
+	"print_orphan_nodes",  # Hmmm ..
 	"sample_baked",  # Freeze
 	"sample_baked_up_vector",  # Freeze
 	"get_parent",  # ? - why this is not available on 3.x?
@@ -28,7 +25,6 @@ var function_exceptions: Array = [
 	"tessellate_even_length",  # Too slow
 	"save_webp",  # Saves file to FS
 	"save_support_data",  # Saves file to FS
-	"set_pre_process_time", # TODO, with INF freeze entire CpuParticles3D
 	"set_is_setup",  # Just don't use, in SkeletonModification crashes a lot without reason
 	###
 	### Godot 4.0 MSAN
@@ -51,11 +47,9 @@ var function_exceptions: Array = [
 	"update_code_completion_options",  # 68176
 	"get_line_width",  # 68156
 	"do_unindent",  # 68154
-	"create_convex_collision",  # 60357
-	"set_process_material",  # 67954, 54478
+	"set_process_material",  # 67954, 54478, 61175
 	"append_from_file",  # 67951
 	"_set_playing",  #67589
-	"play",  #  67589
 	"save_jpg_to_buffer",  # 67586
 	"set_current",  # 67442
 	"set_follow_camera_enabled",  # 66986
@@ -66,28 +60,19 @@ var function_exceptions: Array = [
 	"get_seamless_image",  # 61044
 	"set_buffer",  # 65964
 	"compress",  # 62097
-	"set_process_material",  #61175
 	"_update_texture",  # 61044
 	"_generate_texture",  # 61044
-	"set_zoom",  # 60492
-	"set_end",  # 60492
-	"set_size",  # 60325
-	"set_height", # 60325
-	"set_points",  # 60337
-	"set_custom_viewport",  #60052
 	"set_visibility_range_begin_margin",  #54655
 	"set_visibility_range_begin",  #54655
-	"_broadcast",  #53873
-	"set_polygon",  #53722
+	"broadcast",  #53873
 	"get_property_list",  #53604
 	"set_projector",  #53604
 	"commit",  #53191
 	"commit_to_arrays",  #53191
 	"add_node",  #53558
 	"set_texture",  #46828
-	"compress_from_channels",  # Image
-	"open_midi_inputs",  #52821
 	"load_threaded_request",  #46762
+	### INF 4
 	"clip_polyline_with_polygon",  #60324
 	"clip_polygons",  #60324
 	"offset_polyline",  #60324
@@ -99,36 +84,46 @@ var function_exceptions: Array = [
 	###
 	### Reported crashes
 	###
-	"bake",  # 69229
+	"_gui_input",  # 70097
+	"set_avoidance_enabled", # 68022 TODO wait for PR for 3.6, 69629
+	"agent_set_callback", # 68013 TODO wait for PR for 3.6, 69629
 	"set_enabled_inputs",  # 69230
-	"_gui_input",  # 69214
-	"set_avoidance_enabled",  #68022
-	"agent_set_callback",  # 68013
-	"create_convex_collision",  # 60357
 	"tts_set_utterance_callback",  # 66821
 	"set_window_mouse_passthrough",  # 66754
 	"open_midi_inputs",  # 52821, 69180
-	"set_custom_minimum_size",  #60326 - 60376
 	"set_custom_viewport",  #60052
-	"create_convex_shape",  # 60357
-	"get_debug_mesh",  #60337
-	"set_radial_initial_angle",  #60338
 	"process_action",  #60297
-	"replace_by",  #53775
 	"set_block_signals",  #53553
 	"make_atlas",  #51154
 	"set_script",  #46120
 	"set_icon",  #46189
-	"set_size",  #60325
-	"popup_centered_minsize",  # 60326
+	### INF Crashes
+	"resize", # 70187
+	"play", # 70140
+	"set_pitch_scale", # 70140
+	"set_begin", # 70147
+	"set_zoom_step", # 70147
+	"_zoom_minus", # 70147
+	"_zoom_plus", # 70147
+	"update_bitmask_area", # 70139
+	"update_bitmask_region", # 70139
+	"get_debug_mesh",  #60337
+	"set_points", # 60337
+	"create_convex_collision",  # 60357
+	"create_convex_shape",  # 60357
+	"set_radial_initial_angle",  #60338
 	"set_zoom",  # 60492
 	"set_end",  # 60492
 	"set_zoom_min",  # 60492
 	"set_zoom_max",  # 60492
+	"append_from", # 60325 - MergeVertsFast
+	"set_size",  #60325
 	"set_outer_radius",  #60325
 	"set_polygon",  #60325
 	"set_depth",  #60325
 	"set_radius",  #60325
+	"set_width",  #60325
+	"set_height",  #60325
 	"set_inner_radius",  #60325
 	"clip_polyline_with_polygon_2d",  #60324
 	"clip_polygons_2d",  #60324
@@ -184,6 +179,7 @@ var function_exceptions: Array = [
 	###
 	### Godot freeze or run very slow
 	###
+	"set_pre_process_time", # CPUParticles freeze
 	"poll",
 	"delay_usec",
 	"delay_msec",
@@ -202,15 +198,15 @@ var function_exceptions: Array = [
 	"print_all_textures_by_size",
 	"print_all_resources",
 	"print_resources_in_use",
-	"print_orphan_nodes",
 	###
 	### Can call other functions and broke everything
 	###
-	"_call_function",
 	"call",
 	"call_deferred",
 	"callv",
 	"call_func",
+	"call_funcv",
+	"call_native",
 	###
 	### Too dangerous, because add, mix and remove randomly nodes and objects
 	###
@@ -231,7 +227,8 @@ var function_exceptions: Array = [
 	"move_child",
 	"raise",
 	"add_child",
-	"add_child_below_node"
+	"add_child_below_node",
+	"to_node", # GLTFLight creates new Node
 ]
 
 # List of all functions that can freeze Godot when working with really big numbers
@@ -273,7 +270,6 @@ var too_big_arguments: Array = [
 	"get_method_list",
 	"set_grid_radius",  # ProximyGroup, freeze entire calculations
 	"set_panorama",
-	"set_pre_process_time",
 	"load_webp_from_buffer",
 	"get_baked_tilts",
 	"set_enabled_inputs",
@@ -318,10 +314,6 @@ var disabled_classes: Array = [
 	"GDScript",  # Broke script
 	"SceneTree",
 	"JNISingleton",  # Freeze - who use it?
-	"_GodotSharp",
-	"_Thread",
-	"_Semaphore",
-	"_Mutex",
 	"JavaClassWrapper",  # Looks that JavaClassWrapper.new() crashes android
 	"JavaClass",  # JavaClass is only functions that returns Null when using JavaClass.new().get_class
 	# TODOGODOT4 - update here exluded list from Godot4
