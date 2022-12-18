@@ -39,27 +39,27 @@ var ValueCreator
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	randomize()
-	for i in ProjectSettings.get_settings():
-		if String(i["name"]).begins_with("autoload/"):
-			continue
-		var short_name_parts = String(i["name"]).split("/")
-		short_name_parts.remove_at(0)
-		var short_name = "/".join(short_name_parts)
-		if short_name in ignored:
-			continue
-
-		ProjectSettings.clear(i["name"])
-		if i["type"] == TYPE_DICTIONARY:
-			continue # TODO fix this, currently objects inside not works
-
-#		if randi() % 10 != 0:
+#	randomize()
+#	for i in ProjectSettings.get_settings():
+#		if String(i["name"]).begins_with("autoload/"):
 #			continue
-
-		#ProjectSettings.set_setting(i["name"], get_object(i["type"]))#randi() % 50)
-		#print(i)
-	var r = ProjectSettings.save()
-	print(r)
+#		var short_name_parts = String(i["name"]).split("/")
+#		short_name_parts.remove_at(0)
+#		var short_name = "/".join(short_name_parts)
+#		if short_name in ignored:
+#			continue
+#
+#		ProjectSettings.clear(i["name"])
+#		if i["type"] == TYPE_DICTIONARY:
+#			continue # TODO fix this, currently objects inside not works
+#
+##		if randi() % 10 != 0:
+##			continue
+#
+#		#ProjectSettings.set_setting(i["name"], get_object(i["type"]))#randi() % 50)
+#		#print(i)
+#	var r = ProjectSettings.save()
+#	print(r)
 
 	get_tree().quit()
 	
