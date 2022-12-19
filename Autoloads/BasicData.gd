@@ -74,8 +74,9 @@ var function_exceptions: Array = [
 	"set_texture",  #46828
 	"load_threaded_request",  #46762
 	### INF 4
-	"set_global_position", # TODO 1
-	"set_scroll_ofs", # TODO 1
+	"_set_size", # TODO 2 - GraphEdit
+	"set_global_position", # TODO 1 - GraphEdit
+	"set_scroll_ofs", # TODO 1 - GraphEdit
 	"clip_polyline_with_polygon",  #60324
 	"clip_polygons",  #60324
 	"offset_polyline",  #60324
