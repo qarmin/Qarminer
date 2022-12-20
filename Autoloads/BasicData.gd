@@ -15,6 +15,7 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0 - Expected things
 	###
+	"set_base", # Dangerous, change base and creates memory leak
 	"instantiate",  # Hmmm...
 	"print_orphan_nodes",  # Hmmm ..
 	"sample_baked",  # Freeze
