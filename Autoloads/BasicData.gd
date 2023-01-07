@@ -121,8 +121,11 @@ var function_exceptions: Array = [
 	"set_end",  # 60492
 	"set_zoom_min",  # 60492
 	"set_zoom_max",  # 60492
-	"append_from", # 60325 - MergeVertsFast
+	"append_from", # 60325 - MergeVertsFast, thirdparty/misc/mikktspace.c
+	"generate_tangents", # 60325
+	"begin", # 60325
 	"set_size",  #60325
+	"set_spin_degrees", # 60325
 	"set_outer_radius",  #60325
 	"set_polygon",  #60325
 	"set_depth",  #60325
