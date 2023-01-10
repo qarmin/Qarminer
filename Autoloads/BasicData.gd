@@ -37,6 +37,7 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
+	"initialize", # 71150
 	"set_custom_minimum_size", # TODO - probably is fixed, but I still have crashes
 	"compress_from_channels", # 70197
 	"_get_drag_data_fw", # 70005
