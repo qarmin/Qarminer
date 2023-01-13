@@ -121,7 +121,7 @@ func create_scene_files() -> void:
 
 
 func remove_files_recursivelly(to_delete: String) -> void:
-	var directory: DirAccess = DirAccess.new()
+	var directory: DirAccess = DirAccess.open("res://")
 
 	directory.open(to_delete)
 	assert(directory.list_dir_begin() == OK)  # TODOGODOT4 fill missing arguments https://github.com/godotengine/godot/pull/40547
@@ -146,7 +146,7 @@ func remove_files_recursivelly(to_delete: String) -> void:
 
 
 func create_basic_structure() -> void:
-	var directory: DirAccess = DirAccess.new()
+	var directory: DirAccess = DirAccess.open("res://")
 	assert(directory.make_dir_recursive(base_path + "2D/") == OK)
 	assert(directory.make_dir_recursive(base_path + "3D/") == OK)
 	assert(directory.make_dir_recursive(base_path + "Node/") == OK)

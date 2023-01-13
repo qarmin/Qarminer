@@ -21,7 +21,7 @@ func _ready():
 	editor_classes.sort()
 	#print(editor_classes)
 
-	var dir = DirAccess.new()
+	var dir = DirAccess.open("res://")
 	dir.make_dir("res://Files")
 
 	print("[autoload]")

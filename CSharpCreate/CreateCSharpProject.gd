@@ -244,7 +244,7 @@ func _ready() -> void:
 	CSharpCreateProjectBase.base_dir = "CSharp/"
 
 	CSharpCreateProjectBase.collect_data()
-	if DirAccess.new().dir_exists(CSharpCreateProjectBase.base_path):
+	if DirAccess.open("res://").dir_exists(CSharpCreateProjectBase.base_path):
 		CSharpCreateProjectBase.remove_files_recursivelly(CSharpCreateProjectBase.base_path)
 	CSharpCreateProjectBase.create_basic_structure()
 	create_basic_files()
