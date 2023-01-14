@@ -1,4 +1,4 @@
-name: 🐧 Godot 3.x Exported Release
+name: 🐧 Godot 3.5 Exported Release
 on:
   push:
   pull_request:
@@ -40,7 +40,7 @@ jobs:
         run: |
           git clone https://github.com/godotengine/godot.git
           cd godot
-          git checkout 3.x
+          git checkout 3.5
           cd ../
 
       - name: Compile Godot
