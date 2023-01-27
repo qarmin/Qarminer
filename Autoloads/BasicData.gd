@@ -40,18 +40,13 @@ var function_exceptions: Array = [
 	"property_get_revert", # 71863
 	"initialize", # 71150
 	"set_custom_minimum_size", # TODO - probably is fixed, but I still have crashes
-	"compress_from_channels", # 70197
 	"_get_drag_data_fw", # 70005
 	"create_font",  # TODO TextServerAdvanced
 	"create_shaped_text",  # TODO TextServerAdvanced
 	"pack",  # 69258
 	"set_extra_cull_margin",  # 69258
 	"push_paragraph",  # 68242
-	"do_indent",  # 68176
-	"unindent_lines",  # 68176
-	"update_code_completion_options",  # 68176
 	"get_line_width",  # 68156
-	"do_unindent",  # 68154
 	"set_process_material",  # 67954, 54478, 61175
 	"append_from_file",  # 67951
 	"_set_playing",  #67589
@@ -62,11 +57,8 @@ var function_exceptions: Array = [
 	"set_fit_content_height_enabled",  # 66937
 	"set_line_wrapping_mode",  # 66937
 	"_get_light_textures_data",  # 66002
-	"get_seamless_image",  # 61044
 	"set_buffer",  # 65964
 	"compress",  # 62097
-	"_update_texture",  # 61044
-	"_generate_texture",  # 61044
 	"set_visibility_range_begin_margin",  #54655
 	"set_visibility_range_begin",  #54655
 	"broadcast",  #53873
@@ -78,9 +70,9 @@ var function_exceptions: Array = [
 	"set_texture",  #46828
 	"load_threaded_request",  #46762
 	### INF 4
-#	"_set_size", # TODO 2 - GraphEdit
-#	"set_global_position", # TODO 1 - GraphEdit
-#	"set_scroll_ofs", # TODO 1 - GraphEdit
+	"_set_size", # TODO 2 - GraphEdit
+	"set_global_position", # TODO 1 - GraphEdit
+	"set_scroll_ofs", # TODO 1 - GraphEdit
 #	"clip_polyline_with_polygon",  #60324
 #	"clip_polygons",  #60324
 #	"offset_polyline",  #60324
@@ -105,14 +97,21 @@ var function_exceptions: Array = [
 	"make_atlas",  #51154
 	"set_script",  #46120
 	"set_icon",  #46189
+	### Partial INF - Freeezes sometimes without INF
+	"set_zoom",  # 60492
+	"set_end",  # 60492
+	"set_zoom_min",  # 60492
+	"set_zoom_max",  # 60492
+	"set_begin", # 70147
+	"set_zoom_step", # 70147
+	"_zoom_minus", # 70147
+	"_zoom_plus", # 70147
 	### INF Crashes
 #	"resize", # 70187
 #	"play", # 70140
 #	"set_pitch_scale", # 70140
 #	"set_begin", # 70147
 #	"set_zoom_step", # 70147
-#	"_zoom_minus", # 70147
-#	"_zoom_plus", # 70147
 #	"update_bitmask_area", # 70139
 #	"update_bitmask_region", # 70139
 #	"get_debug_mesh",  #60337
@@ -120,10 +119,6 @@ var function_exceptions: Array = [
 #	"create_convex_collision",  # 60357
 #	"create_convex_shape",  # 60357
 #	"set_radial_initial_angle",  #60338
-#	"set_zoom",  # 60492
-#	"set_end",  # 60492
-#	"set_zoom_min",  # 60492
-#	"set_zoom_max",  # 60492
 #	"append_from", # 60325 - MergeVertsFast, thirdparty/misc/mikktspace.c
 #	"generate_tangents", # 60325
 #	"begin", # 60325
