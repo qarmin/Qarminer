@@ -15,9 +15,6 @@ var function_exceptions: Array = [
 	###
 	### Reported crashes
 	###
-	"_gui_input",  # 70097
-	"set_avoidance_enabled", # 68022 TODO wait for PR for 3.6, 69629
-	"agent_set_callback", # 68013 TODO wait for PR for 3.6, 69629
 	"set_enabled_inputs",  # 69230
 	"tts_set_utterance_callback",  # 66821
 	"set_window_mouse_passthrough",  # 66754
@@ -29,41 +26,41 @@ var function_exceptions: Array = [
 	"set_script",  #46120
 	"set_icon",  #46189
 	### INF Crashes
-	"resize", # 70187
-	"play", # 70140
-	"set_pitch_scale", # 70140
-	"set_begin", # 70147
-	"set_zoom_step", # 70147
-	"_zoom_minus", # 70147
-	"_zoom_plus", # 70147
-	"update_bitmask_area", # 70139
-	"update_bitmask_region", # 70139
-	"get_debug_mesh",  #60337
-	"set_points", # 60337
-	"create_convex_collision",  # 60357
-	"create_convex_shape",  # 60357
-	"set_radial_initial_angle",  #60338
-	"set_zoom",  # 60492
-	"set_end",  # 60492
-	"set_zoom_min",  # 60492
-	"set_zoom_max",  # 60492
-	"append_from", # 60325 - MergeVertsFast
-	"set_size",  #60325
-	"set_outer_radius",  #60325
-	"set_polygon",  #60325
-	"set_depth",  #60325
-	"set_radius",  #60325
-	"set_width",  #60325
-	"set_height",  #60325
-	"set_inner_radius",  #60325
-	"clip_polyline_with_polygon_2d",  #60324
-	"clip_polygons_2d",  #60324
-	"offset_polyline_2d",  #60324
-	"offset_polygon_2d",  #60324
-	"exclude_polygons_2d",  #60324
-	"intersect_polyline_with_polygon_2d",  #60324
-	"merge_polygons_2d",  #60324
-	"intersect_polygons_2d",  #60324
+#	"resize", # 70187
+#	"play", # 70140
+#	"set_pitch_scale", # 70140
+#	"set_begin", # 70147
+#	"set_zoom_step", # 70147
+#	"_zoom_minus", # 70147
+#	"_zoom_plus", # 70147
+#	"update_bitmask_area", # 70139
+#	"update_bitmask_region", # 70139
+#	"get_debug_mesh",  #60337
+#	"set_points", # 60337
+#	"create_convex_collision",  # 60357
+#	"create_convex_shape",  # 60357
+#	"set_radial_initial_angle",  #60338
+#	"set_zoom",  # 60492
+#	"set_end",  # 60492
+#	"set_zoom_min",  # 60492
+#	"set_zoom_max",  # 60492
+#	"append_from", # 60325 - MergeVertsFast
+#	"set_size",  #60325
+#	"set_outer_radius",  #60325
+#	"set_polygon",  #60325
+#	"set_depth",  #60325
+#	"set_radius",  #60325
+#	"set_width",  #60325
+#	"set_height",  #60325
+#	"set_inner_radius",  #60325
+#	"clip_polyline_with_polygon_2d",  #60324
+#	"clip_polygons_2d",  #60324
+#	"offset_polyline_2d",  #60324
+#	"offset_polygon_2d",  #60324
+#	"exclude_polygons_2d",  #60324
+#	"intersect_polyline_with_polygon_2d",  #60324
+#	"merge_polygons_2d",  #60324
+#	"intersect_polygons_2d",  #60324
 	###
 	### Expected Crashes
 	###

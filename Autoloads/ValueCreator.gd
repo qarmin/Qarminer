@@ -20,14 +20,14 @@ func get_int() -> int:
 func get_float() -> float:
 	var numm = randi() % 100
 	if numm == 0:
-		return -INF
-	elif numm == 1:
-		return INF
-	elif numm == 2:
-		return NAN
-	elif numm == 3:
-		return -NAN
-	elif numm == 4:
+#		return -INF
+#	elif numm == 1:
+#		return INF
+#	elif numm == 2:
+#		return NAN
+#	elif numm == 3:
+#		return -NAN
+#	elif numm == 4:
 		return 0.0
 	elif numm == 5:
 		return -0.0
