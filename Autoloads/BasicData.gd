@@ -35,33 +35,33 @@ var function_exceptions: Array = [
 	"_zoom_minus", # 70147
 	"_zoom_plus", # 70147
 	### INF Crashes
-#	"resize", # 70187
-#	"play", # 70140
-#	"set_pitch_scale", # 70140
-#	"update_bitmask_area", # 70139
-#	"update_bitmask_region", # 70139
-#	"get_debug_mesh",  #60337
-#	"set_points", # 60337
-#	"create_convex_collision",  # 60357
-#	"create_convex_shape",  # 60357
-#	"set_radial_initial_angle",  #60338
-#	"append_from", # 60325 - MergeVertsFast
-#	"set_size",  #60325
-#	"set_outer_radius",  #60325
-#	"set_polygon",  #60325
-#	"set_depth",  #60325
-#	"set_radius",  #60325
-#	"set_width",  #60325
-#	"set_height",  #60325
-#	"set_inner_radius",  #60325
-#	"clip_polyline_with_polygon_2d",  #60324
-#	"clip_polygons_2d",  #60324
-#	"offset_polyline_2d",  #60324
-#	"offset_polygon_2d",  #60324
-#	"exclude_polygons_2d",  #60324
-#	"intersect_polyline_with_polygon_2d",  #60324
-#	"merge_polygons_2d",  #60324
-#	"intersect_polygons_2d",  #60324
+	"resize", # 70187
+	"play", # 70140
+	"set_pitch_scale", # 70140
+	"update_bitmask_area", # 70139
+	"update_bitmask_region", # 70139
+	"get_debug_mesh",  #60337
+	"set_points", # 60337
+	"create_convex_collision",  # 60357
+	"create_convex_shape",  # 60357
+	"set_radial_initial_angle",  #60338
+	"append_from", # 60325 - MergeVertsFast
+	"set_size",  #60325
+	"set_outer_radius",  #60325
+	"set_polygon",  #60325
+	"set_depth",  #60325
+	"set_radius",  #60325
+	"set_width",  #60325
+	"set_height",  #60325
+	"set_inner_radius",  #60325
+	"clip_polyline_with_polygon_2d",  #60324
+	"clip_polygons_2d",  #60324
+	"offset_polyline_2d",  #60324
+	"offset_polygon_2d",  #60324
+	"exclude_polygons_2d",  #60324
+	"intersect_polyline_with_polygon_2d",  #60324
+	"merge_polygons_2d",  #60324
+	"intersect_polygons_2d",  #60324
 	###
 	### Expected Crashes
 	###
