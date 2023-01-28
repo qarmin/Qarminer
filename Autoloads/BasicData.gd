@@ -37,6 +37,9 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
+	"push_hint", # 72232
+	"add_image", # 72232
+	"save_webp_to_buffer", # 72230
 	"property_get_revert", # 71863
 	"initialize", # 71150
 	"set_custom_minimum_size", # TODO - probably is fixed, but I still have crashes
