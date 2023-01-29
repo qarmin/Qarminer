@@ -13,6 +13,18 @@ var allowed_thing: Dictionary = {}  # List of all classes with
 # TODOGODOT4
 var function_exceptions: Array = [
 	###
+	### Timer - slow functions that sometimes probably cause CI failure(due too long of time checking) > 0.5 second 
+	###
+	"draw_multiline_string_outline", # FontVariation
+	"inspect_native_shader_code", # ORMMaterial3D 
+	"_im_update", #Label3D
+	"_generate_texture", # NoiseTexture2D
+	"draw_string_outline", # FontVariation
+	"_update_texture", #NoiseTexture2D
+	"NoiseTexture2D", # StreamPeerBuffer
+	"get_utf8_string", # StreamPeerBuffer
+	"draw_multiline_string", # FontVariation
+	###
 	### Godot 4.0 - Expected things
 	###
 	"reparent", 
