@@ -24,6 +24,8 @@ var function_exceptions: Array = [
 	"NoiseTexture2D", # StreamPeerBuffer
 	"get_utf8_string", # StreamPeerBuffer
 	"draw_multiline_string", # FontVariation
+	"get_var",  #StreamPeerTLS
+	"get_string", #StreamPeerTLS
 	###
 	### Godot 4.0 - Expected things
 	###
