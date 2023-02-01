@@ -26,6 +26,7 @@ var function_exceptions: Array = [
 	"draw_multiline_string", # FontVariation
 	"get_var",  #StreamPeerTLS
 	"get_string", #StreamPeerTLS
+	"set_input_count", #AnimationNodeTransition.new().set_input_count(-24) Error spam
 	###
 	### Godot 4.0 - Expected things
 	###
