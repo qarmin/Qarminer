@@ -52,6 +52,11 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
+	"begin_complex_operation", # 73202
+	"do_indent", # 73202
+	"create_outline", # 73201
+	"surface_add_vertex_2d", # 73201
+	"window_set_mouse_passthrough", #66754
 	"push_hint", # 72232
 	"add_image", # 72232
 	"save_webp_to_buffer", # 72230
