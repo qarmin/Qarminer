@@ -17,14 +17,15 @@ extends Node
 #   - If second node is child of first, add first node to root one(prevents from memory leaks due invalid reparenting)
 #   - At the end add first random node as child of second
 
-var number_of_nodes: int = 0
+var number_of_nodes: int = 6000
+var moving_nodes_every_frame: int = 50
 
 var debug_enabled: bool = true
 
 var number_of_variables: int = 0
 
 var to_print: String = ""
-var debug_print: bool = true
+var debug_print: bool = false
 
 var save_data_to_file: bool = true
 var file_handler: FileAccess
@@ -38,8 +39,17 @@ func _ready() -> void:
 
 	var temp_classes: Array = []
 	for name_of_class in BasicData.base_classes:
+		if name_of_class in ["ReflectionProbe"]:
+			continue
 		if ClassDB.is_parent_class(name_of_class, "Node"):
 			temp_classes.append(name_of_class)
+	temp_classes.shuffle()
+	temp_classes = temp_classes.slice(0,20)
+	var to_print = "["
+	for i in temp_classes:
+		to_print += "\"" + i + "\","
+	to_print += "]"
+	print(to_print)
 	BasicData.base_classes = temp_classes
 #	BasicData.base_classes = ["AnimatedSprite2D"]
 
@@ -58,7 +68,6 @@ func _ready() -> void:
 #		to_print += "]"
 #		save_to_file_to_screen("\n" + to_print,to_print)
 
-	number_of_nodes = 5
 	for i in range(number_of_nodes):
 		var index: int = randi() % BasicData.base_classes.size()
 
@@ -77,7 +86,7 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	var choosen_node: Node
 	var parent_node: Node
-	for i in range(2):
+	for i in range(moving_nodes_every_frame):
 		number_of_variables += 1
 		var choosen_node_name: String = "Special Node " + str(randi() % number_of_nodes)
 		choosen_node = find_child(choosen_node_name, true, false)

@@ -52,6 +52,8 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
+	"notify_deferred_thread_group", # 77029
+	"call_deferred_thread_group", # 77029
 	"begin_complex_operation", # 73202
 	"do_indent", # 73202
 	"create_outline", # 73201
