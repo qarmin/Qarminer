@@ -52,6 +52,7 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
+	"push_input", # 77030
 	"notify_deferred_thread_group", # 77029
 	"call_deferred_thread_group", # 77029
 	"begin_complex_operation", # 73202
