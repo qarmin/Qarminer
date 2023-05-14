@@ -46,6 +46,7 @@ var excluded_functions: Array = [
 	"set_restart_on_exit",  # Restart editor
 	# MEMORY LEAK
 	"init",  # Quite specific function, which probably needs to be instanced only once
+	"obstacle_create", 
 	"space_create",
 	"get_white_texture",
 	"get_test_texture",
