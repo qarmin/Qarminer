@@ -363,6 +363,7 @@ var disabled_classes: Array = [
 	###
 	### Godot 4.0 Additional
 	###
+	"Skeleton3D", # 77057
 	"XROrigin3D",  # 67442
 	"FogMaterial",  # 67954
 	"VisibleOnScreenEnabler3D",  # 53565
