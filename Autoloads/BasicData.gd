@@ -52,6 +52,7 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
+	"get_seamless_image_3d", # TODO Timeout
 	"propagate_call", #
 	"notify_thread_safe", # 
 	"set_deferred", # 77029
