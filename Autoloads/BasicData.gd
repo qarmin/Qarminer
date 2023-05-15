@@ -52,6 +52,8 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
+	"propagate_call", #
+	"notify_thread_safe", # 
 	"set_deferred", # 77029
 	"clear_bones_global_pose_override", # 77057
 	"push_input", # 77030
