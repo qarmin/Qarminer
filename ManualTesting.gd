@@ -81,6 +81,7 @@ var excluded_functions: Array = [
 	"line_shape_create",
 	# GODOT 4
 	# CRASHES
+	"screen_get_image", # TODO leak probably with Vulkan mobile
 	"bake_render_uv2",  # 67067
 	"create_sub_window",  # 67030
 	"cursor_set_custom_image",  #66605
