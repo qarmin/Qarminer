@@ -368,6 +368,7 @@ var disabled_classes: Array = [
 	###
 	### Godot 4.0 Additional
 	###
+	"PlaceholderCubemapArray", # 77762
 	"Skeleton3D", # 77057
 	"XROrigin3D",  # 67442
 	"FogMaterial",  # 67954
