@@ -52,6 +52,7 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
+	"create_placeholder", # 77762
 	"set_process_thread_group",  # 77029
 	"get_format", # TODO crashes in CI, but cannot really reproduce
 	"get_seamless_image_3d", # TODO Timeout
@@ -368,6 +369,7 @@ var disabled_classes: Array = [
 	###
 	### Godot 4.0 Additional
 	###
+	"CubemapArray",  # 77762
 	"PlaceholderCubemapArray", # 77762
 	"Skeleton3D", # 77057
 	"XROrigin3D",  # 67442
