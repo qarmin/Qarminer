@@ -52,6 +52,7 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
+	"set_data",  # 78414
 	"create_placeholder", # 77762
 	"set_process_thread_group",  # 77029
 	"get_format", # TODO crashes in CI, but cannot really reproduce
