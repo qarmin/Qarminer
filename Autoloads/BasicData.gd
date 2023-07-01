@@ -52,6 +52,9 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
+	"parse_bbcode", # 78849
+	"add_mesh", # 
+	"set_data",  # 78414
 	"set_data",  # 78414
 	"create_placeholder", # 77762
 	"set_process_thread_group",  # 77029
