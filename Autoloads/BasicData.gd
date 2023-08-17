@@ -386,6 +386,7 @@ var disabled_classes: Array = [
 	"AudioStreamGenerator",  # TODO threading crash
 	"AudioStreamGeneratorPlayback",  # TODO threading crash
 	"MultiplayerAPI",  # Crashes TODO
+	"OpenXRInteractionProfileMetaData", # TODO Heap use after free
 	"EngineDebugger",  # Crashes in exported project, not very usable
 ]
 

@@ -81,6 +81,7 @@ var excluded_functions: Array = [
 	"line_shape_create",
 	# GODOT 4
 	# CRASHES
+	"restart_editor", #80704
 	"window_set_mouse_passthrough", #66754
 	"screen_get_image", # TODO leak probably with Vulkan mobile
 	"bake_render_uv2",  # 67067
@@ -92,6 +93,7 @@ var excluded_functions: Array = [
 	"create_local_rendering_device",  # TODO - out of memory probably
 	#"create_local_device", # TODO LEAK
 	# LEAK
+	"texture_rd_create",
 	"texture_2d_create",
 	"link_create",
 	"joint_create",
@@ -145,6 +147,7 @@ func _ready():
 	list_of_singletons.erase("Geometry3D")  # Already tested and contains a lot of bugs
 	list_of_singletons.erase("Engine")  # Only test this manually
 	list_of_singletons.erase("ProjectSettings")  # Mess project.godot
+	list_of_singletons.erase("EditorInterface") # TODO - crashes
 #	list_of_singletons = list_of_singletons.slice(20,25) # TODO
 #	list_of_singletons = ["Engine"]
 	print(list_of_singletons)
