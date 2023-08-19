@@ -81,6 +81,7 @@ var excluded_functions: Array = [
 	"line_shape_create",
 	# GODOT 4
 	# CRASHES
+	"file_dialog_show", #80784
 	"restart_editor", #80704
 	"window_set_mouse_passthrough", #66754
 	"screen_get_image", # TODO leak probably with Vulkan mobile

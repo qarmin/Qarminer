@@ -52,7 +52,8 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
-	"string_get_character_breaks", # 80776
+	"compress", # TODO freeze
+	"_get_transform_2d_array", # 80785
 	"remove_paragraph", # 79409
 	"set_data",  # 78414
 	"set_process_thread_group",  # 77029
