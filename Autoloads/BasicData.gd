@@ -52,11 +52,9 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
+	"string_get_character_breaks", # 80776
 	"remove_paragraph", # 79409
-	"fix_invalid_tiles", # 79845
-	"parse_bbcode", # 78849
 	"set_data",  # 78414
-	"create_placeholder", # 77762
 	"set_process_thread_group",  # 77029
 	"get_format", # TODO crashes in CI, but cannot really reproduce
 	"get_seamless_image_3d", # TODO Timeout
@@ -64,14 +62,11 @@ var function_exceptions: Array = [
 	"notify_thread_safe", # 
 	"set_deferred", # 77029
 	"clear_bones_global_pose_override", # 77057
-	"push_input", # 77030
 	"set_deferred_thread_group", # 77029
 	"notify_deferred_thread_group", # 77029
 	"call_deferred_thread_group", # 77029
 	"begin_complex_operation", # 73202
 	"do_indent", # 73202
-	"create_outline", # 73201
-	"surface_add_vertex_2d", # 73201
 	"window_set_mouse_passthrough", #66754
 	"push_hint", # 72232
 	"add_image", # 72232
@@ -84,7 +79,6 @@ var function_exceptions: Array = [
 	"create_shaped_text",  # TODO TextServerAdvanced
 	"pack",  # 69258
 	"set_extra_cull_margin",  # 69258
-	"push_paragraph",  # 68242
 	"get_line_width",  # 68156
 	"set_process_material",  # 67954, 54478, 61175
 	"append_from_file",  # 67951
@@ -96,17 +90,12 @@ var function_exceptions: Array = [
 	"set_fit_content_height_enabled",  # 66937
 	"set_line_wrapping_mode",  # 66937
 	"_get_light_textures_data",  # 66002
-	"set_buffer",  # 65964
-	"compress",  # 62097
 	"set_visibility_range_begin_margin",  #54655
 	"set_visibility_range_begin",  #54655
 	"broadcast",  #53873
 	"get_property_list",  #53604
 	"set_projector",  #53604
-	"commit",  #53191
-	"commit_to_arrays",  #53191
 	"add_node",  #53558
-	"set_texture",  #46828
 	"load_threaded_request",  #46762
 	### INF 4
 	"_set_size", # TODO 2 - GraphEdit
