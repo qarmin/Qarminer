@@ -378,6 +378,14 @@ var disabled_classes: Array = [
 	"MultiplayerAPI",  # Crashes TODO
 	"OpenXRInteractionProfileMetaData", # TODO Heap use after free
 	"EngineDebugger",  # Crashes in exported project, not very usable
+	"OpenXRAPIExtension", 
+	"OpenXRAction", 
+	"OpenXRActionMap", 
+	"OpenXRExtensionWrapperExtension", 
+	"OpenXRHand", 
+	"OpenXRIPBinding", 
+	"OpenXRInteractionProfile", 
+	"OpenXRInterface", 
 ]
 
 # Exceptions for e.g. float, String or int functions
