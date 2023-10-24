@@ -82,6 +82,7 @@ jobs:
           rm memory_usage.txt || true
           rm results.txt || true
           rm crash_reproduce.gd || true
+          rm CRASH_INFO -rf || true
           cp project.godot.old project.godot
 
       - name: Run project Vulkan
@@ -105,12 +106,20 @@ jobs:
           path: crash_reproduce.gd
           if-no-files-found: ignore
 
+      - name: Store report
+        uses: actions/upload-artifact@v3
+        with:
+          name: report_reproducer_4_headless_normal_multithread_add_parent_maximum_tested_98
+          path: CRASH_INFO
+          if-no-files-found: ignore
+
       - name: Configure Project Data
         run: |
           rm timer.txt || true
           rm memory_usage.txt || true
           rm results.txt || true
           rm crash_reproduce.gd || true
+          rm CRASH_INFO -rf || true
           cp project.godot.old project.godot
 
       - name: Run project GLES3
@@ -135,12 +144,20 @@ jobs:
           path: crash_reproduce.gd
           if-no-files-found: ignore
 
+      - name: Store report
+        uses: actions/upload-artifact@v3
+        with:
+          name: report_reproducer_4_headless_normal_multithread_add_parent_maximum_tested_98
+          path: CRASH_INFO
+          if-no-files-found: ignore
+
       - name: Configure Project Data
         run: |
           rm timer.txt || true
           rm memory_usage.txt || true
           rm results.txt || true
           rm crash_reproduce.gd || true
+          rm CRASH_INFO -rf || true
           cp project.godot.old project.godot
 
       - name: Run project Headless
@@ -165,12 +182,20 @@ jobs:
           path: crash_reproduce.gd
           if-no-files-found: ignore
 
+      - name: Store report
+        uses: actions/upload-artifact@v3
+        with:
+          name: report_reproducer_4_headless_normal_multithread_add_parent_maximum_tested_98
+          path: CRASH_INFO
+          if-no-files-found: ignore
+
       - name: Configure Project Data
         run: |
           rm timer.txt || true
           rm memory_usage.txt || true
           rm results.txt || true
           rm crash_reproduce.gd || true
+          rm CRASH_INFO -rf || true
           cp project.godot.old project.godot
 
       - name: Run project Vulkan Mobile
@@ -195,6 +220,13 @@ jobs:
         with:
           name: reproducer_4_mobile_1
           path: crash_reproduce.gd
+          if-no-files-found: ignore
+
+      - name: Store report
+        uses: actions/upload-artifact@v3
+        with:
+          name: report_reproducer_4_headless_normal_multithread_add_parent_maximum_tested_98
+          path: CRASH_INFO
           if-no-files-found: ignore
 
       - name: Store project results

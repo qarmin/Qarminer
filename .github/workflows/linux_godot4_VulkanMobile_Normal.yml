@@ -5,6 +5,10 @@ on:
   schedule:
     - cron: '0 0 * * *'
 
+env:
+  GODOT_BASE_BRANCH: master
+  SCONS_CACHE_LIMIT: 4096
+
 jobs:
   linux-sanitizer:
     runs-on: "ubuntu-22.04"
@@ -35,7 +39,7 @@ jobs:
 
       - name: Download reproducer
         run: |
-          wget -nv https://github.com/qarmin/Qarminer/releases/download/reproducer/find_minimal_godot_crash -O reproducer
+          wget -nv https://github.com/qarmin/Qarminer/releases/download/reproducer/find_minimal_godot_crash_02 -O reproducer
           chmod +x ./reproducer
 
       - name: Download Godot(GIT)
@@ -48,6 +52,9 @@ jobs:
       - name: Compile Godot
         run: |
           cd godot
+          #// wget -nv https://patch-diff.githubusercontent.com/raw/godotengine/godot/pull/52075.patch -O 3x.patch
+          #// wget -nv https://patch-diff.githubusercontent.com/raw/godotengine/godot/pull/49053.patch -O 4.patch
+          git apply 4.patch
           scons -j2 dev_build=yes target=editor use_asan=yes use_ubsan=yes linker=gold
           cp bin/godot.linuxbsd.editor.dev.x86_64.san ../
           cd ../
@@ -85,6 +92,7 @@ jobs:
       - name: Configure Project Data
         run: |
           rm timer.txt || true
+          rm CRASH_INFO -rf || true
           rm memory_usage.txt || true
           rm results.txt || true
           rm crash_reproduce.gd || true
@@ -131,6 +139,7 @@ jobs:
       - name: Configure Project Data
         run: |
           rm timer.txt || true
+          rm CRASH_INFO -rf || true
           rm memory_usage.txt || true
           rm results.txt || true
           rm crash_reproduce.gd || true
@@ -191,13 +200,21 @@ jobs:
       - name: Store reproducer
         uses: actions/upload-artifact@v3
         with:
-          name: reproducer_4_vulkanmobile_normal_one_by_one_parent_add_to_tree_maximum_tested_52
+          name: reproducer_4_vulkanmobile_normal_one_by_one_parent_add_to_tree_maximum_tested_55
           path: crash_reproduce.gd
+          if-no-files-found: ignore
+
+      - name: Store report
+        uses: actions/upload-artifact@v3
+        with:
+          name: report_reproducer_4_vulkanmobile_normal_one_by_one_parent_add_to_tree_maximum_tested_55
+          path: CRASH_INFO
           if-no-files-found: ignore
 
       - name: Configure Project Data
         run: |
           rm timer.txt || true
+          rm CRASH_INFO -rf || true
           rm memory_usage.txt || true
           rm results.txt || true
           rm crash_reproduce.gd || true
@@ -258,13 +275,21 @@ jobs:
       - name: Store reproducer
         uses: actions/upload-artifact@v3
         with:
-          name: reproducer_4_vulkanmobile_normal_parent_add_to_tree_maximum_tested_max_random_53
+          name: reproducer_4_vulkanmobile_normal_parent_add_to_tree_maximum_tested_max_random_56
           path: crash_reproduce.gd
+          if-no-files-found: ignore
+
+      - name: Store report
+        uses: actions/upload-artifact@v3
+        with:
+          name: report_reproducer_4_vulkanmobile_normal_parent_add_to_tree_maximum_tested_max_random_56
+          path: CRASH_INFO
           if-no-files-found: ignore
 
       - name: Configure Project Data
         run: |
           rm timer.txt || true
+          rm CRASH_INFO -rf || true
           rm memory_usage.txt || true
           rm results.txt || true
           rm crash_reproduce.gd || true
@@ -320,13 +345,21 @@ jobs:
       - name: Store reproducer
         uses: actions/upload-artifact@v3
         with:
-          name: reproducer_4_vulkanmobile_normal_default_54
+          name: reproducer_4_vulkanmobile_normal_default_57
           path: crash_reproduce.gd
+          if-no-files-found: ignore
+
+      - name: Store report
+        uses: actions/upload-artifact@v3
+        with:
+          name: report_reproducer_4_vulkanmobile_normal_default_57
+          path: CRASH_INFO
           if-no-files-found: ignore
 
       - name: Configure Project Data
         run: |
           rm timer.txt || true
+          rm CRASH_INFO -rf || true
           rm memory_usage.txt || true
           rm results.txt || true
           rm crash_reproduce.gd || true
@@ -387,13 +420,21 @@ jobs:
       - name: Store reproducer
         uses: actions/upload-artifact@v3
         with:
-          name: reproducer_4_vulkanmobile_normal_delaying_parent_add_to_tree_maximum_tested_55
+          name: reproducer_4_vulkanmobile_normal_delaying_parent_add_to_tree_maximum_tested_58
           path: crash_reproduce.gd
+          if-no-files-found: ignore
+
+      - name: Store report
+        uses: actions/upload-artifact@v3
+        with:
+          name: report_reproducer_4_vulkanmobile_normal_delaying_parent_add_to_tree_maximum_tested_58
+          path: CRASH_INFO
           if-no-files-found: ignore
 
       - name: Configure Project Data
         run: |
           rm timer.txt || true
+          rm CRASH_INFO -rf || true
           rm memory_usage.txt || true
           rm results.txt || true
           rm crash_reproduce.gd || true
@@ -453,13 +494,21 @@ jobs:
       - name: Store reproducer
         uses: actions/upload-artifact@v3
         with:
-          name: reproducer_4_vulkanmobile_normal_delaying_one_by_one_parent_56
+          name: reproducer_4_vulkanmobile_normal_delaying_one_by_one_parent_59
           path: crash_reproduce.gd
+          if-no-files-found: ignore
+
+      - name: Store report
+        uses: actions/upload-artifact@v3
+        with:
+          name: report_reproducer_4_vulkanmobile_normal_delaying_one_by_one_parent_59
+          path: CRASH_INFO
           if-no-files-found: ignore
 
       - name: Configure Project Data
         run: |
           rm timer.txt || true
+          rm CRASH_INFO -rf || true
           rm memory_usage.txt || true
           rm results.txt || true
           rm crash_reproduce.gd || true
@@ -519,20 +568,28 @@ jobs:
       - name: Store reproducer
         uses: actions/upload-artifact@v3
         with:
-          name: reproducer_4_vulkanmobile_normal_big_numbers_parent_one_by_one_57
+          name: reproducer_4_vulkanmobile_normal_big_numbers_parent_one_by_one_60
           path: crash_reproduce.gd
+          if-no-files-found: ignore
+
+      - name: Store report
+        uses: actions/upload-artifact@v3
+        with:
+          name: report_reproducer_4_vulkanmobile_normal_big_numbers_parent_one_by_one_60
+          path: CRASH_INFO
           if-no-files-found: ignore
 
       - name: Configure Project Data
         run: |
           rm timer.txt || true
+          rm CRASH_INFO -rf || true
           rm memory_usage.txt || true
           rm results.txt || true
           rm crash_reproduce.gd || true
           echo "" > settings.txt
           cp project.godot.old project.godot
 
-          echo "used_number: 10" >> settings.txt
+          echo "used_number: 20" >> settings.txt
           echo "use_parent_methods: true" >> settings.txt
           echo "test_one_class_multiple_times: true" >> settings.txt
 
@@ -585,13 +642,97 @@ jobs:
       - name: Store reproducer
         uses: actions/upload-artifact@v3
         with:
-          name: reproducer_4_vulkanmobile_normal_small_numbers_parent_one_by_one_58
+          name: reproducer_4_vulkanmobile_normal_small_numbers_parent_one_by_one_61
           path: crash_reproduce.gd
+          if-no-files-found: ignore
+
+      - name: Store report
+        uses: actions/upload-artifact@v3
+        with:
+          name: report_reproducer_4_vulkanmobile_normal_small_numbers_parent_one_by_one_61
+          path: CRASH_INFO
           if-no-files-found: ignore
 
       - name: Configure Project Data
         run: |
           rm timer.txt || true
+          rm CRASH_INFO -rf || true
+          rm memory_usage.txt || true
+          rm results.txt || true
+          rm crash_reproduce.gd || true
+          echo "" > settings.txt
+          cp project.godot.old project.godot
+
+          echo "used_number: 8" >> settings.txt
+          echo "add_to_tree: true" >> settings.txt
+          echo "maximum_executed_functions_on_object: 7" >> settings.txt
+          echo "use_parent_methods: true" >> settings.txt
+          echo "test_one_class_multiple_times: true" >> settings.txt
+
+      - name: Run Project Small Numbers | Parent | One by One | Add to tree
+        run: |
+          for i in {0..50}; do echo "" >> project_results.txt; done;
+          echo "======================================== Small Numbers | Parent | One by One | Add to tree" 2>&1 | tee sanitizers_log.txt
+          VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 960 xvfb-run ./godot.linuxbsd.editor.dev.x86_64.san FunctionExecutor.tscn 600 --audio-driver Dummy  --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          tail -n 200 sanitizers_log.txt >> project_results.txt
+
+          if [ -f "results.txt" ]; then
+              if [ -f "results_end.txt" ]; then
+                  for i in {0..50}; do echo "" >> t.txt; done;
+                  cat "results.txt" "t.txt" "results_end.txt" > "temp.txt"
+                  mv "temp.txt" "results_end.txt"
+              else
+                  cp "results.txt" "results_end.txt"
+              fi
+          fi
+
+          if [ -f "memory_usage.txt" ]; then
+              if [ -f "memory_usage_end.txt" ]; then
+                  for i in {0..50}; do echo "" >> t.txt; done;
+                  cat "memory_usage.txt" "t.txt" "memory_usage_end.txt" > "temp.txt"
+                  mv "temp.txt" "memory_usage_end.txt"
+              else
+                  cp "memory_usage.txt" "memory_usage_end.txt"
+              fi
+          fi
+
+          if [ -f "timer.txt" ]; then
+              if [ -f "timer_end.txt" ]; then
+                  for i in {0..50}; do echo "" >> t.txt; done;
+                  cat "timer.txt" "t.txt" "timer_end.txt" > "temp.txt"
+                  mv "temp.txt" "timer_end.txt"
+              else
+                  cp "timer.txt" "timer_end.txt"
+              fi
+          fi
+
+      - name: Run reproducer
+        run: |
+          echo "extends Node" > temp.txt
+          echo "func _process(delta):" >> temp.txt
+          if [ -f results.txt ]; then
+            cat temp.txt results.txt > Node.gd.test || true
+            VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer godot.linuxbsd.editor.dev.x86_64.san 60_50 .  --audio-driver Dummy # || echo "ERROR: REPRODUCER FAILURE"
+          fi
+
+      - name: Store reproducer
+        uses: actions/upload-artifact@v3
+        with:
+          name: reproducer_4_vulkanmobile_normal_small_numbers_parent_one_by_one_add_to_tree_62
+          path: crash_reproduce.gd
+          if-no-files-found: ignore
+
+      - name: Store report
+        uses: actions/upload-artifact@v3
+        with:
+          name: report_reproducer_4_vulkanmobile_normal_small_numbers_parent_one_by_one_add_to_tree_62
+          path: CRASH_INFO
+          if-no-files-found: ignore
+
+      - name: Configure Project Data
+        run: |
+          rm timer.txt || true
+          rm CRASH_INFO -rf || true
           rm memory_usage.txt || true
           rm results.txt || true
           rm crash_reproduce.gd || true
@@ -650,13 +791,21 @@ jobs:
       - name: Store reproducer
         uses: actions/upload-artifact@v3
         with:
-          name: reproducer_4_vulkanmobile_normal_add_arguments_to_tree_delaying_59
+          name: reproducer_4_vulkanmobile_normal_add_arguments_to_tree_delaying_63
           path: crash_reproduce.gd
+          if-no-files-found: ignore
+
+      - name: Store report
+        uses: actions/upload-artifact@v3
+        with:
+          name: report_reproducer_4_vulkanmobile_normal_add_arguments_to_tree_delaying_63
+          path: CRASH_INFO
           if-no-files-found: ignore
 
       - name: Configure Project Data
         run: |
           rm timer.txt || true
+          rm CRASH_INFO -rf || true
           rm memory_usage.txt || true
           rm results.txt || true
           rm crash_reproduce.gd || true
@@ -717,13 +866,21 @@ jobs:
       - name: Store reproducer
         uses: actions/upload-artifact@v3
         with:
-          name: reproducer_4_vulkanmobile_normal_one_by_one,_very_big_amount_of_functions_60
+          name: reproducer_4_vulkanmobile_normal_one_by_one,_very_big_amount_of_functions_64
           path: crash_reproduce.gd
+          if-no-files-found: ignore
+
+      - name: Store report
+        uses: actions/upload-artifact@v3
+        with:
+          name: report_reproducer_4_vulkanmobile_normal_one_by_one,_very_big_amount_of_functions_64
+          path: CRASH_INFO
           if-no-files-found: ignore
 
       - name: Configure Project Data
         run: |
           rm timer.txt || true
+          rm CRASH_INFO -rf || true
           rm memory_usage.txt || true
           rm results.txt || true
           rm crash_reproduce.gd || true
@@ -786,13 +943,21 @@ jobs:
       - name: Store reproducer
         uses: actions/upload-artifact@v3
         with:
-          name: reproducer_4_vulkanmobile_normal_one_by_one,_very_big_amount_of_functions,_add_to_tree_61
+          name: reproducer_4_vulkanmobile_normal_one_by_one,_very_big_amount_of_functions,_add_to_tree_65
           path: crash_reproduce.gd
+          if-no-files-found: ignore
+
+      - name: Store report
+        uses: actions/upload-artifact@v3
+        with:
+          name: report_reproducer_4_vulkanmobile_normal_one_by_one,_very_big_amount_of_functions,_add_to_tree_65
+          path: CRASH_INFO
           if-no-files-found: ignore
 
       - name: Configure Project Data
         run: |
           rm timer.txt || true
+          rm CRASH_INFO -rf || true
           rm memory_usage.txt || true
           rm results.txt || true
           rm crash_reproduce.gd || true
@@ -853,13 +1018,21 @@ jobs:
       - name: Store reproducer
         uses: actions/upload-artifact@v3
         with:
-          name: reproducer_4_vulkanmobile_normal_multiple_classes,_very_big_amount_of_functions_62
+          name: reproducer_4_vulkanmobile_normal_multiple_classes,_very_big_amount_of_functions_66
           path: crash_reproduce.gd
+          if-no-files-found: ignore
+
+      - name: Store report
+        uses: actions/upload-artifact@v3
+        with:
+          name: report_reproducer_4_vulkanmobile_normal_multiple_classes,_very_big_amount_of_functions_66
+          path: CRASH_INFO
           if-no-files-found: ignore
 
       - name: Configure Project Data
         run: |
           rm timer.txt || true
+          rm CRASH_INFO -rf || true
           rm memory_usage.txt || true
           rm results.txt || true
           rm crash_reproduce.gd || true
@@ -924,13 +1097,21 @@ jobs:
       - name: Store reproducer
         uses: actions/upload-artifact@v3
         with:
-          name: reproducer_4_vulkanmobile_normal_multithread_parent_maximum_tested_63
+          name: reproducer_4_vulkanmobile_normal_multithread_parent_maximum_tested_67
           path: crash_reproduce.gd
+          if-no-files-found: ignore
+
+      - name: Store report
+        uses: actions/upload-artifact@v3
+        with:
+          name: report_reproducer_4_vulkanmobile_normal_multithread_parent_maximum_tested_67
+          path: CRASH_INFO
           if-no-files-found: ignore
 
       - name: Configure Project Data
         run: |
           rm timer.txt || true
+          rm CRASH_INFO -rf || true
           rm memory_usage.txt || true
           rm results.txt || true
           rm crash_reproduce.gd || true
@@ -996,8 +1177,15 @@ jobs:
       - name: Store reproducer
         uses: actions/upload-artifact@v3
         with:
-          name: reproducer_4_vulkanmobile_normal_multithread_add_parent_maximum_tested_64
+          name: reproducer_4_vulkanmobile_normal_multithread_add_parent_maximum_tested_68
           path: crash_reproduce.gd
+          if-no-files-found: ignore
+
+      - name: Store report
+        uses: actions/upload-artifact@v3
+        with:
+          name: report_reproducer_4_vulkanmobile_normal_multithread_add_parent_maximum_tested_68
+          path: CRASH_INFO
           if-no-files-found: ignore
 
       - name: Store project results

@@ -5,6 +5,10 @@ on:
   schedule:
     - cron: '0 0 * * *'
 
+env:
+  GODOT_BASE_BRANCH: master
+  SCONS_CACHE_LIMIT: 4096
+
 jobs:
   linux-sanitizer:
     runs-on: "ubuntu-22.04"
@@ -35,7 +39,7 @@ jobs:
 
       - name: Download reproducer
         run: |
-          wget -nv https://github.com/qarmin/Qarminer/releases/download/reproducer/find_minimal_godot_crash -O reproducer
+          wget -nv https://github.com/qarmin/Qarminer/releases/download/reproducer/find_minimal_godot_crash_02 -O reproducer
           chmod +x ./reproducer
 
       - name: Download Godot(GIT)
@@ -48,6 +52,9 @@ jobs:
       - name: Compile Godot
         run: |
           cd godot
+          #// wget -nv https://patch-diff.githubusercontent.com/raw/godotengine/godot/pull/52075.patch -O 3x.patch
+          #// wget -nv https://patch-diff.githubusercontent.com/raw/godotengine/godot/pull/49053.patch -O 4.patch
+          git apply 4.patch
           scons -j2 dev_build=yes target=editor use_asan=yes use_ubsan=yes linker=gold
           cp bin/godot.linuxbsd.editor.dev.x86_64.san ../
           cd ../
@@ -85,6 +92,7 @@ jobs:
       - name: Configure Project Data
         run: |
           rm timer.txt || true
+          rm CRASH_INFO -rf || true
           rm memory_usage.txt || true
           rm results.txt || true
           rm crash_reproduce.gd || true
@@ -131,6 +139,7 @@ jobs:
       - name: Configure Project Data
         run: |
           rm timer.txt || true
+          rm CRASH_INFO -rf || true
           rm memory_usage.txt || true
           rm results.txt || true
           rm crash_reproduce.gd || true
@@ -191,13 +200,21 @@ jobs:
       - name: Store reproducer
         uses: actions/upload-artifact@v3
         with:
-          name: reproducer_4_gl3_normal_one_by_one_parent_add_to_tree_maximum_tested_66
+          name: reproducer_4_gl3_normal_one_by_one_parent_add_to_tree_maximum_tested_70
           path: crash_reproduce.gd
+          if-no-files-found: ignore
+
+      - name: Store report
+        uses: actions/upload-artifact@v3
+        with:
+          name: report_reproducer_4_gl3_normal_one_by_one_parent_add_to_tree_maximum_tested_70
+          path: CRASH_INFO
           if-no-files-found: ignore
 
       - name: Configure Project Data
         run: |
           rm timer.txt || true
+          rm CRASH_INFO -rf || true
           rm memory_usage.txt || true
           rm results.txt || true
           rm crash_reproduce.gd || true
@@ -258,13 +275,21 @@ jobs:
       - name: Store reproducer
         uses: actions/upload-artifact@v3
         with:
-          name: reproducer_4_gl3_normal_parent_add_to_tree_maximum_tested_max_random_67
+          name: reproducer_4_gl3_normal_parent_add_to_tree_maximum_tested_max_random_71
           path: crash_reproduce.gd
+          if-no-files-found: ignore
+
+      - name: Store report
+        uses: actions/upload-artifact@v3
+        with:
+          name: report_reproducer_4_gl3_normal_parent_add_to_tree_maximum_tested_max_random_71
+          path: CRASH_INFO
           if-no-files-found: ignore
 
       - name: Configure Project Data
         run: |
           rm timer.txt || true
+          rm CRASH_INFO -rf || true
           rm memory_usage.txt || true
           rm results.txt || true
           rm crash_reproduce.gd || true
@@ -320,13 +345,21 @@ jobs:
       - name: Store reproducer
         uses: actions/upload-artifact@v3
         with:
-          name: reproducer_4_gl3_normal_default_68
+          name: reproducer_4_gl3_normal_default_72
           path: crash_reproduce.gd
+          if-no-files-found: ignore
+
+      - name: Store report
+        uses: actions/upload-artifact@v3
+        with:
+          name: report_reproducer_4_gl3_normal_default_72
+          path: CRASH_INFO
           if-no-files-found: ignore
 
       - name: Configure Project Data
         run: |
           rm timer.txt || true
+          rm CRASH_INFO -rf || true
           rm memory_usage.txt || true
           rm results.txt || true
           rm crash_reproduce.gd || true
@@ -387,13 +420,21 @@ jobs:
       - name: Store reproducer
         uses: actions/upload-artifact@v3
         with:
-          name: reproducer_4_gl3_normal_delaying_parent_add_to_tree_maximum_tested_69
+          name: reproducer_4_gl3_normal_delaying_parent_add_to_tree_maximum_tested_73
           path: crash_reproduce.gd
+          if-no-files-found: ignore
+
+      - name: Store report
+        uses: actions/upload-artifact@v3
+        with:
+          name: report_reproducer_4_gl3_normal_delaying_parent_add_to_tree_maximum_tested_73
+          path: CRASH_INFO
           if-no-files-found: ignore
 
       - name: Configure Project Data
         run: |
           rm timer.txt || true
+          rm CRASH_INFO -rf || true
           rm memory_usage.txt || true
           rm results.txt || true
           rm crash_reproduce.gd || true
@@ -453,13 +494,21 @@ jobs:
       - name: Store reproducer
         uses: actions/upload-artifact@v3
         with:
-          name: reproducer_4_gl3_normal_delaying_one_by_one_parent_70
+          name: reproducer_4_gl3_normal_delaying_one_by_one_parent_74
           path: crash_reproduce.gd
+          if-no-files-found: ignore
+
+      - name: Store report
+        uses: actions/upload-artifact@v3
+        with:
+          name: report_reproducer_4_gl3_normal_delaying_one_by_one_parent_74
+          path: CRASH_INFO
           if-no-files-found: ignore
 
       - name: Configure Project Data
         run: |
           rm timer.txt || true
+          rm CRASH_INFO -rf || true
           rm memory_usage.txt || true
           rm results.txt || true
           rm crash_reproduce.gd || true
@@ -519,20 +568,28 @@ jobs:
       - name: Store reproducer
         uses: actions/upload-artifact@v3
         with:
-          name: reproducer_4_gl3_normal_big_numbers_parent_one_by_one_71
+          name: reproducer_4_gl3_normal_big_numbers_parent_one_by_one_75
           path: crash_reproduce.gd
+          if-no-files-found: ignore
+
+      - name: Store report
+        uses: actions/upload-artifact@v3
+        with:
+          name: report_reproducer_4_gl3_normal_big_numbers_parent_one_by_one_75
+          path: CRASH_INFO
           if-no-files-found: ignore
 
       - name: Configure Project Data
         run: |
           rm timer.txt || true
+          rm CRASH_INFO -rf || true
           rm memory_usage.txt || true
           rm results.txt || true
           rm crash_reproduce.gd || true
           echo "" > settings.txt
           cp project.godot.old project.godot
 
-          echo "used_number: 10" >> settings.txt
+          echo "used_number: 20" >> settings.txt
           echo "use_parent_methods: true" >> settings.txt
           echo "test_one_class_multiple_times: true" >> settings.txt
 
@@ -585,13 +642,97 @@ jobs:
       - name: Store reproducer
         uses: actions/upload-artifact@v3
         with:
-          name: reproducer_4_gl3_normal_small_numbers_parent_one_by_one_72
+          name: reproducer_4_gl3_normal_small_numbers_parent_one_by_one_76
           path: crash_reproduce.gd
+          if-no-files-found: ignore
+
+      - name: Store report
+        uses: actions/upload-artifact@v3
+        with:
+          name: report_reproducer_4_gl3_normal_small_numbers_parent_one_by_one_76
+          path: CRASH_INFO
           if-no-files-found: ignore
 
       - name: Configure Project Data
         run: |
           rm timer.txt || true
+          rm CRASH_INFO -rf || true
+          rm memory_usage.txt || true
+          rm results.txt || true
+          rm crash_reproduce.gd || true
+          echo "" > settings.txt
+          cp project.godot.old project.godot
+
+          echo "used_number: 8" >> settings.txt
+          echo "add_to_tree: true" >> settings.txt
+          echo "maximum_executed_functions_on_object: 7" >> settings.txt
+          echo "use_parent_methods: true" >> settings.txt
+          echo "test_one_class_multiple_times: true" >> settings.txt
+
+      - name: Run Project Small Numbers | Parent | One by One | Add to tree
+        run: |
+          for i in {0..50}; do echo "" >> project_results.txt; done;
+          echo "======================================== Small Numbers | Parent | One by One | Add to tree" 2>&1 | tee sanitizers_log.txt
+          UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 960 xvfb-run ./godot.linuxbsd.editor.dev.x86_64.san FunctionExecutor.tscn 600 --audio-driver Dummy --rendering-driver opengl3 --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          tail -n 200 sanitizers_log.txt >> project_results.txt
+
+          if [ -f "results.txt" ]; then
+              if [ -f "results_end.txt" ]; then
+                  for i in {0..50}; do echo "" >> t.txt; done;
+                  cat "results.txt" "t.txt" "results_end.txt" > "temp.txt"
+                  mv "temp.txt" "results_end.txt"
+              else
+                  cp "results.txt" "results_end.txt"
+              fi
+          fi
+
+          if [ -f "memory_usage.txt" ]; then
+              if [ -f "memory_usage_end.txt" ]; then
+                  for i in {0..50}; do echo "" >> t.txt; done;
+                  cat "memory_usage.txt" "t.txt" "memory_usage_end.txt" > "temp.txt"
+                  mv "temp.txt" "memory_usage_end.txt"
+              else
+                  cp "memory_usage.txt" "memory_usage_end.txt"
+              fi
+          fi
+
+          if [ -f "timer.txt" ]; then
+              if [ -f "timer_end.txt" ]; then
+                  for i in {0..50}; do echo "" >> t.txt; done;
+                  cat "timer.txt" "t.txt" "timer_end.txt" > "temp.txt"
+                  mv "temp.txt" "timer_end.txt"
+              else
+                  cp "timer.txt" "timer_end.txt"
+              fi
+          fi
+
+      - name: Run reproducer
+        run: |
+          echo "extends Node" > temp.txt
+          echo "func _process(delta):" >> temp.txt
+          if [ -f results.txt ]; then
+            cat temp.txt results.txt > Node.gd.test || true
+            VK_ICD_FILENAMES=$(pwd)/vk_swiftshader_icd.json UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer godot.linuxbsd.editor.dev.x86_64.san 60_50 . --rendering-driver opengl3 --audio-driver Dummy # || echo "ERROR: REPRODUCER FAILURE"
+          fi
+
+      - name: Store reproducer
+        uses: actions/upload-artifact@v3
+        with:
+          name: reproducer_4_gl3_normal_small_numbers_parent_one_by_one_add_to_tree_77
+          path: crash_reproduce.gd
+          if-no-files-found: ignore
+
+      - name: Store report
+        uses: actions/upload-artifact@v3
+        with:
+          name: report_reproducer_4_gl3_normal_small_numbers_parent_one_by_one_add_to_tree_77
+          path: CRASH_INFO
+          if-no-files-found: ignore
+
+      - name: Configure Project Data
+        run: |
+          rm timer.txt || true
+          rm CRASH_INFO -rf || true
           rm memory_usage.txt || true
           rm results.txt || true
           rm crash_reproduce.gd || true
@@ -650,13 +791,21 @@ jobs:
       - name: Store reproducer
         uses: actions/upload-artifact@v3
         with:
-          name: reproducer_4_gl3_normal_add_arguments_to_tree_delaying_73
+          name: reproducer_4_gl3_normal_add_arguments_to_tree_delaying_78
           path: crash_reproduce.gd
+          if-no-files-found: ignore
+
+      - name: Store report
+        uses: actions/upload-artifact@v3
+        with:
+          name: report_reproducer_4_gl3_normal_add_arguments_to_tree_delaying_78
+          path: CRASH_INFO
           if-no-files-found: ignore
 
       - name: Configure Project Data
         run: |
           rm timer.txt || true
+          rm CRASH_INFO -rf || true
           rm memory_usage.txt || true
           rm results.txt || true
           rm crash_reproduce.gd || true
@@ -717,13 +866,21 @@ jobs:
       - name: Store reproducer
         uses: actions/upload-artifact@v3
         with:
-          name: reproducer_4_gl3_normal_one_by_one,_very_big_amount_of_functions_74
+          name: reproducer_4_gl3_normal_one_by_one,_very_big_amount_of_functions_79
           path: crash_reproduce.gd
+          if-no-files-found: ignore
+
+      - name: Store report
+        uses: actions/upload-artifact@v3
+        with:
+          name: report_reproducer_4_gl3_normal_one_by_one,_very_big_amount_of_functions_79
+          path: CRASH_INFO
           if-no-files-found: ignore
 
       - name: Configure Project Data
         run: |
           rm timer.txt || true
+          rm CRASH_INFO -rf || true
           rm memory_usage.txt || true
           rm results.txt || true
           rm crash_reproduce.gd || true
@@ -786,13 +943,21 @@ jobs:
       - name: Store reproducer
         uses: actions/upload-artifact@v3
         with:
-          name: reproducer_4_gl3_normal_one_by_one,_very_big_amount_of_functions,_add_to_tree_75
+          name: reproducer_4_gl3_normal_one_by_one,_very_big_amount_of_functions,_add_to_tree_80
           path: crash_reproduce.gd
+          if-no-files-found: ignore
+
+      - name: Store report
+        uses: actions/upload-artifact@v3
+        with:
+          name: report_reproducer_4_gl3_normal_one_by_one,_very_big_amount_of_functions,_add_to_tree_80
+          path: CRASH_INFO
           if-no-files-found: ignore
 
       - name: Configure Project Data
         run: |
           rm timer.txt || true
+          rm CRASH_INFO -rf || true
           rm memory_usage.txt || true
           rm results.txt || true
           rm crash_reproduce.gd || true
@@ -853,13 +1018,21 @@ jobs:
       - name: Store reproducer
         uses: actions/upload-artifact@v3
         with:
-          name: reproducer_4_gl3_normal_multiple_classes,_very_big_amount_of_functions_76
+          name: reproducer_4_gl3_normal_multiple_classes,_very_big_amount_of_functions_81
           path: crash_reproduce.gd
+          if-no-files-found: ignore
+
+      - name: Store report
+        uses: actions/upload-artifact@v3
+        with:
+          name: report_reproducer_4_gl3_normal_multiple_classes,_very_big_amount_of_functions_81
+          path: CRASH_INFO
           if-no-files-found: ignore
 
       - name: Configure Project Data
         run: |
           rm timer.txt || true
+          rm CRASH_INFO -rf || true
           rm memory_usage.txt || true
           rm results.txt || true
           rm crash_reproduce.gd || true
@@ -924,13 +1097,21 @@ jobs:
       - name: Store reproducer
         uses: actions/upload-artifact@v3
         with:
-          name: reproducer_4_gl3_normal_multithread_parent_maximum_tested_77
+          name: reproducer_4_gl3_normal_multithread_parent_maximum_tested_82
           path: crash_reproduce.gd
+          if-no-files-found: ignore
+
+      - name: Store report
+        uses: actions/upload-artifact@v3
+        with:
+          name: report_reproducer_4_gl3_normal_multithread_parent_maximum_tested_82
+          path: CRASH_INFO
           if-no-files-found: ignore
 
       - name: Configure Project Data
         run: |
           rm timer.txt || true
+          rm CRASH_INFO -rf || true
           rm memory_usage.txt || true
           rm results.txt || true
           rm crash_reproduce.gd || true
@@ -996,8 +1177,15 @@ jobs:
       - name: Store reproducer
         uses: actions/upload-artifact@v3
         with:
-          name: reproducer_4_gl3_normal_multithread_add_parent_maximum_tested_78
+          name: reproducer_4_gl3_normal_multithread_add_parent_maximum_tested_83
           path: crash_reproduce.gd
+          if-no-files-found: ignore
+
+      - name: Store report
+        uses: actions/upload-artifact@v3
+        with:
+          name: report_reproducer_4_gl3_normal_multithread_add_parent_maximum_tested_83
+          path: CRASH_INFO
           if-no-files-found: ignore
 
       - name: Store project results

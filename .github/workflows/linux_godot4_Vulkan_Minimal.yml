@@ -5,6 +5,10 @@ on:
   schedule:
     - cron: '0 0 * * *'
 
+env:
+  GODOT_BASE_BRANCH: master
+  SCONS_CACHE_LIMIT: 4096
+
 jobs:
   linux-sanitizer:
     runs-on: "ubuntu-22.04"
@@ -35,7 +39,7 @@ jobs:
 
       - name: Download reproducer
         run: |
-          wget -nv https://github.com/qarmin/Qarminer/releases/download/reproducer/find_minimal_godot_crash -O reproducer
+          wget -nv https://github.com/qarmin/Qarminer/releases/download/reproducer/find_minimal_godot_crash_02 -O reproducer
           chmod +x ./reproducer
 
       - name: Download Godot(GIT)
@@ -48,6 +52,9 @@ jobs:
       - name: Compile Godot
         run: |
           cd godot
+          #// wget -nv https://patch-diff.githubusercontent.com/raw/godotengine/godot/pull/52075.patch -O 3x.patch
+          #// wget -nv https://patch-diff.githubusercontent.com/raw/godotengine/godot/pull/49053.patch -O 4.patch
+          git apply 4.patch
           scons -j2 dev_build=yes target=editor use_asan=yes use_ubsan=yes linker=gold module_basis_universal_enabled=no module_bmp_enabled=no module_camera_enabled=no module_csg_enabled=no module_cvtt_enabled=no module_dds_enabled=no module_denoise_enabled=no module_enet_enabled=no module_etcpak_enabled=no brotli=no module_gltf_enabled=no module_gridmap_enabled=no module_hdr_enabled=no module_jpg_enabled=no module_jsonrpc_enabled=no module_lightmapper_rd_enabled=no module_mbedtls_enabled=no module_meshoptimizer_enabled=no module_minimp3_enabled=no module_mobile_vr_enabled=no module_msdfgen_enabled=no module_multiplayer_enabled=no module_noise_enabled=no module_ogg_enabled=no module_openxr_enabled=no module_raycast_enabled=no module_regex_enabled=no module_squish_enabled=no graphite=no module_text_server_adv_enabled=no module_tga_enabled=no module_theora_enabled=no module_tinyexr_enabled=no module_upnp_enabled=no module_vhacd_enabled=no module_vorbis_enabled=no module_webp_enabled=no module_webrtc_enabled=no module_websocket_enabled=no module_webxr_enabled=no module_xatlas_unwrap_enabled=no
           cp bin/godot.linuxbsd.editor.dev.x86_64.san ../
           cd ../
@@ -85,6 +92,7 @@ jobs:
       - name: Configure Project Data
         run: |
           rm timer.txt || true
+          rm CRASH_INFO -rf || true
           rm memory_usage.txt || true
           rm results.txt || true
           rm crash_reproduce.gd || true
@@ -131,6 +139,7 @@ jobs:
       - name: Configure Project Data
         run: |
           rm timer.txt || true
+          rm CRASH_INFO -rf || true
           rm memory_usage.txt || true
           rm results.txt || true
           rm crash_reproduce.gd || true
@@ -177,6 +186,7 @@ jobs:
       - name: Configure Project Data
         run: |
           rm timer.txt || true
+          rm CRASH_INFO -rf || true
           rm memory_usage.txt || true
           rm results.txt || true
           rm crash_reproduce.gd || true
@@ -223,6 +233,7 @@ jobs:
       - name: Configure Project Data
         run: |
           rm timer.txt || true
+          rm CRASH_INFO -rf || true
           rm memory_usage.txt || true
           rm results.txt || true
           rm crash_reproduce.gd || true
@@ -278,8 +289,15 @@ jobs:
       - name: Store reproducer
         uses: actions/upload-artifact@v3
         with:
-          name: reproducer_4_vulkan_minimal_default_36
+          name: reproducer_4_vulkan_minimal_default_38
           path: crash_reproduce.gd
+          if-no-files-found: ignore
+
+      - name: Store report
+        uses: actions/upload-artifact@v3
+        with:
+          name: report_reproducer_4_vulkan_minimal_default_38
+          path: CRASH_INFO
           if-no-files-found: ignore
 
       - name: Store project results
