@@ -81,18 +81,12 @@ var excluded_functions: Array = [
 	"line_shape_create",
 	# GODOT 4
 	# CRASHES
-	"file_dialog_show", #80784
-	"restart_editor", #80704
 	"window_set_mouse_passthrough", #66754
 	"screen_get_image", # TODO leak probably with Vulkan mobile
-	"bake_render_uv2",  # 67067
 	"create_sub_window",  # 67030
-	"cursor_set_custom_image",  #66605
-	"texture_replace",  # 66373
-	"texture_2d_update",  # 66374
-	"agent_set_callback",  # 69750 - LEAK
 	"create_local_rendering_device",  # TODO - out of memory probably
 	#"create_local_device", # TODO LEAK
+	"clipboard_get_image", # 83949 - Freeze 
 	# LEAK
 	"texture_rd_create",
 	"texture_2d_create",
@@ -125,6 +119,7 @@ var excluded_functions: Array = [
 	"camera_attributes_create",  # RID Leak
 	"canvas_texture_create",  # RID Leak
 	#Other
+	"restart_editor", # Just don't use
 	"set_primary_interface",  # crash, but probably expected
 	"read_string_from_stdin",  # Freeze
 	"warp_mouse",  # Warping

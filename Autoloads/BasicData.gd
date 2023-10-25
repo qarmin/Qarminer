@@ -43,6 +43,7 @@ var function_exceptions: Array = [
 	"save_webp",  # Saves file to FS
 	"save_support_data",  # Saves file to FS
 	"set_is_setup",  # Just don't use, in SkeletonModification crashes a lot without reason
+	"open_library", # ==14955==You are trying to dlopen a /home/runner/work/Qarminer/Qarminer/../lib/ shared library with RTLD_DEEPBIND flag which is incompatible with sanitizer runtime (see https://github.com/google/sanitizers/issues/611 for details). If you want to run /home/runner/work/Qarminer/Qarminer/../lib/ library under sanitizers please remove RTLD_DEEPBIND from dlopen flags.
 	###
 	### Godot 4.0 MSAN
 	###
@@ -52,6 +53,8 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
+	"get_item_id", # 83951
+	"activate_item_by_event", # 83951
 	"set_animation_player", # 83927
 	"get_image", # 83926
 	"get_seamless_image", # 83926
