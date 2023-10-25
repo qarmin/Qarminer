@@ -52,6 +52,9 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
+	"set_animation_player", # 83927
+	"get_image", # 83926
+	"get_seamless_image", # 83926
 	"compress", # TODO freeze
 	"_get_transform_2d_array", # 80785
 	"remove_paragraph", # 79409
