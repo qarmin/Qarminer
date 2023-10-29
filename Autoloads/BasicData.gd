@@ -53,14 +53,9 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
-	"get_item_id", # 83951
-	"activate_item_by_event", # 83951
+	"put_var", # TODO 
 	"set_animation_player", # 83927
-	"get_image", # 83926
-	"get_seamless_image", # 83926
 	"compress", # TODO freeze
-	"_get_transform_2d_array", # 80785
-	"remove_paragraph", # 79409
 	"set_data",  # 78414
 	"set_process_thread_group",  # 77029
 	"get_format", # TODO crashes in CI, but cannot really reproduce
@@ -119,34 +114,19 @@ var function_exceptions: Array = [
 	###
 	### Reported crashes
 	###
-	"_gui_input",  # 70097
-	"set_avoidance_enabled", # 68022 TODO wait for PR for 3.6, 69629
-	"agent_set_callback", # 68013 TODO wait for PR for 3.6, 69629
 	"set_enabled_inputs",  # 69230
 	"tts_set_utterance_callback",  # 66821
 	"set_window_mouse_passthrough",  # 66754
 	"open_midi_inputs",  # 52821, 69180
-	"set_custom_viewport",  #60052
 	"process_action",  #60297
 	"set_block_signals",  #53553
 	"make_atlas",  #51154
-	"set_script",  #46120
-	"set_icon",  #46189
 	### Partial INF - Freeezes sometimes without INF
 	"set_zoom",  # 60492
 	"set_end",  # 60492
 	"set_zoom_min",  # 60492
 	"set_zoom_max",  # 60492
-	"set_begin", # 70147
-	"set_zoom_step", # 70147
-	"_zoom_minus", # 70147
-	"_zoom_plus", # 70147
 	### INF Crashes
-	"resize", # 70187
-	"play", # 70140
-	"set_pitch_scale", # 70140
-	"set_begin", # 70147
-	"set_zoom_step", # 70147
 	"update_bitmask_area", # 70139
 	"update_bitmask_region", # 70139
 	"get_debug_mesh",  #60337

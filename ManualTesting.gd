@@ -119,6 +119,7 @@ var excluded_functions: Array = [
 	"camera_attributes_create",  # RID Leak
 	"canvas_texture_create",  # RID Leak
 	#Other
+	"bake_render_uv2", # Freeze for a while
 	"restart_editor", # Just don't use
 	"set_primary_interface",  # crash, but probably expected
 	"read_string_from_stdin",  # Freeze
