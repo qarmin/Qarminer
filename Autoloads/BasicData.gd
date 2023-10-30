@@ -44,6 +44,9 @@ var function_exceptions: Array = [
 	"save_support_data",  # Saves file to FS
 	"set_is_setup",  # Just don't use, in SkeletonModification crashes a lot without reason
 	"open_library", # ==14955==You are trying to dlopen a /home/runner/work/Qarminer/Qarminer/../lib/ shared library with RTLD_DEEPBIND flag which is incompatible with sanitizer runtime (see https://github.com/google/sanitizers/issues/611 for details). If you want to run /home/runner/work/Qarminer/Qarminer/../lib/ library under sanitizers please remove RTLD_DEEPBIND from dlopen flags.
+	"get_seamless_image_3d", # Timeout
+	"propagate_call", # Calls
+	"notify_thread_safe", # Not really good function
 	###
 	### Godot 4.0 MSAN
 	###
@@ -53,15 +56,15 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
-	"put_var", # TODO 
+	"set_custom_viewport", # 84178
+	"get_image", # 84177
+	"activate_item_by_event", # 84176
+	"put_var", # 73786 
 	"set_animation_player", # 83927
-	"compress", # TODO freeze
+	"compress", # 62097
 	"set_data",  # 78414
 	"set_process_thread_group",  # 77029
 	"get_format", # TODO crashes in CI, but cannot really reproduce
-	"get_seamless_image_3d", # TODO Timeout
-	"propagate_call", #
-	"notify_thread_safe", # 
 	"set_deferred", # 77029
 	"clear_bones_global_pose_override", # 77057
 	"set_deferred_thread_group", # 77029
