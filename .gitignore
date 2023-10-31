@@ -42,3 +42,8 @@ text.txt
 test.txt
 *text.txt
 *test.txt
+
+issuer/target
+issuer/.idea
+.idea
+*.iml
