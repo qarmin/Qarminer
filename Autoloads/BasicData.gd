@@ -57,6 +57,8 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
+	"set_stream", # 84398
+	"set_bus", # 84398
 	"set_custom_viewport", # 84178
 	"get_image", # 84177
 	"activate_item_by_event", # 84176

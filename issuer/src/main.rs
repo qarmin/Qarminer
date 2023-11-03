@@ -7,28 +7,31 @@ use rayon::prelude::*;
 const NUMBER_OF_STEPS: usize = 1;
 
 const DISABLED_FILES: &[&str] = &[
-    "../IssueTesting/53604.gd",
-    "../IssueTesting/66002.gd",
-    "../IssueTesting/67589.gd",
-    "../IssueTesting/71150.gd",
-    "../IssueTesting/83927.gd",
-    "../IssueTesting/84152.gd",
-    "../IssueTesting/84178.gd",
-    "../IssueTesting/84202.gd",
-    "../IssueTesting/53775.gd",
-    "../IssueTesting/61507.gd",
-    "../IssueTesting/69258.gd",
-    "../IssueTesting/71863.gd",
-    "../IssueTesting/73202.gd",
-    "../IssueTesting/66758.gd",
-    "../IssueTesting/60325.gd",
-    "../IssueTesting/60297.gd",
-    "../IssueTesting/84176.gd",
-    "../IssueTesting/60337.gd",
-    "../IssueTesting/60338.gd",
-    "../IssueTesting/60492.gd",
-    "../IssueTesting/60324.gd",
-    "../IssueTesting/60357.gd",
+    "../IssueTesting/66754.gd", // X11 thing, cannot reproduce with headless
+    "../IssueTesting/53558.gd", // 3.x branch
+    //
+    // "../IssueTesting/53604.gd",
+    // "../IssueTesting/66002.gd",
+    // "../IssueTesting/67589.gd",
+    // "../IssueTesting/71150.gd",
+    // "../IssueTesting/83927.gd",
+    // "../IssueTesting/84152.gd",
+    // "../IssueTesting/84178.gd",
+    // "../IssueTesting/84202.gd",
+    // "../IssueTesting/53775.gd",
+    // "../IssueTesting/61507.gd",
+    // "../IssueTesting/69258.gd",
+    // "../IssueTesting/71863.gd",
+    // "../IssueTesting/73202.gd",
+    // "../IssueTesting/66758.gd",
+    // "../IssueTesting/60325.gd",
+    // "../IssueTesting/60297.gd",
+    // "../IssueTesting/84176.gd",
+    // "../IssueTesting/60337.gd",
+    // "../IssueTesting/60338.gd",
+    // "../IssueTesting/60492.gd",
+    // "../IssueTesting/60324.gd",
+    // "../IssueTesting/60357.gd",
 ];
 
 fn main() {
@@ -96,8 +99,13 @@ fn collect_files_to_check() -> Vec<String> {
 }
 
 fn check_if_godot_crashes(godot_path: &str, path: &str) -> bool {
-    let output = Command::new("timeout")
-        .args(&["-v", "60", godot_path, "--path", path, "--headless", "--quit"])
+    let mut command = Command::new("timeout");
+    let command = command
+        .args(&["-v", "60", godot_path, "--path", path, "--quit"]);
+    // let command = command.args(["--rendering-dirver", "opengl3"]);
+    let command = command.args(["--headless"]);
+
+    let output = command
         .stdout(std::process::Stdio::piped())
         .stderr(std::process::Stdio::piped())
         .spawn()
