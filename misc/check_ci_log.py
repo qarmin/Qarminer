@@ -133,6 +133,10 @@ if file_contents.find("timeout: sending signal") != -1:
     print('ERROR: timeout of command')
     sys.exit(63)
 
+if file_contents.find("timeout: the monitored command dumped core") != -1:
+    print('ERROR: timeout: the monitored command dumped core')
+    sys.exit(64)
+
 if exists("CRASH_FOUND"):
     print('ERROR: Reproducer found crash')
     sys.exit(91)

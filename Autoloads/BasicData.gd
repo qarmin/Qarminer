@@ -47,6 +47,7 @@ var function_exceptions: Array = [
 	"get_seamless_image_3d", # Timeout
 	"propagate_call", # Calls
 	"notify_thread_safe", # Not really good function
+	"set_block_signals",  # Tricky function
 	###
 	### Godot 4.0 MSAN
 	###
@@ -122,7 +123,6 @@ var function_exceptions: Array = [
 	"set_window_mouse_passthrough",  # 66754
 	"open_midi_inputs",  # 52821, 69180
 	"process_action",  #60297
-	"set_block_signals",  #53553
 	"make_atlas",  #51154
 	### Partial INF - Freeezes sometimes without INF
 	"set_zoom",  # 60492
