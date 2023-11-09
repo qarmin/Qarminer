@@ -22,57 +22,30 @@ var function_exceptions: Array = [
 	### Godot 4.0
 	###
 	"set_buffer", # 84672
-	"remove_paragraph", # TODO
+	"remove_paragraph", # 84202
 	"set_stream", # 84398
 	"set_bus", # 84398
 	"set_custom_viewport", # 84178
-	"get_image", # 84177
-	"activate_item_by_event", # 84176
 	"put_var", # 73786 
 	"set_animation_player", # 83927
-	"compress", # 62097
-	"set_data",  # 78414
-	"set_process_thread_group",  # 77029
-	"get_format", # TODO crashes in CI, but cannot really reproduce
-	"set_deferred", # 77029
-	"clear_bones_global_pose_override", # 77057
-	"set_deferred_thread_group", # 77029
-	"notify_deferred_thread_group", # 77029
-	"call_deferred_thread_group", # 77029
 	"begin_complex_operation", # 73202
 	"do_indent", # 73202
 	"window_set_mouse_passthrough", #66754
-	"push_hint", # 72232
-	"add_image", # 72232
-	"save_webp_to_buffer", # 72230
 	"property_get_revert", # 71863
 	"initialize", # 71150
-	"set_custom_minimum_size", # TODO - probably is fixed, but I still have crashes
-	"_get_drag_data_fw", # 70005
-	"create_font",  # TODO TextServerAdvanced
-	"create_shaped_text",  # TODO TextServerAdvanced
 	"pack",  # 69258
 	"set_extra_cull_margin",  # 69258
-	"get_line_width",  # 68156
-	"set_process_material",  # 67954, 54478, 61175
+	"set_process_material",  # 67954
 	"append_from_file",  # 67951
 	"_set_playing",  #67589
-	"save_jpg_to_buffer",  # 67586
 	"set_current",  # 67442
-	"set_follow_camera_enabled",  # 66986
-	"set_scroll_past_end_of_file_enabled",  # 66937
-	"set_fit_content_height_enabled",  # 66937
-	"set_line_wrapping_mode",  # 66937
 	"_get_light_textures_data",  # 66002
-	"set_visibility_range_begin_margin",  #54655
-	"set_visibility_range_begin",  #54655
 	"broadcast",  #53873
 	"get_property_list",  #53604
 	"set_projector",  #53604
 	"add_node",  #53558
 	"load_threaded_request",  #46762
 	"set_enabled_inputs",  # 69230
-	"tts_set_utterance_callback",  # 66821
 	"set_window_mouse_passthrough",  # 66754
 	"open_midi_inputs",  # 52821, 69180
 	"process_action",  #60297
@@ -122,6 +95,7 @@ var function_exceptions: Array = [
 	"intersect_polyline_with_polygon_2d",  #60324
 	"merge_polygons_2d",  #60324
 	"intersect_polygons_2d",  #60324
+	###############################################################################################
 	###
 	### Expected Crashes
 	###
@@ -351,8 +325,6 @@ var disabled_classes: Array = [
 	"CubemapArray",  # 77762
 	"PlaceholderCubemapArray", # 77762
 	"Skeleton3D", # 77057
-	"XROrigin3D",  # 67442
-	"FogMaterial",  # 67954
 	"VisibleOnScreenEnabler3D",  # 53565
 	"VisibleOnScreenEnabler2D",  # 53565
 	"ImageTexture3D",  # 53721

@@ -1,14 +1,23 @@
 use std::fs;
 use std::process::Command;
 
-use walkdir::WalkDir;
 use rayon::prelude::*;
+use walkdir::WalkDir;
 
 const NUMBER_OF_STEPS: usize = 1;
+const TIMEOUT: u64 = 20;
 
 const DISABLED_FILES: &[&str] = &[
     "../IssueTesting/66754.gd", // X11 thing, cannot reproduce with headless
     "../IssueTesting/53558.gd", // 3.x branch
+    "../IssueTesting/71150.gd", // Out of memory
+    "../IssueTesting/66002.gd", // Out of memory
+    "../IssueTesting/69258.gd", // Out of memory
+    "../IssueTesting/53775.gd", // Out of memory
+    "../IssueTesting/73202.gd", // Out of memory
+    "../IssueTesting/71863.gd", // Out of memory
+    "../IssueTesting/60492.gd", // Out of memory
+    "../IssueTesting/60338.gd", // Freeze
     //
     // "../IssueTesting/53604.gd",
     // "../IssueTesting/66002.gd",
@@ -39,7 +48,7 @@ fn main() {
     let godot_path = &args[1];
 
     // Clears temp folder
-    let _ =  fs::remove_dir_all("temp");
+    let _ = fs::remove_dir_all("temp");
     fs::create_dir_all("temp").unwrap();
 
     let gdfiles_to_check = collect_files_to_check();
@@ -47,7 +56,9 @@ fn main() {
 }
 
 fn check_files_in_parrallel(godot_path: &str, gdfiles_to_check: Vec<String>) {
+    // gdfiles_to_check.into_iter().for_each(|file_to_check| {
     gdfiles_to_check.into_par_iter().for_each(|file_to_check| {
+        println!("Checking file: {}", file_to_check);
         let new_temp_dir_name = format!("temp/{}", rand::random::<u64>());
         fs::create_dir_all(&new_temp_dir_name).unwrap();
 
@@ -59,7 +70,6 @@ fn check_files_in_parrallel(godot_path: &str, gdfiles_to_check: Vec<String>) {
         let mut broken_counter = 0;
         let mut non_broken_counter = 0;
         for _ in 0..NUMBER_OF_STEPS {
-
             if check_if_godot_crashes(godot_path, &new_temp_dir_name) {
                 broken_counter += 1;
             } else {
@@ -92,7 +102,7 @@ fn collect_files_to_check() -> Vec<String> {
     gdfiles_to_check.retain(|e| {
         !e.ends_with("Node.gd")
     });
-    gdfiles_to_check.retain(|e|{
+    gdfiles_to_check.retain(|e| {
         !DISABLED_FILES.contains(&e.as_str())
     });
     gdfiles_to_check
@@ -101,7 +111,7 @@ fn collect_files_to_check() -> Vec<String> {
 fn check_if_godot_crashes(godot_path: &str, path: &str) -> bool {
     let mut command = Command::new("timeout");
     let command = command
-        .args(&["-v", "60", godot_path, "--path", path, "--quit"]);
+        .args(&["-v", &TIMEOUT.to_string(), godot_path, "--path", path, "--quit"]);
     // let command = command.args(["--rendering-dirver", "opengl3"]);
     let command = command.args(["--headless"]);
 
@@ -130,6 +140,7 @@ fn check_if_godot_crashes(godot_path: &str, path: &str) -> bool {
         || all.contains("timeout: the monitored command dumped core")
         || (all.contains("ERROR: LeakSanitizer:") && all.contains("#4 0x"))
     {
+        // println!("{path} - {all}");
         return true;
     }
     println!("{path} - {all}");
