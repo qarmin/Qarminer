@@ -13,43 +13,7 @@ var allowed_thing: Dictionary = {}  # List of all classes with
 # TODOGODOT4
 var function_exceptions: Array = [
 	###
-	### Timer - slow functions that sometimes probably cause CI failure(due too long of time checking) > 0.5 second 
-	###
-	"draw_multiline_string_outline", # FontVariation
-	"inspect_native_shader_code", # ORMMaterial3D 
-	"_im_update", #Label3D
-	"_generate_texture", # NoiseTexture2D
-	"draw_string_outline", # FontVariation
-	"_update_texture", #NoiseTexture2D
-	"NoiseTexture2D", # StreamPeerBuffer
-	"get_utf8_string", # StreamPeerBuffer
-	"draw_multiline_string", # FontVariation
-	"get_var",  #StreamPeerTLS
-	"get_string", #StreamPeerTLS
-	"set_input_count", #AnimationNodeTransition.new().set_input_count(-24) Error spam
-	###
-	### Godot 4.0 - Expected things
-	###
-	"reparent", 
-	"set_base", # Dangerous, change base and creates memory leak
-	"instantiate",  # Hmmm...
-	"print_orphan_nodes",  # Hmmm ..
-	"sample_baked",  # Freeze
-	"sample_baked_up_vector",  # Freeze
-	"get_parent",  # ? - why this is not available on 3.x?
-	"save_jpg",  # create files
-	"set_font_size",  # SLOOOOOOW function
-	"tessellate_even_length",  # Too slow
-	"save_webp",  # Saves file to FS
-	"save_support_data",  # Saves file to FS
-	"set_is_setup",  # Just don't use, in SkeletonModification crashes a lot without reason
-	"open_library", # ==14955==You are trying to dlopen a /home/runner/work/Qarminer/Qarminer/../lib/ shared library with RTLD_DEEPBIND flag which is incompatible with sanitizer runtime (see https://github.com/google/sanitizers/issues/611 for details). If you want to run /home/runner/work/Qarminer/Qarminer/../lib/ library under sanitizers please remove RTLD_DEEPBIND from dlopen flags.
-	"get_seamless_image_3d", # Timeout
-	"propagate_call", # Calls
-	"notify_thread_safe", # Not really good function
-	"set_block_signals",  # Tricky function
-	###
-	### Godot 4.0 MSAN
+	###  MSAN
 	###
 	"set_font_names",
 	"create_client",
@@ -57,6 +21,8 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
+	"set_buffer", # 84672
+	"remove_paragraph", # TODO
 	"set_stream", # 84398
 	"set_bus", # 84398
 	"set_custom_viewport", # 84178
@@ -105,7 +71,15 @@ var function_exceptions: Array = [
 	"set_projector",  #53604
 	"add_node",  #53558
 	"load_threaded_request",  #46762
-	### INF 4
+	"set_enabled_inputs",  # 69230
+	"tts_set_utterance_callback",  # 66821
+	"set_window_mouse_passthrough",  # 66754
+	"open_midi_inputs",  # 52821, 69180
+	"process_action",  #60297
+	"make_atlas",  #51154
+	###
+	### INF - Freeezes sometimes without INF
+	###
 	"_set_size", # TODO 2 - GraphEdit
 	"set_global_position", # TODO 1 - GraphEdit
 	"set_scroll_ofs", # TODO 1 - GraphEdit
@@ -117,21 +91,10 @@ var function_exceptions: Array = [
 	"intersect_polyline_with_polygon",  #60324
 	"merge_polygons",  #60324
 	"intersect_polygons",  #60324
-	###
-	### Reported crashes
-	###
-	"set_enabled_inputs",  # 69230
-	"tts_set_utterance_callback",  # 66821
-	"set_window_mouse_passthrough",  # 66754
-	"open_midi_inputs",  # 52821, 69180
-	"process_action",  #60297
-	"make_atlas",  #51154
-	### Partial INF - Freeezes sometimes without INF
 	"set_zoom",  # 60492
 	"set_end",  # 60492
 	"set_zoom_min",  # 60492
 	"set_zoom_max",  # 60492
-	### INF Crashes
 	"update_bitmask_area", # 70139
 	"update_bitmask_region", # 70139
 	"get_debug_mesh",  #60337
@@ -162,6 +125,24 @@ var function_exceptions: Array = [
 	###
 	### Expected Crashes
 	###
+	"reparent",
+	"set_base", # Dangerous, change base and creates memory leak
+	"instantiate",  # Hmmm...
+	"print_orphan_nodes",  # Hmmm ..
+	"sample_baked",  # Freeze
+	"sample_baked_up_vector",  # Freeze
+	"get_parent",  # ? - why this is not available on 3.x?
+	"save_jpg",  # create files
+	"set_font_size",  # SLOOOOOOW function
+	"tessellate_even_length",  # Too slow
+	"save_webp",  # Saves file to FS
+	"save_support_data",  # Saves file to FS
+	"set_is_setup",  # Just don't use, in SkeletonModification crashes a lot without reason
+	"open_library", # ==14955==You are trying to dlopen a /home/runner/work/Qarminer/Qarminer/../lib/ shared library with RTLD_DEEPBIND flag which is incompatible with sanitizer runtime (see https://github.com/google/sanitizers/issues/611 for details). If you want to run /home/runner/work/Qarminer/Qarminer/../lib/ library under sanitizers please remove RTLD_DEEPBIND from dlopen flags.
+	"get_seamless_image_3d", # Timeout
+	"propagate_call", # Calls
+	"notify_thread_safe", # Not really good function
+	"set_block_signals",  # Tricky function
 	"_editor_settings_changed",  # Fixed only for master
 	"set_editor_hint",  #46252 - Fixed only for master(due compatibility)- do not use
 	###
@@ -205,6 +186,18 @@ var function_exceptions: Array = [
 	###
 	### Godot freeze or run very slow
 	###
+	"draw_multiline_string_outline", # FontVariation
+	"inspect_native_shader_code", # ORMMaterial3D
+	"_im_update", #Label3D
+	"_generate_texture", # NoiseTexture2D
+	"draw_string_outline", # FontVariation
+	"_update_texture", #NoiseTexture2D
+	"NoiseTexture2D", # StreamPeerBuffer
+	"get_utf8_string", # StreamPeerBuffer
+	"draw_multiline_string", # FontVariation
+	"get_var",  #StreamPeerTLS
+	"get_string", #StreamPeerTLS
+	"set_input_count", #AnimationNodeTransition.new().set_input_count(-24) Error spam
 	"set_pre_process_time", # CPUParticles freeze
 	"poll",
 	"delay_usec",
