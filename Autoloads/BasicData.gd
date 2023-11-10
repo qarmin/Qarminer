@@ -10,7 +10,6 @@ var argument_classes: Array = []  # Allowed classes that can be used as argument
 var allowed_thing: Dictionary = {}  # List of all classes with
 
 # Globablly disabled functions for all classes
-# TODOGODOT4
 var function_exceptions: Array = [
 	###
 	###  MSAN
@@ -21,6 +20,9 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
+	"notify_deferred_thread_group", # 84694
+	"create_font", # 84693
+	"activate_item_by_event", # 84692
 	"set_buffer", # 84672
 	"remove_paragraph", # 84202
 	"set_stream", # 84398
@@ -323,6 +325,7 @@ var disabled_classes: Array = [
 	###
 	"CompressedCubemapArray", # 77762
 	"CubemapArray",  # 77762
+	"FogMaterial", # 84691 - Leaks when used
 	"PlaceholderCubemapArray", # 77762
 	"Skeleton3D", # 77057
 	"VisibleOnScreenEnabler3D",  # 53565
