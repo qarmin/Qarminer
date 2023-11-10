@@ -20,8 +20,8 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
+	"save_jpg_to_buffer", # 84707
 	"notify_deferred_thread_group", # 84694
-	"create_font", # 84693
 	"activate_item_by_event", # 84692
 	"set_buffer", # 84672
 	"remove_paragraph", # 84202
