@@ -20,6 +20,12 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
+	"compress_from_channels", # 84743
+	"save_webp_to_buffer", # 84743
+	"set_scroll_past_end_of_file_enabled", # 84742
+	"duplicate_lines", # 84742
+	"update_image", # 84739
+	"add_image", # 84739
 	"save_jpg_to_buffer", # 84707
 	"notify_deferred_thread_group", # 84694
 	"activate_item_by_event", # 84692
@@ -101,6 +107,8 @@ var function_exceptions: Array = [
 	###
 	### Expected Crashes
 	###
+	"create_shaped_text", # leaks memory
+	"create_font", # leaks memory
 	"reparent",
 	"set_base", # Dangerous, change base and creates memory leak
 	"instantiate",  # Hmmm...
