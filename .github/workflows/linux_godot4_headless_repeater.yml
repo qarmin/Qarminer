@@ -90,9 +90,9 @@ jobs:
           echo "" > settings.txt
           cp project.godot.old project.godot
 
-      - name: Run Project SimpleThings
+      - name: Run Project Multiple Times - One run ~30 seconds - 240 ~ 2 hours
         run: |
-          for iteration in {1..20}; do
+          for iteration in {1..240}; do
             for i in {0..50}; do echo "" >> project_results.txt; done;
             echo "======================================== Default" 2>&1 | tee sanitizers_log.txt
             UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 960 xvfb-run ./godot.linuxbsd.editor.dev.x86_64.san FunctionExecutor.tscn 0 --audio-driver Dummy --headless --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
