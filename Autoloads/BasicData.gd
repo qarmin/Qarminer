@@ -28,7 +28,6 @@ var function_exceptions: Array = [
 	"update_image", # 84739
 	"add_image", # 84739
 	"save_jpg_to_buffer", # 84707
-	"notify_deferred_thread_group", # 84694
 	"activate_item_by_event", # 84692
 	"set_buffer", # 84672
 	"remove_paragraph", # 84202
@@ -60,7 +59,7 @@ var function_exceptions: Array = [
 	"process_action",  #60297
 	"make_atlas",  #51154
 	###
-	### INF - Freeezes sometimes without INF
+	### INF - Freezes sometimes without INF
 	###
 	"_set_size", # TODO 2 - GraphEdit
 	"set_global_position", # TODO 1 - GraphEdit
@@ -108,6 +107,9 @@ var function_exceptions: Array = [
 	###
 	### Expected Crashes
 	###
+	"_call_deferred_thread_group_bind", # Not sure if exists
+	"notify_deferred_thread_group", # Notify
+	"set_deferred_thread_group", # Leak, but probably expected
 	"create_shaped_text", # leaks memory
 	"create_font", # leaks memory
 	"reparent",
