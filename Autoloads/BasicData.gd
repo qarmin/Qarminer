@@ -20,6 +20,7 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
+	"_restore", # 85340
 	"convert", # 84750
 	"compress_from_channels", # 84743
 	"save_webp_to_buffer", # 84743
