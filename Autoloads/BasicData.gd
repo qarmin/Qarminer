@@ -20,6 +20,7 @@ var function_exceptions: Array = [
 	###
 	### Godot 4.0
 	###
+	"load_buffer_view_data", # 87304
 	"blend_node", # 86070
 	"_restore", # 85340
 	"convert", # 84750

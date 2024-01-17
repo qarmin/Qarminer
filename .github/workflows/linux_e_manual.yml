@@ -48,7 +48,7 @@ jobs:
 
       - name: Download reproducer
         run: |
-          wget -nv https://github.com/qarmin/Qarminer/releases/download/reproducer/find_minimal_godot_crash -O reproducer
+          wget -nv https://github.com/qarmin/Qarminer/releases/download/reproducer/find_minimal_godot_crash_02 -O reproducer
           chmod +x ./reproducer
 
       # Make backup of project.godot
