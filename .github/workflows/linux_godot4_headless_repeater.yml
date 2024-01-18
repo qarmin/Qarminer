@@ -65,7 +65,7 @@ jobs:
 
       - name: Open Godot Editor
         run: |
-           UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 xvfb-run ./godot.linuxbsd.editor.dev.x86_64.san -e --quit --audio-driver Dummy --headless --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 xvfb-run ./godot.linuxbsd.editor.dev.x86_64.san -e --quit --audio-driver Dummy --headless --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
           tail -n 300 sanitizers_log.txt > editor_results.txt
 
       - name: Store editor results
