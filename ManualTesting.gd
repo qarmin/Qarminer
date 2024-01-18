@@ -86,7 +86,7 @@ var excluded_functions: Array = [
 	"create_sub_window",  # 67030
 	"create_local_rendering_device",  # TODO - out of memory probably
 	#"create_local_device", # TODO LEAK
-	"clipboard_get_image", # 83949 - Freeze 
+	"clipboard_get_image", # 83949 - Freeze
 	# LEAK
 	"texture_rd_create",
 	"texture_2d_create",

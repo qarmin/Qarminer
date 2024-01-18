@@ -32,7 +32,7 @@ jobs:
           sudo add-apt-repository "deb https://ppa.launchpadcontent.net/kisak/turtle/ubuntu focal main"
           sudo apt update
           sudo apt-get install -qq mesa-vulkan-drivers
-          
+
           sudo apt-get install build-essential pkg-config libx11-dev libxcursor-dev \
             libxinerama-dev libgl1-mesa-dev libglu-dev libasound2-dev libpulse-dev libudev-dev libxi-dev libxrandr-dev yasm \
             xvfb wget2 unzip scons git
@@ -65,7 +65,7 @@ jobs:
 
       - name: Open Godot Editor
         run: |
-          UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 xvfb-run ./godot.linuxbsd.editor.dev.x86_64.san -e --quit --audio-driver Dummy --headless --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+           UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 xvfb-run ./godot.linuxbsd.editor.dev.x86_64.san -e --quit --audio-driver Dummy --headless --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
           tail -n 300 sanitizers_log.txt > editor_results.txt
 
       - name: Store editor results
@@ -93,14 +93,14 @@ jobs:
           for iteration in {1..240}; do
             for i in {0..50}; do echo "" >> project_results.txt; done;
             echo "======================================== Default" 2>&1 | tee sanitizers_log.txt
-            UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 960 xvfb-run ./godot.linuxbsd.editor.dev.x86_64.san FunctionExecutor.tscn 0 --audio-driver Dummy --headless --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+             UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 960 xvfb-run ./godot.linuxbsd.editor.dev.x86_64.san FunctionExecutor.tscn 0 --audio-driver Dummy --headless --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
             tail -n 200 sanitizers_log.txt >> project_results.txt
-          
+
             if [ -d "CRASH_INFO" ]; then
               echo "CRASH_INFO folder found. Exiting loop."
               break
             fi
-          
+
             if [ -f "results.txt" ]; then
               if [ -f "results_end.txt" ]; then
                 for i in {0..50}; do echo "" >> t.txt; done;
@@ -110,14 +110,14 @@ jobs:
                 cp "results.txt" "results_end.txt"
               fi
             fi
-          
+
             echo "extends Node" > temp.txt
             echo "func _process(delta):" >> temp.txt
             if [ -f results.txt ]; then
               cat temp.txt results.txt > Node.gd.test || true
-             UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer godot.linuxbsd.editor.dev.x86_64.san 60_50 . --headless --audio-driver Dummy # || echo "ERROR: REPRODUCER FAILURE"
+              UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer godot.linuxbsd.editor.dev.x86_64.san 60_50 . --headless --audio-driver Dummy # || echo "ERROR: REPRODUCER FAILURE"
             fi
-          done
+           Done
 
       - name: Store reproducer
         uses: actions/upload-artifact@v3

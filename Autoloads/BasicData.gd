@@ -37,7 +37,7 @@ var function_exceptions: Array = [
 	"set_stream", # 84398
 	"set_bus", # 84398
 	"set_custom_viewport", # 84178
-	"put_var", # 73786 
+	"put_var", # 73786
 	"set_animation_player", # 83927
 	"begin_complex_operation", # 73202
 	"do_indent", # 73202
@@ -351,14 +351,14 @@ var disabled_classes: Array = [
 	"MultiplayerAPI",  # Crashes TODO
 	"OpenXRInteractionProfileMetaData", # TODO Heap use after free
 	"EngineDebugger",  # Crashes in exported project, not very usable
-	"OpenXRAPIExtension", 
-	"OpenXRAction", 
-	"OpenXRActionMap", 
-	"OpenXRExtensionWrapperExtension", 
-	"OpenXRHand", 
-	"OpenXRIPBinding", 
-	"OpenXRInteractionProfile", 
-	"OpenXRInterface", 
+	"OpenXRAPIExtension",
+	"OpenXRAction",
+	"OpenXRActionMap",
+	"OpenXRExtensionWrapperExtension",
+	"OpenXRHand",
+	"OpenXRIPBinding",
+	"OpenXRInteractionProfile",
+	"OpenXRInterface",
 ]
 
 # Exceptions for e.g. float, String or int functions

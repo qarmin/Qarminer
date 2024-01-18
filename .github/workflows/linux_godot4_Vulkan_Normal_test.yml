@@ -32,7 +32,7 @@ jobs:
           sudo add-apt-repository "deb https://ppa.launchpadcontent.net/kisak/turtle/ubuntu focal main"
           sudo apt update
           sudo apt-get install -qq mesa-vulkan-drivers
-          
+
           sudo apt-get install build-essential pkg-config libx11-dev libxcursor-dev \
             libxinerama-dev libgl1-mesa-dev libglu-dev libasound2-dev libpulse-dev libudev-dev libxi-dev libxrandr-dev yasm \
             xvfb wget2 unzip scons git
@@ -70,7 +70,7 @@ jobs:
 
       - name: Open Godot Editor
         run: |
-          UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 xvfb-run ./godot.linuxbsd.editor.dev.x86_64.san -e --quit --audio-driver Dummy  --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+           UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 xvfb-run ./godot.linuxbsd.editor.dev.x86_64.san -e --quit --audio-driver Dummy  --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
           tail -n 300 sanitizers_log.txt > editor_results.txt
 
       - name: Store editor results
@@ -97,7 +97,7 @@ jobs:
         run: |
           for i in {0..50}; do echo "" >> project_results.txt; done;
           echo "======================================== SimpleThings" 2>&1 | tee sanitizers_log.txt
-          UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 660 xvfb-run ./godot.linuxbsd.editor.dev.x86_64.san SimpleThings.tscn 300 --audio-driver Dummy  --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+           UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 660 xvfb-run ./godot.linuxbsd.editor.dev.x86_64.san SimpleThings.tscn 300 --audio-driver Dummy  --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
           tail -n 200 sanitizers_log.txt >> project_results.txt
 
           if [ -f "results.txt" ]; then
@@ -149,7 +149,7 @@ jobs:
         run: |
           for i in {0..50}; do echo "" >> project_results.txt; done;
           echo "======================================== One by One | Parent | Add to tree | Maximum Tested" 2>&1 | tee sanitizers_log.txt
-          UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 960 xvfb-run ./godot.linuxbsd.editor.dev.x86_64.san FunctionExecutor.tscn 600 --audio-driver Dummy  --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+           UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 960 xvfb-run ./godot.linuxbsd.editor.dev.x86_64.san FunctionExecutor.tscn 600 --audio-driver Dummy  --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
           tail -n 200 sanitizers_log.txt >> project_results.txt
 
           if [ -f "results.txt" ]; then
@@ -188,7 +188,7 @@ jobs:
           echo "func _process(delta):" >> temp.txt
           if [ -f results.txt ]; then
             cat temp.txt results.txt > Node.gd.test || true
-            UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer godot.linuxbsd.editor.dev.x86_64.san 60_50 .  --audio-driver Dummy # || echo "ERROR: REPRODUCER FAILURE"
+             UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer godot.linuxbsd.editor.dev.x86_64.san 60_50 .  --audio-driver Dummy # || echo "ERROR: REPRODUCER FAILURE"
           fi
 
       - name: Store reproducer
@@ -224,7 +224,7 @@ jobs:
         run: |
           for i in {0..50}; do echo "" >> project_results.txt; done;
           echo "======================================== Parent | Add to tree | Maximum Tested | Max Random" 2>&1 | tee sanitizers_log.txt
-          UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 960 xvfb-run ./godot.linuxbsd.editor.dev.x86_64.san FunctionExecutor.tscn 600 --audio-driver Dummy  --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+           UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 960 xvfb-run ./godot.linuxbsd.editor.dev.x86_64.san FunctionExecutor.tscn 600 --audio-driver Dummy  --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
           tail -n 200 sanitizers_log.txt >> project_results.txt
 
           if [ -f "results.txt" ]; then
@@ -263,7 +263,7 @@ jobs:
           echo "func _process(delta):" >> temp.txt
           if [ -f results.txt ]; then
             cat temp.txt results.txt > Node.gd.test || true
-            UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer godot.linuxbsd.editor.dev.x86_64.san 60_50 .  --audio-driver Dummy # || echo "ERROR: REPRODUCER FAILURE"
+             UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer godot.linuxbsd.editor.dev.x86_64.san 60_50 .  --audio-driver Dummy # || echo "ERROR: REPRODUCER FAILURE"
           fi
 
       - name: Store reproducer
@@ -294,7 +294,7 @@ jobs:
         run: |
           for i in {0..50}; do echo "" >> project_results.txt; done;
           echo "======================================== Default" 2>&1 | tee sanitizers_log.txt
-          UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 960 xvfb-run ./godot.linuxbsd.editor.dev.x86_64.san FunctionExecutor.tscn 600 --audio-driver Dummy  --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+           UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 960 xvfb-run ./godot.linuxbsd.editor.dev.x86_64.san FunctionExecutor.tscn 600 --audio-driver Dummy  --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
           tail -n 200 sanitizers_log.txt >> project_results.txt
 
           if [ -f "results.txt" ]; then
@@ -333,7 +333,7 @@ jobs:
           echo "func _process(delta):" >> temp.txt
           if [ -f results.txt ]; then
             cat temp.txt results.txt > Node.gd.test || true
-            UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer godot.linuxbsd.editor.dev.x86_64.san 60_50 .  --audio-driver Dummy # || echo "ERROR: REPRODUCER FAILURE"
+             UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer godot.linuxbsd.editor.dev.x86_64.san 60_50 .  --audio-driver Dummy # || echo "ERROR: REPRODUCER FAILURE"
           fi
 
       - name: Store reproducer
@@ -369,7 +369,7 @@ jobs:
         run: |
           for i in {0..50}; do echo "" >> project_results.txt; done;
           echo "======================================== Delaying | Parent | Add to tree | Maximum Tested" 2>&1 | tee sanitizers_log.txt
-          UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 960 xvfb-run ./godot.linuxbsd.editor.dev.x86_64.san FunctionExecutor.tscn 600 --audio-driver Dummy  --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+           UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 960 xvfb-run ./godot.linuxbsd.editor.dev.x86_64.san FunctionExecutor.tscn 600 --audio-driver Dummy  --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
           tail -n 200 sanitizers_log.txt >> project_results.txt
 
           if [ -f "results.txt" ]; then
@@ -408,7 +408,7 @@ jobs:
           echo "func _process(delta):" >> temp.txt
           if [ -f results.txt ]; then
             cat temp.txt results.txt > Node.gd.test || true
-            UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer godot.linuxbsd.editor.dev.x86_64.san 60_50 .  --audio-driver Dummy # || echo "ERROR: REPRODUCER FAILURE"
+             UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer godot.linuxbsd.editor.dev.x86_64.san 60_50 .  --audio-driver Dummy # || echo "ERROR: REPRODUCER FAILURE"
           fi
 
       - name: Store reproducer
@@ -443,7 +443,7 @@ jobs:
         run: |
           for i in {0..50}; do echo "" >> project_results.txt; done;
           echo "======================================== Delaying | One by One | Parent" 2>&1 | tee sanitizers_log.txt
-          UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 960 xvfb-run ./godot.linuxbsd.editor.dev.x86_64.san FunctionExecutor.tscn 600 --audio-driver Dummy  --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+           UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 960 xvfb-run ./godot.linuxbsd.editor.dev.x86_64.san FunctionExecutor.tscn 600 --audio-driver Dummy  --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
           tail -n 200 sanitizers_log.txt >> project_results.txt
 
           if [ -f "results.txt" ]; then
@@ -482,7 +482,7 @@ jobs:
           echo "func _process(delta):" >> temp.txt
           if [ -f results.txt ]; then
             cat temp.txt results.txt > Node.gd.test || true
-            UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer godot.linuxbsd.editor.dev.x86_64.san 60_50 .  --audio-driver Dummy # || echo "ERROR: REPRODUCER FAILURE"
+             UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer godot.linuxbsd.editor.dev.x86_64.san 60_50 .  --audio-driver Dummy # || echo "ERROR: REPRODUCER FAILURE"
           fi
 
       - name: Store reproducer
@@ -517,7 +517,7 @@ jobs:
         run: |
           for i in {0..50}; do echo "" >> project_results.txt; done;
           echo "======================================== Big Numbers | Parent | One by One" 2>&1 | tee sanitizers_log.txt
-          UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 960 xvfb-run ./godot.linuxbsd.editor.dev.x86_64.san FunctionExecutor.tscn 600 --audio-driver Dummy  --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+           UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 960 xvfb-run ./godot.linuxbsd.editor.dev.x86_64.san FunctionExecutor.tscn 600 --audio-driver Dummy  --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
           tail -n 200 sanitizers_log.txt >> project_results.txt
 
           if [ -f "results.txt" ]; then
@@ -556,7 +556,7 @@ jobs:
           echo "func _process(delta):" >> temp.txt
           if [ -f results.txt ]; then
             cat temp.txt results.txt > Node.gd.test || true
-            UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer godot.linuxbsd.editor.dev.x86_64.san 60_50 .  --audio-driver Dummy # || echo "ERROR: REPRODUCER FAILURE"
+             UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer godot.linuxbsd.editor.dev.x86_64.san 60_50 .  --audio-driver Dummy # || echo "ERROR: REPRODUCER FAILURE"
           fi
 
       - name: Store reproducer
@@ -591,7 +591,7 @@ jobs:
         run: |
           for i in {0..50}; do echo "" >> project_results.txt; done;
           echo "======================================== Small Numbers | Parent | One by One" 2>&1 | tee sanitizers_log.txt
-          UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 960 xvfb-run ./godot.linuxbsd.editor.dev.x86_64.san FunctionExecutor.tscn 600 --audio-driver Dummy  --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+           UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 960 xvfb-run ./godot.linuxbsd.editor.dev.x86_64.san FunctionExecutor.tscn 600 --audio-driver Dummy  --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
           tail -n 200 sanitizers_log.txt >> project_results.txt
 
           if [ -f "results.txt" ]; then
@@ -630,7 +630,7 @@ jobs:
           echo "func _process(delta):" >> temp.txt
           if [ -f results.txt ]; then
             cat temp.txt results.txt > Node.gd.test || true
-            UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer godot.linuxbsd.editor.dev.x86_64.san 60_50 .  --audio-driver Dummy # || echo "ERROR: REPRODUCER FAILURE"
+             UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer godot.linuxbsd.editor.dev.x86_64.san 60_50 .  --audio-driver Dummy # || echo "ERROR: REPRODUCER FAILURE"
           fi
 
       - name: Store reproducer
@@ -667,7 +667,7 @@ jobs:
         run: |
           for i in {0..50}; do echo "" >> project_results.txt; done;
           echo "======================================== Small Numbers | Parent | One by One | Add to tree" 2>&1 | tee sanitizers_log.txt
-          UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 960 xvfb-run ./godot.linuxbsd.editor.dev.x86_64.san FunctionExecutor.tscn 600 --audio-driver Dummy  --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+           UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 960 xvfb-run ./godot.linuxbsd.editor.dev.x86_64.san FunctionExecutor.tscn 600 --audio-driver Dummy  --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
           tail -n 200 sanitizers_log.txt >> project_results.txt
 
           if [ -f "results.txt" ]; then
@@ -706,7 +706,7 @@ jobs:
           echo "func _process(delta):" >> temp.txt
           if [ -f results.txt ]; then
             cat temp.txt results.txt > Node.gd.test || true
-            UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer godot.linuxbsd.editor.dev.x86_64.san 60_50 .  --audio-driver Dummy # || echo "ERROR: REPRODUCER FAILURE"
+             UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer godot.linuxbsd.editor.dev.x86_64.san 60_50 .  --audio-driver Dummy # || echo "ERROR: REPRODUCER FAILURE"
           fi
 
       - name: Store reproducer
@@ -740,7 +740,7 @@ jobs:
         run: |
           for i in {0..50}; do echo "" >> project_results.txt; done;
           echo "======================================== Add arguments to tree | Delaying" 2>&1 | tee sanitizers_log.txt
-          UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 960 xvfb-run ./godot.linuxbsd.editor.dev.x86_64.san FunctionExecutor.tscn 600 --audio-driver Dummy  --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+           UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 960 xvfb-run ./godot.linuxbsd.editor.dev.x86_64.san FunctionExecutor.tscn 600 --audio-driver Dummy  --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
           tail -n 200 sanitizers_log.txt >> project_results.txt
 
           if [ -f "results.txt" ]; then
@@ -779,7 +779,7 @@ jobs:
           echo "func _process(delta):" >> temp.txt
           if [ -f results.txt ]; then
             cat temp.txt results.txt > Node.gd.test || true
-            UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer godot.linuxbsd.editor.dev.x86_64.san 60_50 .  --audio-driver Dummy # || echo "ERROR: REPRODUCER FAILURE"
+             UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer godot.linuxbsd.editor.dev.x86_64.san 60_50 .  --audio-driver Dummy # || echo "ERROR: REPRODUCER FAILURE"
           fi
 
       - name: Store reproducer
@@ -815,7 +815,7 @@ jobs:
         run: |
           for i in {0..50}; do echo "" >> project_results.txt; done;
           echo "======================================== One By one, very big amount of functions" 2>&1 | tee sanitizers_log.txt
-          UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 1260 xvfb-run ./godot.linuxbsd.editor.dev.x86_64.san FunctionExecutor.tscn 900 --audio-driver Dummy  --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+           UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 1260 xvfb-run ./godot.linuxbsd.editor.dev.x86_64.san FunctionExecutor.tscn 900 --audio-driver Dummy  --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
           tail -n 200 sanitizers_log.txt >> project_results.txt
 
           if [ -f "results.txt" ]; then
@@ -854,7 +854,7 @@ jobs:
           echo "func _process(delta):" >> temp.txt
           if [ -f results.txt ]; then
             cat temp.txt results.txt > Node.gd.test || true
-            UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer godot.linuxbsd.editor.dev.x86_64.san 60_50 .  --audio-driver Dummy # || echo "ERROR: REPRODUCER FAILURE"
+             UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer godot.linuxbsd.editor.dev.x86_64.san 60_50 .  --audio-driver Dummy # || echo "ERROR: REPRODUCER FAILURE"
           fi
 
       - name: Store reproducer
@@ -892,7 +892,7 @@ jobs:
         run: |
           for i in {0..50}; do echo "" >> project_results.txt; done;
           echo "======================================== One By one, very big amount of functions, Add to tree" 2>&1 | tee sanitizers_log.txt
-          UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 1260 xvfb-run ./godot.linuxbsd.editor.dev.x86_64.san FunctionExecutor.tscn 900 --audio-driver Dummy  --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+           UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 1260 xvfb-run ./godot.linuxbsd.editor.dev.x86_64.san FunctionExecutor.tscn 900 --audio-driver Dummy  --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
           tail -n 200 sanitizers_log.txt >> project_results.txt
 
           if [ -f "results.txt" ]; then
@@ -931,7 +931,7 @@ jobs:
           echo "func _process(delta):" >> temp.txt
           if [ -f results.txt ]; then
             cat temp.txt results.txt > Node.gd.test || true
-            UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer godot.linuxbsd.editor.dev.x86_64.san 60_50 .  --audio-driver Dummy # || echo "ERROR: REPRODUCER FAILURE"
+             UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer godot.linuxbsd.editor.dev.x86_64.san 60_50 .  --audio-driver Dummy # || echo "ERROR: REPRODUCER FAILURE"
           fi
 
       - name: Store reproducer
@@ -967,7 +967,7 @@ jobs:
         run: |
           for i in {0..50}; do echo "" >> project_results.txt; done;
           echo "======================================== Multiple classes, very big amount of functions" 2>&1 | tee sanitizers_log.txt
-          UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 1260 xvfb-run ./godot.linuxbsd.editor.dev.x86_64.san FunctionExecutor.tscn 900 --audio-driver Dummy  --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+           UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 1260 xvfb-run ./godot.linuxbsd.editor.dev.x86_64.san FunctionExecutor.tscn 900 --audio-driver Dummy  --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
           tail -n 200 sanitizers_log.txt >> project_results.txt
 
           if [ -f "results.txt" ]; then
@@ -1006,7 +1006,7 @@ jobs:
           echo "func _process(delta):" >> temp.txt
           if [ -f results.txt ]; then
             cat temp.txt results.txt > Node.gd.test || true
-            UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer godot.linuxbsd.editor.dev.x86_64.san 60_50 .  --audio-driver Dummy # || echo "ERROR: REPRODUCER FAILURE"
+             UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer godot.linuxbsd.editor.dev.x86_64.san 60_50 .  --audio-driver Dummy # || echo "ERROR: REPRODUCER FAILURE"
           fi
 
       - name: Store reproducer
@@ -1046,7 +1046,7 @@ jobs:
         run: |
           for i in {0..50}; do echo "" >> project_results.txt; done;
           echo "======================================== Multithread | Parent | Maximum Tested" 2>&1 | tee sanitizers_log.txt
-          UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 960 xvfb-run ./godot.linuxbsd.editor.dev.x86_64.san FunctionExecutor.tscn 600 --audio-driver Dummy  --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+           UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 960 xvfb-run ./godot.linuxbsd.editor.dev.x86_64.san FunctionExecutor.tscn 600 --audio-driver Dummy  --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
           tail -n 200 sanitizers_log.txt >> project_results.txt
 
           if [ -f "results.txt" ]; then
@@ -1085,7 +1085,7 @@ jobs:
           echo "func _process(delta):" >> temp.txt
           if [ -f results.txt ]; then
             cat temp.txt results.txt > Node.gd.test || true
-            UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer godot.linuxbsd.editor.dev.x86_64.san 60_50 .  --audio-driver Dummy # || echo "ERROR: REPRODUCER FAILURE"
+             UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer godot.linuxbsd.editor.dev.x86_64.san 60_50 .  --audio-driver Dummy # || echo "ERROR: REPRODUCER FAILURE"
           fi
 
       - name: Store reproducer
@@ -1126,7 +1126,7 @@ jobs:
         run: |
           for i in {0..50}; do echo "" >> project_results.txt; done;
           echo "======================================== Multithread | Add | Parent | Maximum Tested" 2>&1 | tee sanitizers_log.txt
-          UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 960 xvfb-run ./godot.linuxbsd.editor.dev.x86_64.san FunctionExecutor.tscn 600 --audio-driver Dummy  --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+           UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 960 xvfb-run ./godot.linuxbsd.editor.dev.x86_64.san FunctionExecutor.tscn 600 --audio-driver Dummy  --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
           tail -n 200 sanitizers_log.txt >> project_results.txt
 
           if [ -f "results.txt" ]; then
@@ -1165,7 +1165,7 @@ jobs:
           echo "func _process(delta):" >> temp.txt
           if [ -f results.txt ]; then
             cat temp.txt results.txt > Node.gd.test || true
-            UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer godot.linuxbsd.editor.dev.x86_64.san 60_50 .  --audio-driver Dummy # || echo "ERROR: REPRODUCER FAILURE"
+             UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer godot.linuxbsd.editor.dev.x86_64.san 60_50 .  --audio-driver Dummy # || echo "ERROR: REPRODUCER FAILURE"
           fi
 
       - name: Store reproducer

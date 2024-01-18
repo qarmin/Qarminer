@@ -41,7 +41,7 @@ jobs:
         run: |
           wget -nv https://github.com/qarmin/Qarminer/releases/download/reproducer/find_minimal_godot_crash_02 -O reproducer
           chmod +x ./reproducer
-           
+
       - name: Download Godot(GIT)
         run: |
           git clone https://github.com/godotengine/godot.git
@@ -70,17 +70,17 @@ jobs:
         run: |
           curr="$(pwd)/godot.linuxbsd.template_release.x86_64.san"
           sed -i "s|PATH_TO_CHANGE|$curr|" export_presets.cfg
-         DRI_PRIME=0 xvfb-run ./godot.linuxbsd.editor.dev.x86_64.san --audio-driver Dummy --export-debug "Linux/X11" test_project 2>&1 | tee exporting.txt || true
+          DRI_PRIME=0 xvfb-run ./godot.linuxbsd.editor.dev.x86_64.san --audio-driver Dummy --export-debug "Linux/X11" test_project 2>&1 | tee exporting.txt || true
           mkdir tp
           cp ./test_project tp
           cp ./test_project.pck tp
-          
+
       - name: Store exporting results
         uses: actions/upload-artifact@v3
         with:
           name: exporting-results
           path: exporting.txt
-          
+
       - name: Store exported binaries
         uses: actions/upload-artifact@v3
         with:
@@ -90,11 +90,11 @@ jobs:
       - name: Restore broken project files
         run: |
           mv Node.tscn2 Node.tscn
-          
+
       # Headless
       - name: Run Project
         run: |
-         DRI_PRIME=0 xvfb-run tp/test_project 1200 --headless 2>&1 | tee sanitizers_log.txt || true
+          DRI_PRIME=0 xvfb-run tp/test_project 1200 --headless 2>&1 | tee sanitizers_log.txt || true
           tail -n 300 sanitizers_log.txt > project_results.txt
 
       - name: Run reproducer
@@ -103,7 +103,7 @@ jobs:
           echo "func _process(delta):" >> temp.txt
           if [ -f results.txt ]; then
             cat temp.txt results.txt > Node.gd.test || true
-           UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer test_project 60_50 . --headless
+            UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer test_project 60_50 . --headless
           fi
 
       - name: Store reproducer
@@ -112,11 +112,11 @@ jobs:
           name: reproducer_4_test_project_headless
           path: crash_reproduce.gd
           if-no-files-found: ignore
-          
+
       # Vulkan
       - name: Run Project
         run: |
-         DRI_PRIME=0 xvfb-run tp/test_project 1200 2>&1 | tee sanitizers_log.txt || true
+          DRI_PRIME=0 xvfb-run tp/test_project 1200 2>&1 | tee sanitizers_log.txt || true
           tail -n 300 sanitizers_log.txt > project_results.txt
 
       - name: Run reproducer
@@ -125,7 +125,7 @@ jobs:
           echo "func _process(delta):" >> temp.txt
           if [ -f results.txt ]; then
             cat temp.txt results.txt > Node.gd.test || true
-           UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer test_project 60_50 .
+            UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer test_project 60_50 .
           fi
 
       - name: Store reproducer
@@ -134,11 +134,11 @@ jobs:
           name: reproducer_4_test_project_vulkan
           path: crash_reproduce.gd
           if-no-files-found: ignore
-          
+
       # GLES3
       - name: Run Project
         run: |
-         DRI_PRIME=0 xvfb-run tp/test_project 1200 --rendering-driver opengl3 2>&1 | tee sanitizers_log.txt || true
+          DRI_PRIME=0 xvfb-run tp/test_project 1200 --rendering-driver opengl3 2>&1 | tee sanitizers_log.txt || true
           tail -n 300 sanitizers_log.txt > project_results.txt
 
       - name: Run reproducer
@@ -147,7 +147,7 @@ jobs:
           echo "func _process(delta):" >> temp.txt
           if [ -f results.txt ]; then
             cat temp.txt results.txt > Node.gd.test || true
-           UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer test_project 60_50 . --rendering-driver opengl3
+            UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer test_project 60_50 . --rendering-driver opengl3
           fi
 
       - name: Store reproducer
@@ -156,8 +156,8 @@ jobs:
           name: reproducer_4_test_project_gles3
           path: crash_reproduce.gd
           if-no-files-found: ignore
-          
-          
+
+
 
       - name: Store project results
         uses: actions/upload-artifact@v3

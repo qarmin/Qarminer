@@ -26,7 +26,7 @@ var ignored = [
 	"settings/stdout/verbose_stdout", # Verbose printing, not needed
 	"run/max_fps", # Slow as hellgod
 	
-	# TODO 
+	# TODO
 	"rendering_device/staging_buffer/texture_upload_region_size_px", # Freeze when adding to this texture
 	
 	# Reported bugs

@@ -26,7 +26,7 @@ func _ready():
 		for method in methods:
 			function_all_list[method["name"]] = true
 
-	for i in functions_to_test: 
+	for i in functions_to_test:
 		if !(i in function_all_list.keys()):
 			validator_print(i + ": not exists")
 		if i in functions_names.keys():
