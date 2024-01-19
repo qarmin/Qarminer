@@ -122,7 +122,7 @@ jobs:
               cat temp.txt results.txt > Node.gd.test || true
               UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer godot.linuxbsd.editor.dev.x86_64.san 60_50 . --audio-driver Dummy # || echo "ERROR: REPRODUCER FAILURE"
             fi
-           Done
+          done
 
       - name: Store reproducer
         uses: actions/upload-artifact@v3

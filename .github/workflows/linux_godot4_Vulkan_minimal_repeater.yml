@@ -1,4 +1,4 @@
-name: 🐧 Godot 4 headless Repeater
+name: 🐧 Godot 4 Vulkan Minimal Repeater
 on:
   push:
   pull_request:
@@ -37,6 +37,12 @@ jobs:
             libxinerama-dev libgl1-mesa-dev libglu-dev libasound2-dev libpulse-dev libudev-dev libxi-dev libxrandr-dev yasm \
             xvfb wget2 unzip scons git
 
+      - name: Configure Project Data
+        run: |
+
+          echo "[rendering]" >> project.godot
+          echo "renderer/rendering_method=\"forward_plus\"" >> project.godot
+
       - name: Download reproducer
         run: |
           wget -nv https://github.com/qarmin/Qarminer/releases/download/reproducer/find_minimal_godot_crash_02 -O reproducer
@@ -52,11 +58,10 @@ jobs:
       - name: Compile Godot
         run: |
           cd godot
-          scons -j2 dev_build=yes target=editor use_asan=yes use_ubsan=yes linker=gold
+          scons -j2 dev_build=yes target=editor use_asan=yes use_ubsan=yes linker=gold module_basis_universal_enabled=no module_bmp_enabled=no module_camera_enabled=no module_csg_enabled=no module_cvtt_enabled=no module_dds_enabled=no module_denoise_enabled=no module_enet_enabled=no module_etcpak_enabled=no brotli=no module_gltf_enabled=no module_gridmap_enabled=no module_hdr_enabled=no module_jpg_enabled=no module_lightmapper_rd_enabled=no module_mbedtls_enabled=no module_meshoptimizer_enabled=no module_minimp3_enabled=no module_mobile_vr_enabled=no module_msdfgen_enabled=no module_multiplayer_enabled=no module_noise_enabled=no module_ogg_enabled=no module_openxr_enabled=no module_raycast_enabled=no module_regex_enabled=no module_squish_enabled=no graphite=no module_text_server_adv_enabled=no module_tga_enabled=no module_theora_enabled=no module_tinyexr_enabled=no module_upnp_enabled=no module_vhacd_enabled=no module_vorbis_enabled=no module_webp_enabled=no module_webrtc_enabled=no module_websocket_enabled=no module_webxr_enabled=no module_xatlas_unwrap_enabled=no
           cp bin/godot.linuxbsd.editor.dev.x86_64.san ../
           cd ../
           rm -rf godot
-
 
       # Make backup of project.godot
       - name: Backup project.godot
@@ -65,7 +70,7 @@ jobs:
 
       - name: Open Godot Editor
         run: |
-          UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 xvfb-run ./godot.linuxbsd.editor.dev.x86_64.san -e --quit --audio-driver Dummy --headless --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+          UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 xvfb-run ./godot.linuxbsd.editor.dev.x86_64.san -e --quit --audio-driver Dummy --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
           tail -n 300 sanitizers_log.txt > editor_results.txt
 
       - name: Store editor results
@@ -88,12 +93,12 @@ jobs:
           echo "" > settings.txt
           cp project.godot.old project.godot
 
-      - name: Run Project Multiple Times - One run ~30 seconds - 240 ~ 2 hours
+      - name: Run Project Multiple Times - One run ~120 seconds - 60 ~ 2 hours
         run: |
-          for iteration in {1..240}; do
+          for iteration in {1..60}; do
             for i in {0..50}; do echo "" >> project_results.txt; done;
             echo "======================================== Default" 2>&1 | tee sanitizers_log.txt
-            UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 960 xvfb-run ./godot.linuxbsd.editor.dev.x86_64.san FunctionExecutor.tscn 0 --audio-driver Dummy --headless --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+            UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 960 xvfb-run ./godot.linuxbsd.editor.dev.x86_64.san FunctionExecutor.tscn 0 --audio-driver Dummy --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
             tail -n 200 sanitizers_log.txt >> project_results.txt
 
             if [ -d "CRASH_INFO" ]; then
@@ -115,21 +120,21 @@ jobs:
             echo "func _process(delta):" >> temp.txt
             if [ -f results.txt ]; then
               cat temp.txt results.txt > Node.gd.test || true
-              UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer godot.linuxbsd.editor.dev.x86_64.san 60_50 . --headless --audio-driver Dummy # || echo "ERROR: REPRODUCER FAILURE"
+              UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 3600 ./reproducer godot.linuxbsd.editor.dev.x86_64.san 60_50 . --audio-driver Dummy # || echo "ERROR: REPRODUCER FAILURE"
             fi
           done
 
       - name: Store reproducer
         uses: actions/upload-artifact@v3
         with:
-          name: reproducer_4_headless
+          name: reproducer_4_vulkan
           path: crash_reproduce.gd
           if-no-files-found: ignore
 
       - name: Store report
         uses: actions/upload-artifact@v3
         with:
-          name: report_reproducer_4_headless
+          name: report_reproducer_4_vulkan
           path: CRASH_INFO
           if-no-files-found: ignore
 
