@@ -98,7 +98,7 @@ jobs:
           for iteration in {1..60}; do
             for i in {0..50}; do echo "" >> project_results.txt; done;
             echo "======================================== Default" 2>&1 | tee sanitizers_log.txt
-             UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 960 xvfb-run ./godot.linuxbsd.editor.dev.x86_64.san FunctionExecutor.tscn 0 --audio-driver Dummy --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
+            UBSAN_OPTIONS=suppressions=suppressions.supp DRI_PRIME=0 timeout -v 960 xvfb-run ./godot.linuxbsd.editor.dev.x86_64.san FunctionExecutor.tscn 0 --audio-driver Dummy --path $(pwd) 2>&1 | tee sanitizers_log.txt || true
             tail -n 200 sanitizers_log.txt >> project_results.txt
 
             if [ -d "CRASH_INFO" ]; then
