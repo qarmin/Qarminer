@@ -24,7 +24,7 @@ jobs:
           sudo cp -f misc/ci/sources.list /etc/apt/sources.list
           sudo apt-get update
 
-      # Install all packages (except scons) - also installs updated mesa drivers
+      # Install all packages (except scons)
       - name: Configure dependencies
         run: |
           sudo rm -f /etc/apt/sources.list.d/microsoft-prod.list
@@ -32,10 +32,16 @@ jobs:
           sudo add-apt-repository "deb https://ppa.launchpadcontent.net/kisak/turtle/ubuntu focal main"
           sudo apt update
           sudo apt-get install -qq mesa-vulkan-drivers
-
           sudo apt-get install build-essential pkg-config libx11-dev libxcursor-dev \
             libxinerama-dev libgl1-mesa-dev libglu-dev libasound2-dev libpulse-dev libudev-dev libxi-dev libxrandr-dev yasm \
             xvfb wget2 unzip scons git
+      
+      - name: Download and install mold
+        run: |
+          wget -q https://github.com/rui314/mold/releases/download/v2.30.0/mold-2.30.0-x86_64-linux.tar.gz -O a.tar.gz
+          tar -xvf a.tar.gz
+          sudo cp mold-2.30.0-x86_64-linux/bin/mold /usr/local/bin/mold
+          sudo cp mold-2.30.0-x86_64-linux/bin/ld.mold /usr/local/bin/ld.mold
 
       - name: Configure Project Data
         run: |
@@ -58,11 +64,10 @@ jobs:
       - name: Compile Godot
         run: |
           cd godot
-          scons -j2 dev_build=yes target=editor use_asan=yes use_ubsan=yes linker=gold
+          scons -j2 dev_build=yes target=editor use_asan=yes use_ubsan=yes linker=mold
           cp bin/godot.linuxbsd.editor.dev.x86_64.san ../
           cd ../
           rm -rf godot
-
 
       # Make backup of project.godot
       - name: Backup project.godot
@@ -195,14 +200,14 @@ jobs:
       - name: Store reproducer
         uses: actions/upload-artifact@v3
         with:
-          name: reproducer_4_gl3_normal_one_by_one_parent_add_to_tree_maximum_tested_70
+          name: reproducer_4_gl3_normal_one_by_one_parent_add_to_tree_maximum_tested_36
           path: crash_reproduce.gd
           if-no-files-found: ignore
 
       - name: Store report
         uses: actions/upload-artifact@v3
         with:
-          name: report_reproducer_4_gl3_normal_one_by_one_parent_add_to_tree_maximum_tested_70
+          name: report_reproducer_4_gl3_normal_one_by_one_parent_add_to_tree_maximum_tested_36
           path: CRASH_INFO
           if-no-files-found: ignore
 
@@ -270,14 +275,14 @@ jobs:
       - name: Store reproducer
         uses: actions/upload-artifact@v3
         with:
-          name: reproducer_4_gl3_normal_parent_add_to_tree_maximum_tested_max_random_71
+          name: reproducer_4_gl3_normal_parent_add_to_tree_maximum_tested_max_random_37
           path: crash_reproduce.gd
           if-no-files-found: ignore
 
       - name: Store report
         uses: actions/upload-artifact@v3
         with:
-          name: report_reproducer_4_gl3_normal_parent_add_to_tree_maximum_tested_max_random_71
+          name: report_reproducer_4_gl3_normal_parent_add_to_tree_maximum_tested_max_random_37
           path: CRASH_INFO
           if-no-files-found: ignore
 
@@ -340,14 +345,14 @@ jobs:
       - name: Store reproducer
         uses: actions/upload-artifact@v3
         with:
-          name: reproducer_4_gl3_normal_default_72
+          name: reproducer_4_gl3_normal_default_38
           path: crash_reproduce.gd
           if-no-files-found: ignore
 
       - name: Store report
         uses: actions/upload-artifact@v3
         with:
-          name: report_reproducer_4_gl3_normal_default_72
+          name: report_reproducer_4_gl3_normal_default_38
           path: CRASH_INFO
           if-no-files-found: ignore
 
@@ -415,14 +420,14 @@ jobs:
       - name: Store reproducer
         uses: actions/upload-artifact@v3
         with:
-          name: reproducer_4_gl3_normal_delaying_parent_add_to_tree_maximum_tested_73
+          name: reproducer_4_gl3_normal_delaying_parent_add_to_tree_maximum_tested_39
           path: crash_reproduce.gd
           if-no-files-found: ignore
 
       - name: Store report
         uses: actions/upload-artifact@v3
         with:
-          name: report_reproducer_4_gl3_normal_delaying_parent_add_to_tree_maximum_tested_73
+          name: report_reproducer_4_gl3_normal_delaying_parent_add_to_tree_maximum_tested_39
           path: CRASH_INFO
           if-no-files-found: ignore
 
@@ -489,14 +494,14 @@ jobs:
       - name: Store reproducer
         uses: actions/upload-artifact@v3
         with:
-          name: reproducer_4_gl3_normal_delaying_one_by_one_parent_74
+          name: reproducer_4_gl3_normal_delaying_one_by_one_parent_40
           path: crash_reproduce.gd
           if-no-files-found: ignore
 
       - name: Store report
         uses: actions/upload-artifact@v3
         with:
-          name: report_reproducer_4_gl3_normal_delaying_one_by_one_parent_74
+          name: report_reproducer_4_gl3_normal_delaying_one_by_one_parent_40
           path: CRASH_INFO
           if-no-files-found: ignore
 
@@ -563,14 +568,14 @@ jobs:
       - name: Store reproducer
         uses: actions/upload-artifact@v3
         with:
-          name: reproducer_4_gl3_normal_big_numbers_parent_one_by_one_75
+          name: reproducer_4_gl3_normal_big_numbers_parent_one_by_one_41
           path: crash_reproduce.gd
           if-no-files-found: ignore
 
       - name: Store report
         uses: actions/upload-artifact@v3
         with:
-          name: report_reproducer_4_gl3_normal_big_numbers_parent_one_by_one_75
+          name: report_reproducer_4_gl3_normal_big_numbers_parent_one_by_one_41
           path: CRASH_INFO
           if-no-files-found: ignore
 
@@ -637,14 +642,14 @@ jobs:
       - name: Store reproducer
         uses: actions/upload-artifact@v3
         with:
-          name: reproducer_4_gl3_normal_small_numbers_parent_one_by_one_76
+          name: reproducer_4_gl3_normal_small_numbers_parent_one_by_one_42
           path: crash_reproduce.gd
           if-no-files-found: ignore
 
       - name: Store report
         uses: actions/upload-artifact@v3
         with:
-          name: report_reproducer_4_gl3_normal_small_numbers_parent_one_by_one_76
+          name: report_reproducer_4_gl3_normal_small_numbers_parent_one_by_one_42
           path: CRASH_INFO
           if-no-files-found: ignore
 
@@ -713,14 +718,14 @@ jobs:
       - name: Store reproducer
         uses: actions/upload-artifact@v3
         with:
-          name: reproducer_4_gl3_normal_small_numbers_parent_one_by_one_add_to_tree_77
+          name: reproducer_4_gl3_normal_small_numbers_parent_one_by_one_add_to_tree_43
           path: crash_reproduce.gd
           if-no-files-found: ignore
 
       - name: Store report
         uses: actions/upload-artifact@v3
         with:
-          name: report_reproducer_4_gl3_normal_small_numbers_parent_one_by_one_add_to_tree_77
+          name: report_reproducer_4_gl3_normal_small_numbers_parent_one_by_one_add_to_tree_43
           path: CRASH_INFO
           if-no-files-found: ignore
 
@@ -786,14 +791,14 @@ jobs:
       - name: Store reproducer
         uses: actions/upload-artifact@v3
         with:
-          name: reproducer_4_gl3_normal_add_arguments_to_tree_delaying_78
+          name: reproducer_4_gl3_normal_add_arguments_to_tree_delaying_44
           path: crash_reproduce.gd
           if-no-files-found: ignore
 
       - name: Store report
         uses: actions/upload-artifact@v3
         with:
-          name: report_reproducer_4_gl3_normal_add_arguments_to_tree_delaying_78
+          name: report_reproducer_4_gl3_normal_add_arguments_to_tree_delaying_44
           path: CRASH_INFO
           if-no-files-found: ignore
 
@@ -861,14 +866,14 @@ jobs:
       - name: Store reproducer
         uses: actions/upload-artifact@v3
         with:
-          name: reproducer_4_gl3_normal_one_by_one,_very_big_amount_of_functions_79
+          name: reproducer_4_gl3_normal_one_by_one,_very_big_amount_of_functions_45
           path: crash_reproduce.gd
           if-no-files-found: ignore
 
       - name: Store report
         uses: actions/upload-artifact@v3
         with:
-          name: report_reproducer_4_gl3_normal_one_by_one,_very_big_amount_of_functions_79
+          name: report_reproducer_4_gl3_normal_one_by_one,_very_big_amount_of_functions_45
           path: CRASH_INFO
           if-no-files-found: ignore
 
@@ -938,14 +943,14 @@ jobs:
       - name: Store reproducer
         uses: actions/upload-artifact@v3
         with:
-          name: reproducer_4_gl3_normal_one_by_one,_very_big_amount_of_functions,_add_to_tree_80
+          name: reproducer_4_gl3_normal_one_by_one,_very_big_amount_of_functions,_add_to_tree_46
           path: crash_reproduce.gd
           if-no-files-found: ignore
 
       - name: Store report
         uses: actions/upload-artifact@v3
         with:
-          name: report_reproducer_4_gl3_normal_one_by_one,_very_big_amount_of_functions,_add_to_tree_80
+          name: report_reproducer_4_gl3_normal_one_by_one,_very_big_amount_of_functions,_add_to_tree_46
           path: CRASH_INFO
           if-no-files-found: ignore
 
@@ -1013,14 +1018,14 @@ jobs:
       - name: Store reproducer
         uses: actions/upload-artifact@v3
         with:
-          name: reproducer_4_gl3_normal_multiple_classes,_very_big_amount_of_functions_81
+          name: reproducer_4_gl3_normal_multiple_classes,_very_big_amount_of_functions_47
           path: crash_reproduce.gd
           if-no-files-found: ignore
 
       - name: Store report
         uses: actions/upload-artifact@v3
         with:
-          name: report_reproducer_4_gl3_normal_multiple_classes,_very_big_amount_of_functions_81
+          name: report_reproducer_4_gl3_normal_multiple_classes,_very_big_amount_of_functions_47
           path: CRASH_INFO
           if-no-files-found: ignore
 
@@ -1092,14 +1097,14 @@ jobs:
       - name: Store reproducer
         uses: actions/upload-artifact@v3
         with:
-          name: reproducer_4_gl3_normal_multithread_parent_maximum_tested_82
+          name: reproducer_4_gl3_normal_multithread_parent_maximum_tested_48
           path: crash_reproduce.gd
           if-no-files-found: ignore
 
       - name: Store report
         uses: actions/upload-artifact@v3
         with:
-          name: report_reproducer_4_gl3_normal_multithread_parent_maximum_tested_82
+          name: report_reproducer_4_gl3_normal_multithread_parent_maximum_tested_48
           path: CRASH_INFO
           if-no-files-found: ignore
 
@@ -1172,14 +1177,14 @@ jobs:
       - name: Store reproducer
         uses: actions/upload-artifact@v3
         with:
-          name: reproducer_4_gl3_normal_multithread_add_parent_maximum_tested_83
+          name: reproducer_4_gl3_normal_multithread_add_parent_maximum_tested_49
           path: crash_reproduce.gd
           if-no-files-found: ignore
 
       - name: Store report
         uses: actions/upload-artifact@v3
         with:
-          name: report_reproducer_4_gl3_normal_multithread_add_parent_maximum_tested_83
+          name: report_reproducer_4_gl3_normal_multithread_add_parent_maximum_tested_49
           path: CRASH_INFO
           if-no-files-found: ignore
 
