@@ -42,6 +42,8 @@ jobs:
           tar -xvf a.tar.gz
           sudo cp mold-2.30.0-x86_64-linux/bin/mold /usr/local/bin/mold
           sudo cp mold-2.30.0-x86_64-linux/bin/ld.mold /usr/local/bin/ld.mold
+          sudo cp mold-2.30.0-x86_64-linux/bin/mold /usr/local/mold
+          sudo cp mold-2.30.0-x86_64-linux/bin/ld.mold /usr/local/ld.mold
 
       - name: Configure Project Data
         run: |
