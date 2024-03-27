@@ -31,19 +31,20 @@ jobs:
           sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys EB8B81E14DA65431D7504EA8F63F0F2B90935439
           sudo add-apt-repository "deb https://ppa.launchpadcontent.net/kisak/turtle/ubuntu focal main"
           sudo apt update
-          sudo apt-get install -qq mesa-vulkan-drivers
-          sudo apt-get install build-essential pkg-config libx11-dev libxcursor-dev \
+          sudo apt install -qq mesa-vulkan-drivers
+          sudo apt install build-essential pkg-config libx11-dev libxcursor-dev \
             libxinerama-dev libgl1-mesa-dev libglu-dev libasound2-dev libpulse-dev libudev-dev libxi-dev libxrandr-dev yasm \
             xvfb wget2 unzip scons git
+          sudo apt install mold
       
       - name: Download and install mold
         run: |
           wget -q https://github.com/rui314/mold/releases/download/v2.30.0/mold-2.30.0-x86_64-linux.tar.gz -O a.tar.gz
           tar -xvf a.tar.gz
-          sudo cp mold-2.30.0-x86_64-linux/bin/mold /usr/local/bin/mold
-          sudo cp mold-2.30.0-x86_64-linux/bin/ld.mold /usr/local/bin/ld.mold
-          sudo cp mold-2.30.0-x86_64-linux/bin/mold /usr/local/mold
-          sudo cp mold-2.30.0-x86_64-linux/bin/ld.mold /usr/local/ld.mold
+          #sudo cp mold-2.30.0-x86_64-linux/bin/mold /usr/local/bin/mold
+          #sudo cp mold-2.30.0-x86_64-linux/bin/ld.mold /usr/local/bin/ld.mold
+          #sudo cp mold-2.30.0-x86_64-linux/bin/mold /usr/local/mold
+          #sudo cp mold-2.30.0-x86_64-linux/bin/ld.mold /usr/local/ld.mold
 
       - name: Configure Project Data
         run: |
