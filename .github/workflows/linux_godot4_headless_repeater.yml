@@ -44,10 +44,9 @@ jobs:
 
       - name: Download Godot(GIT)
         run: |
-          git clone https://github.com/godotengine/godot.git
-          cd godot
-          git checkout master
-          cd ../
+          wget -nv https://github.com/godotengine/godot/archive/refs/heads/master.zip -O godot.zip
+          unzip -qq godot.zip
+          mv godot-master godot
 
       - name: Compile Godot
         run: |

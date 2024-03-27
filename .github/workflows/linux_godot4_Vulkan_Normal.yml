@@ -59,15 +59,14 @@ jobs:
 
       - name: Download Godot(GIT)
         run: |
-          git clone https://github.com/godotengine/godot.git
-          cd godot
-          git checkout master
-          cd ../
+          wget -nv https://github.com/godotengine/godot/archive/refs/heads/master.zip -O godot.zip
+          unzip -qq godot.zip
+          mv godot-master godot
 
       - name: Compile Godot
         run: |
           cd godot
-          scons -j2 dev_build=yes target=editor use_asan=yes use_ubsan=yes linker=mold
+          scons -j2 dev_build=yes target=editor use_asan=yes use_ubsan=yes linker=gold
           cp bin/godot.linuxbsd.editor.dev.x86_64.san ../
           cd ../
           rm -rf godot
